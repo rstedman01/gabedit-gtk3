@@ -23,35 +23,35 @@ This Agents.md file provides guidance for OpenAI Codex and other AI agents worki
 `/platforms`: Config files for each platform Gabedit supports
 `/po`: Language-related files
 `/spglib`: Library for finding and handling crystal symmetries in C
-`/src`: Source code, main target for Codex to analyze
-|---- `/Common`: Main C source and header files
-|---- `/Crystallography`: Source files for crystallography
-|---- `/DeMon`: Unsure of functionality, seems to be related to GUI
-|---- `/Display`: Source files for the majority of GUI and rendering functionality
-|---- `/Files`: Handles file I/O and file selector dialog windows
-|---- `/FireFly`: Source files for interfacing with the ab-initio package Firefly 
-|---- `/Gamess`: Source files for interfacing with GAMESS
-|---- `/Gaussian`: Source files for interfacing with Gaussian
-|---- `/Geometry`: Source files for dealing with molecular geometry
-|---- `/IsotopeDistribution`: Source files for analyzing isotopic distributions
-|---- `/Molcas`: Source files for interfacing with MOLCAS
-|---- `/MolecularMechanics`: Source files for working with molecular mechanics calculations
-|---- `/Molpro`: Source files for interfacing with MOLPRO
-|---- `/Mopac`: Source files for interfacing with MOPAC
-|---- `/MPQC`: Source files for interfacing with MPQC (Massively Parallel Quantum Chemistry)
-|---- `/MultiGrid`: Source files for using the multigrid method to solve differential equations
-|---- `/NetWork`: Networking functionality
-|---- `/NWChem`: Source files for interfacing with NWChem
-|---- `/Orca`: Source files for interfacing with ORCA
-|---- `/Psicode`: Source files for interfacing with Psi3/4
-|---- `/QChem`: Source files for interfacing with Q-Chem
-|---- `/QFF`: Source files for Gabedit's force field implementation
-|---- `/SemiEmpirical`: Source files for semi-empirical methods
-|---- `/Spectrum`: Spectroscopy-related source files
-|---- `/Symmetry`: Files related to molecular symetry
-|---- `/Utils`: Source code for utilities related to math and rendering
-|---- `/VibrationalCorrections`: Source files related to vibrational frequency calculations, mostly pertains to Gaussian files
-`/utils`: Set of folders containing utility scripts and some code for GUI operation
+`/src`: Source code, main target for Codex to analyze <br>
+|---- `/Common`: Main C source and header files<br>
+|---- `/Crystallography`: Source files for crystallography<br>
+|---- `/DeMon`: Unsure of functionality, seems to be related to GUI<br>
+|---- `/Display`: Source files for the majority of GUI and rendering functionality<br>
+|---- `/Files`: Handles file I/O and file selector dialog windows<br>
+|---- `/FireFly`: Source files for interfacing with the ab-initio package Firefly <br>
+|---- `/Gamess`: Source files for interfacing with GAMESS<br>
+|---- `/Gaussian`: Source files for interfacing with Gaussian<br>
+|---- `/Geometry`: Source files for dealing with molecular geometry<br>
+|---- `/IsotopeDistribution`: Source files for analyzing isotopic distributions<br>
+|---- `/Molcas`: Source files for interfacing with MOLCAS<br>
+|---- `/MolecularMechanics`: Source files for working with molecular mechanics calculations<br>
+|---- `/Molpro`: Source files for interfacing with MOLPRO<br>
+|---- `/Mopac`: Source files for interfacing with MOPAC<br>
+|---- `/MPQC`: Source files for interfacing with MPQC (Massively Parallel Quantum Chemistry)<br>
+|---- `/MultiGrid`: Source files for using the multigrid method to solve differential equations<br>
+|---- `/NetWork`: Networking functionality<br>
+|---- `/NWChem`: Source files for interfacing with NWChem<br>
+|---- `/Orca`: Source files for interfacing with ORCA<br>
+|---- `/Psicode`: Source files for interfacing with Psi3/4<br>
+|---- `/QChem`: Source files for interfacing with Q-Chem<br>
+|---- `/QFF`: Source files for Gabedit's force field implementation<br>
+|---- `/SemiEmpirical`: Source files for semi-empirical methods<br>
+|---- `/Spectrum`: Spectroscopy-related source files<br>
+|---- `/Symmetry`: Files related to molecular symetry<br>
+|---- `/Utils`: Source code for utilities related to math and rendering<br>
+|---- `/VibrationalCorrections`: Source files related to vibrational frequency calculations, mostly pertains to Gaussian files<br>
+`/utils`: Set of folders containing utility scripts and some code for GUI operation<br>
 
 ## Coding Instructions for OpenAI Codex
 ### General
