@@ -294,8 +294,8 @@ static void  create_gprint(GtkWidget *Frame)
   	checkbutton[i] = create_checkbutton(window1,vbox1,tGP1[i]);
 
   /*
-  GTK_TOGGLE_BUTTON (checkbutton[0])->active=TRUE;
-  GTK_TOGGLE_BUTTON (checkbutton[4])->active=TRUE;
+  gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkbutton[0]))=TRUE;
+  gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkbutton[4]))=TRUE;
   */
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton[0]), TRUE);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton[4]), TRUE);

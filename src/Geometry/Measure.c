@@ -600,7 +600,7 @@ static void activate_distance_entry(GtkWidget* entry, gchar* data)
 		g_free(oldD);
 		return;
 	}
-        if (GTK_TOGGLE_BUTTON (MoveGroupButton)->active) 
+        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(MoveGroupButton))) 
 		listGroupAtoms = getListGroupe(&nGroupAtoms, geometry0, Natoms, i1, i2,-1,-1);
 	setDistance(geometry0,i1,i2,newD,listGroupAtoms,nGroupAtoms);
 	if(listGroupAtoms) g_free(listGroupAtoms);
@@ -649,7 +649,7 @@ static void activate_angle_entry(GtkWidget* entry, gchar* data)
 		g_free(oldA);
 		return;
 	}
-        if (GTK_TOGGLE_BUTTON (MoveGroupButton)->active) 
+        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(MoveGroupButton))) 
 		listGroupAtoms = getListGroupe(&nGroupAtoms, geometry0, Natoms, i1, i2,i3,-1);
 	setAngle(Natoms,geometry0,i1,i2,i3,newA,listGroupAtoms,nGroupAtoms);
 	if(listGroupAtoms) g_free(listGroupAtoms);
@@ -702,9 +702,9 @@ static void activate_dihedral_entry(GtkWidget* entry, gchar* data)
 		g_free(oldA);
 		return;
 	}
-        if (GTK_TOGGLE_BUTTON (MoveGroupButton)->active) 
+        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(MoveGroupButton))) 
 	{
-        	if (GTK_TOGGLE_BUTTON (Move23Button)->active) 
+        	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(Move23Button))) 
 		listGroupAtoms = getListGroupe(&nGroupAtoms, geometry0, Natoms, i1, i2,i3,i4+Natoms);
 		else
 		listGroupAtoms = getListGroupe(&nGroupAtoms, geometry0, Natoms, i1, i2,i3,i4);

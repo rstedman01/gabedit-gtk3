@@ -1280,7 +1280,7 @@ static GtkWidget *create_orbitals_number_frame( GtkWidget *vboxall,GtkWidget **e
 	add_label_table(Table,":",1,1);
 	combo = create_combo_box_entry(tlistnum,norbs,TRUE,-1,-1);
 	add_widget_table(Table,combo,1,2);
-	entry[0] = GTK_BIN(combo)->child;
+	entry[0] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_widget_set_sensitive(entry[0],FALSE); 
 
 	gtk_widget_show_all(frame);

@@ -231,7 +231,7 @@ static void changedEntryMethod(GtkWidget *entry, gpointer data)
 	if(KS && GTK_IS_COMBO_BOX(wid))
 	{
 		gboolean sumDen = FALSE;
-		entryFunctional=GTK_BIN(wid)->child;
+		entryFunctional=gtk_bin_get_child(GTK_BIN(wid));
 		entryText = gtk_entry_get_text(GTK_ENTRY(entryFunctional));
 		if(strstr(entryText,"Your")) sumDen = TRUE;
 		wid = g_object_get_data(G_OBJECT (entry), "ButtonWhat");
@@ -253,7 +253,7 @@ static void setSpinMultiplicityComboSpinMultiplicity(GtkWidget *comboSpinMultipl
 	GtkWidget *entry = NULL;
 	gchar* t = NULL;
 	if(!comboSpinMultiplicity) return;
-	entry = GTK_BIN (comboSpinMultiplicity)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboSpinMultiplicity));
 	t = g_strdup_printf("%d",spin);
 	gtk_entry_set_text(GTK_ENTRY(entry),t);
 	g_free(t);
@@ -312,7 +312,7 @@ static void setChargeComboCharge(GtkWidget *comboCharge, gint charge)
 	GtkWidget *entry = NULL;
 	gchar* t = NULL;
 	if(!comboCharge) return;
-	entry = GTK_BIN (comboCharge)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboCharge));
 	t = g_strdup_printf("%d",charge);
 	gtk_entry_set_text(GTK_ENTRY(entry),t);
 	g_free(t);
@@ -499,7 +499,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
                   3,3);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeight*0.2),-1);
 
@@ -563,7 +563,7 @@ static GtkWidget* addMPQCMethodToTable(GtkWidget *table, gint i, GtkWidget *comb
 	GtkWidget* entrySpinMultiplicity = NULL;
 	GtkWidget* hbox = NULL;
 
-	entrySpinMultiplicity  = GTK_BIN (comboSpinMultiplicity)->child;
+	entrySpinMultiplicity  = gtk_bin_get_child(GTK_BIN(comboSpinMultiplicity));
 
 	add_label_table(table, _("Method"), (gushort)i, 0);
 	add_label_table(table, ":", (gushort)i, 1);
@@ -603,7 +603,7 @@ static void addMPQCFunctionalToTable(GtkWidget *table, gint i, GtkWidget* comboM
 	GtkWidget* sumDenFunctional = NULL;
 	GtkWidget* hbox = NULL;
 
-	if(GTK_IS_COMBO_BOX(comboMethod)) entryMethod = GTK_BIN(comboMethod)->child;
+	if(GTK_IS_COMBO_BOX(comboMethod)) entryMethod = gtk_bin_get_child(GTK_BIN(comboMethod));
 
 	label = add_label_table(table, _("Functional"), (gushort)i, 0);
 	if(entryMethod) g_object_set_data(G_OBJECT (entryMethod), "LabelFunctional1", label);
@@ -666,7 +666,7 @@ void createMPQCMole(GtkWidget *box)
 	comboSpinMultiplicity = addMPQCSpinToTable(table, i);
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 
 	i = 2;
 	comboMethod = addMPQCMethodToTable(table, i, comboSpinMultiplicity);
@@ -678,7 +678,7 @@ void createMPQCMole(GtkWidget *box)
 	addMPQCAuxBasisToTable(table, i, comboMethod);
 	/* activate sensitivity */
 	if(GTK_IS_WIDGET(comboMethod)) setComboMethod(comboMethod);
-	g_object_set_data(G_OBJECT (box), "EntryMethod", GTK_BIN(comboMethod)->child);
+	g_object_set_data(G_OBJECT (box), "EntryMethod", gtk_bin_get_child(GTK_BIN(comboMethod)));
 }
 /************************************************************************************************************/
 static void putMPQCFunctionalInTextEditor()

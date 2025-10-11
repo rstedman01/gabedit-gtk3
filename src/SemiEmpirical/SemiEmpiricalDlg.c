@@ -2123,7 +2123,7 @@ static void setSpinMultiplicityComboSpinMultiplicity(GtkWidget *comboSpinMultipl
 	GtkWidget *entry = NULL;
 	gchar* t = NULL;
 	if(!comboSpinMultiplicity) return;
-	entry = GTK_BIN (comboSpinMultiplicity)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboSpinMultiplicity));
 	t = g_strdup_printf("%d",spin);
 	gtk_entry_set_text(GTK_ENTRY(entry),t);
 	g_free(t);
@@ -2181,7 +2181,7 @@ static void setChargeComboCharge(GtkWidget *comboCharge, gint charge)
 	GtkWidget *entry = NULL;
 	gchar* t = NULL;
 	if(!comboCharge) return;
-	entry = GTK_BIN (comboCharge)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboCharge));
 	t = g_strdup_printf("%d",charge);
 	gtk_entry_set_text(GTK_ENTRY(entry),t);
 	g_free(t);
@@ -2265,7 +2265,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_SHRINK),
                   2,2);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeight*0.1),-1);
 
@@ -2337,11 +2337,11 @@ static void addChargeSpin(GtkWidget *box)
 /*----------------------------------------------------------------------------------*/
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 	setComboCharge(comboCharge);
 	setComboSpinMultiplicity(comboSpinMultiplicity);
-	entryCharge = GTK_WIDGET(GTK_BIN(comboCharge)->child);
-	entrySpinMultiplicity = GTK_WIDGET(GTK_BIN(comboSpinMultiplicity)->child);
+	entryCharge = GTK_WIDGET(gtk_bin_get_child(GTK_BIN(comboCharge)));
+	entrySpinMultiplicity = GTK_WIDGET(gtk_bin_get_child(GTK_BIN(comboSpinMultiplicity)));
 	g_signal_connect(G_OBJECT(entryCharge),"changed", G_CALLBACK(changedEntryCharge),NULL);
 }
 /************************************************************************************************************/
@@ -2382,7 +2382,7 @@ static void setComboReactionPathAtoms(GtkWidget *comboReactionPathAtoms)
 	gint iEnd;
 
 	if(!comboReactionPathAtoms) return;
-	entry = GTK_BIN (comboReactionPathAtoms)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboReactionPathAtoms));
 	if(!entry) return;
 	typeRP   = g_object_get_data(G_OBJECT (entry), "TypeRP");
 	if(!typeRP) return;
@@ -2682,18 +2682,18 @@ static void createReactionPathFrame(GtkWidget *box)
 	for(k=0;k<2;k++)
 	if(GTK_IS_COMBO_BOX(comboVariableType[k]))
 	{
-		g_object_set_data(G_OBJECT (GTK_BIN(comboVariableType[k])->child), "ComboAtoms", comboAtoms[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboVariableType[k])->child), "TypeRP", typeRP[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboVariableType[k])->child), "EntryStep", entryStep[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboVariableType[k])->child), "EntryNbPoints", entryNbPoints[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboVariableType[k]))), "ComboAtoms", comboAtoms[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboVariableType[k]))), "TypeRP", typeRP[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboVariableType[k]))), "EntryStep", entryStep[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboVariableType[k]))), "EntryNbPoints", entryNbPoints[k]);
 	}
 	for(k=0;k<2;k++)
 	if(GTK_IS_COMBO_BOX(comboAtoms[k]))
 	{
-		g_object_set_data(G_OBJECT (GTK_BIN(comboAtoms[k])->child), "EntryStep", entryStep[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboAtoms[k])->child), "EntryNbPoints", entryNbPoints[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboAtoms[k])->child), "AtomRP", &atomRP[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboAtoms[k])->child), "TypeRP", typeRP[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboAtoms[k]))), "EntryStep", entryStep[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboAtoms[k]))), "EntryNbPoints", entryNbPoints[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboAtoms[k]))), "AtomRP", &atomRP[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboAtoms[k]))), "TypeRP", typeRP[k]);
 	}
 	for(k=0;k<2;k++) g_object_set_data(G_OBJECT (entryNbPoints[k]), "NumberOfPointsRP", &numberOfPointsRP[k]);
 	for(k=0;k<2;k++) g_object_set_data(G_OBJECT (entryStep[k]), "StepValueRP", &stepValueRP[k]);
@@ -2966,7 +2966,7 @@ static void addMopacOptions(GtkWidget *box, gchar* type)
 /*----------------------------------------------------------------------------------*/
 	i = 0;
 	comboMopacHamiltonian = addMopacHamiltonianToTable(table, i);
-	entryMopacHamiltonian = GTK_WIDGET(GTK_BIN(comboMopacHamiltonian)->child);
+	entryMopacHamiltonian = GTK_WIDGET(gtk_bin_get_child(GTK_BIN(comboMopacHamiltonian)));
 /*----------------------------------------------------------------------------------*/
 	i++;
 	j = 0;
@@ -3034,7 +3034,7 @@ static void addMopacSparkleOptions(GtkWidget *box, gchar* type)
 /*----------------------------------------------------------------------------------*/
 	i = 0;
 	comboMopacHamiltonianSparkle = addMopacHamiltonianSparkleToTable(table, i);
-	entryMopacHamiltonianSparkle = GTK_WIDGET(GTK_BIN(comboMopacHamiltonianSparkle)->child);
+	entryMopacHamiltonianSparkle = GTK_WIDGET(gtk_bin_get_child(GTK_BIN(comboMopacHamiltonianSparkle)));
 /*----------------------------------------------------------------------------------*/
 	i++;
 	j = 0;
@@ -3103,7 +3103,7 @@ static void addOrcaOptions(GtkWidget *box, gchar* type)
 /*----------------------------------------------------------------------------------*/
 	i = 0;
 	comboOrcaHamiltonian = addOrcaHamiltonianToTable(table, i);
-	entryOrcaHamiltonian = GTK_WIDGET(GTK_BIN(comboOrcaHamiltonian)->child);
+	entryOrcaHamiltonian = GTK_WIDGET(gtk_bin_get_child(GTK_BIN(comboOrcaHamiltonian)));
 /*----------------------------------------------------------------------------------*/
 	i++;
 	j = 0;
@@ -3167,7 +3167,7 @@ static void addOpenBabelOptions(GtkWidget *box, gchar* type)
 /*----------------------------------------------------------------------------------*/
 	i = 0;
 	comboOpenBabelPotential = addOpenBabelPotentialToTable(table, i);
-	entryOpenBabelPotential = GTK_WIDGET(GTK_BIN(comboOpenBabelPotential)->child);
+	entryOpenBabelPotential = GTK_WIDGET(gtk_bin_get_child(GTK_BIN(comboOpenBabelPotential)));
 /*----------------------------------------------------------------------------------*/
 	i++;
 	j = 0;
@@ -3214,7 +3214,7 @@ void semiEmpiricalDlg(gchar* type)
 	g_signal_connect(G_OBJECT(Win),"delete_event",(GCallback)gtk_widget_destroy,NULL);
  
 	NoteBook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Win)->vbox), NoteBook,TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Win))), NoteBook,TRUE, TRUE, 0);
 
 	AddOptionsDlg(NoteBook, Win,type);
   
@@ -3223,13 +3223,13 @@ void semiEmpiricalDlg(gchar* type)
 
 	button = create_button(Win,"Cancel");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_destroy),GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
 	button = create_button(Win,"Ok");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	if(!strcmp(type,"AM1FireFlyEnergy"))
 		g_signal_connect_swapped(GTK_OBJECT(button), "clicked", (GCallback)runAM1FireFlyEnergy,GTK_OBJECT(Win));
 	else if(!strcmp(type,"AM1FireFlyOptimize"))
@@ -4405,32 +4405,32 @@ static void semiEmpiricalMDConfo(GtkWidget* Win, gpointer data)
 	gchar* dirName = NULL;
 
 	constraints = NOCONSTRAINTS;
-	if(GTK_TOGGLE_BUTTON (buttonConstraintsOptions[BONDSCONSTRAINTS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonConstraintsOptions[BONDSCONSTRAINTS])))
 				constraints = BONDSCONSTRAINTS;
-	if(GTK_TOGGLE_BUTTON (buttonConstraintsOptions[BONDSANGLESCONSTRAINTS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonConstraintsOptions[BONDSANGLESCONSTRAINTS])))
 				constraints = BONDSANGLESCONSTRAINTS;
 
 
-	if(GTK_TOGGLE_BUTTON (buttonTolerance[TOLE])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTolerance[TOLE])))
 		tolEnergy = atoi(gtk_entry_get_text(GTK_ENTRY(entryTolerance[TOLE])));
-	if(GTK_TOGGLE_BUTTON (buttonTolerance[TOLD])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTolerance[TOLD])))
 		tolDistance = atoi(gtk_entry_get_text(GTK_ENTRY(entryTolerance[TOLD])));
 
 	totalCharge = atoi(gtk_entry_get_text(GTK_ENTRY(entryCharge)));
 	spinMultiplicity = atoi(gtk_entry_get_text(GTK_ENTRY(entrySpinMultiplicity)));
 	TotalCharges[0] = totalCharge;
 	SpinMultiplicities[0] = spinMultiplicity;
-	if(GTK_TOGGLE_BUTTON (buttonMopac)->active) 
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMopac))) 
 	{
 		program = g_strdup("Mopac");
 		method = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryMopacMethod)));
 	}
-	else if(GTK_TOGGLE_BUTTON (buttonFireFly)->active) 
+	else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonFireFly))) 
 	{
 		program = g_strdup("FireFly");
 		method = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFireFlyMethod)));
 	}
-	else if(GTK_TOGGLE_BUTTON (buttonOpenBabel)->active) 
+	else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOpenBabel))) 
 	{
 		program = g_strdup("OpenBabel");
 		method = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryOpenBabelMethod)));
@@ -4458,12 +4458,12 @@ static void semiEmpiricalMDConfo(GtkWidget* Win, gpointer data)
 	stepSize = atof(gtk_entry_get_text(GTK_ENTRY(entryMDStepSize)));
 
 
-	if(GTK_TOGGLE_BUTTON (buttonMDOptions[BEEMAN])->active) integrator = BEEMAN;
-	if(GTK_TOGGLE_BUTTON (buttonMDOptions[STOCHASTIC])->active) integrator = STOCHASTIC;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDOptions[BEEMAN]))) integrator = BEEMAN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDOptions[STOCHASTIC]))) integrator = STOCHASTIC;
 
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[ANDERSEN])->active) thermostat = ANDERSEN;
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[BERENDSEN])->active) thermostat = BERENDSEN;
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[BUSSI])->active) thermostat = BUSSI;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[ANDERSEN]))) thermostat = ANDERSEN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[BERENDSEN]))) thermostat = BERENDSEN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[BUSSI]))) thermostat = BUSSI;
 
 	if( integrator == STOCHASTIC)
 		friction = atof(gtk_entry_get_text(GTK_ENTRY(entrySDFriction)));
@@ -4481,10 +4481,10 @@ static void semiEmpiricalMDConfo(GtkWidget* Win, gpointer data)
 	if(stepSize<0) stepSize = 1.0;
 	if(stepSize>5) stepSize = 5.0;
 
-	optMopac = GTK_TOGGLE_BUTTON (buttonPostOpt)->active && GTK_TOGGLE_BUTTON (buttonMopac)->active; 
-	optFireFly = GTK_TOGGLE_BUTTON (buttonPostOpt)->active && GTK_TOGGLE_BUTTON (buttonFireFly)->active; 
-	optOpenBabel = GTK_TOGGLE_BUTTON (buttonPostOpt)->active && GTK_TOGGLE_BUTTON (buttonOpenBabel)->active; 
-	optGeneric = GTK_TOGGLE_BUTTON (buttonPostOpt)->active && GTK_TOGGLE_BUTTON (buttonGeneric)->active; 
+	optMopac = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPostOpt)) && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMopac)); 
+	optFireFly = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPostOpt)) && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonFireFly)); 
+	optOpenBabel = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPostOpt)) && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOpenBabel)); 
+	optGeneric = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPostOpt)) && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonGeneric)); 
 	/* number for geometries */
 	{
 		gchar* tmp = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryNumberOfGeom)));
@@ -4503,14 +4503,14 @@ static void semiEmpiricalMDConfo(GtkWidget* Win, gpointer data)
 
 		g_free(tmp);
 	}
-	if(GTK_TOGGLE_BUTTON (buttonCreateGaussian)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCreateGaussian)))
 		gaussianKeywords = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryGaussianKeywords)));
-	if(GTK_TOGGLE_BUTTON (buttonCreateMopac)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCreateMopac)))
 		mopacKeywords = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryMopacKeywords)));
-	if(GTK_TOGGLE_BUTTON (buttonCreateFireFly)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCreateFireFly)))
 		fireflyKeywords = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFireFlyKeywords)));
 
-	if(GTK_TOGGLE_BUTTON (buttonSaveTraj)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSaveTraj)))
 	{
 		if(!dirName) dirName = gtk_file_chooser_get_current_folder (GTK_FILE_CHOOSER(buttonDirSelector));
 		gchar* tmp = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFileNameTraj)));
@@ -4522,7 +4522,7 @@ static void semiEmpiricalMDConfo(GtkWidget* Win, gpointer data)
 
 		g_free(tmp);
 	}
-	if(GTK_TOGGLE_BUTTON (buttonSaveProp)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSaveProp)))
 	{
 		if(!dirName) dirName = gtk_file_chooser_get_current_folder (GTK_FILE_CHOOSER(buttonDirSelector));
 		gchar* tmp = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFileNameProp)));
@@ -4753,9 +4753,9 @@ static void semiEmpiricalMD(GtkWidget* Win, gpointer data)
 	SemiEmpiricalModelConstraints constraints = NOCONSTRAINTS;
 
 	constraints = NOCONSTRAINTS;
-	if(GTK_TOGGLE_BUTTON (buttonConstraintsOptions[BONDSCONSTRAINTS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonConstraintsOptions[BONDSCONSTRAINTS])))
 				constraints = BONDSCONSTRAINTS;
-	if(GTK_TOGGLE_BUTTON (buttonConstraintsOptions[BONDSANGLESCONSTRAINTS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonConstraintsOptions[BONDSANGLESCONSTRAINTS])))
 				constraints = BONDSANGLESCONSTRAINTS;
 
 
@@ -4763,22 +4763,22 @@ static void semiEmpiricalMD(GtkWidget* Win, gpointer data)
 	spinMultiplicity = atoi(gtk_entry_get_text(GTK_ENTRY(entrySpinMultiplicity)));
 	TotalCharges[0] = totalCharge;
 	SpinMultiplicities[0] = spinMultiplicity;
-	if(GTK_TOGGLE_BUTTON (buttonMopac)->active) 
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMopac))) 
 	{
 		program = g_strdup("Mopac");
 		method = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryMopacMethod)));
 	}
-	if(GTK_TOGGLE_BUTTON (buttonFireFly)->active) 
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonFireFly))) 
 	{
 		program = g_strdup("FireFly");
 		method = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFireFlyMethod)));
 	}
-	else if(GTK_TOGGLE_BUTTON (buttonOpenBabel)->active) 
+	else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOpenBabel))) 
 	{
 		program = g_strdup("OpenBabel");
 		method = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryOpenBabelMethod)));
 	}
-	else if(GTK_TOGGLE_BUTTON (buttonGeneric)->active) 
+	else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonGeneric))) 
 	{
 		program = g_strdup("Generic");
 		method = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryGenericMethod)));
@@ -4802,12 +4802,12 @@ static void semiEmpiricalMD(GtkWidget* Win, gpointer data)
 	stepSize = atof(gtk_entry_get_text(GTK_ENTRY(entryMDStepSize)));
 
 
-	if(GTK_TOGGLE_BUTTON (buttonMDOptions[BEEMAN])->active) integrator = BEEMAN;
-	if(GTK_TOGGLE_BUTTON (buttonMDOptions[STOCHASTIC])->active) integrator = STOCHASTIC;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDOptions[BEEMAN]))) integrator = BEEMAN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDOptions[STOCHASTIC]))) integrator = STOCHASTIC;
 
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[ANDERSEN])->active) thermostat = ANDERSEN;
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[BERENDSEN])->active) thermostat = BERENDSEN;
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[BUSSI])->active) thermostat = BUSSI;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[ANDERSEN]))) thermostat = ANDERSEN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[BERENDSEN]))) thermostat = BERENDSEN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[BUSSI]))) thermostat = BUSSI;
 
 	if( integrator == STOCHASTIC)
 		friction = atof(gtk_entry_get_text(GTK_ENTRY(entrySDFriction)));
@@ -4828,7 +4828,7 @@ static void semiEmpiricalMD(GtkWidget* Win, gpointer data)
 	if(stepSize>5) stepSize = 5.0;
 
 	dirName = gtk_file_chooser_get_current_folder (GTK_FILE_CHOOSER(buttonDirSelector));
-	if(GTK_TOGGLE_BUTTON (buttonSaveTraj)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSaveTraj)))
 	{
 		gchar* tmp = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFileNameTraj)));
 		if(dirName[strlen(dirName)-1] != G_DIR_SEPARATOR)
@@ -4838,7 +4838,7 @@ static void semiEmpiricalMD(GtkWidget* Win, gpointer data)
 
 		g_free(tmp);
 	}
-	if(GTK_TOGGLE_BUTTON (buttonSaveProp)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSaveProp)))
 	{
 		gchar* tmp = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFileNameProp)));
 		if(dirName[strlen(dirName)-1] != G_DIR_SEPARATOR)
@@ -6431,7 +6431,7 @@ void semiEmpiricalMolecularDynamicsDlg()
 	g_signal_connect(G_OBJECT(Win),"delete_event",(GCallback)gtk_widget_destroy,NULL);
  
 	NoteBook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Win)->vbox), NoteBook,TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Win))), NoteBook,TRUE, TRUE, 0);
 
 	AddDynamicsOptionsDlg(NoteBook, Win);
 	AddModelOptionsDlg(NoteBook, Win);
@@ -6442,13 +6442,13 @@ void semiEmpiricalMolecularDynamicsDlg()
 
 	button = create_button(Win,"Cancel");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_destroy),GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
 	button = create_button(Win,"Ok");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", (GCallback)semiEmpiricalMD,GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
@@ -6474,7 +6474,7 @@ void semiEmpiricalMolecularDynamicsConfoDlg()
 	g_signal_connect(G_OBJECT(Win),"delete_event",(GCallback)gtk_widget_destroy,NULL);
  
 	NoteBook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Win)->vbox), NoteBook,TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Win))), NoteBook,TRUE, TRUE, 0);
 
 	AddGeneralConfoOptionsDlg(NoteBook, Win);
 	AddDynamicsConfoOptionsDlg(NoteBook, Win);
@@ -6486,13 +6486,13 @@ void semiEmpiricalMolecularDynamicsConfoDlg()
 
 	button = create_button(Win,"Cancel");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_destroy),GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
 	button = create_button(Win,"Ok");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", (GCallback)semiEmpiricalMDConfo,GTK_OBJECT(Win));
 	gtk_widget_show (button);
 

@@ -41,6 +41,7 @@ DEALINGS IN THE SOFTWARE.
 #include "../Molcas/MolcasBasisLibrary.h"
 #include "../MPQC/MPQCBasisLibrary.h"
 #include "../Display/UtilsOrb.h"
+#include "../Compat/gabedit_gdk_compat.h"
 
 static GdkGC *gc = NULL;
 /*static guint IdTimer = 0;*/
@@ -222,7 +223,6 @@ static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
    	gint* lentxt = (gint*)g_object_get_data(G_OBJECT(widget), "LenTxt");
 	gboolean Ok = TRUE;
         GdkVisual* vis;
-
 	gint i;
 	gint x;
 	gint y;
@@ -593,7 +593,7 @@ static void create_splash_popupwin()
 
 	gtk_widget_realize(MainFrame);
 
-	gc = gdk_gc_new(MainFrame->window);
+	gc = gdk_gc_new(GDK_WINDOW(MainFrame));
 	gtk_container_add (GTK_CONTAINER (MainFrame), vbox);
 	
 	/* create_name_frame_popup(vbox,MainFrame);*/

@@ -764,7 +764,7 @@ GtkWidget *create_contours_frame( GtkWidget *vboxall,gchar* title,gint type)
 				Label =	add_label_at_table(Table,strlabels[i][j],i,(gushort)j,GTK_JUSTIFY_LEFT);
 
 	combo = create_combo_box_entry(listvalues,grid->N[type], FALSE,-1,-1);
-	Entries[0] = GTK_BIN(combo)->child;
+	Entries[0] = gtk_bin_get_child(GTK_BIN(combo));
 	add_widget_table(Table,combo,(gushort)0,(gushort)2);
 	Entries[1] = gtk_entry_new ();
 	add_widget_table(Table,Entries[1],(gushort)1,(gushort)2);

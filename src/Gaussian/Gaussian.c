@@ -266,7 +266,7 @@ static void GetInfoBasis( )
 /*******************************************************************/
 static gboolean TestButtonActive(GtkWidget *button)
 {
-         if (GTK_TOGGLE_BUTTON (button)->active) 
+         if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button))) 
                return TRUE;
          else return FALSE;
 }
@@ -1098,7 +1098,7 @@ void insert_gaussian(gint itype)
   g_signal_connect(G_OBJECT(Wins),"delete_event",(GCallback)destroy_children,NULL);
 
   NoteBook = gtk_notebook_new();
-  gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Wins)->vbox), NoteBook,FALSE, FALSE, 0);
+  gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Wins))), NoteBook,FALSE, FALSE, 0);
   switch(iframe)
          {
           case 2: 
@@ -1125,19 +1125,19 @@ void insert_gaussian(gint itype)
          }
 	iedit=1;
 
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Wins)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), FALSE);
 
   
   gtk_widget_realize(Wins);
 
   button = create_button(Wins,"Cancel");
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, FALSE, TRUE, 5);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), button, FALSE, TRUE, 5);
   g_signal_connect_swapped(G_OBJECT(button), "clicked",G_CALLBACK(to_cancel_win),GTK_OBJECT(Wins));
   GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
   gtk_widget_show (button);
 
   button = create_button(Wins,"OK");
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, FALSE, TRUE, 5);  
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), button, FALSE, TRUE, 5);  
   GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(button);
   gtk_widget_show (button);
@@ -1191,23 +1191,23 @@ void gauss(gint ioption)
 	g_signal_connect(G_OBJECT(Wins),"delete_event",(GCallback)destroy_children,NULL);
  
 	NoteBook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Wins)->vbox), NoteBook,TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Wins))), NoteBook,TRUE, TRUE, 0);
   
 	GAjoutePageRouteMain(NoteBook,Wins); 
 	GAjoutePageRouteOptions(NoteBook,Wins); 
 
 	gtk_widget_realize(Wins);
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Wins)->action_area), TRUE); 
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), TRUE); 
 
 	button = create_button(Wins,_("Cancel"));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(G_OBJECT(button),"clicked",G_CALLBACK(to_cancel_win),GTK_OBJECT(Wins));
 	gtk_widget_show (button);
 
 	button = create_button(Wins,_("OK"));
 	g_signal_connect(G_OBJECT(button), "clicked", (GCallback)putInfoAll,NULL);
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), button, TRUE, TRUE, 0);
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	gtk_widget_show (button);
@@ -1220,8 +1220,8 @@ void gauss(gint ioption)
 	}
 	else
 	{
-  		GTK_TOGGLE_BUTTON (CheckButtons[7])->active=TRUE;
-  		GTK_TOGGLE_BUTTON (CheckButtons[8])->active=TRUE;
+  		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(CheckButtons[7]))=TRUE;
+  		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(CheckButtons[8]))=TRUE;
 	}
 	GeomFromCheck = FALSE;
 }

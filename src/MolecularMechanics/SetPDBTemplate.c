@@ -434,7 +434,7 @@ static void editnewDlg(GabeditSignalFunc f,gchar* title, gboolean newResidue)
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -511,12 +511,12 @@ static void editnewDlg(GabeditSignalFunc f,gchar* title, gboolean newResidue)
 
 	gtk_widget_realize(WinDlg);
 	Button = create_button(WinDlg,_("Cancel"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked", (GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 	Button = create_button(WinDlg,_("OK"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)f,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Button);

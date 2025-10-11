@@ -620,7 +620,7 @@ GtkWidget* Message(char *message,char *titre,gboolean center)
   gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
   gtk_container_set_border_width (GTK_CONTAINER (frame), 5);
-   gtk_box_pack_start( GTK_BOX(GTK_DIALOG(DialogueMessage)->vbox), frame,TRUE,TRUE,0);
+   gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(DialogueMessage))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -643,10 +643,10 @@ GtkWidget* Message(char *message,char *titre,gboolean center)
   	gtk_widget_show (hbox);
     }
     
-    gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(DialogueMessage)->action_area), FALSE);
+    gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(DialogueMessage))), FALSE);
   
   Bouton = create_button(DialogueMessage,_("OK"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(DialogueMessage)->action_area), Bouton, FALSE, TRUE, 5);  
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(DialogueMessage))), Bouton, FALSE, TRUE, 5);  
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Bouton);
  g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",
@@ -683,7 +683,7 @@ GtkWidget* MessageTxt(gchar *message,gchar *title)
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 5);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(dlgWin)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dlgWin))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
 
@@ -691,10 +691,10 @@ GtkWidget* MessageTxt(gchar *message,gchar *title)
 	txtWid = create_text_widget(vboxframe,NULL,&frame);
 	if(message) gabedit_text_insert (GABEDIT_TEXT(txtWid), NULL, NULL, NULL,message,-1);   
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), FALSE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dlgWin))), FALSE);
   
 	button = create_button(dlgWin,_("OK"));
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), button, FALSE, TRUE, 5);  
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dlgWin))), button, FALSE, TRUE, 5);  
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)destroy_button_windows, GTK_OBJECT(dlgWin));
@@ -772,7 +772,7 @@ void Cancel_YesNo(GtkWidget *widget, gpointer   data, GabeditSignalFunc func)
     g_object_set_data_full (G_OBJECT (DialogueMessage), "frame",
 	  frame,(GDestroyNotify) g_object_unref);
     gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-    gtk_box_pack_start( GTK_BOX(GTK_DIALOG(DialogueMessage)->vbox), frame,TRUE,TRUE,0);
+    gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(DialogueMessage))), frame,TRUE,TRUE,0);
     gtk_widget_show (frame);
     vboxframe = create_vbox(frame);
 
@@ -785,13 +785,13 @@ void Cancel_YesNo(GtkWidget *widget, gpointer   data, GabeditSignalFunc func)
     gtk_widget_realize(DialogueMessage);
 
     Bouton = create_button(DialogueMessage,_("No"));
-    gtk_box_pack_start( GTK_BOX(GTK_DIALOG(DialogueMessage)->action_area), Bouton,TRUE,TRUE,0);
+    gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(DialogueMessage))), Bouton,TRUE,TRUE,0);
     g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(DialogueMessage));
     GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
     gtk_widget_grab_default(Bouton);
 
     Bouton = create_button(DialogueMessage,_("Yes"));
-    gtk_box_pack_start( GTK_BOX(GTK_DIALOG(DialogueMessage)->action_area), Bouton,TRUE,TRUE,0);
+    gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(DialogueMessage))), Bouton,TRUE,TRUE,0);
     GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
     g_signal_connect_swapped(G_OBJECT(Bouton),"clicked", (GCallback)func, GTK_OBJECT(widget));
     g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(DialogueMessage));
@@ -2134,10 +2134,10 @@ GtkWidget*  create_combo_box_entry(gchar **tlist,gint nlist, gboolean edit,gint 
 {
 	GtkWidget* combo;
 	gint i;
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	for (i=0;i<nlist;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), tlist[i]);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),elen,-1);
- 	gtk_editable_set_editable((GtkEditable*) (GTK_BIN (combo)->child),edit);
+ 	gtk_editable_set_editable((GtkEditable*) (gtk_bin_get_child(GTK_BIN(combo))),edit);
 	if(nlist>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
 	return combo;
 }
@@ -2156,7 +2156,7 @@ GtkWidget *create_combo_box_entry_liste(GtkWidget* Window,GtkWidget* hbox,gchar 
   	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 2);
   }
 
-  combo = gtk_combo_box_entry_new_text ();
+  combo = gtk_combo_box_text_new_with_entry();
   gtk_widget_set_size_request(combo, (gint)(ScreenHeight*0.1), -1);
   gtk_widget_show (combo);
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 2);
@@ -2164,7 +2164,7 @@ GtkWidget *create_combo_box_entry_liste(GtkWidget* Window,GtkWidget* hbox,gchar 
   for (i=0;i<n;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), liste[i]);
   if(n>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
 
-  combo_entry = (GTK_BIN (combo)->child);
+  combo_entry = (gtk_bin_get_child(GTK_BIN(combo)));
   gtk_widget_show (combo_entry);
   gtk_entry_set_text (GTK_ENTRY (combo_entry), liste[0]);
   return combo_entry;
@@ -2189,13 +2189,13 @@ GtkWidget*  create_label_combo_in_table(GtkWidget *table,gchar *tlabel,gchar **t
         label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table), label, 1, 2, iligne, iligne+1, (GtkAttachOptions)(GTK_FILL|GTK_EXPAND), (GtkAttachOptions)(GTK_FILL|GTK_SHRINK), 1, 1);
 
-        combo = gtk_combo_box_entry_new_text();
+        combo = gtk_combo_box_text_new_with_entry();
         for (i=0;i<nlist;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), tlist[i]);
         if(nlist>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
         gtk_widget_set_size_request(GTK_WIDGET(combo),elen,-1);
 	gtk_table_attach(GTK_TABLE(table), combo, 2, 3, iligne, iligne+1, (GtkAttachOptions)(GTK_FILL|GTK_EXPAND), (GtkAttachOptions)(GTK_FILL|GTK_SHRINK), 1, 1);
-        gtk_widget_set_sensitive(GTK_BIN(combo)->child,edit);
-        return GTK_BIN(combo)->child;
+        gtk_widget_set_sensitive(gtk_bin_get_child(GTK_BIN(combo)),edit);
+        return gtk_bin_get_child(GTK_BIN(combo));
 }
 /********************************************************************************/
 GtkWidget *create_frame(GtkWidget *win,GtkWidget *box,gchar *title)
@@ -2467,13 +2467,13 @@ GtkWidget*  create_label_combo(GtkWidget *hbox,gchar *tlabel,gchar **tlist,gint 
 	gtk_widget_set_size_request(GTK_WIDGET(label),llen,-1);
 	gtk_box_pack_start(GTK_BOX(hbox), label,FALSE,FALSE,2);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	for (i=0;i<nlist;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), tlist[i]);
 	if(nlist>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),elen,-1);
 	gtk_box_pack_start(GTK_BOX(hbox), combo,FALSE,FALSE,2);
-	gtk_widget_set_sensitive(GTK_BIN(combo)->child,edit);
-	return GTK_BIN(combo)->child;
+	gtk_widget_set_sensitive(gtk_bin_get_child(GTK_BIN(combo)),edit);
+	return gtk_bin_get_child(GTK_BIN(combo));
 }
 /********************************************************************************/
 void show_forbidden_characters()
@@ -2556,7 +2556,7 @@ GtkWidget *Continue_YesNo(void (*func)(GtkWidget*,gpointer data),gpointer data,g
 	g_object_ref (frame);
 	g_object_set_data_full (G_OBJECT (DialogueMessage), "frame", frame,(GDestroyNotify) g_object_unref);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(DialogueMessage)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(DialogueMessage))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 	vboxframe = create_vbox(frame);
 	gtk_widget_realize(DialogueMessage);
@@ -2566,13 +2566,13 @@ GtkWidget *Continue_YesNo(void (*func)(GtkWidget*,gpointer data),gpointer data,g
 	gtk_widget_realize(DialogueMessage);
 
 	Bouton = create_button(DialogueMessage,_("No"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(DialogueMessage)->action_area),Bouton,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(DialogueMessage))),Bouton,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(DialogueMessage));
 	GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Bouton);
 
 	Bouton = create_button(DialogueMessage,_("Yes"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(DialogueMessage)->action_area), Bouton,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(DialogueMessage))), Bouton,TRUE,TRUE,0);
 	GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
 	g_signal_connect(G_OBJECT(Bouton), "clicked", (GCallback)func,data);
 	g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(DialogueMessage));
@@ -3505,9 +3505,9 @@ void read_admp_build_dipole_dipole_autocorrelation_dlg()
 	gtk_box_pack_start (GTK_BOX (hbox), labelN, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), entryN, FALSE, FALSE, 0);
 
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(filesel)->vbox), hsep1, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(filesel)->vbox), hbox, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(filesel)->vbox), hsep2, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(filesel))), hsep1, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(filesel))), hbox, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(filesel))), hsep2, FALSE, FALSE, 0);
 	gtk_widget_show_all(hsep1);
 	gtk_widget_show_all(hsep2);
 	gtk_widget_show_all(hbox);
@@ -3663,9 +3663,9 @@ void read_dipole_build_dipole_dipole_autocorrelation_dlg()
 	gtk_box_pack_start (GTK_BOX (hbox), labelN, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), entryN, FALSE, FALSE, 0);
 
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(filesel)->vbox), hsep1, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(filesel)->vbox), hbox, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(filesel)->vbox), hsep2, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(filesel))), hsep1, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(filesel))), hbox, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(filesel))), hsep2, FALSE, FALSE, 0);
 	gtk_widget_show_all(hsep1);
 	gtk_widget_show_all(hsep2);
 	gtk_widget_show_all(hbox);

@@ -97,7 +97,7 @@ static void setComboVal(GtkWidget *comboVal)
 	GList *glist = NULL;
 	GtkWidget *comboMethod = g_object_get_data(G_OBJECT (comboVal), "ComboMethod");
 	G_CONST_RETURN gchar* entryText = NULL;
-	GtkWidget *entry =  GTK_BIN (comboMethod)->child;
+	GtkWidget *entry =  gtk_bin_get_child(GTK_BIN(comboMethod));
 	entryText = gtk_entry_get_text(GTK_ENTRY(entry));
 	gchar** list = NULL;
 	gint n = 0;
@@ -258,18 +258,18 @@ static GtkWidget*   add_inputgr_entrys(GtkWidget *Wins,GtkWidget *vbox)
 
 	if(GTK_IS_COMBO_BOX(comboMethod))
 	{
-		g_object_set_data(G_OBJECT (GTK_BIN(comboMethod)->child), "ComboVal1", comboVal1);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboMethod)->child), "ComboVal2", comboVal2);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboMethod))), "ComboVal1", comboVal1);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboMethod))), "ComboVal2", comboVal2);
 		g_object_set_data(G_OBJECT (comboVal1), "ComboMethod", comboMethod);
 		g_object_set_data(G_OBJECT (comboVal2), "ComboMethod", comboMethod);
 		setComboVal(comboVal1);
 		setComboVal(comboVal2);
-		g_object_set_data(G_OBJECT (Wins), "EntryMethod",GTK_BIN(comboMethod)->child);
-		g_object_set_data(G_OBJECT (Wins), "EntryVal1",GTK_BIN(comboVal1)->child);
-		g_object_set_data(G_OBJECT (Wins), "EntryVal2",GTK_BIN(comboVal2)->child);
+		g_object_set_data(G_OBJECT (Wins), "EntryMethod",gtk_bin_get_child(GTK_BIN(comboMethod)));
+		g_object_set_data(G_OBJECT (Wins), "EntryVal1",gtk_bin_get_child(GTK_BIN(comboVal1)));
+		g_object_set_data(G_OBJECT (Wins), "EntryVal2",gtk_bin_get_child(GTK_BIN(comboVal2)));
 	}
 	setComboMethod(comboMethod);
-	g_signal_connect(G_OBJECT(GTK_BIN(comboMethod)->child),"changed", G_CALLBACK(changedMethod),NULL);
+	g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboMethod))),"changed", G_CALLBACK(changedMethod),NULL);
 
 	i = 4;
 	add_label_table(table,_(" dr "),i,0);
@@ -298,7 +298,7 @@ static GtkWidget*   add_inputgr_entrys(GtkWidget *Wins,GtkWidget *vbox)
 	gtk_widget_set_sensitive(entry, TRUE);
 
 	gtk_widget_show_all(table);
-	entry = GTK_BIN (comboMethod)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboMethod));
 	return entry;
 }
 /*************************************************************************************************************/
@@ -816,7 +816,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_SHRINK),
                   2,2);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeightD*0.2),-1);
 
@@ -884,7 +884,7 @@ static void print_gaussian_geometries_link(GtkWidget* Win, gpointer data)
 	{
 		gint ne = 0;
 		if(g !=0) fprintf(file,"--Link1--\n");
-		if(GTK_IS_WIDGET(buttonChkgauss)&& GTK_TOGGLE_BUTTON (buttonChkgauss)->active)
+		if(GTK_IS_WIDGET(buttonChkgauss)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonChkgauss)))
 			fprintf(file,"%cChk=gabmg\n",p);
 
 		fprintf(file,"# %s\n",supstr);
@@ -1021,7 +1021,7 @@ static void print_gaussian_one_geometry(gint g, G_CONST_RETURN gchar* supstr)
 		if(fileName) g_free(fileName);
 		return;
 	}
-	if(GTK_IS_WIDGET(buttonChkgauss)&& GTK_TOGGLE_BUTTON (buttonChkgauss)->active)
+	if(GTK_IS_WIDGET(buttonChkgauss)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonChkgauss)))
 		fprintf(file,"%cChk=gabmg_%d\n",p,g);
 
 	fprintf(file,"# %s\n",supstr);
@@ -4947,7 +4947,7 @@ static gchar* get_format_image_from_option()
 /********************************************************************************/
 static void filmSelected(GtkWidget *widget)
 {
-	if(GTK_IS_WIDGET(buttonCheckFilm)&& GTK_TOGGLE_BUTTON (buttonCheckFilm)->active)
+	if(GTK_IS_WIDGET(buttonCheckFilm)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCheckFilm)))
 	{
 		createFilm = TRUE;
 		if(GTK_IS_WIDGET(buttonDirFilm))  gtk_widget_set_sensitive(buttonDirFilm, TRUE);
@@ -5507,10 +5507,10 @@ static GtkWidget*   add_inputGauss_entrys(GtkWidget *Wins,GtkWidget *vbox,gboole
                   2,2);
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 	setComboCharge(comboCharge);
 	setComboSpinMultiplicity(comboSpinMultiplicity);
-	g_signal_connect(G_OBJECT(GTK_BIN(comboCharge)->child),"changed", G_CALLBACK(changedEntryCharge),NULL);
+	g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboCharge))),"changed", G_CALLBACK(changedEntryCharge),NULL);
 
 	i = 4;
 	add_label_table(table,_(" Keywords "),i,0);

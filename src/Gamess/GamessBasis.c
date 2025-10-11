@@ -107,13 +107,13 @@ void setSensitiveGamessBasisFrame(gboolean sensitive)
 /*************************************************************************************************************/
 static void putGamessBasisDiffuseFunctions()
 {
-	if(!GTK_TOGGLE_BUTTON (buttonDiffuseL)->active 
-	   && !GTK_TOGGLE_BUTTON (buttonDiffuseS)->active) return;
+	if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDiffuseL)) 
+	   && !gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDiffuseS))) return;
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " ",-1);
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, &gamessColorFore.keyWord, &gamessColorBack.keyWord, "$BASIS",-1);
-	if(GTK_TOGGLE_BUTTON (buttonDiffuseL)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDiffuseL)))
         	gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " DIFFSP=.TRUE.",-1);
-	if(GTK_TOGGLE_BUTTON (buttonDiffuseS)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDiffuseS)))
         	gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " DIFFS=.TRUE.",-1);
 
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " ",-1);

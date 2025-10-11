@@ -1126,33 +1126,33 @@ static void amberMolecularDynamicsConfo(GtkWidget* Win, gpointer data)
 	gdouble tolEnergy = -1;
 	gdouble tolDistance = -1;
 
-	if(GTK_TOGGLE_BUTTON (buttonTolerance[TOLE])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTolerance[TOLE])))
 		tolEnergy = atoi(gtk_entry_get_text(GTK_ENTRY(entryTolerance[TOLE])));
-	if(GTK_TOGGLE_BUTTON (buttonTolerance[TOLD])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTolerance[TOLD])))
 		tolDistance = atoi(gtk_entry_get_text(GTK_ENTRY(entryTolerance[TOLD])));
 
 	forceFieldOptions.type = AMBER;
-	forceFieldOptions.bondStretch = GTK_TOGGLE_BUTTON (buttonMMOptions[MMBOND])->active;
-	forceFieldOptions.angleBend = GTK_TOGGLE_BUTTON (buttonMMOptions[MMBEND])->active;
-	forceFieldOptions.dihedralAngle = GTK_TOGGLE_BUTTON (buttonMMOptions[MMTORSION])->active;
-	forceFieldOptions.improperTorsion = GTK_TOGGLE_BUTTON (buttonMMOptions[MMIMPROPER])->active;
-	forceFieldOptions.nonBonded = GTK_TOGGLE_BUTTON (buttonMMOptions[MMNONBOND])->active;
-	forceFieldOptions.hydrogenBonded = GTK_TOGGLE_BUTTON (buttonMMOptions[MMHBOND])->active;
-	forceFieldOptions.coulomb = GTK_TOGGLE_BUTTON (buttonMMOptions[MMCOULOMB])->active;
-	forceFieldOptions.vanderWals = GTK_TOGGLE_BUTTON (buttonMMOptions[PWVANDERWALS])->active;
+	forceFieldOptions.bondStretch = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMBOND]));
+	forceFieldOptions.angleBend = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMBEND]));
+	forceFieldOptions.dihedralAngle = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMTORSION]));
+	forceFieldOptions.improperTorsion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMIMPROPER]));
+	forceFieldOptions.nonBonded = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMNONBOND]));
+	forceFieldOptions.hydrogenBonded = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMHBOND]));
+	forceFieldOptions.coulomb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMCOULOMB]));
+	forceFieldOptions.vanderWals = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[PWVANDERWALS]));
 
 	forceFieldOptions.rattleConstraints = NOCONSTRAINTS;
-	if(GTK_TOGGLE_BUTTON (buttonConstraintsOptions[BONDSCONSTRAINTS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonConstraintsOptions[BONDSCONSTRAINTS])))
 			forceFieldOptions.rattleConstraints = BONDSCONSTRAINTS;
-	if(GTK_TOGGLE_BUTTON (buttonConstraintsOptions[BONDSANGLESCONSTRAINTS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonConstraintsOptions[BONDSANGLESCONSTRAINTS])))
 			forceFieldOptions.rattleConstraints = BONDSANGLESCONSTRAINTS;
 
-	if(GTK_TOGGLE_BUTTON (buttonTypesOptions[AMBER])->active )
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTypesOptions[AMBER])) )
 		forceFieldOptions.type = AMBER;
 	else
-	if(GTK_TOGGLE_BUTTON (buttonTypesOptions[PAIRWISE])->active )
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTypesOptions[PAIRWISE])) )
 	{
-		forceFieldOptions.coulomb = GTK_TOGGLE_BUTTON (buttonMMOptions[PWCOULOMB])->active;
+		forceFieldOptions.coulomb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[PWCOULOMB]));
 		forceFieldOptions.type = PAIRWISE;
 	}
 	totalCharge = atoi(gtk_entry_get_text(GTK_ENTRY(entryCharge)));
@@ -1175,12 +1175,12 @@ static void amberMolecularDynamicsConfo(GtkWidget* Win, gpointer data)
 	stepSize = atof(gtk_entry_get_text(GTK_ENTRY(entryMDStepSize)));
 
 
-	if(GTK_TOGGLE_BUTTON (buttonMDOptions[BEEMAN])->active) integrator = BEEMAN;
-	if(GTK_TOGGLE_BUTTON (buttonMDOptions[STOCHASTIC])->active) integrator = STOCHASTIC;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDOptions[BEEMAN]))) integrator = BEEMAN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDOptions[STOCHASTIC]))) integrator = STOCHASTIC;
 
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[ANDERSEN])->active) thermostat = ANDERSEN;
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[BERENDSEN])->active) thermostat = BERENDSEN;
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[BUSSI])->active) thermostat = BUSSI;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[ANDERSEN]))) thermostat = ANDERSEN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[BERENDSEN]))) thermostat = BERENDSEN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[BUSSI]))) thermostat = BUSSI;
 
 	if( integrator == STOCHASTIC)
 		friction = atof(gtk_entry_get_text(GTK_ENTRY(entrySDFriction)));
@@ -1198,10 +1198,10 @@ static void amberMolecularDynamicsConfo(GtkWidget* Win, gpointer data)
 	if(stepSize<0) stepSize = 1.0;
 	if(stepSize>5) stepSize = 5.0;
 
-	optMM = GTK_TOGGLE_BUTTON (buttonPostMMOpt)->active;
-	optPM6Mopac = GTK_TOGGLE_BUTTON (buttonPostPM6Mopac)->active;
-	optAM1Mopac = GTK_TOGGLE_BUTTON (buttonPostAM1Mopac)->active;
-	optFireFly = GTK_TOGGLE_BUTTON (buttonPostFireFly)->active;
+	optMM = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPostMMOpt));
+	optPM6Mopac = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPostPM6Mopac));
+	optAM1Mopac = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPostAM1Mopac));
+	optFireFly = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPostFireFly));
 	/* number for geometries */
 	{
 		gchar* tmp = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryNumberOfGeom)));
@@ -1223,14 +1223,14 @@ static void amberMolecularDynamicsConfo(GtkWidget* Win, gpointer data)
 		g_free(tmp);
 		g_free(dirName);
 	}
-	if(GTK_TOGGLE_BUTTON (buttonCreateGaussian)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCreateGaussian)))
 		gaussianKeywords = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryGaussianKeywords)));
-	if(GTK_TOGGLE_BUTTON (buttonCreateMopac)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCreateMopac)))
 		mopacKeywords = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryMopacKeywords)));
-	if(GTK_TOGGLE_BUTTON (buttonCreateFireFly)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCreateFireFly)))
 		fireflyKeywords = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFireFlyKeywords)));
 
-	if(GTK_TOGGLE_BUTTON (buttonSaveTraj)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSaveTraj)))
 	{
 		gchar* dirName = gtk_file_chooser_get_current_folder (GTK_FILE_CHOOSER(buttonDirSelector));
 		gchar* tmp = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFileNameTraj)));
@@ -1243,7 +1243,7 @@ static void amberMolecularDynamicsConfo(GtkWidget* Win, gpointer data)
 		g_free(tmp);
 		g_free(dirName);
 	}
-	if(GTK_TOGGLE_BUTTON (buttonSaveProp)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSaveProp)))
 	{
 		gchar* dirName = gtk_file_chooser_get_current_folder (GTK_FILE_CHOOSER(buttonDirSelector));
 		gchar* tmp = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFileNameProp)));
@@ -1264,8 +1264,8 @@ static void amberMolecularDynamicsConfo(GtkWidget* Win, gpointer data)
 	conjugateGradientOptions.initialStep = 0.001;
 	conjugateGradientOptions.method = 1;
 
-	useConjugateGradient = GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADCONJUGATE])->active;
-	useQuasiNewton = GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADQUASINEWTON])->active;
+	useConjugateGradient = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADCONJUGATE]));
+	useQuasiNewton = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADQUASINEWTON]));
 
 	conjugateGradientOptions.gradientNorm  = 
 		atof(gtk_entry_get_text(GTK_ENTRY(entryMinimizeOptions[GRADEPSILON])));
@@ -1289,16 +1289,16 @@ static void amberMolecularDynamicsConfo(GtkWidget* Win, gpointer data)
 		atoi(gtk_entry_get_text(GTK_ENTRY(entryMinimizeOptions[GRADMAXLINES])));
 	quasiNewton.forceField = NULL;
 
-	if(GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADHESTENES])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADHESTENES])))
 		conjugateGradientOptions.method = 1;
 	else
-	if(GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADFLETCHER])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADFLETCHER])))
 		conjugateGradientOptions.method = 2;
 	else
-	if(GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADPOLAK])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADPOLAK])))
 		conjugateGradientOptions.method = 3;
 	else
-	if(GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADWOLF])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADWOLF])))
 		conjugateGradientOptions.method = 4;
 
 
@@ -1554,25 +1554,25 @@ static void amberMolecularDynamics(GtkWidget* Win, gpointer data)
 
 
 	forceFieldOptions.type = AMBER;
-	forceFieldOptions.bondStretch = GTK_TOGGLE_BUTTON (buttonMMOptions[MMBOND])->active;
-	forceFieldOptions.angleBend = GTK_TOGGLE_BUTTON (buttonMMOptions[MMBEND])->active;
-	forceFieldOptions.dihedralAngle = GTK_TOGGLE_BUTTON (buttonMMOptions[MMTORSION])->active;
-	forceFieldOptions.improperTorsion = GTK_TOGGLE_BUTTON (buttonMMOptions[MMIMPROPER])->active;
-	forceFieldOptions.nonBonded = GTK_TOGGLE_BUTTON (buttonMMOptions[MMNONBOND])->active;
-	forceFieldOptions.hydrogenBonded = GTK_TOGGLE_BUTTON (buttonMMOptions[MMHBOND])->active;
-	forceFieldOptions.coulomb = GTK_TOGGLE_BUTTON (buttonMMOptions[MMCOULOMB])->active;
-	forceFieldOptions.vanderWals = GTK_TOGGLE_BUTTON (buttonMMOptions[PWVANDERWALS])->active;
+	forceFieldOptions.bondStretch = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMBOND]));
+	forceFieldOptions.angleBend = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMBEND]));
+	forceFieldOptions.dihedralAngle = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMTORSION]));
+	forceFieldOptions.improperTorsion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMIMPROPER]));
+	forceFieldOptions.nonBonded = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMNONBOND]));
+	forceFieldOptions.hydrogenBonded = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMHBOND]));
+	forceFieldOptions.coulomb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMCOULOMB]));
+	forceFieldOptions.vanderWals = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[PWVANDERWALS]));
 	forceFieldOptions.rattleConstraints = NOCONSTRAINTS;
-	if(GTK_TOGGLE_BUTTON (buttonConstraintsOptions[BONDSCONSTRAINTS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonConstraintsOptions[BONDSCONSTRAINTS])))
 			forceFieldOptions.rattleConstraints = BONDSCONSTRAINTS;
-	if(GTK_TOGGLE_BUTTON (buttonConstraintsOptions[BONDSANGLESCONSTRAINTS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonConstraintsOptions[BONDSANGLESCONSTRAINTS])))
 			forceFieldOptions.rattleConstraints = BONDSANGLESCONSTRAINTS;
-	if(GTK_TOGGLE_BUTTON (buttonTypesOptions[AMBER])->active )
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTypesOptions[AMBER])) )
 		forceFieldOptions.type = AMBER;
 	else
-	if(GTK_TOGGLE_BUTTON (buttonTypesOptions[PAIRWISE])->active )
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTypesOptions[PAIRWISE])) )
 	{
-		forceFieldOptions.coulomb = GTK_TOGGLE_BUTTON (buttonMMOptions[PWCOULOMB])->active;
+		forceFieldOptions.coulomb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[PWCOULOMB]));
 		forceFieldOptions.type = PAIRWISE;
 	}
 
@@ -1593,12 +1593,12 @@ static void amberMolecularDynamics(GtkWidget* Win, gpointer data)
 	stepSize = atof(gtk_entry_get_text(GTK_ENTRY(entryMDStepSize)));
 
 
-	if(GTK_TOGGLE_BUTTON (buttonMDOptions[BEEMAN])->active) integrator = BEEMAN;
-	if(GTK_TOGGLE_BUTTON (buttonMDOptions[STOCHASTIC])->active) integrator = STOCHASTIC;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDOptions[BEEMAN]))) integrator = BEEMAN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDOptions[STOCHASTIC]))) integrator = STOCHASTIC;
 
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[ANDERSEN])->active) thermostat = ANDERSEN;
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[BERENDSEN])->active) thermostat = BERENDSEN;
-	if(GTK_TOGGLE_BUTTON (buttonMDThermOptions[BUSSI])->active) thermostat = BUSSI;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[ANDERSEN]))) thermostat = ANDERSEN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[BERENDSEN]))) thermostat = BERENDSEN;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMDThermOptions[BUSSI]))) thermostat = BUSSI;
 
 	if( integrator == STOCHASTIC)
 		friction = atof(gtk_entry_get_text(GTK_ENTRY(entrySDFriction)));
@@ -1618,7 +1618,7 @@ static void amberMolecularDynamics(GtkWidget* Win, gpointer data)
 	if(stepSize<0) stepSize = 1.0;
 	if(stepSize>5) stepSize = 5.0;
 
-	if(GTK_TOGGLE_BUTTON (buttonSaveTraj)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSaveTraj)))
 	{
 		gchar* dirName = gtk_file_chooser_get_current_folder (GTK_FILE_CHOOSER(buttonDirSelector));
 		gchar* tmp = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFileNameTraj)));
@@ -1631,7 +1631,7 @@ static void amberMolecularDynamics(GtkWidget* Win, gpointer data)
 		g_free(tmp);
 		g_free(dirName);
 	}
-	if(GTK_TOGGLE_BUTTON (buttonSaveProp)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSaveProp)))
 	{
 		gchar* dirName = gtk_file_chooser_get_current_folder (GTK_FILE_CHOOSER(buttonDirSelector));
 		gchar* tmp = g_strdup(gtk_entry_get_text(GTK_ENTRY(entryFileNameProp)));
@@ -2191,7 +2191,7 @@ static void setSpinMultiplicityComboSpinMultiplicity(GtkWidget *comboSpinMultipl
 	GtkWidget *entry = NULL;
 	gchar* t = NULL;
 	if(!comboSpinMultiplicity) return;
-	entry = GTK_BIN (comboSpinMultiplicity)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboSpinMultiplicity));
 	t = g_strdup_printf("%d",spin);
 	gtk_entry_set_text(GTK_ENTRY(entry),t);
 	g_free(t);
@@ -2247,7 +2247,7 @@ static void setChargeComboCharge(GtkWidget *comboCharge, gint charge)
 	GtkWidget *entry = NULL;
 	gchar* t = NULL;
 	if(!comboCharge) return;
-	entry = GTK_BIN (comboCharge)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboCharge));
 	t = g_strdup_printf("%d",charge);
 	gtk_entry_set_text(GTK_ENTRY(entry),t);
 	g_free(t);
@@ -2330,7 +2330,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_SHRINK),
                   2,2);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeight*0.2),-1);
 
@@ -2702,11 +2702,11 @@ static void createPostProcessingFrame(GtkWidget *box)
 /*----------------------------------------------------------------------------------*/
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 	setComboCharge(comboCharge);
 	setComboSpinMultiplicity(comboSpinMultiplicity);
-	entryCharge = GTK_WIDGET(GTK_BIN(comboCharge)->child);
-	entrySpinMultiplicity = GTK_WIDGET(GTK_BIN(comboSpinMultiplicity)->child);
+	entryCharge = GTK_WIDGET(gtk_bin_get_child(GTK_BIN(comboCharge)));
+	entrySpinMultiplicity = GTK_WIDGET(gtk_bin_get_child(GTK_BIN(comboSpinMultiplicity)));
 	g_signal_connect(G_OBJECT(entryCharge),"changed", G_CALLBACK(changedEntryCharge),NULL);
 }
 /********************************************************************************/
@@ -3316,18 +3316,18 @@ static void amberMinimize(GtkWidget* Win, gpointer data)
 	conjugateGradientOptions.method = 1;
 
 	forceFieldOptions.type = AMBER;
-	forceFieldOptions.bondStretch = GTK_TOGGLE_BUTTON (buttonMMOptions[MMBOND])->active;
-	forceFieldOptions.angleBend = GTK_TOGGLE_BUTTON (buttonMMOptions[MMBEND])->active;
-	forceFieldOptions.dihedralAngle = GTK_TOGGLE_BUTTON (buttonMMOptions[MMTORSION])->active;
-	forceFieldOptions.improperTorsion = GTK_TOGGLE_BUTTON (buttonMMOptions[MMIMPROPER])->active;
-	forceFieldOptions.nonBonded = GTK_TOGGLE_BUTTON (buttonMMOptions[MMNONBOND])->active;
-	forceFieldOptions.hydrogenBonded = GTK_TOGGLE_BUTTON (buttonMMOptions[MMHBOND])->active;
-	forceFieldOptions.coulomb = GTK_TOGGLE_BUTTON (buttonMMOptions[MMCOULOMB])->active;
-	forceFieldOptions.vanderWals = GTK_TOGGLE_BUTTON (buttonMMOptions[PWVANDERWALS])->active;
+	forceFieldOptions.bondStretch = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMBOND]));
+	forceFieldOptions.angleBend = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMBEND]));
+	forceFieldOptions.dihedralAngle = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMTORSION]));
+	forceFieldOptions.improperTorsion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMIMPROPER]));
+	forceFieldOptions.nonBonded = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMNONBOND]));
+	forceFieldOptions.hydrogenBonded = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMHBOND]));
+	forceFieldOptions.coulomb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMCOULOMB]));
+	forceFieldOptions.vanderWals = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[PWVANDERWALS]));
 	forceFieldOptions.rattleConstraints = NOCONSTRAINTS;
 
-	useConjugateGradient = GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADCONJUGATE])->active;
-	useQuasiNewton = GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADQUASINEWTON])->active;
+	useConjugateGradient = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADCONJUGATE]));
+	useQuasiNewton = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADQUASINEWTON]));
 
 	conjugateGradientOptions.gradientNorm  = 
 		atof(gtk_entry_get_text(GTK_ENTRY(entryMinimizeOptions[GRADEPSILON])));
@@ -3350,24 +3350,24 @@ static void amberMinimize(GtkWidget* Win, gpointer data)
 	quasiNewton.maxLines = 
 		atoi(gtk_entry_get_text(GTK_ENTRY(entryMinimizeOptions[GRADMAXLINES])));
 
-	if(GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADHESTENES])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADHESTENES])))
 		conjugateGradientOptions.method = 1;
 	else
-	if(GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADFLETCHER])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADFLETCHER])))
 		conjugateGradientOptions.method = 2;
 	else
-	if(GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADPOLAK])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADPOLAK])))
 		conjugateGradientOptions.method = 3;
 	else
-	if(GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADWOLF])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADWOLF])))
 		conjugateGradientOptions.method = 4;
 
-	if(GTK_TOGGLE_BUTTON (buttonTypesOptions[AMBER])->active )
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTypesOptions[AMBER])) )
 		forceFieldOptions.type = AMBER;
 	else
-	if(GTK_TOGGLE_BUTTON (buttonTypesOptions[PAIRWISE])->active )
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTypesOptions[PAIRWISE])) )
 	{
-		forceFieldOptions.coulomb = GTK_TOGGLE_BUTTON (buttonMMOptions[PWCOULOMB])->active;
+		forceFieldOptions.coulomb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[PWCOULOMB]));
 		forceFieldOptions.type = PAIRWISE;
 	}
 	{
@@ -3457,22 +3457,22 @@ void amberEnergyCalculation(GtkWidget* Win, gpointer data)
 	gint i,j;
 
 	forceFieldOptions.type = AMBER;
-	forceFieldOptions.bondStretch = GTK_TOGGLE_BUTTON (buttonMMOptions[MMBOND])->active;
-	forceFieldOptions.angleBend = GTK_TOGGLE_BUTTON (buttonMMOptions[MMBEND])->active;
-	forceFieldOptions.dihedralAngle = GTK_TOGGLE_BUTTON (buttonMMOptions[MMTORSION])->active;
-	forceFieldOptions.improperTorsion = GTK_TOGGLE_BUTTON (buttonMMOptions[MMIMPROPER])->active;
-	forceFieldOptions.nonBonded = GTK_TOGGLE_BUTTON (buttonMMOptions[MMNONBOND])->active;
-	forceFieldOptions.hydrogenBonded = GTK_TOGGLE_BUTTON (buttonMMOptions[MMHBOND])->active;
-	forceFieldOptions.coulomb = GTK_TOGGLE_BUTTON (buttonMMOptions[MMCOULOMB])->active;
-	forceFieldOptions.vanderWals = GTK_TOGGLE_BUTTON (buttonMMOptions[PWVANDERWALS])->active;
+	forceFieldOptions.bondStretch = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMBOND]));
+	forceFieldOptions.angleBend = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMBEND]));
+	forceFieldOptions.dihedralAngle = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMTORSION]));
+	forceFieldOptions.improperTorsion = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMIMPROPER]));
+	forceFieldOptions.nonBonded = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMNONBOND]));
+	forceFieldOptions.hydrogenBonded = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMHBOND]));
+	forceFieldOptions.coulomb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[MMCOULOMB]));
+	forceFieldOptions.vanderWals = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[PWVANDERWALS]));
 	forceFieldOptions.rattleConstraints = NOCONSTRAINTS;
 
-	if(GTK_TOGGLE_BUTTON (buttonTypesOptions[AMBER])->active )
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTypesOptions[AMBER])) )
 		forceFieldOptions.type = AMBER;
 	else
-	if(GTK_TOGGLE_BUTTON (buttonTypesOptions[PAIRWISE])->active )
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTypesOptions[PAIRWISE])) )
 	{
-		forceFieldOptions.coulomb = GTK_TOGGLE_BUTTON (buttonMMOptions[PWCOULOMB])->active;
+		forceFieldOptions.coulomb = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMMOptions[PWCOULOMB]));
 		forceFieldOptions.type = PAIRWISE;
 	}
 
@@ -3526,8 +3526,8 @@ void sensitive_conjugate_gradient_buttons(GtkWidget *button, gpointer data)
 	if(data != NULL)
 		Ok = TRUE;
 
-	useQuasiNewton = GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADQUASINEWTON])->active;
-	useConjugateGradient = GTK_TOGGLE_BUTTON (buttonMinimizeOptions[GRADCONJUGATE])->active;
+	useQuasiNewton = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADQUASINEWTON]));
+	useConjugateGradient = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMinimizeOptions[GRADCONJUGATE]));
 	if(useConjugateGradient)
 	{
 		Ok = TRUE;
@@ -3944,7 +3944,7 @@ void MolecularMechanicsEnergyDlg()
 	g_signal_connect(G_OBJECT(Win),"delete_event",(GCallback)DestroyWinMMDlg,NULL);
  
 	NoteBook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Win)->vbox), NoteBook,TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Win))), NoteBook,TRUE, TRUE, 0);
 
 	AddMMOptionsDlg(NoteBook);
   
@@ -3953,13 +3953,13 @@ void MolecularMechanicsEnergyDlg()
 
 	button = create_button(Win,"Cancel");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", G_CALLBACK(DestroyWinMMDlg),GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
 	button = create_button(Win,"Ok");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", (GCallback)amberEnergyCalculation,GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
@@ -3986,7 +3986,7 @@ void MolecularMechanicsMinimizeDlg()
 	g_signal_connect(G_OBJECT(Win),"delete_event",(GCallback)DestroyWinMMDlg,NULL);
  
 	NoteBook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Win)->vbox), NoteBook,TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Win))), NoteBook,TRUE, TRUE, 0);
 
 	AddGradientOptionsDlg(NoteBook);
 	AddMMOptionsDlg(NoteBook);
@@ -3996,13 +3996,13 @@ void MolecularMechanicsMinimizeDlg()
 
 	button = create_button(Win,"Cancel");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", G_CALLBACK(DestroyWinMMDlg),GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
 	button = create_button(Win,"Ok");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", (GCallback)amberMinimize,GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
@@ -4031,7 +4031,7 @@ void MolecularMechanicsDynamicsDlg()
 	g_signal_connect(G_OBJECT(Win),"delete_event",(GCallback)gtk_widget_destroy,NULL);
  
 	NoteBook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Win)->vbox), NoteBook,TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Win))), NoteBook,TRUE, TRUE, 0);
 
 	AddDynamicsOptionsDlg(NoteBook, Win);
 	AddMMOptionsDlg(NoteBook);
@@ -4042,13 +4042,13 @@ void MolecularMechanicsDynamicsDlg()
 
 	button = create_button(Win,"Cancel");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_destroy),GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
 	button = create_button(Win,"Ok");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", (GCallback)amberMolecularDynamics,GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
@@ -4074,7 +4074,7 @@ void MolecularMechanicsDynamicsConfoDlg()
 	g_signal_connect(G_OBJECT(Win),"delete_event",(GCallback)gtk_widget_destroy,NULL);
  
 	NoteBook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Win)->vbox), NoteBook,TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Win))), NoteBook,TRUE, TRUE, 0);
 
 	AddGeneralConfoOptionsDlg(NoteBook, Win);
 	AddDynamicsConfoOptionsDlg(NoteBook, Win);
@@ -4087,13 +4087,13 @@ void MolecularMechanicsDynamicsConfoDlg()
 
 	button = create_button(Win,"Cancel");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_destroy),GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
 	button = create_button(Win,"Ok");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", (GCallback)amberMolecularDynamicsConfo,GTK_OBJECT(Win));
 	gtk_widget_show (button);
 

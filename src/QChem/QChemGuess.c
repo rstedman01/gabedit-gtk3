@@ -69,7 +69,7 @@ void setSensitiveQChemGuessMixed(gboolean sensitive)
 /*************************************************************************************************************/
 static void putQChemGuessOptionsInfoInTextEditor()
 {
-	if(GTK_TOGGLE_BUTTON (buttonMixed)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonMixed)))
         	gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " scf_guess_mix     5\n",-1);
 
 }

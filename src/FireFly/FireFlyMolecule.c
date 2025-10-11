@@ -785,7 +785,7 @@ static void putFireFlyMoleculeInTextEditor()
 /************************************************************************************************************/
 static void putNoSymmetryWithCalcul()
 {
-	if(!GTK_TOGGLE_BUTTON (buttonSymWithCalc)->active ) return;
+	if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSymWithCalc)) ) return;
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " ",-1);
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, &fireflyColorFore.keyWord, &fireflyColorBack.keyWord, "$CONTRL",-1);
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " NOSYM=1 ",-1);
@@ -842,7 +842,7 @@ static void activateRadioButton(GtkWidget *button, gpointer data)
 	{
 		setFireFlyMolecule();
 
-		if( GTK_TOGGLE_BUTTON (button)->active && *type == GABFIXED)
+		if( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)) && *type == GABFIXED)
 		{
 			if(fireflyMolecule.groupSymmetry) g_free(fireflyMolecule.groupSymmetry);
 			fireflyMolecule.groupSymmetry = g_strdup("C1");
@@ -850,7 +850,7 @@ static void activateRadioButton(GtkWidget *button, gpointer data)
 			if(GTK_IS_WIDGET(comboSymmetry))
 				gtk_widget_set_sensitive(comboSymmetry, TRUE);
 		}
-		if(GTK_TOGGLE_BUTTON (button)->active &&  *type == GABEDIT)
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)) &&  *type == GABEDIT)
 		{
 			/* groupSymmetry define in setFireFlyMolecule */
 			symReduction = TRUE;
@@ -862,7 +862,7 @@ static void activateRadioButton(GtkWidget *button, gpointer data)
 		if(GTK_IS_WIDGET(buttonTolerance) && symReduction ) gtk_widget_set_sensitive(buttonTolerance, TRUE);
 		if(GTK_IS_WIDGET(buttonTolerance) && !symReduction ) gtk_widget_set_sensitive(buttonTolerance, FALSE);
 
-		if(GTK_TOGGLE_BUTTON (button)->active && label && symReduction)
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)) && label && symReduction)
 		{
 			sprintf(buffer,"%s group",fireflyMolecule.groupSymmetry);
 			gtk_label_set_text(GTK_LABEL(label),buffer);
@@ -1024,7 +1024,7 @@ void createFireFlySymmetryFrame(GtkWidget *win, GtkWidget *box)
 	gtk_box_pack_start (GTK_BOX (vboxFrame), table, TRUE, TRUE, 0);
 
 	comboSymmetry = create_combo_box_entry(list, 1, TRUE, -1, -1);
-	entrySymmetry = GTK_BIN(comboSymmetry)->child;
+	entrySymmetry = gtk_bin_get_child(GTK_BIN(comboSymmetry));
 	gtk_widget_set_sensitive(entrySymmetry, FALSE);
 
 
@@ -1084,7 +1084,7 @@ static void setSpinMultiplicityComboSpinMultiplicity(GtkWidget *comboSpinMultipl
 	GtkWidget *entry = NULL;
 	gchar* t = NULL;
 	if(!comboSpinMultiplicity) return;
-	entry = GTK_BIN (comboSpinMultiplicity)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboSpinMultiplicity));
 	t = g_strdup_printf("%d",spin);
 	gtk_entry_set_text(GTK_ENTRY(entry),t);
 	g_free(t);
@@ -1139,7 +1139,7 @@ static void setChargeComboCharge(GtkWidget *comboCharge, gint charge)
 	GtkWidget *entry = NULL;
 	gchar* t = NULL;
 	if(!comboCharge) return;
-	entry = GTK_BIN (comboCharge)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboCharge));
 	t = g_strdup_printf("%d",charge);
 	gtk_entry_set_text(GTK_ENTRY(entry),t);
 	g_free(t);
@@ -1251,7 +1251,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_SHRINK),
                   2,2);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeight*0.2),-1);
 
@@ -1295,7 +1295,7 @@ static GtkWidget *addLabelNumberOfElectronsToTable(GtkWidget *table, gint i, Gtk
 {
 	GtkWidget* labelNumberOfElectrons = NULL;
 	GtkWidget* hbox = NULL;
-	GtkWidget* entryCharge = GTK_BIN(comboCharge)->child;
+	GtkWidget* entryCharge = gtk_bin_get_child(GTK_BIN(comboCharge));
 
 	labelNumberOfElectrons = gtk_label_new(" ");
 	hbox = gtk_hbox_new(0,FALSE);
@@ -1352,7 +1352,7 @@ void createFireFlyChargeMultiplicityFrame(GtkWidget *box)
 	labelNumberOfElectrons=addLabelNumberOfElectronsToTable(table, i, comboCharge);
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 	setComboCharge(comboCharge);
 	setComboSpinMultiplicity(comboSpinMultiplicity);
 	if(GTK_IS_WIDGET(labelNumberOfElectrons))
@@ -1366,7 +1366,7 @@ void createFireFlyChargeMultiplicityFrame(GtkWidget *box)
 	/* activate sensitivity */
 	/*
 	if(GTK_IS_WIDGET(comboMethod)) setComboMethod(comboMethod);
-	g_object_set_data(G_OBJECT (box), "EntryMethod", GTK_BIN(comboMethod)->child);
+	g_object_set_data(G_OBJECT (box), "EntryMethod", gtk_bin_get_child(GTK_BIN(comboMethod)));
 	*/
 }
 /************************************************************************************************************/

@@ -382,7 +382,7 @@ static GtkWidget *create_process_remote_frame( GtkWidget *vboxall,GtkWidget **en
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
                   1,1);
 	gtk_widget_show (combo);
-	entry[0] = GTK_BIN(combo)->child;
+	entry[0] = gtk_bin_get_child(GTK_BIN(combo));
         g_object_set_data (G_OBJECT (entry[0]), "Combo",combo);
         g_signal_connect(G_OBJECT(GTK_COMBO_BOX(combo)), "changed",G_CALLBACK(changed_host),entry);
 
@@ -394,7 +394,7 @@ static GtkWidget *create_process_remote_frame( GtkWidget *vboxall,GtkWidget **en
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
                   1,1);
-	entry[1] = GTK_BIN(combo)->child;
+	entry[1] = gtk_bin_get_child(GTK_BIN(combo));
     g_object_set_data (G_OBJECT (entry[1]), "Combo",combo);
 
 	i = 2;
@@ -568,13 +568,13 @@ static void kill_process(GtkWidget *Win,gpointer data)
 	gchar *ferr =  g_strdup_printf("%s%stmp%sferr",gabedit_directory(),G_DIR_SEPARATOR_S,G_DIR_SEPARATOR_S);
 
 
-  	if (GTK_TOGGLE_BUTTON (KillButton1)->active) 
+  	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(KillButton1))) 
 		scom = g_strdup("kill");
   	else
 		scom = g_strdup("kill -KILL");
 
 /* killing of children beforee */
-	if(GTK_TOGGLE_BUTTON (KillAllButton)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(KillAllButton)))
 	{
   		NumChildren = get_all_children(atoi(selectedRow),&Numb);
   		if(Numb>0)
@@ -623,7 +623,7 @@ static void kill_process(GtkWidget *Win,gpointer data)
 	}
   	if(t)
   	{
-		if(!GTK_TOGGLE_BUTTON (KillAllButton)->active)
+		if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(KillAllButton)))
 			Message(t,_("Error"),TRUE);
 		g_free(t);
   	}

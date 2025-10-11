@@ -88,7 +88,7 @@ void AjoutePageGeom(GtkWidget *NoteBook,GeomS *geom)
   gtk_widget_show (label2);
   gtk_box_pack_start (GTK_BOX (hbox1), label2, FALSE, FALSE, 0);
 
-  combo2 = gtk_combo_box_entry_new_text ();
+  combo2 = gtk_combo_box_text_new_with_entry();
   gtk_widget_set_size_request(GTK_WIDGET(combo2),100,-1);
   gtk_widget_show (combo2);
   gtk_box_pack_start (GTK_BOX (hbox1), combo2, FALSE, FALSE, 0);
@@ -104,7 +104,7 @@ void AjoutePageGeom(GtkWidget *NoteBook,GeomS *geom)
   gtk_combo_box_entry_set_popdown_strings ( (combo2), combo2_items);
   g_list_free (combo2_items);
 
-  combo_entry2 = GTK_BIN (combo2)->child;
+  combo_entry2 = gtk_bin_get_child(GTK_BIN(combo2));
   gtk_widget_show (combo_entry2);
 
 
@@ -112,7 +112,7 @@ void AjoutePageGeom(GtkWidget *NoteBook,GeomS *geom)
   gtk_widget_show (label3);
   gtk_box_pack_start (GTK_BOX (hbox1), label3, FALSE, FALSE, 0);
 
-  combo3 = gtk_combo_box_entry_new_text ();
+  combo3 = gtk_combo_box_text_new_with_entry();
   gtk_widget_set_size_request(GTK_WIDGET(combo3),100,-1);
   gtk_widget_show (combo3);
   gtk_box_pack_start (GTK_BOX (hbox1), combo3, FALSE, FALSE, 0);
@@ -126,7 +126,7 @@ void AjoutePageGeom(GtkWidget *NoteBook,GeomS *geom)
   gtk_combo_box_entry_set_popdown_strings ( (combo3), combo3_items);
   g_list_free (combo3_items);
 
-  combo_entry3 = GTK_BIN (combo3)->child;
+  combo_entry3 = gtk_bin_get_child(GTK_BIN(combo3));
   gtk_widget_show (combo_entry3);
 
   hseparator2 = gtk_hseparator_new ();

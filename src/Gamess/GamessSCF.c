@@ -50,17 +50,17 @@ void setSensitiveGamessSCFFrame(gboolean sensitive)
 /*************************************************************************************************************/
 static void putGamessSCFOptionsInfoInTextEditor()
 {
-	if(!GTK_TOGGLE_BUTTON (buttonDirectSCF)->active 
-	   && !GTK_TOGGLE_BUTTON (buttonChangeFock)->active
-	   && !GTK_TOGGLE_BUTTON (buttonUHFNO)->active
+	if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDirectSCF)) 
+	   && !gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonChangeFock))
+	   && !gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonUHFNO))
 	   ) return;
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " ",-1);
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, &gamessColorFore.keyWord, &gamessColorBack.keyWord, "$SCF",-1);
-	if(GTK_TOGGLE_BUTTON (buttonDirectSCF)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDirectSCF)))
         	gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " DIRSCF=.TRUE.",-1);
-	if(GTK_TOGGLE_BUTTON (buttonChangeFock)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonChangeFock)))
         	gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " FDIFF=.TRUE.",-1);
-	if(GTK_TOGGLE_BUTTON (buttonUHFNO)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonUHFNO)))
         	gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " UHFNOS=.TRUE.",-1);
 
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " ",-1);

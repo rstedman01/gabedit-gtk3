@@ -345,7 +345,8 @@ GtkWidget* AnharmonicResultTxt(gchar *message,gchar *title)
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 5);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(dlgWin)->vbox), frame,TRUE,TRUE,0);
+	GtkWidget* content = gtk_dialog_get_content_area(GTK_DIALOG(dlgWin));
+	gtk_box_pack_start(GTK_BOX(content), frame, TRUE, TRUE, 0);
 
 	gtk_widget_show (frame);
 
@@ -357,27 +358,28 @@ GtkWidget* AnharmonicResultTxt(gchar *message,gchar *title)
 		gtk_text_view_set_editable((GtkTextView *)txtWid, TRUE);
 	}
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), FALSE);
+	GtkWidget* action = gtk_dialog_get_action_area(GTK_DIALOG(dlgWin));
+	gtk_box_set_homogeneous (GTK_BOX(action), FALSE);
   
 
 	button = create_button(dlgWin,_("Harmonic spectrum"));
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), button, FALSE, TRUE, 5);  
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_box_pack_end(GTK_BOX(action), button, FALSE, TRUE, 5);  
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)applyHarmonic, GTK_OBJECT(dlgWin));
 
 	button = create_button(dlgWin,_("Anharmonic spectrum/Fundamentals"));
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), button, FALSE, TRUE, 5);  
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_box_pack_end (GTK_BOX(action), button, FALSE, TRUE, 5);  
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)applyAnharmonic, GTK_OBJECT(dlgWin));
 
 	button = create_button(dlgWin,_("Anharmonic spectrum/All"));
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), button, FALSE, TRUE, 5);  
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_box_pack_end (GTK_BOX(action), button, FALSE, TRUE, 5);  
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)applyAnharmonicAll, GTK_OBJECT(dlgWin));
 
 	button = create_button(dlgWin,_("Close"));
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), button, FALSE, TRUE, 5);  
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_box_pack_end (GTK_BOX(action), button, FALSE, TRUE, 5);  
+	gtk_widget_set_can_default(button, TRUE);
 	gtk_widget_grab_default(button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)destroy_button_windows, GTK_OBJECT(dlgWin));
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(dlgWin));
@@ -574,7 +576,7 @@ static void run_igvpt2_win(GtkWidget* Win, gpointer data)
 static GtkWidget* addComboListToATable(GtkWidget* table,
 		gchar** list, gint nlist, gint i, gint j, gint k)
 {
-	GtkWidget *entry = NULL;
+
 	GtkWidget *combo = NULL;
 
 	combo = create_combo_box_entry(list, nlist, TRUE, -1, -1);
@@ -582,8 +584,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 	gtk_table_attach(GTK_TABLE(table),combo,j,j+k,i,i+1,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_SHRINK),
-                  2,2);
-	entry = GTK_BIN (combo)->child;
+                  2,2);	GtkWidget* entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeight*0.2),-1);
 
@@ -653,7 +654,7 @@ static GtkWidget *addHarmonicFileNameToTable(GtkWidget *Wins, GtkWidget *table, 
 	gtk_editable_set_editable((GtkEditable*)entry,TRUE);
 	gtk_widget_set_sensitive(entry, TRUE);
 	button = create_button(Wins,"Change");
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked", G_CALLBACK(set_entry_freqs_file_name_selection), GTK_OBJECT(entry));
 	add_widget_table(table,button,i,3);
   	/* g_signal_connect(G_OBJECT (entrybabel), "changed", (GCallback)changed_ffn, NULL);*/

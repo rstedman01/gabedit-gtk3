@@ -64,7 +64,7 @@ static void activateTransButton(GtkWidget *button, gpointer data)
 	if(mpqcOptimization.method) g_free(mpqcOptimization.method);
 	if(mpqcOptimization.updateMethod) g_free(mpqcOptimization.updateMethod);
 
-	if(GTK_TOGGLE_BUTTON (button)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
 	{
 		mpqcOptimization.transitionState = TRUE;
 		mpqcOptimization.modeFollowing = TRUE;
@@ -134,7 +134,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
                   3,3);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 
 	return entry;
@@ -224,7 +224,7 @@ void createMPQCOptimization(GtkWidget *box)
 
 	i = 2;
 	comboMaxIterations = addMPQCMaxIterationsToTable(table, i, buttonSinglePoint, buttonOptimization);
-	entryMaxIterations = GTK_BIN(comboMaxIterations)->child;
+	entryMaxIterations = gtk_bin_get_child(GTK_BIN(comboMaxIterations));
 	g_signal_connect(G_OBJECT(entryMaxIterations),"changed", G_CALLBACK(changedEntryMaxIterations),NULL);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (buttonSinglePoint), !mpqcMpqc.optimize);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (buttonOptimization), mpqcMpqc.optimize);

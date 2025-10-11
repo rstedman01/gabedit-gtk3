@@ -92,6 +92,16 @@ static GdkColor ColorTemp;
 static gchar *FontTemp;
 static gboolean instal = FALSE;
 
+/*************************** Static helper functions *****************************/
+static void set_temp_color_from_chooser(GtkWidget* chooser)
+{
+  GdkRGBA rgba = {0};
+  gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(chooser), &rgba);
+  ColorTemp.red = (gushort)(rgba.red * 65535.0);
+  ColorTemp.green = (gushort)(rgba.green * 65535.0);
+  ColorTemp.blue = (gushort)(rgba.blue * 65535.0);
+}
+
 /********************************************************************************/
 void destroy_preferences_window(GtkWidget*Win)
 {
@@ -1252,7 +1262,7 @@ void apply_all()
 /********************************************************************************/
 void set_temp_font(GtkFontSelectionDialog *Sel,gpointer *d)
 {
-        FontTemp =  gtk_font_selection_dialog_get_font_name(Sel);
+        FontTemp =  gtk_font_chooser_get_font(GTK_FONT_CHOOSER(Sel));
 }
 /********************************************************************************/
 void set_font_other (gchar *fontname)
@@ -1333,44 +1343,39 @@ static void set_button_font(GtkWidget *button,gpointer *data)
   }
 
 }
+
+/********************************************************************************/
+
+static void on_font_dialog_response(GtkDialog* dlg, gint response_id, gpointer user_data)
+{
+  if (response_id == GTK_RESPONSE_OK)
+  {
+    GtkWidget* button = GTK_WIDGET(user_data);
+    FontTemp = gtk_font_chooser_get_font(GTK_FONT_CHOOSER(dlg));
+    set_button_font(button, NULL);
+  }
+}
+
 /********************************************************************************/
 static void open_font_dlg(GtkWidget *button,gpointer tdata)
 {
 
-	GtkFontSelectionDialog *FontDlg;
-	FontDlg = (GtkFontSelectionDialog *)gtk_font_selection_dialog_new(_("Font selection"));
-        gtk_window_set_position(GTK_WINDOW(FontDlg),GTK_WIN_POS_CENTER);
+	GtkWidget *FontDlg = gtk_font_chooser_dialog_new(_("Font selection"), GTK_WINDOW(Wins));
 
-	if(!instal)
-	{
-		add_child(Wins, GTK_WIDGET(FontDlg), gtk_widget_destroy, _(" Font selection "));
-		g_signal_connect(G_OBJECT(FontDlg),"delete_event",(GCallback)delete_child,NULL);
-	}
-	else
-	{
-		gtk_window_set_modal (GTK_WINDOW (FontDlg), TRUE);
-		gtk_window_set_transient_for(GTK_WINDOW(FontDlg),GTK_WINDOW(Wins));
-	}
+	if (tdata) gtk_font_chooser_set_font(GTK_FONT_CHOOSER(FontDlg), (const gchar*)tdata);
 
-  	gtk_font_selection_dialog_set_font_name    ((GtkFontSelectionDialog *)FontDlg,(gchar*)tdata);
-
-/*  	gtk_widget_hide(FontDlg->help_button);*/
-	g_signal_connect_swapped(GTK_OBJECT(FontDlg->ok_button),"clicked", (GCallback)set_temp_font,GTK_OBJECT(FontDlg));
-
-	g_signal_connect_swapped(GTK_OBJECT(FontDlg->ok_button),"clicked", (GCallback)set_button_font,GTK_OBJECT(button));
-
-	if(!instal)
-	{
- 		g_signal_connect_swapped(GTK_OBJECT(FontDlg->ok_button),"clicked",G_CALLBACK(delete_child),GTK_OBJECT(FontDlg)); 
- 		g_signal_connect_swapped(GTK_OBJECT(FontDlg->cancel_button),"clicked",G_CALLBACK(delete_child),GTK_OBJECT(FontDlg)); 
-	}
-	else
-	{
- 		g_signal_connect_swapped(GTK_OBJECT(FontDlg->ok_button),"clicked",G_CALLBACK(gtk_widget_destroy),GTK_OBJECT(FontDlg)); 
- 		g_signal_connect_swapped(GTK_OBJECT(FontDlg->cancel_button),"clicked",G_CALLBACK(gtk_widget_destroy),GTK_OBJECT(FontDlg)); 
-	}
-	gtk_widget_show(GTK_WIDGET(FontDlg));
-
+    if (!instal) {
+        add_child(Wins, GTK_WIDGET(FontDlg), gtk_widget_destroy, _(" Font selection "));
+        g_signal_connect(G_OBJECT(FontDlg), "delete_event", G_CALLBACK(delete_child), NULL);
+        g_signal_connect(FontDlg, "response", G_CALLBACK(delete_child), GTK_OBJECT(FontDlg));
+    } else {
+        gtk_window_set_modal(GTK_WINDOW(FontDlg), TRUE);
+        gtk_window_set_transient_for(GTK_WINDOW(FontDlg), GTK_WINDOW(Wins));
+    }
+  
+  g_signal_connect(FontDlg, "response", G_CALLBACK(on_font_dialog_response), button);
+  g_signal_connect(FontDlg, "response", G_CALLBACK(gtk_widget_destroy), GTK_OBJECT(FontDlg));
+  gtk_widget_show(FontDlg);
 }
 /********************************************************************************/
 void set_temp_color(GtkColorSelection *Sel,gpointer *d)
@@ -1425,47 +1430,44 @@ static void set_button_color(GtkObject *b,gpointer *data)
   		rafresh_drawing();
   }
 }
+
+static void on_color_dialog_response(GtkDialog* dlg, gint response_id, gpointer user_data)
+{
+    if (response_id == GTK_RESPONSE_OK) 
+    {
+        GtkWidget* button = GTK_WIDGET(user_data);
+        set_temp_color_from_chooser(GTK_WIDGET(dlg));
+        set_button_color(GTK_OBJECT(button), NULL);
+    }
+}
+
 /********************************************************************************/
 static void open_color_dlg(GtkWidget *button,gpointer tcolor)
 {
+	GtkWidget* ColorDlg = gtk_color_chooser_dialog_new(_("Set Atom Color"), GTK_WINDOW(Wins));
 
-	GtkColorSelectionDialog *ColorDlg;
-	ColorDlg = (GtkColorSelectionDialog *)gtk_color_selection_dialog_new(_("Set Atom Color"));
-	if(tcolor)
-	{
-		GdkColor* color = (GdkColor*)tcolor;
-		gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (ColorDlg->colorsel), color);
-	}
-        gtk_window_set_position(GTK_WINDOW(ColorDlg),GTK_WIN_POS_CENTER);
+  if (tcolor) {
+      GdkColor* c = (GdkColor*)tcolor;
+      GdkRGBA rgba = {
+          .red   = c->red   / 65535.0,
+          .green = c->green / 65535.0,
+          .blue  = c->blue  / 65535.0,
+          .alpha = 1.0
+      };
+      gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(ColorDlg), &rgba);
+  }
+  
+  gtk_window_set_position(GTK_WINDOW(ColorDlg),GTK_WIN_POS_CENTER);
 
 	if(!instal)
 	{
-		add_child(Wins,GTK_WIDGET(ColorDlg),gtk_widget_destroy,_(" Set Color "));
-		g_signal_connect(G_OBJECT(ColorDlg),"delete_event",(GCallback)delete_child,NULL);
+		add_child(Wins, GTK_WIDGET(ColorDlg), gtk_widget_destroy, _(" Set Color "));
+		g_signal_connect(G_OBJECT(ColorDlg), "delete_event", G_CALLBACK(delete_child), NULL);
 	}
 	else
 	{
 		gtk_window_set_modal (GTK_WINDOW (ColorDlg), TRUE);
-		gtk_window_set_transient_for(GTK_WINDOW(ColorDlg),GTK_WINDOW(Wins));
-	}
-
-  	gtk_widget_hide(ColorDlg->help_button);
-
-	g_signal_connect_swapped(GTK_OBJECT(ColorDlg->ok_button),"clicked",
-		(GCallback)set_temp_color,GTK_OBJECT(ColorDlg->colorsel));
-
-	g_signal_connect_swapped(GTK_OBJECT(ColorDlg->ok_button),"clicked",
-		(GCallback)set_button_color,GTK_OBJECT(button));
-
-	if(!instal)
-	{
- 		g_signal_connect_swapped(GTK_OBJECT(ColorDlg->ok_button),"clicked",G_CALLBACK(delete_child),GTK_OBJECT(ColorDlg)); 
- 		g_signal_connect_swapped(GTK_OBJECT(ColorDlg->cancel_button),"clicked",G_CALLBACK(delete_child),GTK_OBJECT(ColorDlg)); 
-	}
-	else
-	{
- 		g_signal_connect_swapped(GTK_OBJECT(ColorDlg->ok_button),"clicked",G_CALLBACK(gtk_widget_destroy),GTK_OBJECT(ColorDlg)); 
- 		g_signal_connect_swapped(GTK_OBJECT(ColorDlg->cancel_button),"clicked",G_CALLBACK(gtk_widget_destroy),GTK_OBJECT(ColorDlg)); 
+		gtk_window_set_transient_for(GTK_WINDOW(ColorDlg), GTK_WINDOW(Wins));
 	}
 
 	gtk_widget_show(GTK_WIDGET(ColorDlg));
@@ -1827,7 +1829,7 @@ void  create_batch_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
   add_label_table(table," : ",(gushort)i,1);
 
   combo = create_combo_box_entry(batchCommands.types,batchCommands.numberOfTypes,TRUE,-1,-1);
-  EntryBatchType = GTK_BIN(combo)->child;
+  EntryBatchType = gtk_bin_get_child(GTK_BIN(combo));
   add_widget_table(table,combo,(gushort)i,2);
   gtk_editable_set_editable((GtkEditable*)EntryBatchType,FALSE);
   gtk_entry_set_text (GTK_ENTRY (EntryBatchType),NameTypeBatch);
@@ -2250,7 +2252,7 @@ static void set_entry_openbabeldir(GtkWidget* dirSelector, gint response_id)
 /********************************************************************************/
 static void set_entry_openbabelDir_selection(GtkWidget* entry)
 {
-	GtkWidget *dirSelector;
+	GtkWidget* dirSelector;
 	dirSelector = selectionOfDir(set_entry_openbabeldir, _("Select PovRay folder"), GABEDIT_TYPEWIN_ORB); 
   	gtk_window_set_modal (GTK_WINDOW (dirSelector), TRUE);
   	g_signal_connect(G_OBJECT(dirSelector),"delete_event", (GCallback)gtk_widget_destroy,NULL);
@@ -2288,7 +2290,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(gamessCommands.commands,gamessCommands.numberOfCommands,TRUE,-1,-1);
   ComboGamess = combo;
-  EntryGamess = GTK_BIN(combo)->child;
+  EntryGamess = gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryGamess),NameCommandGamess );
   g_signal_connect(G_OBJECT (EntryGamess), "activate",
@@ -2318,7 +2320,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(demonCommands.commands,demonCommands.numberOfCommands,TRUE,-1,-1);
   ComboDeMon = combo;
-  EntryDeMon =  GTK_BIN(combo)->child;
+  EntryDeMon = gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryDeMon),NameCommandDeMon);
   g_signal_connect(G_OBJECT (EntryDeMon), "activate",
@@ -2347,7 +2349,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(gaussianCommands.commands,gaussianCommands.numberOfCommands,TRUE,-1,-1);
   ComboGaussian = combo;
-  EntryGaussian = GTK_BIN(combo)->child;
+  EntryGaussian = gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryGaussian),NameCommandGaussian );
   g_signal_connect(G_OBJECT (EntryGaussian), "activate",
@@ -2375,7 +2377,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(molproCommands.commands,molproCommands.numberOfCommands,TRUE,-1,-1);
   ComboMolpro = combo;
-  EntryMolpro =  GTK_BIN(combo)->child;
+  EntryMolpro =  gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryMolpro),NameCommandMolpro);
   g_signal_connect(G_OBJECT (EntryMolpro), "activate",
@@ -2403,7 +2405,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(molcasCommands.commands,molcasCommands.numberOfCommands,TRUE,-1,-1);
   ComboMolcas = combo;
-  EntryMolcas =  GTK_BIN(combo)->child;
+  EntryMolcas =  gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryMolcas),NameCommandMolcas);
   g_signal_connect(G_OBJECT (EntryMolcas), "activate",
@@ -2431,7 +2433,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(mpqcCommands.commands,mpqcCommands.numberOfCommands,TRUE,-1,-1);
   ComboMPQC = combo;
-  EntryMPQC =  GTK_BIN(combo)->child;
+  EntryMPQC =  gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryMPQC),NameCommandMPQC);
   g_signal_connect(G_OBJECT (EntryMPQC), "activate",
@@ -2458,7 +2460,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(orcaCommands.commands,orcaCommands.numberOfCommands,TRUE,-1,-1);
   ComboOrca = combo;
-  EntryOrca =  GTK_BIN(combo)->child;
+  EntryOrca =  gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryOrca),NameCommandOrca);
   g_signal_connect(G_OBJECT (EntryOrca), "activate", (GCallback)modify_orca_command, NULL);
@@ -2482,7 +2484,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(nwchemCommands.commands,nwchemCommands.numberOfCommands,TRUE,-1,-1);
   ComboNWChem = combo;
-  EntryNWChem =  GTK_BIN(combo)->child;
+  EntryNWChem =  gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryNWChem),NameCommandNWChem);
   g_signal_connect(G_OBJECT (EntryNWChem), "activate", (GCallback)modify_nwchem_command, NULL);
@@ -2506,7 +2508,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(psicodeCommands.commands,psicodeCommands.numberOfCommands,TRUE,-1,-1);
   ComboPsicode = combo;
-  EntryPsicode =  GTK_BIN(combo)->child;
+  EntryPsicode =  gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryPsicode),NameCommandPsicode);
   g_signal_connect(G_OBJECT (EntryPsicode), "activate", (GCallback)modify_psicode_command, NULL);
@@ -2530,7 +2532,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(fireflyCommands.commands,fireflyCommands.numberOfCommands,TRUE,-1,-1);
   ComboFireFly = combo;
-  EntryFireFly =  GTK_BIN(combo)->child;
+  EntryFireFly =  gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryFireFly),NameCommandFireFly);
   g_signal_connect(G_OBJECT (EntryFireFly), "activate", (GCallback)modify_firefly_command, NULL);
@@ -2554,7 +2556,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(qchemCommands.commands,qchemCommands.numberOfCommands,TRUE,-1,-1);
   ComboQChem = combo;
-  EntryQChem =  GTK_BIN(combo)->child;
+  EntryQChem =  gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryQChem),NameCommandQChem);
   g_signal_connect(G_OBJECT (EntryQChem), "activate", (GCallback)modify_qchem_command, NULL);
@@ -2578,7 +2580,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(mopacCommands.commands,mopacCommands.numberOfCommands,TRUE,-1,-1);
   ComboMopac = combo;
-  EntryMopac =  GTK_BIN(combo)->child;
+  EntryMopac =  gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryMopac),NameCommandMopac);
   g_signal_connect(G_OBJECT (EntryMopac), "activate", (GCallback)modify_mopac_command, NULL);
@@ -2602,7 +2604,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 
   combo = create_combo_box_entry(povrayCommands.commands,povrayCommands.numberOfCommands,TRUE,-1,-1);
   ComboPovray = combo;
-  EntryPovray =  GTK_BIN(combo)->child;
+  EntryPovray =  gtk_bin_get_child(GTK_BIN(combo));
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 3);
   gtk_entry_set_text (GTK_ENTRY (EntryPovray),NameCommandPovray);
   g_signal_connect(G_OBJECT (EntryPovray), "activate", (GCallback)modify_povray_command, NULL);
@@ -2643,7 +2645,7 @@ void  create_execucte_commands(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 	gtk_editable_set_editable((GtkEditable*)entry,TRUE);
 	gtk_widget_set_sensitive(entry, TRUE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_babel_selection),
                                      GTK_OBJECT(entry));
@@ -2693,7 +2695,7 @@ void  create_gamess_directory(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 	gtk_editable_set_editable((GtkEditable*)entry,FALSE);
 	gtk_widget_set_sensitive(entry, FALSE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_gamessDir_selection),
                                      GTK_OBJECT(entry));
@@ -2737,7 +2739,7 @@ void  create_demon_directory(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 	gtk_editable_set_editable((GtkEditable*)entry,FALSE);
 	gtk_widget_set_sensitive(entry, FALSE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_demonDir_selection),
                                      GTK_OBJECT(entry));
@@ -2781,7 +2783,7 @@ void  create_orca_directory(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 	gtk_editable_set_editable((GtkEditable*)entry,FALSE);
 	gtk_widget_set_sensitive(entry, FALSE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_orcaDir_selection),
                                      GTK_OBJECT(entry));
@@ -2825,7 +2827,7 @@ void  create_nwchem_directory(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 	gtk_editable_set_editable((GtkEditable*)entry,FALSE);
 	gtk_widget_set_sensitive(entry, FALSE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_nwchemDir_selection),
                                      GTK_OBJECT(entry));
@@ -2869,7 +2871,7 @@ void  create_psicode_directory(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 	gtk_editable_set_editable((GtkEditable*)entry,FALSE);
 	gtk_widget_set_sensitive(entry, FALSE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_psicodeDir_selection),
                                      GTK_OBJECT(entry));
@@ -2913,7 +2915,7 @@ void  create_firefly_directory(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 	gtk_editable_set_editable((GtkEditable*)entry,FALSE);
 	gtk_widget_set_sensitive(entry, FALSE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_fireflyDir_selection),
                                      GTK_OBJECT(entry));
@@ -2957,7 +2959,7 @@ void  create_mopac_directory(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 	gtk_editable_set_editable((GtkEditable*)entry,FALSE);
 	gtk_widget_set_sensitive(entry, FALSE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_mopacDir_selection),
                                      GTK_OBJECT(entry));
@@ -2999,7 +3001,7 @@ void  create_povray_directory(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 	gtk_editable_set_editable((GtkEditable*)entry,FALSE);
 	gtk_widget_set_sensitive(entry, FALSE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_povrayDir_selection),
                                      GTK_OBJECT(entry));
@@ -3041,7 +3043,7 @@ void  create_gauss_directory(GtkWidget *Wins,GtkWidget *vbox,gboolean expand)
 	gtk_editable_set_editable((GtkEditable*)entry,FALSE);
 	gtk_widget_set_sensitive(entry, FALSE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_gaussDir_selection),
                                      GTK_OBJECT(entry));
@@ -3084,7 +3086,7 @@ void  create_openbabel_directory(GtkWidget *Wins,GtkWidget *vbox,gboolean expand
 	gtk_editable_set_editable((GtkEditable*)entry,FALSE);
 	gtk_widget_set_sensitive(entry, FALSE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_openbabelDir_selection),
                                      GTK_OBJECT(entry));
@@ -3226,7 +3228,7 @@ void  create_pscpplink_directory(GtkWidget *Wins,GtkWidget *vbox,gboolean expand
 	gtk_editable_set_editable((GtkEditable*)entry,FALSE);
 	gtk_widget_set_sensitive(entry, FALSE);
 	button = create_button_pixmap(Wins,open_xpm,NULL);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	g_signal_connect_swapped(GTK_OBJECT (button), "clicked",
                                      G_CALLBACK(set_entry_pscpplinkDir_selection),
                                      GTK_OBJECT(entry));
@@ -3427,15 +3429,18 @@ GtkWidget *NoteBook;
   init_child(Wins,gtk_widget_destroy,_("Preferences "));
   g_signal_connect(G_OBJECT(Wins),"delete_event",(GCallback)destroy_preferences_window,NULL);
 
-  gtk_window_set_title(&GTK_DIALOG(Wins)->window,_("Preferences"));
+  gtk_window_set_title(GTK_WINDOW(Wins),_("Preferences"));
  
+  GtkWidget* content = gtk_dialog_get_content_area(GTK_DIALOG(Wins));
+  GtkWidget* action = gtk_dialog_get_action_area(GTK_DIALOG(Wins));
+
   /* NoteBook Options */
   NoteBook = gtk_notebook_new();
-  gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Wins)->vbox), NoteBook,TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(content), NoteBook,TRUE, TRUE, 0);
   AddPageProp(NoteBook);
   AddPageFont(NoteBook);
   gtk_widget_show(NoteBook);
-  gtk_widget_show(GTK_WIDGET(GTK_DIALOG(Wins)->vbox));
+  gtk_widget_show(Wins);
 
   AddPageColorSurf(NoteBook);
 
@@ -3446,33 +3451,35 @@ GtkWidget *NoteBook;
   AddPageOthers(NoteBook);
   
   gtk_widget_realize(Wins);
+  gtk_widget_show(NoteBook);
+  gtk_widget_show(content);
 
   button = create_button(Wins,"Close");
-  GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-  gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, TRUE, TRUE, 0);
-  g_signal_connect_swapped(GTK_OBJECT(button), "clicked",(GCallback)destroy_preferences_window,GTK_OBJECT(Wins));
+  gtk_widget_set_can_default(button, TRUE);
+  gtk_box_pack_start (GTK_BOX(action), button, TRUE, TRUE, 0);
+  g_signal_connect_swapped(GTK_OBJECT(button), "clicked",G_CALLBACK(destroy_preferences_window),GTK_OBJECT(Wins));
   gtk_widget_show_all (button);
 
   button = create_button(Wins,_("Save&Apply&Close"));
-  GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-  gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, TRUE, TRUE, 0);
+  gtk_widget_set_can_default(button, TRUE);
+  gtk_box_pack_start (GTK_BOX(action), button, TRUE, TRUE, 0);
   g_signal_connect(G_OBJECT(button), "clicked",G_CALLBACK(apply_all),NULL);
   g_signal_connect(G_OBJECT(button), "clicked",G_CALLBACK(create_ressource_file),NULL);
-  g_signal_connect_swapped(GTK_OBJECT(button), "clicked",(GCallback)destroy_preferences_window,GTK_OBJECT(Wins));
+  g_signal_connect_swapped(GTK_OBJECT(button), "clicked",G_CALLBACK(destroy_preferences_window),GTK_OBJECT(Wins));
   gtk_widget_grab_default(button);
   gtk_widget_show_all (button);
 
   button = create_button(Wins,_("Apply&Close"));
-  GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-  gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, TRUE, TRUE, 0);
+  gtk_widget_set_can_default(button, TRUE);
+  gtk_box_pack_start (GTK_BOX(action), button, TRUE, TRUE, 0);
   g_signal_connect(G_OBJECT(button), "clicked",G_CALLBACK(apply_all),NULL);
   g_signal_connect_swapped(GTK_OBJECT(button), "clicked",(GCallback)destroy_preferences_window,GTK_OBJECT(Wins));
   gtk_widget_grab_default(button);
   gtk_widget_show_all (button);
 
   button = create_button(Wins,_("Apply"));
-  GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-  gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, TRUE, TRUE, 0);
+  gtk_widget_set_can_default(button, TRUE);
+  gtk_box_pack_start (GTK_BOX(action), button, TRUE, TRUE, 0);
   g_signal_connect(G_OBJECT(button), "clicked",G_CALLBACK(apply_all),NULL);
   gtk_widget_grab_default(button);
   gtk_widget_show_all (button);
@@ -3579,7 +3586,7 @@ void  create_opengl_frame(GtkWidget* Win,GtkWidget *vbox)
 	add_label_table(table,_(" Number Of Subdivisions for a Cylinder "),i,0);
 	add_label_table(table," : ",i,1);
 	combo = create_combo_box_entry(values,nv,TRUE,-1,-1);
-	EntryCylinder = GTK_BIN(combo)->child;
+	EntryCylinder = gtk_bin_get_child(GTK_BIN(combo));
 	add_widget_table(table,combo,i,2);
 	gtk_editable_set_editable((GtkEditable*)EntryCylinder,FALSE);
 	gtk_entry_set_text (GTK_ENTRY (EntryCylinder),g_strdup_printf("%d",openGLOptions.numberOfSubdivisionsCylindre));
@@ -3589,7 +3596,7 @@ void  create_opengl_frame(GtkWidget* Win,GtkWidget *vbox)
 	add_label_table(table,_(" Number Of Subdivisions for a Sphere "),i,0);
 	add_label_table(table," : ",i,1);
 	combo = create_combo_box_entry(values,nv,TRUE,-1,-1);
-	EntrySphere = GTK_BIN(combo)->child;
+	EntrySphere = gtk_bin_get_child(GTK_BIN(combo));
 	add_widget_table(table,combo,i,2);
 	gtk_editable_set_editable((GtkEditable*)EntrySphere,FALSE);
 	gtk_entry_set_text (GTK_ENTRY (EntrySphere),g_strdup_printf("%d",openGLOptions.numberOfSubdivisionsSphere));
@@ -3739,19 +3746,19 @@ void set_opacity_dlg()
 
 	button = create_button(Win,_("OK"));
 	gtk_box_pack_end (GTK_BOX( hbox), button, FALSE, TRUE, 3);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	gtk_widget_grab_default(button);
 	gtk_widget_show (button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)apply_set_opacity_close,G_OBJECT(Win));
 
 	button = create_button(Win,_("Apply"));
 	gtk_box_pack_end (GTK_BOX( hbox), button, FALSE, TRUE, 3);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	gtk_widget_show (button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)apply_set_opacity,G_OBJECT(Win));
 
 	button = create_button(Win,_("Cancel"));
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	gtk_box_pack_end (GTK_BOX( hbox), button, FALSE, TRUE, 3);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child, G_OBJECT(Win));
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)gtk_widget_destroy,G_OBJECT(Win));
@@ -3902,56 +3909,46 @@ static void createColorMapOptionsFrame(GtkWidget* dialogWindow, GtkWidget *box)
 /****************************************************************************************************/
 void createColorMapOptionsWindow(GtkWidget* win)
 {
-	GtkWidget *dialogWindow = NULL;
-	GtkWidget *button;
-	GtkWidget *frame;
-	GtkWidget *hbox;
-	gchar title[BSIZE];
-	 
-	dialogWindow = gtk_dialog_new();
-	gtk_widget_realize(GTK_WIDGET(dialogWindow));
-	sprintf(title, _("Color Mapping options"));
-	gtk_window_set_title(GTK_WINDOW(dialogWindow),title);
+	GtkWidget *dialogWindow = gtk_dialog_new();
+	gtk_widget_realize(dialogWindow);
+	gtk_window_set_title(GTK_WINDOW(dialogWindow), _("Color Mapping Options"));
+  gtk_window_set_modal(GTK_WINDOW(dialogWindow), TRUE);
+  gtk_window_set_position(GTK_WINDOW(dialogWindow), GTK_WIN_POS_CENTER);
 
-	gtk_window_set_modal (GTK_WINDOW (dialogWindow), TRUE);
-	gtk_window_set_position(GTK_WINDOW(dialogWindow),GTK_WIN_POS_CENTER);
+	g_signal_connect(G_OBJECT(dialogWindow), "delete_event", G_CALLBACK(destroy_button_windows), NULL);
+	g_signal_connect(G_OBJECT(dialogWindow), "delete_event", G_CALLBACK(gtk_widget_destroy), NULL);
 
-	g_signal_connect(G_OBJECT(dialogWindow), "delete_event", (GCallback)destroy_button_windows, NULL);
-	g_signal_connect(G_OBJECT(dialogWindow), "delete_event", (GCallback)gtk_widget_destroy, NULL);
+  GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialogWindow));
+  GtkWidget *action  = gtk_dialog_get_action_area(GTK_DIALOG(dialogWindow));
 
-	frame = gtk_frame_new (NULL);
-	gtk_widget_show (frame);
-	gtk_box_pack_start (GTK_BOX (GTK_WIDGET(GTK_DIALOG(dialogWindow)->vbox)), frame, TRUE, TRUE, 3);
+  GtkWidget* frame = gtk_frame_new(NULL);
+  gtk_widget_show(frame);
+  gtk_box_pack_start(GTK_BOX(content), frame, TRUE, TRUE, 3);
 
-	hbox = gtk_hbox_new (FALSE, 3);
+  GtkWidget* hbox = gtk_hbox_new(FALSE, 3);
 	gtk_widget_show (hbox);
-	gtk_container_add (GTK_CONTAINER (frame), hbox);
+	gtk_container_add (GTK_CONTAINER(frame), hbox);
 
 	createColorMapOptionsFrame(dialogWindow,hbox);
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), TRUE);
+	gtk_box_set_homogeneous (GTK_BOX(action), TRUE);
 
-	button = create_button(dialogWindow,_("Close"));
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), button, FALSE, TRUE, 5);	
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)destroy_button_windows, GTK_OBJECT(dialogWindow));
-	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(dialogWindow));
+	GtkWidget *button = create_button(dialogWindow,_("Close"));
+	gtk_box_pack_start (GTK_BOX(action), button, FALSE, TRUE, 5);	
+	gtk_widget_set_can_default(button, TRUE);
+  g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK(destroy_button_windows), GTK_OBJECT(dialogWindow));
+  g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_destroy), GTK_OBJECT(dialogWindow));
 
-	button = create_button(dialogWindow,_("Apply"));
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), button, FALSE, TRUE, 5);	
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)applyColorMapOptions, GTK_OBJECT(dialogWindow));
+	button = create_button(dialogWindow, _("Apply"));
+  gtk_box_pack_start(GTK_BOX(action), button, FALSE, TRUE, 5);
+	gtk_widget_set_can_default(button, TRUE);
+	g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK(applyColorMapOptions), GTK_OBJECT(dialogWindow));
 
 	button = create_button(dialogWindow,_("OK"));
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), button, FALSE, TRUE, 5);	
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_widget_grab_default(button);
-	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)applyColorMapOptions, GTK_OBJECT(dialogWindow));
-	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)destroy_button_windows, GTK_OBJECT(dialogWindow));
-	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(dialogWindow));
-	
-
-	add_button_windows(title,dialogWindow);
+  gtk_box_pack_start(GTK_BOX(action), button, FALSE, TRUE, 5);
+	gtk_widget_set_can_default(button, TRUE);
+	g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK(applyColorMapOptions), GTK_OBJECT(dialogWindow));
+  g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK(destroy_button_windows), GTK_OBJECT(dialogWindow));
+  g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_destroy), GTK_OBJECT(dialogWindow));
 
 	gtk_widget_show_all(dialogWindow);
-	if(GTK_IS_WIDGET(win)) gtk_window_set_transient_for(GTK_WINDOW(dialogWindow),GTK_WINDOW(win));
 }

@@ -532,7 +532,7 @@ void Save_YesNo()
    g_object_ref (frame);
    g_object_set_data_full (G_OBJECT (DialogueMessage), "frame", frame,(GDestroyNotify) g_object_unref);
    gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(DialogueMessage)->vbox), frame,TRUE,TRUE,0);
+   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(DialogueMessage))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -549,21 +549,21 @@ void Save_YesNo()
     /* the Cancel button */
     gtk_widget_realize(DialogueMessage);
     Bouton = create_button(DialogueMessage,_("Cancel"));
-    gtk_box_pack_start( GTK_BOX(GTK_DIALOG(DialogueMessage)->action_area), Bouton,TRUE,TRUE,0);
+    gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(DialogueMessage))), Bouton,TRUE,TRUE,0);
     g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(DialogueMessage));
     GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
     gtk_widget_grab_default(Bouton);
 
     /* the No button */
     Bouton = create_button(DialogueMessage,_("No"));
-    gtk_box_pack_start( GTK_BOX(GTK_DIALOG(DialogueMessage)->action_area), Bouton,TRUE,TRUE,0);
+    gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(DialogueMessage))), Bouton,TRUE,TRUE,0);
     g_signal_connect(G_OBJECT(Bouton), "clicked", (GCallback)ExitDlg,NULL);
     GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
     g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(DialogueMessage));
 
     /* the Yes button */
     Bouton = create_button(DialogueMessage,"Yes");
-    gtk_box_pack_start( GTK_BOX(GTK_DIALOG(DialogueMessage)->action_area), Bouton,TRUE,TRUE,0);
+    gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(DialogueMessage))), Bouton,TRUE,TRUE,0);
     g_signal_connect(G_OBJECT(Bouton), "clicked", (GCallback)choose_file_to_save_end,NULL);
     g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(DialogueMessage));
     GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);

@@ -1610,7 +1610,7 @@ static void apply_contours(GtkWidget *window,gpointer data)
 
 	values = g_malloc(N*sizeof(gdouble));
 
-	if(GTK_TOGGLE_BUTTON (linearButton)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(linearButton)))
 	{
 		step = (max-min)/(N-1);
 		for(i=0;i<N;i++) values[i] = min + i*step;
@@ -6162,7 +6162,7 @@ static void createColorMapOptionsWindow(GtkWidget* contoursplot)
 
 	frame = gtk_frame_new (NULL);
 	gtk_widget_show (frame);
-	gtk_box_pack_start (GTK_BOX (GTK_WIDGET(GTK_DIALOG(dialogWindow)->vbox)), frame, TRUE, TRUE, 3);
+	gtk_box_pack_start (GTK_BOX (GTK_WIDGET(gtk_dialog_get_content_area(GTK_DIALOG(dialogWindow)))), frame, TRUE, TRUE, 3);
 
 	vboxframe = gtk_vbox_new (FALSE, 1);
 	gtk_widget_show (vboxframe);
@@ -6220,20 +6220,20 @@ static void createColorMapOptionsWindow(GtkWidget* contoursplot)
 	g_object_set_data(G_OBJECT (dialogWindow), "EntryMax",entryMax);
 	g_object_set_data(G_OBJECT (dialogWindow), "EntryNLabels",entryNLabels);
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), TRUE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialogWindow))), TRUE);
 
 	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), button, FALSE, TRUE, 5);	
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialogWindow))), button, FALSE, TRUE, 5);	
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(dialogWindow));
 
 	button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), button, FALSE, TRUE, 5);	
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialogWindow))), button, FALSE, TRUE, 5);	
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)applyColorMapOptions, GTK_OBJECT(dialogWindow));
 
 	button = gtk_button_new_from_stock (GTK_STOCK_OK);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), button, FALSE, TRUE, 5);	
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialogWindow))), button, FALSE, TRUE, 5);	
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)applyColorMapOptions, GTK_OBJECT(dialogWindow));
@@ -11150,7 +11150,7 @@ void gabedit_contoursplot_help()
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 5);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(dialog)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
   	vboxframe = gtk_vbox_new (FALSE, 0);
@@ -11163,9 +11163,9 @@ void gabedit_contoursplot_help()
   	gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 5);
   	gtk_widget_show (hbox);
     
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(dialog)->action_area), FALSE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialog))), FALSE);
 	button = gtk_button_new_from_stock (GTK_STOCK_OK);
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dialog)->action_area), button, FALSE, TRUE, 5);  
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialog))), button, FALSE, TRUE, 5);  
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",

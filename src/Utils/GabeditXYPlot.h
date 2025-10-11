@@ -21,7 +21,8 @@ DEALINGS IN THE SOFTWARE.
 #define __GABEDIT_GABEDITXYPLOT_H__
 
 
-
+#include "../../gabeditGTK3compat.h"
+#include "../Compat/gabedit_gdk_compat.h"
 #include <gdk/gdk.h>
 #include <gtk/gtkwidget.h>
 

@@ -143,21 +143,23 @@ GtkWidget *create_combo_box_entry_liste_find(GtkWidget* Window,GtkWidget* hbox,g
   GtkWidget *combo;
   GtkWidget *combo_entry;
   GList *combo_items = NULL;
+
   label = gtk_label_new (lname);
   gtk_widget_show (label);
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE,FALSE, 2);
 
-  combo = gtk_combo_box_entry_new_text ();
+  combo = gtk_combo_box_text_new_with_entry();
   gtk_widget_set_size_request(combo, (gint)(ScreenHeight*0.150), -1);
-  gtk_widget_show (combo);
-  gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 2);
-  for (i=0;i<n;i++) combo_items = g_list_append (combo_items, liste[i]);
-  gtk_combo_box_entry_set_popdown_strings (combo, combo_items);
-  g_list_free (combo_items);
+  gtk_widget_show(combo);
+  gtk_box_pack_start(GTK_BOX(hbox), combo, TRUE, TRUE, 2);
+  for (i = 0; i < n; i++) combo_items = g_list_append(combo_items, liste[i]);
+  gtk_combo_box_entry_set_popdown_strings(combo, combo_items);
+  g_list_free(combo_items);
 
-  combo_entry = GTK_BIN (combo)->child;
-  gtk_widget_show (combo_entry);
-  gtk_entry_set_text (GTK_ENTRY (combo_entry), liste[0]);
+  combo_entry = gtk_bin_get_child(GTK_BIN(combo));
+  gtk_widget_show(combo_entry);
+  if (n > 0) gtk_entry_set_text(GTK_ENTRY(combo_entry), liste[0]);
+
   return combo_entry;
  }
 /*****************************************************************************************/
@@ -301,31 +303,30 @@ void AjoutePageNotebook(char *label,GtkWidget **TextP)
 
   *TextP = gabedit_text_new ();
   set_tab_size (*TextP, 8);
-  /* gabedit_text_set_word_wrap (GABEDIT_TEXT(*TextP), FALSE);*/
   
-/*
-  GABEDIT_TEXT(*TextP)->default_tab_width=7;
-*/
-
   g_object_ref (*TextP);
   g_object_set_data_full (G_OBJECT (Frame), "text", *TextP, (GDestroyNotify) g_object_unref);
   gtk_widget_show (*TextP);
   gtk_container_add (GTK_CONTAINER (scrolledwindow), *TextP);
   g_object_set_data(G_OBJECT (*TextP), "LabelOnglet", LabelOnglet);
+
   if( !strcmp(label,_("Data")) )
   {
 	static guint start_pos = 0;
 	static guint end_pos = 0;
 
-        styledef =  gtk_style_copy(LabelOnglet->style); 
-        stylered =  gtk_style_copy(LabelOnglet->style); 
-        stylered->fg[0].red=65535;
-        stylered->fg[0].green=0;
-        stylered->fg[0].blue=0;
-	g_object_set_data(G_OBJECT (*TextP), "StyleDef", styledef);
-  	g_object_set_data(G_OBJECT (*TextP), "StyleRed", stylered);
-  	g_object_set_data(G_OBJECT (*TextP), "StartPos", &start_pos);
-  	g_object_set_data(G_OBJECT (*TextP), "EndPos", &end_pos);
+    GtkStyle* style_src = gtk_widget_get_style(LabelOnglet);
+    GtkStyle* styledef  = gtk_style_copy(style_src);
+    GtkStyle* stylered  = gtk_style_copy(style_src);
+
+    stylered->fg[0].red   = 65535;
+    stylered->fg[0].green = 0;
+    stylered->fg[0].blue  = 0;
+
+    g_object_set_data(G_OBJECT(*TextP), "StyleDef", styledef);
+    g_object_set_data(G_OBJECT(*TextP), "StyleRed", stylered);
+    g_object_set_data(G_OBJECT(*TextP), "StartPos", &start_pos);
+    g_object_set_data(G_OBJECT(*TextP), "EndPos", &end_pos);
   }
 }
 /*****************************************************************************************/

@@ -401,9 +401,9 @@ static void destroyAnimationDlg(GtkWidget *win)
 /********************************************************************************/
 static void buttonPlanesSelected(GtkWidget *widget)
 {
-	if(GTK_IS_WIDGET(buttonXYPlanes) && GTK_TOGGLE_BUTTON (buttonXYPlanes)->active) selectedPlanes = XYPLANES;
-	if(GTK_IS_WIDGET(buttonXZPlanes) && GTK_TOGGLE_BUTTON (buttonXZPlanes)->active) selectedPlanes = XZPLANES;
-	if(GTK_IS_WIDGET(buttonYZPlanes) && GTK_TOGGLE_BUTTON (buttonYZPlanes)->active) selectedPlanes = YZPLANES;
+	if(GTK_IS_WIDGET(buttonXYPlanes) && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonXYPlanes))) selectedPlanes = XYPLANES;
+	if(GTK_IS_WIDGET(buttonXZPlanes) && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonXZPlanes))) selectedPlanes = XZPLANES;
+	if(GTK_IS_WIDGET(buttonYZPlanes) && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonYZPlanes))) selectedPlanes = YZPLANES;
 	first_plane();
 
 }
@@ -485,7 +485,7 @@ static gchar* get_format_image_from_option()
 /********************************************************************************/
 static void filmSelected(GtkWidget *widget)
 {
-	if(GTK_IS_WIDGET(buttonCheckFilm)&& GTK_TOGGLE_BUTTON (buttonCheckFilm)->active)
+	if(GTK_IS_WIDGET(buttonCheckFilm)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCheckFilm)))
 	{
 		createFilm = TRUE;
 		if(GTK_IS_WIDGET(buttonDirFilm))  gtk_widget_set_sensitive(buttonDirFilm, TRUE);

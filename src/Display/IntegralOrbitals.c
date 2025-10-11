@@ -594,7 +594,7 @@ static void numeriButtonClicked(GtkWidget *numericButton,gpointer data)
 	GtkWidget* frameGrid = g_object_get_data (G_OBJECT (numericButton), "FrameGrid");
 	GtkWidget* labelSchwarz = g_object_get_data (G_OBJECT (numericButton), "LabelSchwarz");
 	GtkWidget* entrySchwarz = g_object_get_data (G_OBJECT (numericButton), "EntrySchwarz");
-	gboolean checked = GTK_TOGGLE_BUTTON (numericButton)->active;
+	gboolean checked = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(numericButton));
 	if(GTK_IS_WIDGET(frameGrid))gtk_widget_set_sensitive(frameGrid, checked);
 	if(GTK_IS_WIDGET(labelSchwarz)) gtk_widget_set_sensitive(labelSchwarz, !checked);
 	if(GTK_IS_WIDGET(entrySchwarz))gtk_widget_set_sensitive(entrySchwarz, !checked);
@@ -634,7 +634,7 @@ static void apply_coulomb_orbitals(GtkWidget *Win,gpointer data)
 	if(entriestmp==NULL) return;
 	if(!GTK_IS_WIDGET(numericButton)) return;
 
-	numeric = GTK_TOGGLE_BUTTON (numericButton)->active;
+	numeric = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(numericButton));
 	if(!numeric)
 	{
 		if(!GTK_IS_WIDGET(entrySchwarz)) return;
@@ -1324,7 +1324,7 @@ void coulomb_orbitals_dlg()
 	g_object_set_data (G_OBJECT (Win), "Entries",entries);
 	g_object_set_data (G_OBJECT (Win), "FrameGrid",frameGrid);
 	g_object_set_data (G_OBJECT (numericButton), "FrameGrid",frameGrid);
-	gtk_widget_set_sensitive(frameGrid, GTK_TOGGLE_BUTTON (numericButton)->active);
+	gtk_widget_set_sensitive(frameGrid, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(numericButton)));
 
 	if(!AOrb && SAOrb)
 	{
@@ -1567,7 +1567,7 @@ static void apply_transition_matrix(GtkWidget *Win,gpointer data)
 	if(entriestmp==NULL) return;
 	if(!GTK_IS_WIDGET(numericButton)) return;
 
-	numeric = GTK_TOGGLE_BUTTON (numericButton)->active;
+	numeric = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(numericButton));
 	destroy_win_list();
 	if(numeric)
 	{
@@ -1906,7 +1906,7 @@ void transition_matrix_orbitals_dlg()
 	g_object_set_data (G_OBJECT (Win), "Entries",entries);
 	g_object_set_data (G_OBJECT (Win), "FrameGrid",frameGrid);
 	g_object_set_data (G_OBJECT (numericButton), "FrameGrid",frameGrid);
-	gtk_widget_set_sensitive(frameGrid, GTK_TOGGLE_BUTTON (numericButton)->active);
+	gtk_widget_set_sensitive(frameGrid, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(numericButton)));
 
 	if(!AOrb && SAOrb)
 	{
@@ -2031,7 +2031,7 @@ static void apply_spatial_overlapiijj(GtkWidget *Win,gpointer data)
         temp	= gtk_entry_get_text(GTK_ENTRY(entrySchwarz));
 	schwarzCutOff = atof(temp);
 
-	numeric = GTK_TOGGLE_BUTTON (numericButton)->active;
+	numeric = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(numericButton));
 	destroy_win_list();
 	if(numeric)
 	{
@@ -2387,7 +2387,7 @@ void spatial_overlapiijj_orbitals_dlg()
 	g_object_set_data (G_OBJECT (Win), "Entries",entries);
 	g_object_set_data (G_OBJECT (Win), "FrameGrid",frameGrid);
 	g_object_set_data (G_OBJECT (numericButton), "FrameGrid",frameGrid);
-	gtk_widget_set_sensitive(frameGrid, GTK_TOGGLE_BUTTON (numericButton)->active);
+	gtk_widget_set_sensitive(frameGrid, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(numericButton)));
 
 	if(!AOrb && SAOrb)
 	{
@@ -2853,7 +2853,7 @@ static GtkWidget* showCalculatedChargesDlg(gchar *message,gchar *title,gdouble* 
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 5);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(dlgWin)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dlgWin))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
 
@@ -2861,16 +2861,16 @@ static GtkWidget* showCalculatedChargesDlg(gchar *message,gchar *title,gdouble* 
 	txtWid = create_text_widget(vboxframe,NULL,&frame);
 	if(message) gabedit_text_insert (GABEDIT_TEXT(txtWid), NULL, NULL, NULL,message,-1);   
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), FALSE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dlgWin))), FALSE);
   
 	button = create_button(dlgWin,_("Partial charges of molecule <= Calculated charges"));
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), button, FALSE, TRUE, 5);  
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dlgWin))), button, FALSE, TRUE, 5);  
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)setPartialChargesToCalculated, GTK_OBJECT(dlgWin));
 
 	button = create_button(dlgWin,"Close");
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), button, FALSE, TRUE, 5);  
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dlgWin))), button, FALSE, TRUE, 5);  
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)destroyCalculatedChargesDlg, GTK_OBJECT(dlgWin));
@@ -3048,7 +3048,7 @@ static GtkWidget* showCalculatedBondOrdersDlg(gchar *message,gchar *title,gdoubl
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 5);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(dlgWin)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dlgWin))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
 
@@ -3056,16 +3056,16 @@ static GtkWidget* showCalculatedBondOrdersDlg(gchar *message,gchar *title,gdoubl
 	txtWid = create_text_widget(vboxframe,NULL,&frame);
 	if(message) gabedit_text_insert (GABEDIT_TEXT(txtWid), NULL, NULL, NULL,message,-1);   
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), FALSE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dlgWin))), FALSE);
   
 	button = create_button(dlgWin,_("Multiple bonds <= Calculated bondOrders"));
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), button, FALSE, TRUE, 5);  
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dlgWin))), button, FALSE, TRUE, 5);  
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)setBondOrdersToCalculated, GTK_OBJECT(dlgWin));
 
 	button = create_button(dlgWin,"Close");
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), button, FALSE, TRUE, 5);  
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dlgWin))), button, FALSE, TRUE, 5);  
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)destroyCalculatedBondOrdersDlg, GTK_OBJECT(dlgWin));

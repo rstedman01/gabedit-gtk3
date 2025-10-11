@@ -1872,31 +1872,31 @@ void exportPOVDlg(GtkWidget *parentWindow)
 
 	g_signal_connect(G_OBJECT(Win),"delete_event",(GCallback)gtk_widget_destroy,NULL);
  
-	createPOVBackgroundFrame(GTK_WIDGET (GTK_DIALOG(Win)->vbox));
-	AddPOVRayLocationDlg(GTK_WIDGET (GTK_DIALOG(Win)->vbox), Win);
+	createPOVBackgroundFrame(GTK_WIDGET (gtk_dialog_get_content_area(GTK_DIALOG(Win))));
+	AddPOVRayLocationDlg(GTK_WIDGET (gtk_dialog_get_content_area(GTK_DIALOG(Win))), Win);
 
 	hseparator = gtk_hseparator_new ();
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->vbox), hseparator, TRUE, TRUE, 0);
-	AddPOVRayRunDlg(GTK_WIDGET (GTK_DIALOG(Win)->vbox), Win);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_content_area(GTK_DIALOG(Win))), hseparator, TRUE, TRUE, 0);
+	AddPOVRayRunDlg(GTK_WIDGET (gtk_dialog_get_content_area(GTK_DIALOG(Win))), Win);
   
 
 	gtk_widget_realize(Win);
 
 	button = create_button(Win,"Cancel");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_destroy),GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
 	button = create_button(Win,"Save");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", (GCallback)savePOVRay,GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
 	button = create_button(Win,"Run PovRay");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", (GCallback)runPOVRay,GTK_OBJECT(Win));
 	gtk_widget_show (button);
 

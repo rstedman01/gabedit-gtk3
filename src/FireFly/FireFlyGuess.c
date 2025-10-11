@@ -54,13 +54,13 @@ void setSensitiveFireFlyGuessFrame(gboolean sensitive)
 /*************************************************************************************************************/
 static void putFireFlyGuessOptionsInfoInTextEditor()
 {
-	if(!GTK_TOGGLE_BUTTON (buttonPrintGuess)->active 
-	   && !GTK_TOGGLE_BUTTON (buttonRotate)->active) return;
+	if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPrintGuess)) 
+	   && !gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonRotate))) return;
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " ",-1);
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, &fireflyColorFore.keyWord, &fireflyColorBack.keyWord, "$GUESS",-1);
-	if(GTK_TOGGLE_BUTTON (buttonPrintGuess)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPrintGuess)))
         	gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " PRTMO=.TRUE.",-1);
-	if(GTK_TOGGLE_BUTTON (buttonRotate)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonRotate)))
         	gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " MIX=.TRUE.",-1);
 
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " ",-1);

@@ -797,7 +797,7 @@ void build_crystal_dlg()
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dlg)->vbox), frame,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dlg))), frame,TRUE,TRUE,0);
   gtk_widget_show (frame);
 
   vboxframe = create_vbox(frame);
@@ -809,16 +809,16 @@ void build_crystal_dlg()
 
 
 
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dlg)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), FALSE);
   gtk_widget_realize(Dlg);
   Button = create_button(Dlg,_("Close"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 2);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 2);
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)destroy_dlg,GTK_OBJECT(Dlg));
 
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->vbox);
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->action_area);
+  gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(Dlg)));
+  gtk_widget_show_all(gtk_dialog_get_action_area(GTK_DIALOG(Dlg)));
   gtk_widget_show_now(Dlg);
 
   /* fit_windows_position(GeomDlg, Dlg);*/
@@ -979,28 +979,28 @@ void build_supercell_simple_dlg()
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dlg)->vbox), frame,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dlg))), frame,TRUE,TRUE,0);
   gtk_widget_show (frame);
 
   vboxframe = create_vbox(frame);
   add_number_of_cells_entrys(Dlg, vboxframe, nTv);
 
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dlg)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), FALSE);
   gtk_widget_realize(Dlg);
   Button = create_button(Dlg,_("Close"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 2);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 2);
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)destroy_dlg,GTK_OBJECT(Dlg));
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
 
   Button = create_button(Dlg,_("OK"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 2);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 2);
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)build_supercell_simple,GTK_OBJECT(Dlg));
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
 
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->vbox);
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->action_area);
+  gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(Dlg)));
+  gtk_widget_show_all(gtk_dialog_get_action_area(GTK_DIALOG(Dlg)));
 
   gtk_widget_show_now(Dlg);
 
@@ -1188,28 +1188,28 @@ void build_supercell_dlg()
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dlg)->vbox), frame,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dlg))), frame,TRUE,TRUE,0);
   gtk_widget_show (frame);
 
   vboxframe = create_vbox(frame);
   add_rotshift_matrix_entrys(Dlg, vboxframe, nTv);
 
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dlg)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), FALSE);
   gtk_widget_realize(Dlg);
   Button = create_button(Dlg,_("Close"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 2);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 2);
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)destroy_dlg,GTK_OBJECT(Dlg));
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
 
   Button = create_button(Dlg,_("OK"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 2);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 2);
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)build_supercell,GTK_OBJECT(Dlg));
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
 
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->vbox);
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->action_area);
+  gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(Dlg)));
+  gtk_widget_show_all(gtk_dialog_get_action_area(GTK_DIALOG(Dlg)));
 
   gtk_widget_show_now(Dlg);
 
@@ -1357,28 +1357,28 @@ void build_wulff_dlg()
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dlg)->vbox), frame,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dlg))), frame,TRUE,TRUE,0);
   gtk_widget_show (frame);
 
   vboxframe = create_vbox(frame);
   add_wulff_parameters_entrys(Dlg, vboxframe, nTv, dataWulffDlg->nMaxSurfaces);
 
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dlg)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), FALSE);
   gtk_widget_realize(Dlg);
   Button = create_button(Dlg,_("Close"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 2);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 2);
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)destroy_dlg,GTK_OBJECT(Dlg));
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
 
   Button = create_button(Dlg,_("OK"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 2);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 2);
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)build_wulff,GTK_OBJECT(Dlg));
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
 
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->vbox);
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->action_area);
+  gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(Dlg)));
+  gtk_widget_show_all(gtk_dialog_get_action_area(GTK_DIALOG(Dlg)));
 
   gtk_widget_show_now(Dlg);
 
@@ -1520,7 +1520,7 @@ static void build_slab(GtkWidget *Dlg,gpointer data)
 		str = gtk_entry_get_text(GTK_ENTRY(entryEmptySpace));
 		if(str && strlen(str)>0) emptySpace = atof(str);
 	}
-	surfaceXY = GTK_TOGGLE_BUTTON (surfaceXYButton)->active;
+	surfaceXY = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(surfaceXYButton));
 
 	createSlab(&crystal->atoms, dataSlabDlg->surface, dataSlabDlg->layers, emptySpace, surfaceXY);
 
@@ -1570,28 +1570,28 @@ void build_slab_dlg()
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dlg)->vbox), frame,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dlg))), frame,TRUE,TRUE,0);
   gtk_widget_show (frame);
 
   vboxframe = create_vbox(frame);
   add_slab_parameters_entrys(Dlg, vboxframe);
 
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dlg)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), FALSE);
   gtk_widget_realize(Dlg);
   Button = create_button(Dlg,_("Close"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 2);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 2);
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)destroy_dlg,GTK_OBJECT(Dlg));
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
 
   Button = create_button(Dlg,_("OK"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 2);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 2);
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)build_slab,GTK_OBJECT(Dlg));
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
 
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->vbox);
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->action_area);
+  gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(Dlg)));
+  gtk_widget_show_all(gtk_dialog_get_action_area(GTK_DIALOG(Dlg)));
 
   gtk_widget_show_now(Dlg);
 
@@ -1826,7 +1826,7 @@ void setSymPrecDlg()
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(winDlg))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
 
@@ -1845,12 +1845,12 @@ void setSymPrecDlg()
 	gtk_widget_realize(winDlg);
 
 	button = create_button(winDlg,_("Cancel"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 
 	button = create_button(winDlg,_("OK"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(button), "clicked",(GCallback)setSymPrec,entry);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);

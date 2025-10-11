@@ -296,7 +296,7 @@ static void addChargeSpinFrame(GtkWidget *vboxmain)
 static void polar_activate(GtkWidget *button,gpointer data)
 {
   	GtkWidget* buttonOptions =(GtkWidget*)data;
-	if (GTK_TOGGLE_BUTTON (button)->active) 
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button))) 
 	{
   		if(Tpolar == NULL ) Tpolar=g_malloc(50*sizeof(gchar));
   		sprintf(Tpolar," polar");
@@ -577,7 +577,7 @@ static void create_scf_option (GtkWidget* Wins)
 static void freq_activate(GtkWidget *button,gpointer data)
 {
   	GtkWidget* buttonOptions =(GtkWidget*)data;
-	if (GTK_TOGGLE_BUTTON (button)->active) 
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button))) 
 	{
   		if(Tfreq == NULL ) Tfreq=g_malloc(50*sizeof(gchar));
   		sprintf(Tfreq," freq");

@@ -147,7 +147,7 @@ static void addConvFromList(GtkWidget* list)
 			halfWidth = 0.05;
 		}
 	}
-	if(!GTK_TOGGLE_BUTTON (toggleLorentzian)->active) convType = GABEDIT_XYPLOT_CONV_GAUSS;
+	if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(toggleLorentzian))) convType = GABEDIT_XYPLOT_CONV_GAUSS;
 	color.red = 65000;
 	color.green = 0;
 	color.blue = 0;

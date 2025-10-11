@@ -218,6 +218,13 @@ static void user_install_mpqc_basis_done();
 static void user_install_mm_file();
 static void user_install_mm_file_done();
 /********************************************************************************/
+static gboolean user_install_quit_timeout(gpointer user_data)
+{
+  (void)user_data;
+  gtk_main_quit();
+  return G_SOURCE_REMOVE;
+}
+/********************************************************************************/
 static void set_pixbuf()
 {
 	if(!bookPixbuf) bookPixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) book_close_xpm);
@@ -240,11 +247,18 @@ static void user_install_notebook_set_current_page(GtkNotebook *notebook,
   gtk_label_set_text(GTK_LABEL(title_label), title);
   gtk_label_set_text(GTK_LABEL(footer_label), footer);
 
-  if (index == EEK_PAGE)
+  GtkAllocation alloc;
+  if (GTK_IS_WIDGET(title_pixmap))
+  {
+    gtk_widget_get_allocation(title_pixmap, &alloc);
+    gtk_widget_set_size_request(title_pixmap, alloc.width, alloc.height);
+  }
+
+/*  if (index == EEK_PAGE)
   {
     gtk_widget_set_size_request(title_pixmap, title_pixmap->allocation.width, title_pixmap->allocation.height);
   }
-
+*/
   gtk_notebook_set_current_page(notebook, index);
 }
 /********************************************************************************/
@@ -308,53 +322,64 @@ static void user_install_cancel_callback(GtkWidget *widget,
 
   gtk_widget_destroy(continue_button);
   user_install_notebook_set_current_page(GTK_NOTEBOOK(notebook), EEK_PAGE);
-  timeout = g_timeout_add(1024, (GtkFunction)gtk_main_quit, (gpointer)0);
+  timeout = g_timeout_add(1024, user_install_quit_timeout, NULL);
 }
 /********************************************************************************/
 static gint user_install_corner_expose(GtkWidget      *widget,
                                        GdkEventExpose *eevent,
                                        gpointer        data)
 {
-  switch ((GtkCornerType)data)
+  GtkAllocation alloc;
+  GdkWindow *win = NULL;
+  gint corner = GPOINTER_TO_INT(data);
+
+  if (!GTK_IS_WIDGET(widget)) return FALSE;
+
+  gtk_widget_get_allocation(widget, &alloc);
+
+  win = gtk_widget_get_window(widget);
+  if (!win) return FALSE;
+
+  switch (corner)
   {
     case GTK_CORNER_TOP_LEFT:
-      gdk_draw_arc(widget->window,
+      gdk_draw_arc(win,
                    white_gc,
                    TRUE,
                    0, 0,
-                   widget->allocation.width * 2,
-                   widget->allocation.height * 2,
+                   alloc.width * 2,
+                   alloc.height * 2,
                    90 * 64,
                    180 * 64);
       break;
 
     case GTK_CORNER_BOTTOM_LEFT:
-      gdk_draw_arc(widget->window,
+      gdk_draw_arc(win,
                    white_gc,
                    TRUE,
-                   0, -widget->allocation.height,
-                   widget->allocation.width * 2,
-                   widget->allocation.height * 2,
+                   0, -alloc.height,
+                   alloc.width * 2,
+                   alloc.height * 2,
                    180 * 64,
                    270 * 64);
       break;
 
     case GTK_CORNER_TOP_RIGHT:
-      gdk_draw_arc(widget->window,
+      gdk_draw_arc(win,
                    white_gc, TRUE,
-                   -widget->allocation.width, 0,
-                   widget->allocation.width * 2,
-                   widget->allocation.height * 2,
+                   -alloc.width, 0,
+                   alloc.width * 2,
+                   alloc.height * 2,
                    0 * 64,
                    90 * 64);
       break;
 
     case GTK_CORNER_BOTTOM_RIGHT:
-      gdk_draw_arc(widget->window,
+      gdk_draw_arc(win,
                    white_gc, TRUE,
-                   -widget->allocation.width, -widget->allocation.height,
-                   widget->allocation.width * 2,
-                   widget->allocation.height * 2,
+                   -alloc.width, -alloc.height,
+                   alloc.width * 2,
+                   alloc.height * 2,
                    270 * 64,
                    360 * 64);
       break;
@@ -498,52 +523,53 @@ void user_install_dialog_create(UserInstallCallback callback)
   gtk_widget_realize (dialog);
   set_icone(GTK_WIDGET(dialog));
 
-  action_area = gtk_hbox_new(FALSE, 8);
+  action_area = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 8);
   gtk_box_set_homogeneous(GTK_BOX(action_area), FALSE);
-  gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->action_area), action_area);
 
   /*  B/W Style for the page contents  */
   page_style = gtk_style_copy(gtk_widget_get_default_style());
-  colormap = gtk_widget_get_colormap(dialog);
-
-  black_color.red = 0;
-  black_color.green = 0;
-  black_color.blue = 0;
-  gdk_colormap_alloc_color (colormap, &black_color, FALSE, TRUE);
-
-  white_color.red = 65535;
-  white_color.green = 65535;
-  white_color.blue = 65535;
-  gdk_colormap_alloc_color (colormap, &white_color, FALSE, TRUE);
-
-  page_style->fg[GTK_STATE_NORMAL]   = black_color;
-  page_style->text[GTK_STATE_NORMAL] = black_color;
-  page_style->bg[GTK_STATE_NORMAL]   = white_color;
-
-  /*
-  gdk_font_unref(page_style->font);
-  page_style->font = dialog->style->font;
-  gdk_font_ref(page_style->font);
-  */
-
-  /*  B/Colored Style for the page title  */
+  {
+    GdkRGBA rgba;
+    GdkColor black_color, white_color;
+    /* Build GdkColor values from RGBA (no colormap allocation) */
+    gdk_rgba_parse(&rgba, "black");
+    black_color.red   = (gushort)(rgba.red   * 65535.0);
+    black_color.green = (gushort)(rgba.green * 65535.0);
+    black_color.blue  = (gushort)(rgba.blue  * 65535.0);
+    gdk_rgba_parse(&rgba, "white");
+    white_color.red   = (gushort)(rgba.red   * 65535.0);
+    white_color.green = (gushort)(rgba.green * 65535.0);
+    white_color.blue  = (gushort)(rgba.blue  * 65535.0);
+    page_style->fg[GTK_STATE_NORMAL]   = black_color;
+    page_style->text[GTK_STATE_NORMAL] = black_color;
+    page_style->bg[GTK_STATE_NORMAL]   = white_color;
+  }
+  
   title_style = gtk_style_copy(page_style);
-
-  if (gdk_color_parse("royal blue", &title_color) && gdk_colormap_alloc_color(colormap, &title_color, FALSE, TRUE))
   {
-    title_style->bg[GTK_STATE_NORMAL] = title_color;
+    GdkRGBA rgba;
+    if (gdk_rgba_parse(&rgba, "royalblue")) {
+        GdkColor title_color;
+        title_color.red   = (gushort)(rgba.red   * 65535.0);
+        title_color.green = (gushort)(rgba.green * 65535.0);
+        title_color.blue  = (gushort)(rgba.blue  * 65535.0);
+        title_style->bg[GTK_STATE_NORMAL] = title_color;
+    }
   }
 
-  large_font_desc = pango_font_description_from_string ("sans bold 20");
-  if (large_font_desc)
+  large_font_desc = pango_font_description_from_string("sans bold 20");
+  if (large_font_desc) title_style->font_desc = large_font_desc;
   {
-    title_style->font_desc = large_font_desc;
+      GdkWindow* dwin = gtk_widget_get_window(dialog);
+      if (dwin) {
+          if (white_gc) g_object_unref(white_gc);
+          white_gc = gdk_gc_new((GdkDrawable*)dwin);
+          gdk_gc_set_foreground(white_gc, &white_color);
+      } else {
+          /* not realized yet - we'll create the GC later when window is available */
+          white_gc = NULL;
+      }
   }
-
-  /*  W/W GC for the corner  */
-  white_gc = gdk_gc_new(dialog->window);
-  gdk_gc_set_foreground(white_gc, &white_color);
-
   TITLE_STYLE(dialog);
 
   footer_label = gtk_label_new(NULL);
@@ -554,7 +580,8 @@ void user_install_dialog_create(UserInstallCallback callback)
 
 
   vbox = gtk_vbox_new(FALSE, 0);
-  gtk_container_add(GTK_CONTAINER(GTK_DIALOG(dialog)->vbox), vbox);
+  GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+  gtk_container_add(GTK_CONTAINER(dialog), vbox);
 
   ebox = gtk_event_box_new();
   TITLE_STYLE(ebox);

@@ -20,6 +20,8 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __GABEDIT_GABEDITContoursPLOT_H__
 #define __GABEDIT_GABEDITContoursPLOT_H__
 
+#include "../../gabeditGTK3compat.h"
+#include "../Compat/gabedit_gdk_compat.h"
 
 
 #include <gdk/gdk.h>

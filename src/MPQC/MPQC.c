@@ -190,14 +190,14 @@ static void mpqcInputFileWindow(gboolean newInputFile)
 	gtk_widget_realize(Wins);
 
 	button = create_button(Wins,_("Cancel"));
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, FALSE, TRUE, 5);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), button, FALSE, TRUE, 5);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK( toCancelWin),GTK_OBJECT(Wins));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_show (button);
 
 	button = create_button(Wins,"OK");
 
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Wins)->vbox), table, FALSE, TRUE, 5);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_content_area(GTK_DIALOG(Wins))), table, FALSE, TRUE, 5);
 
 	hbox =addHboxToTable(table, 0, 0, 1, 1);
 	createMPQCSymmetryFrame(Wins, hbox);
@@ -219,7 +219,7 @@ static void mpqcInputFileWindow(gboolean newInputFile)
 	hbox =addHboxToTable(table, 4, 0, 1, 2);
 	createMPQCProperties(hbox);
 
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, FALSE, TRUE, 5);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), button, FALSE, TRUE, 5);
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	gtk_widget_show (button);

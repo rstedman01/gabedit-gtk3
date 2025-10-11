@@ -376,7 +376,7 @@ GtkWidget *create_grids_list_frame( GtkWidget *vboxall,gchar** gridsList,gint n,
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
                   1,1);
 	gtk_widget_show (combo);
-	entry = GTK_BIN(combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_widget_set_sensitive(entry,FALSE); 
         g_object_set_data(G_OBJECT (entry), "FileName",fileName);
         g_object_set_data(G_OBJECT (entry), "Combo",combo);

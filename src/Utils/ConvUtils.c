@@ -860,7 +860,7 @@ void create_conversion_dlg()
 	g_signal_connect(G_OBJECT(Dlg),"delete_event",(GCallback)destroy_dlg,NULL);
 
 	notebook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dlg)->vbox), notebook,TRUE, TRUE, 10);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dlg))), notebook,TRUE, TRUE, 10);
 	gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook), TRUE);
 
 	data = get_energy_data();
@@ -892,7 +892,7 @@ void create_conversion_dlg()
 
 
 	notebook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dlg)->vbox), notebook,TRUE, TRUE, 10);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dlg))), notebook,TRUE, TRUE, 10);
 	gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook), TRUE);
 
 	data = get_electriccurrent_data();
@@ -927,7 +927,7 @@ void create_conversion_dlg()
 	new_conversion_frame(Dlg, notebook, _("Second electric dipole hyperpolarizability"), data);
 
 	notebook = gtk_notebook_new();
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dlg)->vbox), notebook,TRUE, TRUE, 10);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dlg))), notebook,TRUE, TRUE, 10);
 	gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook), TRUE);
 
 	data = get_magneticinduction_data();
@@ -939,16 +939,16 @@ void create_conversion_dlg()
 	data = get_magnetizability_data();
 	new_conversion_frame(Dlg, notebook, _("Magnetizability"), data);
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dlg)->action_area), FALSE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), FALSE);
 	gtk_widget_realize(Dlg);
 	Button = create_button(Dlg,_("Close"));
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 5);  
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 5);  
 	g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)destroy_dlg,GTK_OBJECT(Dlg));
 
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Button);
-	gtk_widget_show_all(GTK_DIALOG(Dlg)->vbox);
-	gtk_widget_show_all(GTK_DIALOG(Dlg)->action_area);
+	gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(Dlg)));
+	gtk_widget_show_all(gtk_dialog_get_action_area(GTK_DIALOG(Dlg)));
 	gtk_widget_show_now(Dlg);
 	set_icone(Dlg);
 }

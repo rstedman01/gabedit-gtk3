@@ -281,7 +281,7 @@ void build_rozphi_molecule_dlg()
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dlg)->vbox), frame,TRUE,TRUE,0);
+   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dlg))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -339,15 +339,15 @@ void build_rozphi_molecule_dlg()
 
   /* The "Close" button */
   gtk_widget_realize(Dlg);
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dlg)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), FALSE);
   Button = create_button(Dlg,_("Close"));
-  gtk_box_pack_end (GTK_BOX(GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 5);  
+  gtk_box_pack_end (GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 5);  
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)delete_child,GTK_OBJECT(Dlg));
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
 
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->vbox);
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->action_area);
+  gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(Dlg)));
+  gtk_widget_show_all(gtk_dialog_get_action_area(GTK_DIALOG(Dlg)));
   gtk_widget_show_now(Dlg);
 
   /* fit_windows_position(GeomDlg, Dlg);*/

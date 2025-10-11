@@ -179,7 +179,7 @@ static gchar* get_format_image_from_option()
 /********************************************************************************/
 static void filmSelected(GtkWidget *widget)
 {
-	if(GTK_IS_WIDGET(buttonCheckFilm)&& GTK_TOGGLE_BUTTON (buttonCheckFilm)->active)
+	if(GTK_IS_WIDGET(buttonCheckFilm)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCheckFilm)))
 	{
 		createFilm = TRUE;
 		if(GTK_IS_WIDGET(buttonDirFilm))  gtk_widget_set_sensitive(buttonDirFilm, TRUE);
@@ -260,9 +260,9 @@ static GtkWidget *create_list_of_formats()
 }
 static void buttonAxisSelected(GtkWidget *widget)
 {
-	if(GTK_IS_WIDGET(buttonXAxis) && GTK_TOGGLE_BUTTON (buttonXAxis)->active) selectedAxis = XAXIS;
-	if(GTK_IS_WIDGET(buttonYAxis) && GTK_TOGGLE_BUTTON (buttonYAxis)->active) selectedAxis = YAXIS;
-	if(GTK_IS_WIDGET(buttonZAxis) && GTK_TOGGLE_BUTTON (buttonZAxis)->active) selectedAxis = ZAXIS;
+	if(GTK_IS_WIDGET(buttonXAxis) && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonXAxis))) selectedAxis = XAXIS;
+	if(GTK_IS_WIDGET(buttonYAxis) && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonYAxis))) selectedAxis = YAXIS;
+	if(GTK_IS_WIDGET(buttonZAxis) && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonZAxis))) selectedAxis = ZAXIS;
 
 }
 /********************************************************************************/

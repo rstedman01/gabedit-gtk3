@@ -333,7 +333,7 @@ static void set_properties(GtkWidget *Win,gpointer data)
 	GabEditNetWork netWorkProtocol ;
 
 
-	if (GTK_TOGGLE_BUTTON (buttons[0])->active)
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttons[0])))
 	{
 		remotehost = g_strdup("");
 		remoteuser = g_strdup("");
@@ -347,7 +347,7 @@ static void set_properties(GtkWidget *Win,gpointer data)
 		remotepass = g_strdup(gtk_entry_get_text(GTK_ENTRY(entrys[2])));
 		remotedir  = g_strdup(gtk_entry_get_text(GTK_ENTRY(entrys[3])));
 	}
-	if (GTK_TOGGLE_BUTTON (buttonSsh)->active) netWorkProtocol = GABEDIT_NETWORK_SSH;
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSsh))) netWorkProtocol = GABEDIT_NETWORK_SSH;
 	else netWorkProtocol = GABEDIT_NETWORK_FTP_RSH;
 
 	
@@ -383,7 +383,7 @@ static void set_password_visibility(GtkWidget *button,gpointer data)
 	GtkWidget * label1PassWord = g_object_get_data(G_OBJECT (button), "Label1PassWord");
 	GtkWidget * label2PassWord = g_object_get_data(G_OBJECT (button), "Label2PassWord");
 
-	if (GTK_TOGGLE_BUTTON (button)->active)
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
 	{
 		gboolean Ok = FALSE;
 		if(data != NULL ) Ok = TRUE;
@@ -398,7 +398,7 @@ static void set_frame_remote_sensitive(GtkWidget *button,gpointer data)
 {
 	GtkWidget *FrameRemote = GTK_WIDGET(g_object_get_data(G_OBJECT(button),"FrameRemote"));
 	GtkWidget *FrameNetWork = GTK_WIDGET(g_object_get_data(G_OBJECT(button),"FrameNetWork"));
-	if (GTK_TOGGLE_BUTTON (button)->active)
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
 	{
 		gboolean Ok = FALSE;
 		if(data != NULL ) Ok = TRUE;
@@ -842,7 +842,7 @@ static void create_set_dialogue_window()
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
 		gtk_widget_show (combo);
-		entrys[i] = GTK_BIN(combo)->child;
+		entrys[i] = gtk_bin_get_child(GTK_BIN(combo));
 		g_object_set_data(G_OBJECT (entrys[i]), "Combo",combo);
 		g_signal_connect(G_OBJECT(GTK_COMBO_BOX(combo)), "changed",G_CALLBACK(changed_host),entrys);
 
@@ -851,7 +851,7 @@ static void create_set_dialogue_window()
 		add_label_table(Table,":",(gushort)(i),1);
 		combo = create_combo_box_entry(tlistuser,nlistuser,TRUE,-1,-1);
 		add_widget_table(Table,combo,(gushort)(i),2);
-		entrys[i] = GTK_BIN(combo)->child;
+		entrys[i] = gtk_bin_get_child(GTK_BIN(combo));
 		g_object_set_data(G_OBJECT (entrys[i]), "Combo",combo);
 		g_signal_connect(G_OBJECT(GTK_COMBO_BOX(combo)), "changed",G_CALLBACK(changed_user),entrys);
 
@@ -867,7 +867,7 @@ static void create_set_dialogue_window()
 		add_label_table(Table,":",(gushort)(i),1);
 		combo = create_combo_box_entry(tlistdir,nlistdir,TRUE,-1,-1);
 		add_widget_table(Table,combo,(gushort)(i),2);
-		entrys[i] = GTK_BIN(combo)->child;
+		entrys[i] = gtk_bin_get_child(GTK_BIN(combo));
 		g_object_set_data(G_OBJECT (entrys[i]), "Combo",combo);
 
 		gtk_widget_show_all(frame);
@@ -2456,14 +2456,14 @@ static void to_clear_lists(GtkWidget *wid,gpointer data)
   gint i;
   gint k = 0;
   for(i=0;i<NBNOD;i++)
-    		if (GTK_TOGGLE_BUTTON (checkbutton[i])->active) 
+    		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkbutton[i]))) 
 			k++;
   if(k == NBNOD)
  	tree_clear_all();
   else
   if(k != 0)
   	for(i=0;i<NBNOD;i++)
-    		if (GTK_TOGGLE_BUTTON (checkbutton[i])->active) 
+    		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(checkbutton[i]))) 
 			tree_clear_one(i);
 	
 }
@@ -2531,7 +2531,7 @@ static void  create_window_list_to_clear()
 
   frame = gtk_frame_new (title);
   gtk_widget_show (frame);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG(Dialogue)->vbox), frame, TRUE, TRUE, 8);
+  gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))), frame, TRUE, TRUE, 8);
   gtk_frame_set_label_align (GTK_FRAME (frame), 0.5, 0.5);
 
   vbox = gtk_vbox_new (TRUE, 0);
@@ -2562,18 +2562,18 @@ static void  create_window_list_to_clear()
   }
   g_signal_connect(G_OBJECT(ButtonSelAll), "clicked",(GCallback)select_all_buttons,NULL);
   g_signal_connect(G_OBJECT(ButtonUnSelAll), "clicked",(GCallback)unselect_all_buttons,NULL);
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), FALSE);
 
   /* The CANCEL button */
   button = create_button(Dialogue,_("Cancel"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), button, FALSE, TRUE, 5);  
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), button, FALSE, TRUE, 5);  
   GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
   g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)destroy_button_windows,GTK_OBJECT(Dialogue));
   g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(Dialogue));
 
     /* The OK button */
   button = create_button(Dialogue,"OK");
-  gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), button, FALSE, TRUE, 5);  
+  gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), button, FALSE, TRUE, 5);  
   GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(button);
   g_signal_connect(G_OBJECT(button), "clicked",(GCallback)to_clear_lists,NULL);

@@ -564,7 +564,7 @@ void mpqcSumDensityFunctionalWindow()
 
 	gtk_widget_realize(win);
 
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(win)->vbox), table, FALSE, TRUE, 5);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_content_area(GTK_DIALOG(win))), table, FALSE, TRUE, 5);
 
 	hbox =addHboxToTable(table, 0, 0, 1, 1);
 	createXCFunctionalsMPQCFrame(hbox,_("Exchange functionalsMPQC"), coefficients);
@@ -573,7 +573,7 @@ void mpqcSumDensityFunctionalWindow()
 	createXCFunctionalsMPQCFrame(hbox,_("Correlation functionalsMPQC"), coefficients);
 
 	button = create_button(win,_("OK"));
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(win)->action_area), button, FALSE, TRUE, 5);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(win))), button, FALSE, TRUE, 5);
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	gtk_widget_show (button);
@@ -581,7 +581,7 @@ void mpqcSumDensityFunctionalWindow()
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",G_CALLBACK(destroy_children),GTK_OBJECT(win));
 
 	button = create_button(win,_("Close"));
-  	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(win)->action_area), button, FALSE, TRUE, 5);  
+  	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(win))), button, FALSE, TRUE, 5);  
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK(destroy_children),GTK_OBJECT(win));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_show (button);

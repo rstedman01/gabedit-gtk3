@@ -1205,7 +1205,7 @@ static void dialog_set_atom_prop(GtkWidget *w,gpointer data)
   frame = gtk_frame_new (sdata->Symb);
   gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->vbox), frame,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -1275,7 +1275,7 @@ static void dialog_set_atom_prop(GtkWidget *w,gpointer data)
 
   	for(k=0; k<m; k++) maxValence[k] = g_strdup_printf("%d",k);
 	comboMaxValence = create_combo_box_entry(maxValence, m, FALSE,-1,-1);
-	EntryProp[MAXIMUM_BOND_VALENCE] = (GTK_BIN (comboMaxValence)->child);
+	EntryProp[MAXIMUM_BOND_VALENCE] = (gtk_bin_get_child(GTK_BIN(comboMaxValence)));
   	for(k=0; k<m; k++) g_free(maxValence[k]);
 	g_free(maxValence);
   }
@@ -1329,13 +1329,13 @@ static void dialog_set_atom_prop(GtkWidget *w,gpointer data)
   gtk_widget_realize(Dialogue);
 
   Bouton = create_button(Dialogue,_("Cancel"));
-  gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)destroy_button_windows,GTK_OBJECT(Dialogue));
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
 
   Bouton = create_button(Dialogue,_("OK"));
-  gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect(G_OBJECT(Bouton), "clicked", (GCallback)set_atom_prop, sdata);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)destroy_button_windows,GTK_OBJECT(Dialogue));
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(Dialogue));

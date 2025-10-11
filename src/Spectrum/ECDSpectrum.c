@@ -680,14 +680,14 @@ static gboolean read_qchem_file_multiple(gchar* fileName, gint nTypes, gchar** l
 	gtk_widget_show(hbox);
 
 	button = create_button(window,"Cancel");
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	gtk_box_pack_start (GTK_BOX( hbox), button, TRUE, TRUE, 5);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(window));
 	gtk_widget_show_all (button);
 
 	button = create_button(window,"OK");
 	gtk_box_pack_start (GTK_BOX( hbox), button, TRUE, TRUE, 5);
-	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+	gtk_widget_set_can_default(button, TRUE);
 	gtk_widget_grab_default(button);
 	gtk_widget_show_all (button);
 	g_object_set_data(G_OBJECT (button), "Window", window);

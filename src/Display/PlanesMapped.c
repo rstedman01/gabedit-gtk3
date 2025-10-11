@@ -94,7 +94,7 @@ static GtkWidget *create_maps_frame( GtkWidget *vboxall,gchar* title,gint type)
 	add_label_at_table(Table,strLabelPlane,i,(gushort)0,GTK_JUSTIFY_LEFT);
 	add_label_at_table(Table," : ",i,(gushort)1,GTK_JUSTIFY_LEFT);
 	combo = create_combo_box_entry(listvalues,grid->N[type], FALSE,-1,-1);
-	Entries[0] = GTK_BIN(combo)->child;
+	Entries[0] = gtk_bin_get_child(GTK_BIN(combo));
 	add_widget_table(Table,combo,(gushort)0,(gushort)2);
 
 	i=1;

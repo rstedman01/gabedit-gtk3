@@ -34,5 +34,7 @@ void gabedit_folder_chooser_set_current_folder(GabeditFolderChooser *folderChoos
 gchar* gabedit_folder_chooser_get_current_folder(GabeditFolderChooser *folderChooser);
 void gabedit_folder_chooser_set_filters(GabeditFolderChooser *folderChooser,gchar **patterns);
 
+GtkWidget* selctionOfDir(gpointer data, gchar* title, GabEditTypeWin typewin);
+
 #endif /* __GABEDIT_GABEDITFOLDERCHOOSER_H__ */
 

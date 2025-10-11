@@ -1658,7 +1658,7 @@ GtkWidget *create_orbitals_list_frame( GtkWidget *vboxall,GtkWidget **entry,Type
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
                   1,1);
 	gtk_widget_show (combo);
-	entry[0] = GTK_BIN(combo)->child;
+	entry[0] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_widget_set_sensitive(entry[0],FALSE); 
         g_object_set_data(G_OBJECT (entry[0]), "FileName",FileName);
         g_object_set_data(G_OBJECT (entry[0]), "Combo",combo);
@@ -1670,7 +1670,7 @@ GtkWidget *create_orbitals_list_frame( GtkWidget *vboxall,GtkWidget **entry,Type
 	add_label_table(Table,":",1,1);
 	combo = create_combo_box_entry(listorb[0].prognames,listorb[0].norbtype,TRUE,-1,-1);
 	add_widget_table(Table,combo,1,2);
-	entry[1] = GTK_BIN(combo)->child;
+	entry[1] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_widget_set_sensitive(entry[1],FALSE); 
         g_object_set_data(G_OBJECT (entry[1]), "Combo",combo);
 	g_object_set_data(G_OBJECT (entry[1]), "Norb", norb);

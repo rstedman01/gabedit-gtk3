@@ -210,7 +210,7 @@ static void setChargeComboCharge(GtkWidget *comboCharge, gint charge)
 	GtkWidget *entry = NULL;
 	gchar* t = NULL;
 	if(!comboCharge) return;
-	entry = GTK_BIN (comboCharge)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboCharge));
 	t = g_strdup_printf("%d",charge);
 	gtk_entry_set_text(GTK_ENTRY(entry),t);
 	g_free(t);
@@ -370,7 +370,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
                   3,3);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 
 	return entry;

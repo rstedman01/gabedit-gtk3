@@ -557,7 +557,7 @@ void edit_geometry()
 
   Frame = geominter->window;
   gtk_container_set_border_width (GTK_CONTAINER (Frame), 10);
-  gtk_container_add(GTK_CONTAINER(GTK_DIALOG(Window)->vbox), Frame);
+  gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(Window))), Frame);
   
   BoiteV = gtk_vbox_new(FALSE, 0);
   gtk_container_add(GTK_CONTAINER(Frame), BoiteV);
@@ -569,10 +569,10 @@ void edit_geometry()
   geominter->vbox=BoiteV;
   geominter->frametitle=g_strdup(_("GEOMETRY"));
 
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Window)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Window))), FALSE);
   gtk_widget_realize(Window);
   button = create_button(Window,_("Close"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Window)->action_area), button, FALSE, TRUE , 5);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Window))), button, FALSE, TRUE , 5);
   g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)destroy_children,GTK_OBJECT(Window));
 
  if(GeomXYZ != NULL && MethodeGeom == GEOM_IS_XYZ)

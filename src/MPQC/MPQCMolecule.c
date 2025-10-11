@@ -332,7 +332,7 @@ static void activateRadioButton(GtkWidget *button, gpointer data)
 	{
 		setMPQCMolecule();
 
-		if( GTK_TOGGLE_BUTTON (button)->active && *type == GABFIXED)
+		if( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)) && *type == GABFIXED)
 		{
 			if(mpqcMolecule.groupSymmetry) g_free(mpqcMolecule.groupSymmetry);
 			mpqcMolecule.groupSymmetry = g_strdup("C1");
@@ -340,7 +340,7 @@ static void activateRadioButton(GtkWidget *button, gpointer data)
 			if(GTK_IS_WIDGET(comboSymmetry))
 				gtk_widget_set_sensitive(comboSymmetry, TRUE);
 		}
-		if(GTK_TOGGLE_BUTTON (button)->active &&  *type == AUTO)
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)) &&  *type == AUTO)
 		{
 			if(mpqcMolecule.groupSymmetry) g_free(mpqcMolecule.groupSymmetry);
 			mpqcMolecule.groupSymmetry = g_strdup("auto");
@@ -348,7 +348,7 @@ static void activateRadioButton(GtkWidget *button, gpointer data)
 			if(GTK_IS_WIDGET(comboSymmetry))
 				gtk_widget_set_sensitive(comboSymmetry, FALSE);
 		}
-		if(GTK_TOGGLE_BUTTON (button)->active &&  *type == GABEDIT)
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)) &&  *type == GABEDIT)
 		{
 			/* groupSymmetry define in setMPQCMolecule */
 			symReduction = TRUE;
@@ -360,7 +360,7 @@ static void activateRadioButton(GtkWidget *button, gpointer data)
 		if(GTK_IS_WIDGET(buttonTolerance) && symReduction ) gtk_widget_set_sensitive(buttonTolerance, TRUE);
 		if(GTK_IS_WIDGET(buttonTolerance) && !symReduction ) gtk_widget_set_sensitive(buttonTolerance, FALSE);
 
-		if(GTK_TOGGLE_BUTTON (button)->active && label && symReduction)
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)) && label && symReduction)
 		{
 			sprintf(buffer,"%s group",mpqcMolecule.groupSymmetry);
 			gtk_label_set_text(GTK_LABEL(label),buffer);
@@ -463,7 +463,7 @@ void createMPQCSymmetryFrame(GtkWidget *win, GtkWidget *box)
 	gtk_box_pack_start (GTK_BOX (vboxFrame), table, TRUE, TRUE, 0);
 
 	comboSymmetry = create_combo_box_entry(list, 1, TRUE, -1, -1);
-	entrySymmetry = GTK_BIN(comboSymmetry)->child;
+	entrySymmetry = gtk_bin_get_child(GTK_BIN(comboSymmetry));
 	gtk_widget_set_sensitive(entrySymmetry, FALSE);
 
 

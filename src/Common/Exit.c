@@ -63,28 +63,28 @@ static	GtkWidget* buttonOptions[NOPTIONS];
 /********************************************************************************/
 static void ExitGabedit(GtkWidget *widget, gchar *data)
 {
-	if(GTK_TOGGLE_BUTTON (buttonOptions[SAVELISTFILES])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOptions[SAVELISTFILES])))
  		parse_liste_files();
 
-	if(GTK_TOGGLE_BUTTON (buttonOptions[SAVEHOSTSFILE])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOptions[SAVEHOSTSFILE])))
         	create_hosts_file();
 
-	if(GTK_TOGGLE_BUTTON (buttonOptions[SAVEMMPARAMETERS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOptions[SAVEMMPARAMETERS])))
 		saveAmberParameters();
 
-	if(GTK_TOGGLE_BUTTON (buttonOptions[SAVEPDBTEMPLATE])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOptions[SAVEPDBTEMPLATE])))
 		savePersonalPDBTpl(NULL);
 
-	if(GTK_TOGGLE_BUTTON (buttonOptions[SAVEFRAGMENT])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOptions[SAVEFRAGMENT])))
 		savePersonalFragments(NULL);
 
-	if(GTK_TOGGLE_BUTTON (buttonOptions[SAVEATOMPROP])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOptions[SAVEATOMPROP])))
 		save_atoms_prop();
-	if(GTK_TOGGLE_BUTTON (buttonOptions[SAVEMOLPROBASIS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOptions[SAVEMOLPROBASIS])))
 		saveMolproBasis();
-	if(GTK_TOGGLE_BUTTON (buttonOptions[SAVEMOLCASBASIS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOptions[SAVEMOLCASBASIS])))
 		saveMolcasBasis();
-	if(GTK_TOGGLE_BUTTON (buttonOptions[SAVEMPQCBASIS])->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOptions[SAVEMPQCBASIS])))
 		saveMPQCBasis();
 
 	create_commands_file();
@@ -156,14 +156,14 @@ void ExitDlg(GtkWidget* w, gpointer data)
 	gtk_window_set_title(&GTK_DIALOG(Win)->window,"Exit");
     	gtk_window_set_modal (GTK_WINDOW (Win), TRUE);
 
-	gtk_button_box_set_layout (GTK_BUTTON_BOX (GTK_DIALOG(Win)->action_area), GTK_BUTTONBOX_END);
-	gtk_box_set_homogeneous(GTK_BOX( GTK_DIALOG(Win)->action_area), TRUE);
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (gtk_dialog_get_action_area(GTK_DIALOG(Win))), GTK_BUTTONBOX_END);
+	gtk_box_set_homogeneous(GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), TRUE);
 
 	g_signal_connect(G_OBJECT(Win),"delete_event",(GCallback)gtk_widget_destroy,NULL);
  
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox);
-	gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Win)->vbox), vbox,TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Win))), vbox,TRUE, TRUE, 0);
 
 	gtk_widget_realize(Win);
 	label = create_label_with_pixmap(Win,_("Are you sure you want to exit?"),_("Question"));  
@@ -174,13 +174,13 @@ void ExitDlg(GtkWidget* w, gpointer data)
 
 	button = create_button(Win,"No");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_destroy),GTK_OBJECT(Win));
 	gtk_widget_show (button);
 
 	button = create_button(Win,"Yes");
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Win)->action_area), button, TRUE, TRUE, 0);
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Win))), button, TRUE, TRUE, 0);
 	g_signal_connect_swapped(GTK_OBJECT(button), "clicked", (GCallback)ExitGabedit,GTK_OBJECT(Win));
 	gtk_widget_grab_default(button);
 	gtk_widget_show (button);

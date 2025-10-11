@@ -3127,7 +3127,7 @@ void setMMTypeOfselectedAtomsDlg()
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(winDlg))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
 
@@ -3143,12 +3143,12 @@ void setMMTypeOfselectedAtomsDlg()
 	gtk_widget_realize(winDlg);
 
 	button = create_button(winDlg,_("Cancel"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 
 	button = create_button(winDlg,_("OK"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(button), "clicked",(GCallback)setMMTypeOfselectedAtoms,entry);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
@@ -3226,7 +3226,7 @@ void setPDBTypeOfselectedAtomsDlg()
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(winDlg))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
 
@@ -3242,12 +3242,12 @@ void setPDBTypeOfselectedAtomsDlg()
 	gtk_widget_realize(winDlg);
 
 	button = create_button(winDlg,_("Cancel"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 
 	button = create_button(winDlg,_("OK"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(button), "clicked",(GCallback)setPDBTypeOfselectedAtoms,entry);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
@@ -3345,7 +3345,7 @@ void setResidueNameOfselectedAtomsDlg()
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(winDlg))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
 
@@ -3366,12 +3366,12 @@ void setResidueNameOfselectedAtomsDlg()
 	gtk_widget_realize(winDlg);
 
 	button = create_button(winDlg,_("Cancel"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 
 	button = create_button(winDlg,_("OK"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(button), "clicked",(GCallback)setResidueNameOfselectedAtoms,entry);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
@@ -3486,7 +3486,7 @@ void setChargeOfselectedAtomsDlg()
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(winDlg))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
 
@@ -3502,12 +3502,12 @@ void setChargeOfselectedAtomsDlg()
 	gtk_widget_realize(winDlg);
 
 	button = create_button(winDlg,_("Cancel"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 
 	button = create_button(winDlg,_("OK"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(button), "clicked",(GCallback)setChargeOfselectedAtoms,entry);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
@@ -3567,7 +3567,7 @@ void scaleChargesOfSelectedAtomsDlg()
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(winDlg))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
 
@@ -3582,12 +3582,12 @@ void scaleChargesOfSelectedAtomsDlg()
 	gtk_widget_realize(winDlg);
 
 	button = create_button(winDlg,_("Cancel"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 
 	button = create_button(winDlg,_("OK"));
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(winDlg)->action_area), button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(winDlg))), button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(button), "clicked",(GCallback)scaleChargesOfSelectedAtoms,entry);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(winDlg));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);

@@ -126,23 +126,23 @@ void createPovrayOptionsWindow(GtkWidget* win)
 
 	frame = gtk_frame_new (NULL);
 	gtk_widget_show (frame);
-	gtk_box_pack_start (GTK_BOX (GTK_WIDGET(GTK_DIALOG(dialogWindow)->vbox)), frame, TRUE, TRUE, 3);
+	gtk_box_pack_start (GTK_BOX (GTK_WIDGET(gtk_dialog_get_content_area(GTK_DIALOG(dialogWindow)))), frame, TRUE, TRUE, 3);
 
 	hbox = gtk_hbox_new (FALSE, 3);
 	gtk_widget_show (hbox);
 	gtk_container_add (GTK_CONTAINER (frame), hbox);
 
 	createPOVBackgroundFrame(hbox);
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), TRUE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialogWindow))), TRUE);
 
 	button = create_button(dialogWindow,"Cancel");
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), button, FALSE, TRUE, 5);	
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialogWindow))), button, FALSE, TRUE, 5);	
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)destroy_button_windows, GTK_OBJECT(dialogWindow));
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(dialogWindow));
 
 	button = create_button(dialogWindow,"OK");
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), button, FALSE, TRUE, 5);	
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialogWindow))), button, FALSE, TRUE, 5);	
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)applyPovrayOptions, GTK_OBJECT(dialogWindow));

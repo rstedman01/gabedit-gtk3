@@ -764,7 +764,7 @@ static void editnewPairWiseDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -787,25 +787,25 @@ static void editnewPairWiseDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,3,0,1,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
-	Entries[E_T1] = GTK_BIN(combo)->child;
+	Entries[E_T1] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T1]),t1);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,3,4,0,1,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
-	Entries[E_T2] = GTK_BIN(combo)->child;
+	Entries[E_T2] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T2]),t2);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
@@ -834,14 +834,14 @@ static void editnewPairWiseDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,4,1,2,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
-	Entries[E_A] = GTK_BIN(combo)->child;
+	Entries[E_A] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -868,14 +868,14 @@ static void editnewPairWiseDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,4,2,3,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
-	Entries[E_BETA] = GTK_BIN(combo)->child;
+	Entries[E_BETA] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -902,14 +902,14 @@ static void editnewPairWiseDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,4,3,4,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
-	Entries[E_C6] = GTK_BIN(combo)->child;
+	Entries[E_C6] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -936,14 +936,14 @@ static void editnewPairWiseDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,4,4,5,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
-	Entries[E_C8] = GTK_BIN(combo)->child;
+	Entries[E_C8] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -970,14 +970,14 @@ static void editnewPairWiseDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,4,5,6,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
-	Entries[E_C10] = GTK_BIN(combo)->child;
+	Entries[E_C10] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -1004,14 +1004,14 @@ static void editnewPairWiseDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,4,6,7,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
 			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 			1,1);
-	Entries[E_B] = GTK_BIN(combo)->child;
+	Entries[E_B] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 
@@ -1019,13 +1019,13 @@ static void editnewPairWiseDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,"Cancel");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 
 	Button = create_button(WinDlg,"OK");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(Button), "clicked",(GCallback)f,NULL);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
@@ -1068,7 +1068,7 @@ static void editnewNonBondedDlg(GabeditSignalFunc f,gchar* title,gboolean sensit
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -1085,11 +1085,11 @@ static void editnewNonBondedDlg(GabeditSignalFunc f,gchar* title,gboolean sensit
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,3,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T1] = GTK_BIN(combo)->child;
+	Entries[E_T1] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T1]),t1);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
@@ -1112,11 +1112,11 @@ static void editnewNonBondedDlg(GabeditSignalFunc f,gchar* title,gboolean sensit
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,3,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_R] = GTK_BIN(combo)->child;
+	Entries[E_R] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -1137,11 +1137,11 @@ static void editnewNonBondedDlg(GabeditSignalFunc f,gchar* title,gboolean sensit
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,3,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_E] = GTK_BIN(combo)->child;
+	Entries[E_E] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 
@@ -1149,13 +1149,13 @@ static void editnewNonBondedDlg(GabeditSignalFunc f,gchar* title,gboolean sensit
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,"Cancel");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 
 	Button = create_button(WinDlg,"OK");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(Button), "clicked",(GCallback)f,NULL);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
@@ -1258,7 +1258,7 @@ static void editnewHBondDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -1275,19 +1275,19 @@ static void editnewHBondDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,3,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T1] = GTK_BIN(combo)->child;
+	Entries[E_T1] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T1]),t1);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,3,4,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T2] = GTK_BIN(combo)->child;
+	Entries[E_T2] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T2]),t2);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
@@ -1310,11 +1310,11 @@ static void editnewHBondDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,4,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_C] = GTK_BIN(combo)->child;
+	Entries[E_C] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -1335,11 +1335,11 @@ static void editnewHBondDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,4,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_D] = GTK_BIN(combo)->child;
+	Entries[E_D] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 
@@ -1347,14 +1347,14 @@ static void editnewHBondDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,"Cancel");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 
 
 	Button = create_button(WinDlg,"OK");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(Button), "clicked",(GCallback)f,NULL);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
@@ -1432,7 +1432,7 @@ static void editnewImproperDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -1450,35 +1450,35 @@ static void editnewImproperDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,3,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T1] = GTK_BIN(combo)->child;
+	Entries[E_T1] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T1]),t1);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,3,4,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T2] = GTK_BIN(combo)->child;
+	Entries[E_T2] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T2]),t2);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,4,5,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T3] = GTK_BIN(combo)->child;
+	Entries[E_T3] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T3]),t3);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,5,6,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T4] = GTK_BIN(combo)->child;
+	Entries[E_T4] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T4]),t4);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
@@ -1502,11 +1502,11 @@ static void editnewImproperDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*4,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,6,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_B] = GTK_BIN(combo)->child;
+	Entries[E_B] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -1527,11 +1527,11 @@ static void editnewImproperDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*4,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,6,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_P] = GTK_BIN(combo)->child;
+	Entries[E_P] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -1552,11 +1552,11 @@ static void editnewImproperDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,3,4,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*4,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,6,3,4,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_N] = GTK_BIN(combo)->child;
+	Entries[E_N] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 
@@ -1564,13 +1564,13 @@ static void editnewImproperDlg(GabeditSignalFunc f,gchar* title,gboolean sensiti
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,"Cancel");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 
 	Button = create_button(WinDlg,"OK");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(Button), "clicked",(GCallback)f,NULL);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
@@ -1675,7 +1675,7 @@ static void editnewTorsionDlg(GabeditSignalFunc f,gchar* title,gboolean sensitiv
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -1693,35 +1693,35 @@ static void editnewTorsionDlg(GabeditSignalFunc f,gchar* title,gboolean sensitiv
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,3,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T1] = GTK_BIN(combo)->child;
+	Entries[E_T1] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T1]),t1);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,3,4,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T2] = GTK_BIN(combo)->child;
+	Entries[E_T2] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T2]),t2);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,4,5,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T3] = GTK_BIN(combo)->child;
+	Entries[E_T3] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T3]),t3);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,5,6,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T4] = GTK_BIN(combo)->child;
+	Entries[E_T4] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T4]),t4);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
@@ -1744,11 +1744,11 @@ static void editnewTorsionDlg(GabeditSignalFunc f,gchar* title,gboolean sensitiv
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*4,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,6,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_D] = GTK_BIN(combo)->child;
+	Entries[E_D] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -1769,11 +1769,11 @@ static void editnewTorsionDlg(GabeditSignalFunc f,gchar* title,gboolean sensitiv
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*4,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,6,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_B] = GTK_BIN(combo)->child;
+	Entries[E_B] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -1794,11 +1794,11 @@ static void editnewTorsionDlg(GabeditSignalFunc f,gchar* title,gboolean sensitiv
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,3,4,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*4,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,6,3,4,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_P] = GTK_BIN(combo)->child;
+	Entries[E_P] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -1819,11 +1819,11 @@ static void editnewTorsionDlg(GabeditSignalFunc f,gchar* title,gboolean sensitiv
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,4,5,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*4,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,6,4,5,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_N] = GTK_BIN(combo)->child;
+	Entries[E_N] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 
@@ -1831,13 +1831,13 @@ static void editnewTorsionDlg(GabeditSignalFunc f,gchar* title,gboolean sensitiv
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,"Cancel");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 
 	Button = create_button(WinDlg,"OK");
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(Button), "clicked",(GCallback)f,NULL);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
@@ -1923,7 +1923,7 @@ static void editnewBendDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -1940,27 +1940,27 @@ static void editnewBendDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,3,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T1] = GTK_BIN(combo)->child;
+	Entries[E_T1] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T1]),t1);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,3,4,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T2] = GTK_BIN(combo)->child;
+	Entries[E_T2] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T2]),t2);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,4,5,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T3] = GTK_BIN(combo)->child;
+	Entries[E_T3] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T3]),t3);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
@@ -1983,11 +1983,11 @@ static void editnewBendDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,5,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_F] = GTK_BIN(combo)->child;
+	Entries[E_F] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -2008,11 +2008,11 @@ static void editnewBendDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,5,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_A] = GTK_BIN(combo)->child;
+	Entries[E_A] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 
@@ -2020,13 +2020,13 @@ static void editnewBendDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,"Cancel");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 
 	Button = create_button(WinDlg,"OK");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(Button), "clicked",(GCallback)f,NULL);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
@@ -2100,7 +2100,7 @@ static void editnewBondDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -2117,19 +2117,19 @@ static void editnewBondDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,3,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T1] = GTK_BIN(combo)->child;
+	Entries[E_T1] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T1]),t1);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,3,4,0,1,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_T2] = GTK_BIN(combo)->child;
+	Entries[E_T2] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(Entries[E_T2]),t2);
 	gtk_widget_set_sensitive(combo, sensitive); 
 
@@ -2152,11 +2152,11 @@ static void editnewBondDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,4,1,2,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_F] = GTK_BIN(combo)->child;
+	Entries[E_F] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 	list = NULL;
@@ -2177,11 +2177,11 @@ static void editnewBondDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	label = gtk_label_new(":");
 	gtk_table_attach(GTK_TABLE(table),label,1,2,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
 
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),l*2,-1);
 	gtk_table_attach(GTK_TABLE(table),combo,2,4,2,3,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),1,1);
-	Entries[E_R] = GTK_BIN(combo)->child;
+	Entries[E_R] = gtk_bin_get_child(GTK_BIN(combo));
 
 	tlist = freeList(tlist,nlist);
 
@@ -2189,12 +2189,12 @@ static void editnewBondDlg(GabeditSignalFunc f,gchar* title,gboolean sensitive)
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,"Cancel");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 	Button = create_button(WinDlg,"OK");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(Button), "clicked",(GCallback)f,NULL);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
@@ -2310,7 +2310,7 @@ static void editnewTypeDlg(GabeditSignalFunc f,gchar* title)
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -2375,12 +2375,12 @@ static void editnewTypeDlg(GabeditSignalFunc f,gchar* title)
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,"Cancel");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 	Button = create_button(WinDlg,"OK");
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect(G_OBJECT(Button), "clicked",(GCallback)f, NULL);
 	g_signal_connect_swapped(GTK_OBJECT(Button), "clicked",(GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);

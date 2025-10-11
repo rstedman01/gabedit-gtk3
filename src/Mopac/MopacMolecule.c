@@ -443,7 +443,7 @@ static void setSpinMultiplicityComboSpinMultiplicity(GtkWidget *comboSpinMultipl
 	GtkWidget *entry = NULL;
 	gchar* t = NULL;
 	if(!comboSpinMultiplicity) return;
-	entry = GTK_BIN (comboSpinMultiplicity)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboSpinMultiplicity));
 	t = g_strdup_printf("%d",spin);
 	gtk_entry_set_text(GTK_ENTRY(entry),t);
 	g_free(t);
@@ -498,7 +498,7 @@ static void setChargeComboCharge(GtkWidget *comboCharge, gint charge)
 	GtkWidget *entry = NULL;
 	gchar* t = NULL;
 	if(!comboCharge) return;
-	entry = GTK_BIN (comboCharge)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboCharge));
 	t = g_strdup_printf("%d",charge);
 	gtk_entry_set_text(GTK_ENTRY(entry),t);
 	g_free(t);
@@ -602,7 +602,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_SHRINK),
                   2,2);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeight*0.1),-1);
 
@@ -646,7 +646,7 @@ static GtkWidget *addLabelNumberOfElectronsToTable(GtkWidget *table, gint i, Gtk
 {
 	GtkWidget* labelNumberOfElectrons = NULL;
 	GtkWidget* hbox = NULL;
-	GtkWidget* entryCharge = GTK_BIN(comboCharge)->child;
+	GtkWidget* entryCharge = gtk_bin_get_child(GTK_BIN(comboCharge));
 
 	labelNumberOfElectrons = gtk_label_new(" ");
 	hbox = gtk_hbox_new(0,FALSE);
@@ -703,7 +703,7 @@ void createMopacChargeMultiplicityFrame(GtkWidget *box)
 	labelNumberOfElectrons=addLabelNumberOfElectronsToTable(table, i, comboCharge);
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 	setComboCharge(comboCharge);
 	setComboSpinMultiplicity(comboSpinMultiplicity);
 	if(GTK_IS_WIDGET(labelNumberOfElectrons))
@@ -717,7 +717,7 @@ void createMopacChargeMultiplicityFrame(GtkWidget *box)
 	/* activate sensitivity */
 	/*
 	if(GTK_IS_WIDGET(comboMethod)) setComboMethod(comboMethod);
-	g_object_set_data(G_OBJECT (box), "EntryMethod", GTK_BIN(comboMethod)->child);
+	g_object_set_data(G_OBJECT (box), "EntryMethod", gtk_bin_get_child(GTK_BIN(comboMethod)));
 	*/
 }
 /************************************************************************************************************/
@@ -758,7 +758,7 @@ static void setComboReactionPathAtoms(GtkWidget *comboReactionPathAtoms)
 	gint iEnd;
 
 	if(!comboReactionPathAtoms) return;
-	entry = GTK_BIN (comboReactionPathAtoms)->child;
+	entry = gtk_bin_get_child(GTK_BIN(comboReactionPathAtoms));
 	if(!entry) return;
 	typeRP   = g_object_get_data(G_OBJECT (entry), "TypeRP");
 	if(!typeRP) return;
@@ -1057,18 +1057,18 @@ void createReactionPathFrame(GtkWidget *box)
 	for(k=0;k<2;k++)
 	if(GTK_IS_COMBO_BOX(comboVariableType[k]))
 	{
-		g_object_set_data(G_OBJECT (GTK_BIN(comboVariableType[k])->child), "ComboAtoms", comboAtoms[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboVariableType[k])->child), "TypeRP", typeRP[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboVariableType[k])->child), "EntryStep", entryStep[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboVariableType[k])->child), "EntryNbPoints", entryNbPoints[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboVariableType[k]))), "ComboAtoms", comboAtoms[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboVariableType[k]))), "TypeRP", typeRP[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboVariableType[k]))), "EntryStep", entryStep[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboVariableType[k]))), "EntryNbPoints", entryNbPoints[k]);
 	}
 	for(k=0;k<2;k++)
 	if(GTK_IS_COMBO_BOX(comboAtoms[k]))
 	{
-		g_object_set_data(G_OBJECT (GTK_BIN(comboAtoms[k])->child), "EntryStep", entryStep[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboAtoms[k])->child), "EntryNbPoints", entryNbPoints[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboAtoms[k])->child), "AtomRP", &atomRP[k]);
-		g_object_set_data(G_OBJECT (GTK_BIN(comboAtoms[k])->child), "TypeRP", typeRP[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboAtoms[k]))), "EntryStep", entryStep[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboAtoms[k]))), "EntryNbPoints", entryNbPoints[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboAtoms[k]))), "AtomRP", &atomRP[k]);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboAtoms[k]))), "TypeRP", typeRP[k]);
 	}
 	for(k=0;k<2;k++) g_object_set_data(G_OBJECT (entryNbPoints[k]), "NumberOfPointsRP", &numberOfPointsRP[k]);
 	for(k=0;k<2;k++) g_object_set_data(G_OBJECT (entryStep[k]), "StepValueRP", &stepValueRP[k]);

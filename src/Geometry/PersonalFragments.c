@@ -254,7 +254,7 @@ void newGroupeDlg(gpointer data, guint Operation,GtkWidget* wid)
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -266,12 +266,12 @@ void newGroupeDlg(gpointer data, guint Operation,GtkWidget* wid)
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,_("Cancel"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(Button), "clicked", (GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 	Button = create_button(WinDlg,_("OK"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)addGroupe,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Button);
@@ -388,7 +388,7 @@ void deleteGroupeDlg(gpointer data, guint Operation,GtkWidget* wid)
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -405,12 +405,12 @@ void deleteGroupeDlg(gpointer data, guint Operation,GtkWidget* wid)
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,_("Cancel"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(Button), "clicked", (GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 	Button = create_button(WinDlg,_("OK"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)deleteOneGroupe,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Button);
@@ -614,7 +614,7 @@ void addFragmentDlg(gpointer data, guint Operation,GtkWidget* wid)
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -627,7 +627,7 @@ void addFragmentDlg(gpointer data, guint Operation,GtkWidget* wid)
 	add_label_table(table," : ",(gushort)i,1); 
 	combo = create_combo_box_entry(groups,ng,FALSE,-1,-1);
 	add_widget_table(table,combo,(gushort)i,2);
-	Entries[E_GROUPE] = GTK_BIN (combo)->child;
+	Entries[E_GROUPE] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_editable_set_editable((GtkEditable*) Entries[E_GROUPE],FALSE);
 
 	i=1;
@@ -642,7 +642,7 @@ void addFragmentDlg(gpointer data, guint Operation,GtkWidget* wid)
 	add_label_table(table,_(" Number of atoms to delete "),(gushort)i,0); 
 	add_label_table(table," : ",(gushort)i,1); 
 	combo = create_combo_box_entry(numbers,nn,FALSE,-1,-1);
-	Entries[E_TODELETE] = GTK_BIN (combo)->child;
+	Entries[E_TODELETE] = gtk_bin_get_child(GTK_BIN(combo));
 	add_widget_table(table,combo,(gushort)i,2);
 	gtk_editable_set_editable((GtkEditable*) Entries[E_TODELETE],FALSE);
 
@@ -650,7 +650,7 @@ void addFragmentDlg(gpointer data, guint Operation,GtkWidget* wid)
 	add_label_table(table,_(" Number of atoms to bond to "),(gushort)i,0); 
 	add_label_table(table," : ",(gushort)i,1); 
 	combo = create_combo_box_entry(numbers,nn,FALSE,-1,-1);
-	Entries[E_TOBONDTO] = GTK_BIN (combo)->child;
+	Entries[E_TOBONDTO] = gtk_bin_get_child(GTK_BIN(combo));
 	add_widget_table(table,combo,(gushort)i,2);
 	gtk_editable_set_editable((GtkEditable*) Entries[E_TOBONDTO],FALSE);
 
@@ -658,7 +658,7 @@ void addFragmentDlg(gpointer data, guint Operation,GtkWidget* wid)
 	add_label_table(table,_(" Number of atoms for set angle "),(gushort)i,0); 
 	add_label_table(table," : ",(gushort)i,1); 
 	combo = create_combo_box_entry(numbers,nn,FALSE,-1,-1);
-	Entries[E_ANGLE] = GTK_BIN (combo)->child;
+	Entries[E_ANGLE] = gtk_bin_get_child(GTK_BIN(combo));
 	add_widget_table(table,combo,(gushort)i,2);
 	gtk_editable_set_editable((GtkEditable*) Entries[E_ANGLE],FALSE);
 
@@ -674,12 +674,12 @@ void addFragmentDlg(gpointer data, guint Operation,GtkWidget* wid)
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,_("Cancel"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(Button), "clicked", (GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 	Button = create_button(WinDlg,_("OK"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)addFragment,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Button);
@@ -831,7 +831,7 @@ void deleteFragmentDlg(gpointer data, guint Operation,GtkWidget* wid)
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(WinDlg))), frame,TRUE,TRUE,0);
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
@@ -849,12 +849,12 @@ void deleteFragmentDlg(gpointer data, guint Operation,GtkWidget* wid)
 
 	for (i=0;i<nf;i++)
 		list=g_list_append(list,fragments[i]);
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),(gint)(ScreenHeight*entryWidth),-1);
 	gtk_box_pack_start (GTK_BOX(hbox), combo, TRUE, TRUE, 1);
 
-	Entries[E_FRAGMENT] = GTK_BIN (combo)->child;
+	Entries[E_FRAGMENT] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_editable_set_editable((GtkEditable*) Entries[E_FRAGMENT],FALSE);
 	g_signal_connect_swapped(G_OBJECT(Entries[E_GROUPE]), "changed",
 			G_CALLBACK(resetFragmentCombo),GTK_OBJECT(combo));
@@ -867,12 +867,12 @@ void deleteFragmentDlg(gpointer data, guint Operation,GtkWidget* wid)
 	gtk_widget_realize(WinDlg);
 
 	Button = create_button(WinDlg,_("Cancel"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(Button), "clicked", (GCallback)gtk_widget_destroy,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 
 	Button = create_button(WinDlg,_("OK"));
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(WinDlg)->action_area), Button,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(WinDlg))), Button,TRUE,TRUE,0);
 	g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)deleteOneFragment,GTK_OBJECT(WinDlg));
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Button);

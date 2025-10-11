@@ -95,13 +95,13 @@ static void view_projects_list ()
  		gtk_widget_hide (GTK_WIDGET(FrameList));
 		gtk_widget_set_size_request(GTK_WIDGET(FrameList),1,-1);
  		gtk_widget_hide (GTK_WIDGET(Hpaned));
-  		GTK_PANED(Hpaned)->child1_size = 1;    
+  		gtk_paned_set_position(GTK_PANED(Hpaned), 1);    
  		gtk_widget_show (GTK_WIDGET(Hpaned));
 	}
 	else
  	{
-  		GTK_PANED(Hpaned)->child1_size = (gint)(ScreenHeight*0.15);    
-		gtk_widget_set_size_request(GTK_WIDGET(FrameList),(gint)(ScreenHeight*0.15),-1);
+  		gint pos = (gint)(ScreenHeight*0.15);    
+		gtk_paned_set_position(GTK_PANED(Hpaned), pos); 
  		gtk_widget_hide (GTK_WIDGET(Hpaned));
   		gtk_widget_show (GTK_WIDGET(FrameList));
  		gtk_widget_show (GTK_WIDGET(Hpaned));
@@ -731,7 +731,6 @@ static void add_widget (GtkUIManager *merge, GtkWidget   *widget, GtkContainer *
 		toolbar = GTK_TOOLBAR (widget);
 		gtk_toolbar_set_show_arrow (toolbar, TRUE);
 		gtk_toolbar_set_style(toolbar, GTK_TOOLBAR_ICONS);
-		gtk_toolbar_set_orientation(toolbar,  GTK_ORIENTATION_HORIZONTAL);
 		toolBar = toolbar;
 		handleBoxToolBar = handlebox;
 	}

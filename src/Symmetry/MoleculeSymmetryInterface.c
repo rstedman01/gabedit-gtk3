@@ -204,13 +204,13 @@ void createGeometrySymmetryWindow(gint numberOfAtoms,
 	g_signal_connect(G_OBJECT(Dialogue), "delete_event", (GCallback)destroy_button_windows, NULL);
 	g_signal_connect(G_OBJECT(Dialogue), "delete_event", (GCallback)gtk_widget_destroy, NULL);
 
-	TextWid = create_text_widget(GTK_WIDGET(GTK_DIALOG(Dialogue)->vbox),NULL,&frame);
+	TextWid = create_text_widget(GTK_WIDGET(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))),NULL,&frame);
 	gabedit_text_set_editable(GABEDIT_TEXT(TextWid), TRUE);
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), FALSE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), FALSE);
 	
 	Bouton = create_button(Dialogue,"OK");
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), Bouton, FALSE, TRUE, 5);	
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton, FALSE, TRUE, 5);	
 	GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Bouton);
 	g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)destroy_button_windows, GTK_OBJECT(Dialogue));
@@ -331,13 +331,13 @@ GtkWidget* createGeometryAbelianGroupWindow(gint numberOfAtoms,
 	g_signal_connect(G_OBJECT(Dialogue), "delete_event", (GCallback)destroy_button_windows, NULL);
 	g_signal_connect(G_OBJECT(Dialogue), "delete_event", (GCallback)gtk_widget_destroy, NULL);
 
-	TextWid = create_text_widget(GTK_WIDGET(GTK_DIALOG(Dialogue)->vbox),NULL,&frame);
+	TextWid = create_text_widget(GTK_WIDGET(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))),NULL,&frame);
 	gabedit_text_set_editable(GABEDIT_TEXT(TextWid), TRUE);
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), FALSE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), FALSE);
 	
 	Bouton = create_button(Dialogue,"OK");
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), Bouton, FALSE, TRUE, 5);	
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton, FALSE, TRUE, 5);	
 	GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Bouton);
 	g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)destroy_button_windows, GTK_OBJECT(Dialogue));
@@ -611,7 +611,7 @@ void createToleranceWindow(GtkWidget* win, GabeditSignalFunc myFunc)
 
 	frame = gtk_frame_new (NULL);
 	gtk_widget_show (frame);
-	gtk_box_pack_start (GTK_BOX (GTK_WIDGET(GTK_DIALOG(dialogWindow)->vbox)), frame, TRUE, TRUE, 3);
+	gtk_box_pack_start (GTK_BOX (GTK_WIDGET(gtk_dialog_get_content_area(GTK_DIALOG(dialogWindow)))), frame, TRUE, TRUE, 3);
 
 	hbox = gtk_hbox_new (FALSE, 3);
 	gtk_widget_show (hbox);
@@ -620,16 +620,16 @@ void createToleranceWindow(GtkWidget* win, GabeditSignalFunc myFunc)
 	createTolerancePositionFrame(hbox);
 	createTolerancePrincipalAxisFrame(hbox);
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), TRUE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialogWindow))), TRUE);
 
 	button = create_button(dialogWindow,"Cancel");
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), button, FALSE, TRUE, 5);	
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialogWindow))), button, FALSE, TRUE, 5);	
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)destroy_button_windows, GTK_OBJECT(dialogWindow));
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(dialogWindow));
 
 	button = create_button(dialogWindow,"OK");
-	gtk_box_pack_start (GTK_BOX( GTK_DIALOG(dialogWindow)->action_area), button, FALSE, TRUE, 5);	
+	gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dialogWindow))), button, FALSE, TRUE, 5);	
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)setToleranceParametersFromTmp, GTK_OBJECT(dialogWindow));
@@ -703,13 +703,13 @@ void createGeometrySymmetrizationWindow(gint numberOfAtoms, gchar** symbols, gdo
 	g_signal_connect(G_OBJECT(Dialogue), "delete_event", (GCallback)destroy_button_windows, NULL);
 	g_signal_connect(G_OBJECT(Dialogue), "delete_event", (GCallback)gtk_widget_destroy, NULL);
 
-	TextWid = create_text_widget(GTK_WIDGET(GTK_DIALOG(Dialogue)->vbox),NULL,&frame);
+	TextWid = create_text_widget(GTK_WIDGET(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))),NULL,&frame);
 	gabedit_text_set_editable(GABEDIT_TEXT(TextWid), TRUE);
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), FALSE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), FALSE);
 	
 	Bouton = create_button(Dialogue,"OK");
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), Bouton, FALSE, TRUE, 5);	
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton, FALSE, TRUE, 5);	
 	GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Bouton);
 	g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)destroy_button_windows, GTK_OBJECT(Dialogue));

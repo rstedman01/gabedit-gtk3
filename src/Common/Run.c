@@ -101,9 +101,9 @@ void set_frame_remote_visibility(GtkWidget *button,gpointer data)
 	gint* type = NULL;
 
 	if(!button) return;
-	if ((GTK_OBJECT_FLAGS((GtkObject*)button) & GTK_IN_DESTRUCTION)) return;
-	if ((GTK_OBJECT_FLAGS((GtkObject*)FrameRemote) & GTK_IN_DESTRUCTION)) return;
-	if ((GTK_OBJECT_FLAGS((GtkObject*)FrameNetWork) & GTK_IN_DESTRUCTION)) return;
+	if (gtk_widget_in_destruction(button)) return; return;
+	if (gtk_widget_in_destruction(FrameRemote)) return;
+	if (gtk_widget_in_destruction(FrameNetWork)) return;
 
 	type = g_object_get_data (G_OBJECT (button), "TypeButton");
 	if(!type) return;
@@ -153,12 +153,12 @@ void set_default_entrys(GtkWidget *button,gpointer data)
 	GList *glist = NULL;
 	gint i;
 
-	if (GTK_TOGGLE_BUTTON (button)->active)
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
 	{
 		if(button == ButtonGamess )
 		{
 #ifdef G_OS_WIN32
-			if(ButtonLocal && GTK_TOGGLE_BUTTON (ButtonLocal)->active)
+			if(ButtonLocal && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonLocal)))
 			{
   				for(i=0;i<numberOfLocalGamess;i++)
 					glist = g_list_append(glist,listLocalGamess[i]);
@@ -177,7 +177,7 @@ void set_default_entrys(GtkWidget *button,gpointer data)
 
   			g_list_free(glist);
 			gtk_entry_set_text (GTK_ENTRY (EntryCommand), NameCommandGamess);
-			if(ButtonLocal && GTK_TOGGLE_BUTTON (ButtonLocal)->active)
+			if(ButtonLocal && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
 			{
 			if(fileopen.command && strlen(fileopen.command)>0)
 			       	gtk_entry_set_text (GTK_ENTRY (EntryCommand), fileopen.command);
@@ -504,7 +504,7 @@ void get_file_frome_remote_host(GtkWidget* wid,gpointer data)
   	gabedit_text_insert (GABEDIT_TEXT(Text[1]), NULL, NULL, NULL,temp,-1);   
 	g_free(temp);
   	put_text_in_texts_widget(Text,fout,ferr);
-  	view_result(NULL,NULL);
+  	view_result();
 	if(type==LOGFILE || iprogram == PROG_IS_GAUSS) break;
 	if(type==LOGFILE || iprogram == PROG_IS_GAMESS) break;
   case OUTFILE :
@@ -518,7 +518,7 @@ void get_file_frome_remote_host(GtkWidget* wid,gpointer data)
   	gabedit_text_insert (GABEDIT_TEXT(Text[1]), NULL, NULL, NULL,temp,-1);   
 	g_free(temp);
   	put_text_in_texts_widget(Text,fout,ferr);
-  	view_result(NULL,NULL);
+  	view_result();
 	if(type==OUTFILE) break;
   case MOLDENFILE :
   	/* get file.molden */
@@ -5579,7 +5579,7 @@ void run_program(GtkWidget *button,gpointer data)
   	GtkWidget* ButtonFtpRsh = g_object_get_data(G_OBJECT (button),"ButtonFtpRsh");
 	*/
 
-	if(ButtonSsh && GTK_TOGGLE_BUTTON (ButtonSsh)->active)
+	if(ButtonSsh && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonSsh)))
 	{
 		fileopen.netWorkProtocol = GABEDIT_NETWORK_SSH;
 	}
@@ -5588,38 +5588,34 @@ void run_program(GtkWidget *button,gpointer data)
 		fileopen.netWorkProtocol = GABEDIT_NETWORK_FTP_RSH;
 	}
 
-	if(GTK_TOGGLE_BUTTON (ButtonLocal)->active)
-	{
-		if (GTK_TOGGLE_BUTTON (ButtonGamess)->active) run_local_gamess(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonGauss)->active) run_local_gaussian(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonMolcas)->active) run_local_molcas(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonMPQC)->active) run_local_mpqc(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonMolpro)->active) run_local_molpro(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonOrca)->active) run_local_orca(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonDeMon)->active) run_local_demon(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonNWChem)->active) run_local_nwchem(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonPsicode)->active) run_local_psicode(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonFireFly)->active) run_local_firefly(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonQChem)->active) run_local_qchem(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonMopac)->active) run_local_mopac(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonOther)->active) run_local_other(NULL,data);
-	}
-	else
-	{
-		if (GTK_TOGGLE_BUTTON (ButtonGamess)->active) run_remote_gamess(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonGauss)->active) run_remote_gaussian(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonMolcas)->active) run_remote_molcas(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonMPQC)->active) run_remote_mpqc(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonMolpro)->active) run_remote_molpro(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonOrca)->active) run_remote_orca(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonDeMon)->active) run_remote_demon(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonNWChem)->active) run_remote_nwchem(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonPsicode)->active) run_remote_psicode(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonFireFly)->active) run_remote_firefly(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonQChem)->active) run_remote_qchem(NULL,data);
-		else if (GTK_TOGGLE_BUTTON (ButtonMopac)->active) run_remote_mopac(NULL,data);
-		else run_remote_other(NULL,data);
-	}
+if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonLocal))) {
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonGamess))) run_local_gamess(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonGauss))) run_local_gaussian(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonMolcas))) run_local_molcas(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonMPQC))) run_local_mpqc(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonMolpro))) run_local_molpro(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonOrca))) run_local_orca(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonDeMon))) run_local_demon(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonNWChem))) run_local_nwchem(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonPsicode))) run_local_psicode(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonFireFly))) run_local_firefly(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonQChem))) run_local_qchem(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonMopac))) run_local_mopac(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonOther))) run_local_other(NULL,data);
+} else {
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonGamess))) run_remote_gamess(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonGauss))) run_remote_gaussian(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonMolcas))) run_remote_molcas(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonMPQC))) run_remote_mpqc(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonMolpro))) run_remote_molpro(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonOrca))) run_remote_orca(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonDeMon))) run_remote_demon(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonNWChem))) run_remote_nwchem(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonPsicode))) run_remote_psicode(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonFireFly))) run_remote_firefly(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonQChem))) run_remote_qchem(NULL,data);
+    else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonMopac))) run_remote_mopac(NULL,data);
+}
 	gtk_notebook_set_current_page((GtkNotebook*)NoteBookText,0);
 }
 /********************************************************************************/
@@ -5867,7 +5863,7 @@ GtkWidget *create_local_remote_frame(GtkWidget *Window, GtkWidget *vboxall,GtkWi
 	else combo = create_combo_box_entry(gaussianCommands.commands,gaussianCommands.numberOfCommands,TRUE,-1,-1);
 
 	ComboCommand = combo;
-	entry[1] = GTK_BIN(combo)->child;
+	entry[1] = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text (GTK_ENTRY (entry[1]), liste[1]);
 	if(fileopen.command && strlen(fileopen.command)>0) gtk_entry_set_text (GTK_ENTRY (entry[1]), fileopen.command);
 	add_widget_table(Table,combo,1,2);
@@ -5894,19 +5890,19 @@ static void changedEntryFileData(GtkWidget *entry,gpointer data)
 	{
 		gchar buffer[BSIZE];
 
-		if (ButtonGamess && GTK_TOGGLE_BUTTON (ButtonGamess)->active)
+		if (ButtonGamess && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonGamess)))
 		sprintf(buffer,"%s.inp",entrytext);
-		else if (ButtonFireFly && GTK_TOGGLE_BUTTON (ButtonFireFly)->active)
+		else if (ButtonFireFly && gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(ButtonFireFly)))
 		sprintf(buffer,"%s.inp",entrytext);
-		else if (ButtonQChem && GTK_TOGGLE_BUTTON (ButtonQChem)->active)
+		else if (ButtonQChem && gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(ButtonQChem)))
 		sprintf(buffer,"%s.inp",entrytext);
-		else if (ButtonOrca && GTK_TOGGLE_BUTTON (ButtonOrca)->active)
+		else if (ButtonOrca && gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(ButtonOrca)))
 		sprintf(buffer,"%s.inp",entrytext);
-		else if (ButtonNWChem && GTK_TOGGLE_BUTTON (ButtonNWChem)->active)
+		else if (ButtonNWChem && gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(ButtonNWChem)))
 		sprintf(buffer,"%s.nw",entrytext);
-		else if (ButtonPsicode && GTK_TOGGLE_BUTTON (ButtonPsicode)->active)
+		else if (ButtonPsicode && gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(ButtonPsicode)))
 		sprintf(buffer,"%s.psi",entrytext);
-		else if (ButtonMopac && GTK_TOGGLE_BUTTON (ButtonMopac)->active)
+		else if (ButtonMopac && gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(ButtonMopac)))
 		sprintf(buffer,"%s.mop",entrytext);
 		else sprintf(buffer,"%s.com",entrytext);
 		gtk_label_set_text(GTK_LABEL(LabelDataFile), buffer);
@@ -5934,10 +5930,10 @@ void changed_user(GtkWidget *combo,gpointer data)
 	if (!GTK_IS_WIDGET((GtkWidget*)entry[2])) return;
 	if (!GTK_IS_WIDGET((GtkWidget*)entry[3])) return;
 	if (!GTK_IS_WIDGET((GtkWidget*)entry[5])) return;
-	if ((GTK_OBJECT_FLAGS((GtkObject*)entry[1]) & GTK_IN_DESTRUCTION)) return;
-	if ((GTK_OBJECT_FLAGS((GtkObject*)entry[2]) & GTK_IN_DESTRUCTION)) return;
-	if ((GTK_OBJECT_FLAGS((GtkObject*)entry[3]) & GTK_IN_DESTRUCTION)) return;
-	if ((GTK_OBJECT_FLAGS((GtkObject*)entry[5]) & GTK_IN_DESTRUCTION)) return;
+	if (gtk_widget_in_destruction(entry[1])) return;
+	if (gtk_widget_in_destruction(entry[2])) return;
+	if (gtk_widget_in_destruction(entry[3])) return;
+	if (gtk_widget_in_destruction(entry[4])) return;
 
 	hostname = gtk_entry_get_text(GTK_ENTRY(entry[2]));
 
@@ -5974,7 +5970,7 @@ void changed_user(GtkWidget *combo,gpointer data)
 		return;
 
 
-	if (!(GTK_OBJECT_FLAGS((GtkObject*)combodir) & GTK_IN_DESTRUCTION))
+	if (!(gtk_widget_in_destruction(combodir)))
         	gtk_combo_box_entry_set_popdown_strings( combodir, glist) ;
 
 
@@ -5995,14 +5991,14 @@ void changed_host(GtkWidget *combo,gpointer data)
 	if(!entry[2]) return;
 	if(!entry[3]) return;
 	if(!entry[5]) return;
-	if (!GTK_IS_WIDGET((GtkWidget*)entry[1])) return;
-	if (!GTK_IS_WIDGET((GtkWidget*)entry[2])) return;
-	if (!GTK_IS_WIDGET((GtkWidget*)entry[3])) return;
-	if (!GTK_IS_WIDGET((GtkWidget*)entry[5])) return;
-	if ((GTK_OBJECT_FLAGS((GtkObject*)entry[1]) & GTK_IN_DESTRUCTION)) return;
-	if ((GTK_OBJECT_FLAGS((GtkObject*)entry[2]) & GTK_IN_DESTRUCTION)) return;
-	if ((GTK_OBJECT_FLAGS((GtkObject*)entry[3]) & GTK_IN_DESTRUCTION)) return;
-	if ((GTK_OBJECT_FLAGS((GtkObject*)entry[5]) & GTK_IN_DESTRUCTION)) return;
+	if (gtk_widget_in_destruction(entry[1])) return;
+	if (gtk_widget_in_destruction(entry[2])) return;
+	if (gtk_widget_in_destruction(entry[3])) return;
+	if (gtk_widget_in_destruction(entry[5])) return;
+	if ((gtk_widget_in_destruction(entry[1]))) return;
+	if ((gtk_widget_in_destruction(entry[2]))) return;
+	if ((gtk_widget_in_destruction(entry[3]))) return;
+	if ((gtk_widget_in_destruction(entry[5]))) return;
 	hostname = gtk_entry_get_text(GTK_ENTRY(entry[2]));
 	combouser = g_object_get_data (G_OBJECT (entry[3]), "Combo");
         if(!combouser) return;
@@ -6025,7 +6021,7 @@ void changed_host(GtkWidget *combo,gpointer data)
 		return;
 
 
-	if (!(GTK_OBJECT_FLAGS((GtkObject*)combouser) & GTK_IN_DESTRUCTION))
+	if (!(gtk_widget_in_destruction(combouser)))
   	for (i=0;i<nlistuser;i++)
         	gtk_combo_box_entry_set_popdown_strings( combouser, glist) ;
 
@@ -6142,7 +6138,7 @@ GtkWidget *create_remote_frame( GtkWidget *vboxall,GtkWidget **entry)
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
                   1,1);
 	gtk_widget_show (combo);
-	entry[i] = GTK_BIN(combo)->child;
+	entry[i] = gtk_bin_get_child(GTK_BIN(combo));
         g_object_set_data (G_OBJECT (entry[i]), "Combo",combo);
         g_signal_connect(G_OBJECT(GTK_COMBO_BOX(combo)), "changed",G_CALLBACK(changed_host),entry);
 
@@ -6151,7 +6147,7 @@ GtkWidget *create_remote_frame( GtkWidget *vboxall,GtkWidget **entry)
 	add_label_table(Table,":",(gushort)(i-2),1);
 	combo = create_combo_box_entry(tlistuser,nlistuser,TRUE,-1,-1);
 	add_widget_table(Table,combo,(gushort)(i-2),2);
-	entry[i] = GTK_BIN(combo)->child;
+	entry[i] = gtk_bin_get_child(GTK_BIN(combo));
         g_object_set_data (G_OBJECT (entry[i]), "Combo",combo);
         g_signal_connect(G_OBJECT(GTK_COMBO_BOX(combo)), "changed",G_CALLBACK(changed_user),entry);
 
@@ -6170,7 +6166,7 @@ GtkWidget *create_remote_frame( GtkWidget *vboxall,GtkWidget **entry)
 	add_label_table(Table,":",(gushort)(i-2),1);
 	combo = create_combo_box_entry(tlistdir,nlistdir,TRUE,-1,-1);
 	add_widget_table(Table,combo,(gushort)(i-2),2);
-	entry[i] = GTK_BIN(combo)->child;
+	entry[i] = gtk_bin_get_child(GTK_BIN(combo));
         g_object_set_data (G_OBJECT (entry[i]), "Combo",combo);
 
 	gtk_widget_show_all(frame);

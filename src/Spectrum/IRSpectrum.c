@@ -219,7 +219,7 @@ GtkWidget* createIRSpectrumWin(gint numberOfFrequencies, gdouble* frequencies, g
 
 	button = create_button(window,_("microm"));
         gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
-        GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+        gtk_widget_set_can_default(button, TRUE);
         gtk_widget_grab_default(button);
         gtk_widget_show (button);
         g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)create_microm_spectrum,GTK_OBJECT(window));

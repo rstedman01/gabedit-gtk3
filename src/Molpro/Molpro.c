@@ -135,7 +135,7 @@ static void GetInfoGth()
 /************************************************************************************************************/
 static int TestButtonActive(GtkWidget *button)
 {
-         if (GTK_TOGGLE_BUTTON (button)->active) 
+         if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button))) 
                return 1;
          else return 0;
 }
@@ -668,7 +668,7 @@ void insert_molpro(gint itype)
 
  
   NoteBook = gtk_notebook_new();
-  gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Wins)->vbox), NoteBook,TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Wins))), NoteBook,TRUE, TRUE, 0);
   switch (iframe) {
    case 1 :	gen=g_malloc(sizeof(GeneS));
 			AjoutePageGene(NoteBook,gen);
@@ -696,19 +696,19 @@ void insert_molpro(gint itype)
 
   }
 
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Wins)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), FALSE);
 
   
   gtk_widget_realize(Wins);
 
   button = create_button(Wins,_("Cancel"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, FALSE, TRUE, 5);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), button, FALSE, TRUE, 5);
   g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK( to_cancel_win),GTK_OBJECT(Wins));
   GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
   gtk_widget_show (button);
 
   button = create_button(Wins,_("OK"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, FALSE, TRUE, 5);  
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), button, FALSE, TRUE, 5);  
   GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(button);
   gtk_widget_show (button);
@@ -741,7 +741,7 @@ void molpro()
   g_signal_connect(G_OBJECT(Wins),"delete_event",(GCallback)destroy_children,NULL);
  
   NoteBook = gtk_notebook_new();
-  gtk_box_pack_start(GTK_BOX (GTK_DIALOG(Wins)->vbox), NoteBook,TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(Wins))), NoteBook,TRUE, TRUE, 0);
   gen=g_malloc(sizeof(GeneS));
   AjoutePageGene(NoteBook,gen);
   
@@ -750,14 +750,14 @@ void molpro()
 
   button = create_button(Wins,_("Cancel"));
   GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-  gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), button, TRUE, TRUE, 0);
   g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK( to_cancel_win),GTK_OBJECT(Wins));
   gtk_widget_show (button);
 
   /*
   button = create_button(Wins,"SAVE&CLOSE");
   GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-  gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), button, TRUE, TRUE, 0);
   g_signal_connect(G_OBJECT(button), "clicked",(GCallback)GetInfo,&iframe);
   g_signal_connect_swapped(G_OBJECT(button), "clicked",G_CALLBACK(destroy_children),GTK_OBJECT(Wins));
   gtk_widget_show (button);
@@ -768,7 +768,7 @@ void molpro()
   gtk_container_add (GTK_CONTAINER (hboxb),  create_label_pixmap(Wins,next_xpm,"Next"));
   gtk_container_add (GTK_CONTAINER (button), hboxb);
   GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
-  gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Wins)->action_area), button, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Wins))), button, TRUE, TRUE, 0);
   gtk_widget_show (button);
   gtk_widget_grab_default(button);
   g_signal_connect(G_OBJECT(button), "clicked", (GCallback)GetInfo,NULL);

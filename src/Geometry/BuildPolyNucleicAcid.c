@@ -385,7 +385,7 @@ static void setTorsionAngles( gint fragNumber, gboolean sense )
 	gint deltaArray2Counter = 0, gammaArrayCounter = 0, betaArrayCounter = 0;
 	gint alphaArrayCounter = 0;
 	gint i;
-	GtkWidget* entrySugar = GTK_BIN (comboSugar)->child;
+	GtkWidget* entrySugar = gtk_bin_get_child(GTK_BIN(comboSugar));
 	G_CONST_RETURN gchar* sugar = gtk_entry_get_text(GTK_ENTRY(entrySugar));
 	gchar* Name;
 	gint number = -1;
@@ -1143,7 +1143,7 @@ static gboolean cap(gboolean fiveToThree, gboolean doubleStranded, gboolean five
 static void makeBasepair( gchar* sense, gchar* anti, gdouble senseAngle, gdouble antiAngle, gdouble separation )
 {
 	gboolean fiveToThree = FALSE;
-	GtkWidget* entry = GTK_BIN (comboForm)->child;
+	GtkWidget* entry = gtk_bin_get_child(GTK_BIN(comboForm));
 	G_CONST_RETURN gchar* form = gtk_entry_get_text(GTK_ENTRY(entry));
 	gdouble** aM=g_malloc(3*sizeof(gdouble*));/* Matrix 3D */
 	gdouble** sM=g_malloc(3*sizeof(gdouble*));/* Matrix 3D */
@@ -1170,7 +1170,7 @@ static void makeBasepair( gchar* sense, gchar* anti, gdouble senseAngle, gdouble
        	sFrag = GetFragmentPNA( anti );
        	aFrag = GetFragmentPNA( sense );
 
-	if ( GTK_TOGGLE_BUTTON (buttonBuild53)->active )
+	if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonBuild53)) )
 	{
 		Fragment temp = aFrag;
 		fiveToThree = TRUE;
@@ -1304,7 +1304,7 @@ static void makeBasepair( gchar* sense, gchar* anti, gdouble senseAngle, gdouble
 		for(i=0;i<3;i++)
 			aFrag.Atoms[j].Coord[i] = aTmp[j][i];
 
-	if ( GTK_TOGGLE_BUTTON (buttonSingle)->active )
+	if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSingle)) )
 	{
 		if ( fiveToThree )
 		{
@@ -1325,7 +1325,7 @@ static void makeBasepair( gchar* sense, gchar* anti, gdouble senseAngle, gdouble
 					}
 				}
 			}
-			if ( GTK_TOGGLE_BUTTON (buttonCounterIon)->active )
+			if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCounterIon)) )
 				addCounterIons(lastFrag+1 );
 			lastSenseFrag++;
 		}
@@ -1348,7 +1348,7 @@ static void makeBasepair( gchar* sense, gchar* anti, gdouble senseAngle, gdouble
 					}
 				}
 			}
-			if ( GTK_TOGGLE_BUTTON (buttonCounterIon)->active )
+			if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCounterIon)) )
 				addCounterIons(lastFrag+1 );
 			lastAntiFrag++;
 		}
@@ -1357,12 +1357,12 @@ static void makeBasepair( gchar* sense, gchar* anti, gdouble senseAngle, gdouble
 	{
 		addFragment(sFrag);
 		setTorsionAngles( lastFrag+1, TRUE );
-		if ( GTK_TOGGLE_BUTTON (buttonCounterIon)->active )
+		if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCounterIon)) )
 				addCounterIons(lastFrag+1 );
 		lastFrag++;
 		addFragment(aFrag );
 		setTorsionAngles(  lastFrag+1, FALSE );
-		if ( GTK_TOGGLE_BUTTON (buttonCounterIon)->active ) addCounterIons(lastFrag+1 );
+		if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCounterIon)) ) addCounterIons(lastFrag+1 );
 		if ( lastSenseFrag != -1 )
 		{
 			int fragmentDistance = abs( lastFrag - lastSenseFrag );
@@ -1426,7 +1426,7 @@ static gboolean getOneValue(gdouble* value, G_CONST_RETURN gchar* strValue, G_CO
 /********************************************************************************/
 static gboolean getParameters()
 {
-	gboolean build53 = GTK_TOGGLE_BUTTON (buttonBuild53)->active;
+	gboolean build53 = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonBuild53));
 	G_CONST_RETURN gchar* tBeta = gtk_entry_get_text(GTK_ENTRY(Entries[E_BETA]));
 	G_CONST_RETURN gchar* tGamma = gtk_entry_get_text(GTK_ENTRY(Entries[E_GAMMA]));
 	G_CONST_RETURN gchar* tDelta = gtk_entry_get_text(GTK_ENTRY(Entries[E_DELTA]));
@@ -1449,9 +1449,9 @@ static gboolean getParameters()
 	G_CONST_RETURN gchar* tTilt = gtk_entry_get_text(GTK_ENTRY(Entries[E_TILT]));
 	gchar* t;
 	GtkWidget* w;
-	GtkWidget* entryLeft = GTK_BIN (comboLeftButton)->child;
-	GtkWidget* entryRight = GTK_BIN (comboRightButton)->child;
-	gboolean DNA = GTK_TOGGLE_BUTTON (buttonDNA)->active;
+	GtkWidget* entryLeft = gtk_bin_get_child(GTK_BIN(comboLeftButton));
+	GtkWidget* entryRight = gtk_bin_get_child(GTK_BIN(comboRightButton));
+	gboolean DNA = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDNA));
 
 	if(custom5Value)
 		g_free(custom5Value);
@@ -1579,9 +1579,9 @@ static void buildNucleicAcid(GtkWidget *w,gpointer data)
 	static gdouble AT_SEPARATION = 10.44/BOHR_TO_ANG, CG_SEPARATION = 10.72/BOHR_TO_ANG;
 	static gdouble CYT_ANGLE = 34.3, GUA_ANGLE = 35.6, THY_ANGLE = 32.6, ADE_ANGLE = 33.8;
 	gchar* tbutton = (gchar*)data;
-	gboolean DNA = GTK_TOGGLE_BUTTON (buttonDNA)->active;
-	gboolean build53 = GTK_TOGGLE_BUTTON (buttonBuild53)->active;
-	gboolean Single = GTK_TOGGLE_BUTTON (buttonSingle)->active;
+	gboolean DNA = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDNA));
+	gboolean build53 = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonBuild53));
+	gboolean Single = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonSingle));
 
 	if(!getParameters())
 		return;
@@ -1690,7 +1690,7 @@ static void resetSensitivitieButtons(GtkWidget* win, gpointer data)
 {
 	gboolean Ok = FALSE;
 
-	if(GTK_TOGGLE_BUTTON (buttonDNA)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDNA)))
 		Ok = TRUE;
 
 	gtk_widget_set_sensitive(Buttons[B_AU], !Ok);
@@ -1704,12 +1704,12 @@ static void resetFormList(GtkWidget* win, gpointer data)
 	gint i;
 	GList *list=NULL;
 
-	if(GTK_TOGGLE_BUTTON (buttonDNA)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDNA)))
 	{
 		for (i=0;i<numberDNAFormList;i++)
 			list=g_list_append(list,formDNAList[i]);
 		gtk_combo_box_entry_set_popdown_strings(comboForm,list);
-		gtk_entry_set_text(GTK_ENTRY(GTK_BIN(comboForm)->child),formDNAList[1]);
+		gtk_entry_set_text(GTK_ENTRY(gtk_bin_get_child(GTK_BIN(comboForm))),formDNAList[1]);
 	}
 	else
 	{
@@ -1722,7 +1722,7 @@ static void resetFormList(GtkWidget* win, gpointer data)
 static void resetSensitivitieEntries(GtkWidget* win, gpointer data)
 {
 	gint i;
-	GtkWidget* entry = GTK_BIN(comboForm)->child;
+	GtkWidget* entry = gtk_bin_get_child(GTK_BIN(comboForm));
 	G_CONST_RETURN gchar* form = gtk_entry_get_text(GTK_ENTRY(entry));
 
 	for(i=0;i<NENTRYS;i++)
@@ -1740,12 +1740,12 @@ static void resetSensitivitieEntries(GtkWidget* win, gpointer data)
 static void resetValueEntries(GtkWidget* win, gpointer data)
 {
 	gint i;
-	GtkWidget* entry = GTK_BIN(comboForm)->child;
+	GtkWidget* entry = gtk_bin_get_child(GTK_BIN(comboForm));
 	G_CONST_RETURN gchar* form = gtk_entry_get_text(GTK_ENTRY(entry));
 	gchar** values = NULL;
 	if(!strcmp(form,"a-form"))
 	{
-		if(GTK_TOGGLE_BUTTON (buttonDNA)->active)
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDNA)))
 			values = aformDNA;
 		else
 			values = aformRNA;
@@ -1791,10 +1791,10 @@ static void resetValueEntries(GtkWidget* win, gpointer data)
 /********************************************************************************/
 static void resetZFormDNA(GtkWidget* win, gpointer data)
 {
-	GtkWidget* entryForm = GTK_BIN(comboForm)->child;
+	GtkWidget* entryForm = gtk_bin_get_child(GTK_BIN(comboForm));
 	G_CONST_RETURN gchar* form = gtk_entry_get_text(GTK_ENTRY(entryForm));
 	G_CONST_RETURN gchar* tip = gtk_entry_get_text(GTK_ENTRY(Entries[E_TIP]));
-	GtkWidget* entrySugar = GTK_BIN(comboSugar)->child;
+	GtkWidget* entrySugar = gtk_bin_get_child(GTK_BIN(comboSugar));
 	gint i;
 
 	if(strcmp(form,"z-form")!=0)
@@ -1816,8 +1816,8 @@ static void resetZFormDNA(GtkWidget* win, gpointer data)
 /********************************************************************************/
 static void resetSugarEntry(GtkWidget* win, gpointer data)
 {
-	GtkWidget* entryForm = GTK_BIN(comboForm)->child;
-	GtkWidget* entrySugar = GTK_BIN(comboSugar)->child;
+	GtkWidget* entryForm = gtk_bin_get_child(GTK_BIN(comboForm));
+	GtkWidget* entrySugar = gtk_bin_get_child(GTK_BIN(comboSugar));
 	G_CONST_RETURN gchar* form = gtk_entry_get_text(GTK_ENTRY(entryForm));
 	gchar* value = NULL;
 	if(!strcmp(form,"a-form"))
@@ -1865,7 +1865,7 @@ static void resetTypeList(GtkWidget* win, gpointer data)
 	gint i;
 	GList *list=NULL;
 
-	if(GTK_TOGGLE_BUTTON (buttonDNA)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDNA)))
 	{
 		for (i=0;i<numberDNATypeList;i++)
 			list=g_list_append(list,typeDNAList[i]);
@@ -1899,7 +1899,7 @@ static void resetFragList(GtkWidget* button, gpointer data)
 	}
 	else
 	{
-		GtkWidget* entry = GTK_BIN(comboLeftButton)->child;
+		GtkWidget* entry = gtk_bin_get_child(GTK_BIN(comboLeftButton));
 		tbutton = gtk_entry_get_text(GTK_ENTRY(entry));
 
 		if ( !strcmp(tbutton,"ADE" ) ||
@@ -1926,8 +1926,8 @@ static void resetFragList(GtkWidget* button, gpointer data)
 /********************************************************************************/
 static void resetButtonCustom(GtkWidget* win, gpointer data)
 {
-	GtkWidget* entryLeft = GTK_BIN(comboLeftButton)->child;
-	GtkWidget* entryRight = GTK_BIN(comboRightButton)->child;
+	GtkWidget* entryLeft = gtk_bin_get_child(GTK_BIN(comboLeftButton));
+	GtkWidget* entryRight = gtk_bin_get_child(GTK_BIN(comboRightButton));
 	G_CONST_RETURN gchar* textLeft = gtk_entry_get_text(GTK_ENTRY(entryLeft));
 	G_CONST_RETURN gchar* textRight = gtk_entry_get_text(GTK_ENTRY(entryRight));
 	GtkWidget* button;
@@ -1947,12 +1947,12 @@ static GtkWidget*  newCombo(gchar **tlist,gint nlist, gboolean edit)
 	GtkWidget* combo;
 	GList *list=NULL;
 	gint i;
-	combo = gtk_combo_box_entry_new_text();
+	combo = gtk_combo_box_text_new_with_entry();
 	for (i=0;i<nlist;i++)
 		list=g_list_append(list,tlist[i]);
 	gtk_combo_box_entry_set_popdown_strings(combo,list);
 
- 	gtk_editable_set_editable((GtkEditable*) GTK_BIN(combo)->child,edit);
+ 	gtk_editable_set_editable((GtkEditable*) gtk_bin_get_child(GTK_BIN(combo)),edit);
 	return combo;
 }
 /********************************************************************************/
@@ -2136,7 +2136,7 @@ static void addGeneral(GtkWidget* Dlg,GtkWidget *box)
 	label = newLeftLabel(" : ");
     gtk_table_attach(GTK_TABLE(table2),label,1,2,0,1,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK) ,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK),1,1);
 	combo = newCombo(formDNAList,numberDNAFormList ,FALSE);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(entry),formDNAList[1]);
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeight*0.1),-1);
 	gtk_table_attach(GTK_TABLE(table2),combo,2,3,0,1,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK) ,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK),1,1);
@@ -2149,7 +2149,7 @@ static void addGeneral(GtkWidget* Dlg,GtkWidget *box)
 	label = newLeftLabel(" : ");
     gtk_table_attach(GTK_TABLE(table2),label,5,6,0,1,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK) ,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK),1,1);
 	combo  = newCombo(sugarList,numberSugarList,FALSE);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeight*0.1),-1);
 	gtk_table_attach(GTK_TABLE(table2),combo,6,7,0,1,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK) ,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK),1,1);
 	comboSugar = combo;
@@ -2219,13 +2219,13 @@ static void addButtons(GtkWidget *Dlg,GtkWidget* box)
 	gtk_table_attach(GTK_TABLE(table),hseparator,0,2,4,5,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK) ,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK),1,5);
 
 	combo  = newCombo(typeDNAList,numberDNATypeList ,FALSE);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeight*0.05),-1);
 	gtk_table_attach(GTK_TABLE(table),combo,0,1,5,6,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK) ,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK),1,1);
 	comboLeftButton = combo;
 
 	combo  = newCombo(typeDNAList,numberDNATypeList ,FALSE);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeight*0.05),-1);
 	gtk_table_attach(GTK_TABLE(table),combo,1,2,5,6,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK) ,(GtkAttachOptions)(GTK_FILL|GTK_SHRINK),1,1);
 	comboRightButton = combo;
@@ -2440,7 +2440,7 @@ void build_polynucleicacid_dlg()
   g_signal_connect(G_OBJECT(Dlg),"delete_event",(GCallback)destroyDlg,NULL);
 
   NoteBook = gtk_notebook_new();
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dlg)->vbox), NoteBook,TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dlg))), NoteBook,TRUE, TRUE, 0);
 
   AddNoteBookDlg(Dlg,NoteBook,_("Build"),addGeneralButtons);
 
@@ -2456,28 +2456,28 @@ void build_polynucleicacid_dlg()
   resetSensitivitieButtons(NULL,NULL);
   resetFormList(NULL,NULL);
   resetSensitivitieEntries(NULL,NULL);
-  g_signal_connect(G_OBJECT(GTK_BIN(comboForm)->child), "changed",G_CALLBACK(resetSensitivitieEntries),NULL);
-  g_signal_connect(G_OBJECT(GTK_BIN(comboForm)->child), "changed",G_CALLBACK(resetValueEntries),NULL);
-  g_signal_connect(G_OBJECT(GTK_BIN(comboForm)->child), "changed",G_CALLBACK(resetSugarEntry),NULL);
+  g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboForm))), "changed",G_CALLBACK(resetSensitivitieEntries),NULL);
+  g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboForm))), "changed",G_CALLBACK(resetValueEntries),NULL);
+  g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboForm))), "changed",G_CALLBACK(resetSugarEntry),NULL);
   resetValueEntries(NULL, NULL);
   resetSugarEntry(NULL,NULL);
   resetButtonCustom(NULL,NULL);
-  g_signal_connect(G_OBJECT(GTK_BIN(comboLeftButton)->child), "changed",G_CALLBACK(resetButtonCustom),NULL);
-  g_signal_connect(G_OBJECT(GTK_BIN(comboRightButton)->child), "changed",G_CALLBACK(resetButtonCustom),NULL);
+  g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboLeftButton))), "changed",G_CALLBACK(resetButtonCustom),NULL);
+  g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboRightButton))), "changed",G_CALLBACK(resetButtonCustom),NULL);
   
   /* The "Close" button */
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dlg)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), FALSE);
   gtk_widget_realize(Dlg);
   Button = create_button(Dlg,_("Close"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 5);  
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 5);  
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)destroyDlg,GTK_OBJECT(Dlg));
 
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
     
   WinPNADlg = Dlg;
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->vbox);
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->action_area);
+  gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(Dlg)));
+  gtk_widget_show_all(gtk_dialog_get_action_area(GTK_DIALOG(Dlg)));
   gtk_widget_show_now(Dlg);
 
   /* fit_windows_position(GeomDlg, Dlg);*/

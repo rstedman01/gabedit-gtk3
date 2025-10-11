@@ -297,11 +297,11 @@ static void conversion_file(GtkWidget *wid,gpointer data)
         if(!this_is_an_object((GtkObject*)outputEntry)) return;
         if(!this_is_an_object((GtkObject*)outputEntryCombo)) return;
 
-	if(GTK_TOGGLE_BUTTON(buttonCenter)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCenter)))
 	{
-		if(GTK_TOGGLE_BUTTON(buttonH)->active)
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonH)))
 		{
-			if(GTK_TOGGLE_BUTTON(buttonHAdd)->active)
+			if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonHAdd)))
 				sprintf(options," -c -h ");
 			else
 				sprintf(options," -c -d ");
@@ -310,9 +310,9 @@ static void conversion_file(GtkWidget *wid,gpointer data)
 				sprintf(options," -c ");
 	}
 	else
-	if(GTK_TOGGLE_BUTTON(buttonH)->active)
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonH)))
 	{
-		if(GTK_TOGGLE_BUTTON(buttonHAdd)->active)
+		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonHAdd)))
 			sprintf(options," -h ");
 		else
 			sprintf(options," -d ");
@@ -487,7 +487,7 @@ static GtkWidget *create_a_frame(GtkWidget *vboxall, GtkWidget *fp,
                   (GtkAttachOptions)(GTK_FILL | GTK_SHRINK),
                   1,1);
 
-	entryCombo = GTK_BIN(combo)->child;
+	entryCombo = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_editable_set_editable((GtkEditable*)entryCombo,FALSE);
 	gtk_widget_show (combo);
 
@@ -555,7 +555,7 @@ static void activateHButtons(GtkWidget *wid,gpointer data)
 	buttonHDelete = g_object_get_data (G_OBJECT (Win), "ButtonHDelete");
         if(!this_is_an_object((GtkObject*)buttonHDelete)) return;
 
-	sensitive = GTK_TOGGLE_BUTTON(buttonH)->active;
+	sensitive = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonH));
 	gtk_widget_set_sensitive(buttonHAdd, sensitive);
 	gtk_widget_set_sensitive(buttonHDelete, sensitive);
 }
@@ -735,7 +735,7 @@ void create_babel_dialogue()
         g_signal_connect_swapped(G_OBJECT(GTK_COMBO_BOX(combo)), "changed",G_CALLBACK(changed_type),entry);
         g_signal_connect_after(G_OBJECT(entry), "changed",G_CALLBACK(changed_file_name),entry);
         g_signal_connect_after(G_OBJECT(entry), "destroy",G_CALLBACK(disconnect_type),G_OBJECT(GTK_COMBO_BOX(combo)));
-	entry = GTK_BIN(combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(entry),"txt");
 	gtk_entry_set_text(GTK_ENTRY(entry),inputFormat[36]);
 
@@ -744,7 +744,7 @@ void create_babel_dialogue()
         g_signal_connect_swapped(G_OBJECT(GTK_COMBO_BOX(combo)), "changed",G_CALLBACK(changed_type),entry);
         g_signal_connect(G_OBJECT(entry), "changed",G_CALLBACK(changed_file_name),entry);
         g_signal_connect_after(G_OBJECT(entry), "destroy",G_CALLBACK(disconnect_type),G_OBJECT(GTK_COMBO_BOX(combo)));
-	entry = GTK_BIN(combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_entry_set_text(GTK_ENTRY(entry),"txt");
 	gtk_entry_set_text(GTK_ENTRY(entry),outputFormat[nListOutput-2]);
 }
@@ -777,7 +777,7 @@ static GtkWidget *create_selector_frame(GtkWidget *vboxall, GtkWidget *fp, gbool
 	
 	gtk_table_attach(GTK_TABLE(Table),combo,2,4,i,i+1, (GtkAttachOptions)(GTK_FILL | GTK_EXPAND) , (GtkAttachOptions)(GTK_FILL | GTK_SHRINK), 1,1);
 
-	entryCombo = GTK_BIN(combo)->child;
+	entryCombo = gtk_bin_get_child(GTK_BIN(combo));
 	gtk_editable_set_editable((GtkEditable*)entryCombo,FALSE);
 	gtk_widget_show (combo);
 

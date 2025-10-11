@@ -545,7 +545,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_SHRINK),
                   2,2);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 	gtk_widget_set_size_request(GTK_WIDGET(entry),(gint)(ScreenHeightD*0.2),-1);
 
@@ -769,7 +769,7 @@ static void print_gaussian_correction_vibration_geometries_link(GtkWidget* Win, 
 			break;
 		}
 	/* Equilibrium geometry */
-	if(GTK_IS_WIDGET(buttonChkgauss)&& GTK_TOGGLE_BUTTON (buttonChkgauss)->active)
+	if(GTK_IS_WIDGET(buttonChkgauss)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonChkgauss)))
 	{
 		fprintf(file,"%cChk=%s\n",p,fileNameBas);
 	}
@@ -790,7 +790,7 @@ static void print_gaussian_correction_vibration_geometries_link(GtkWidget* Win, 
 	akOverI = get_centrifuge_parameters();
 	if(!akOverI) return;
 
-	if(GTK_IS_WIDGET(buttonChkgauss)&& GTK_TOGGLE_BUTTON (buttonChkgauss)->active) link = TRUE;
+	if(GTK_IS_WIDGET(buttonChkgauss)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonChkgauss))) link = TRUE;
 	for(j=0;j<vibration.numberOfFrequencies;j++)
 	{
 		print_gaussian_correction_vibration_one_geometry(fileNameBas, file, allKeys,link, j, -1, delta, 0,akOverI[j]);
@@ -911,10 +911,10 @@ static GtkWidget*   add_inputGauss_entrys(GtkWidget *Wins,GtkWidget *vbox)
                   2,2);
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 	setComboCharge(comboCharge);
 	setComboSpinMultiplicity(comboSpinMultiplicity);
-	g_signal_connect(G_OBJECT(GTK_BIN(comboCharge)->child),"changed", G_CALLBACK(changedEntryCharge),NULL);
+	g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboCharge))),"changed", G_CALLBACK(changedEntryCharge),NULL);
 /*----------------------------------------------------------------------------------*/
 	i++;
 	add_label_table(table,_(" Energy keywords "),i,0);
@@ -1183,9 +1183,9 @@ static void print_gaussian_qff_geometries_link(GtkWidget* Win, gpointer data)
 	GtkWidget* buttonDiagonal = (GtkWidget*)(g_object_get_data(G_OBJECT(Win),"ButtonDiagonal"));
 	GtkWidget* buttonOneFile = (GtkWidget*)(g_object_get_data(G_OBJECT(Win),"ButtonOneFile"));
 	GtkWidget* buttonReducedCoordinates = (GtkWidget*)(g_object_get_data(G_OBJECT(Win),"ButtonReducedCoordinates"));
-	gboolean cubic =(GTK_IS_WIDGET(buttonDiagonal)&& GTK_TOGGLE_BUTTON (buttonDiagonal)->active);
-	gboolean oneFile =(GTK_IS_WIDGET(buttonOneFile)&& GTK_TOGGLE_BUTTON (buttonOneFile)->active);
-	gboolean reducedCoordinates =(GTK_IS_WIDGET(buttonReducedCoordinates)&& GTK_TOGGLE_BUTTON (buttonReducedCoordinates)->active);
+	gboolean cubic =(GTK_IS_WIDGET(buttonDiagonal)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDiagonal)));
+	gboolean oneFile =(GTK_IS_WIDGET(buttonOneFile)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonOneFile)));
+	gboolean reducedCoordinates =(GTK_IS_WIDGET(buttonReducedCoordinates)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonReducedCoordinates)));
 	gchar* allKeys = NULL;
 	gdouble delta = 1;
 	gboolean link = FALSE;
@@ -1228,7 +1228,7 @@ static void print_gaussian_qff_geometries_link(GtkWidget* Win, gpointer data)
 	}
 
 	/* Equilibrium geometry */
-	if(GTK_IS_WIDGET(buttonChkgauss)&& GTK_TOGGLE_BUTTON (buttonChkgauss)->active) { fprintf(file,"%cChk=%s\n",p,fileNameBas); }
+	if(GTK_IS_WIDGET(buttonChkgauss)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonChkgauss))) { fprintf(file,"%cChk=%s\n",p,fileNameBas); }
 	fprintf(file,"# %s\n",allKeys);
 	fprintf(file,"# Test NoSymm\n");
 	fprintf(file,"# Units(Ang,Deg)\n");
@@ -1248,7 +1248,7 @@ static void print_gaussian_qff_geometries_link(GtkWidget* Win, gpointer data)
 
 	deltas = getDeltaTable(reducedCoordinates, delta);
 
-	if(GTK_IS_WIDGET(buttonChkgauss)&& GTK_TOGGLE_BUTTON (buttonChkgauss)->active) link = TRUE;
+	if(GTK_IS_WIDGET(buttonChkgauss)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonChkgauss))) link = TRUE;
 	for(j=0;j<vibration.numberOfFrequencies;j++)
 	{
 		k++;
@@ -1428,10 +1428,10 @@ static GtkWidget*   add_inputGauss_qff_entrys(GtkWidget *Wins,GtkWidget *vbox)
                   2,2);
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 	setComboCharge(comboCharge);
 	setComboSpinMultiplicity(comboSpinMultiplicity);
-	g_signal_connect(G_OBJECT(GTK_BIN(comboCharge)->child),"changed", G_CALLBACK(changedEntryCharge),NULL);
+	g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboCharge))),"changed", G_CALLBACK(changedEntryCharge),NULL);
 /*----------------------------------------------------------------------------------*/
 	i++;
 	add_label_table(table,_(" Energy keywords "),i,0);
@@ -1783,8 +1783,8 @@ static void print_cchemi_qff_geometries(GtkWidget* Win, gpointer data)
 	G_CONST_RETURN gchar* dirNameStr = NULL;
 	GtkWidget* buttonDiagonal = (GtkWidget*)(g_object_get_data(G_OBJECT(Win),"ButtonDiagonal"));
 	GtkWidget* buttonReducedCoordinates = (GtkWidget*)(g_object_get_data(G_OBJECT(Win),"ButtonReducedCoordinates"));
-	gboolean cubic =(GTK_IS_WIDGET(buttonDiagonal)&& GTK_TOGGLE_BUTTON (buttonDiagonal)->active);
-	gboolean reducedCoordinates =(GTK_IS_WIDGET(buttonReducedCoordinates)&& GTK_TOGGLE_BUTTON (buttonReducedCoordinates)->active);
+	gboolean cubic =(GTK_IS_WIDGET(buttonDiagonal)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonDiagonal)));
+	gboolean reducedCoordinates =(GTK_IS_WIDGET(buttonReducedCoordinates)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonReducedCoordinates)));
 	gdouble delta = 1;
 	gboolean link = FALSE;
 	gchar* fileNameBas = NULL;
@@ -1864,7 +1864,7 @@ static void print_cchemi_qff_geometries(GtkWidget* Win, gpointer data)
 
 	deltas = getDeltaTable(reducedCoordinates, delta);
 
-	if(GTK_IS_WIDGET(buttonChkgauss)&& GTK_TOGGLE_BUTTON (buttonChkgauss)->active) link = TRUE;
+	if(GTK_IS_WIDGET(buttonChkgauss)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonChkgauss))) link = TRUE;
 	for(j=0;j<vibration.numberOfFrequencies;j++)
 	{
 		k++;
@@ -2040,10 +2040,10 @@ static GtkWidget*   add_inputCChemI_qff_entrys(GtkWidget *Wins,GtkWidget *vbox)
                   2,2);
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 	setComboCharge(comboCharge);
 	setComboSpinMultiplicity(comboSpinMultiplicity);
-	g_signal_connect(G_OBJECT(GTK_BIN(comboCharge)->child),"changed", G_CALLBACK(changedEntryCharge),NULL);
+	g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboCharge))),"changed", G_CALLBACK(changedEntryCharge),NULL);
 /*----------------------------------------------------------------------------------*/
 	i++;
 	add_label_table(table,_(" Model "),i,0);
@@ -2348,10 +2348,10 @@ static GtkWidget*   add_inputGauss_entrys_along_one_frequency(GtkWidget *Wins,Gt
                   2,2);
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 	setComboCharge(comboCharge);
 	setComboSpinMultiplicity(comboSpinMultiplicity);
-	g_signal_connect(G_OBJECT(GTK_BIN(comboCharge)->child),"changed", G_CALLBACK(changedEntryCharge),NULL);
+	g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboCharge))),"changed", G_CALLBACK(changedEntryCharge),NULL);
 /*----------------------------------------------------------------------------------*/
 	i++;
 	add_label_table(table,_(" Energy keywords "),i,0);
@@ -6194,7 +6194,7 @@ static gchar* get_format_image_from_option()
 /********************************************************************************/
 static void filmSelected(GtkWidget *widget)
 {
-	if(GTK_IS_WIDGET(buttonCheckFilm)&& GTK_TOGGLE_BUTTON (buttonCheckFilm)->active)
+	if(GTK_IS_WIDGET(buttonCheckFilm)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCheckFilm)))
 	{
 		createFilm = TRUE;
 		if(GTK_IS_WIDGET(buttonDirFilm))  gtk_widget_set_sensitive(buttonDirFilm, TRUE);
@@ -7730,10 +7730,10 @@ static GtkWidget*   add_inputThermo(GtkWidget *Wins,GtkWidget *vbox)
                   2,2);
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 	setComboCharge(comboCharge);
 	setComboSpinMultiplicity(comboSpinMultiplicity);
-	g_signal_connect(G_OBJECT(GTK_BIN(comboCharge)->child),"changed", G_CALLBACK(changedEntryCharge),NULL);
+	g_signal_connect(G_OBJECT(gtk_bin_get_child(GTK_BIN(comboCharge))),"changed", G_CALLBACK(changedEntryCharge),NULL);
 /*----------------------------------------------------------------------------------*/
 	i++;
 	add_label_table(table,_(" Electronic energy (Hartree) "),i,0);

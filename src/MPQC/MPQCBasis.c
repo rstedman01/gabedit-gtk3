@@ -140,7 +140,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
                   3,3);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 
 	return entry;
@@ -191,7 +191,7 @@ void addMPQCAuxBasisToTable(GtkWidget *table, gint i, GtkWidget* comboMethod)
 	gchar* listAuxBasis[] = {" "};
 	GtkWidget* entryMethod = NULL;
 
-	if(GTK_IS_COMBO_BOX(comboMethod)) entryMethod = GTK_BIN(comboMethod)->child;
+	if(GTK_IS_COMBO_BOX(comboMethod)) entryMethod = gtk_bin_get_child(GTK_BIN(comboMethod));
 
 
 	label = add_label_table(table,_("Auxiliary basis"),(gushort)i,0);

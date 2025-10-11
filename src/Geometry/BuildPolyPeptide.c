@@ -617,7 +617,7 @@ static void undo(GtkWidget *Dlg, gpointer data)
 		sprintf(fragName,"%s",G[Nb-1].Residue+1);
 		delete_last_fragment();
 		lowercase(fragName);
-		if (GTK_TOGGLE_BUTTON (ButtonL)->active) sprintf(fullFragName,"L%s",fragName);
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonL))) sprintf(fullFragName,"L%s",fragName);
 		else sprintf(fullFragName,"D%s",fragName);
 		FreeFragment(&Frag);
 		Frag = GetFragmentPPD(fullFragName);
@@ -661,7 +661,7 @@ static void build_c_capping(GtkWidget *Dlg,gpointer data)
 	{
 		sprintf(fragName,"%s","nme");
 		lowercase(fragName);
-		if (GTK_TOGGLE_BUTTON (ButtonL)->active) sprintf(fullFragName,"L%s",fragName);
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonL))) sprintf(fullFragName,"L%s",fragName);
 		else sprintf(fullFragName,"D%s",fragName);
 		FreeFragment(&Frag);
 		Frag = GetFragmentPPD(fullFragName);
@@ -673,7 +673,7 @@ static void build_c_capping(GtkWidget *Dlg,gpointer data)
 	{
 		sprintf(fragName,"%s","nhe");
 		lowercase(fragName);
-		if (GTK_TOGGLE_BUTTON (ButtonL)->active) sprintf(fullFragName,"L%s",fragName);
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonL))) sprintf(fullFragName,"L%s",fragName);
 		else sprintf(fullFragName,"D%s",fragName);
 		FreeFragment(&Frag);
 		Frag = GetFragmentPPD(fullFragName);
@@ -687,7 +687,7 @@ static void build_c_capping(GtkWidget *Dlg,gpointer data)
 		else sprintf(fragName,"C%s",G[Nb-1].Residue);
 		delete_last_fragment();
 		lowercase(fragName);
-		if (GTK_TOGGLE_BUTTON (ButtonL)->active) sprintf(fullFragName,"L%s",fragName);
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonL))) sprintf(fullFragName,"L%s",fragName);
 		else sprintf(fullFragName,"D%s",fragName);
 		FreeFragment(&Frag);
 		Frag = GetFragmentPPD(fullFragName);
@@ -709,7 +709,7 @@ static void build_n_capping(GtkWidget *Dlg,gchar* firstResidue)
 	{
 		sprintf(fragName,"%s","ace");
 		lowercase(fragName);
-		if (GTK_TOGGLE_BUTTON (ButtonL)->active) sprintf(fullFragName,"L%s",fragName);
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonL))) sprintf(fullFragName,"L%s",fragName);
 		else sprintf(fullFragName,"D%s",fragName);
 		FreeFragment(&Frag);
 		Frag = GetFragmentPPD(fullFragName);
@@ -717,7 +717,7 @@ static void build_n_capping(GtkWidget *Dlg,gchar* firstResidue)
 		re_set_angles(TRUE);
 		sprintf(fragName,"%s",firstResidue);
 		lowercase(fragName);
-		if (GTK_TOGGLE_BUTTON (ButtonL)->active) sprintf(fullFragName,"L%s",fragName);
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonL))) sprintf(fullFragName,"L%s",fragName);
 		else sprintf(fullFragName,"D%s",fragName);
 		FreeFragment(&Frag);
 		Frag = GetFragmentPPD(fullFragName);
@@ -729,7 +729,7 @@ static void build_n_capping(GtkWidget *Dlg,gchar* firstResidue)
 	{
 		sprintf(fragName,"%s",firstResidue);
 		lowercase(fragName);
-		if (GTK_TOGGLE_BUTTON (ButtonL)->active) sprintf(fullFragName,"L%s",fragName);
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonL))) sprintf(fullFragName,"L%s",fragName);
 		else sprintf(fullFragName,"D%s",fragName);
 		FreeFragment(&Frag);
 		Frag = GetFragmentPPD(fullFragName);
@@ -742,7 +742,7 @@ static void build_n_capping(GtkWidget *Dlg,gchar* firstResidue)
 		if(!strcmp(ncap,"NH2")) sprintf(fragName,"H%s",firstResidue);
 		else sprintf(fragName,"N%s",firstResidue);
 		lowercase(fragName);
-		if (GTK_TOGGLE_BUTTON (ButtonL)->active) sprintf(fullFragName,"L%s",fragName);
+		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonL))) sprintf(fullFragName,"L%s",fragName);
 		else sprintf(fullFragName,"D%s",fragName);
 		FreeFragment(&Frag);
 		Frag = GetFragmentPPD(fullFragName);
@@ -767,7 +767,7 @@ static void build_polypeptide(GtkWidget *button,gpointer data)
 	}
 	sprintf(fragName,"%s",(gchar*)data);
 	lowercase(fragName);
-	if (GTK_TOGGLE_BUTTON (ButtonL)->active) sprintf(fullFragName,"L%s",fragName);
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonL))) sprintf(fullFragName,"L%s",fragName);
 	else sprintf(fullFragName,"D%s",fragName);
 
 	FreeFragment(&Frag);
@@ -1527,7 +1527,7 @@ void build_polypeptide_dlg()
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dlg)->vbox), frame,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dlg))), frame,TRUE,TRUE,0);
   gtk_widget_show (frame);
 
   vboxframe = create_vbox(frame);
@@ -1543,29 +1543,29 @@ void build_polypeptide_dlg()
 
 
 
-  gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dlg)->action_area), FALSE);
+  gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), FALSE);
   gtk_widget_realize(Dlg);
 
   Button = gtk_button_new_with_mnemonic("_Undo");
-  gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, FALSE, 5);  
+  gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, FALSE, 5);  
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)undo,GTK_OBJECT(Dlg));
   g_object_set_data(G_OBJECT (Dlg), "UndoButton",Button);
   reset_sensitive_undo_button(Dlg);
 
   Button = create_button(Dlg,_("Add C-capping"));
-  gtk_box_pack_start (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, FALSE, 5);  
+  gtk_box_pack_start (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, FALSE, 5);  
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)build_c_capping,GTK_OBJECT(Dlg));
   g_object_set_data(G_OBJECT (Dlg), "BuildCCapping",Button);
   reset_sensitive_build_c_capping(Dlg, FALSE);
 
   Button = create_button(Dlg,_("Close"));
-  gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dlg)->action_area), Button, FALSE, TRUE, 2);
+  gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dlg))), Button, FALSE, TRUE, 2);
   g_signal_connect_swapped(G_OBJECT(Button), "clicked",(GCallback)destroy_dlg,GTK_OBJECT(Dlg));
 
   GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Button);
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->vbox);
-  gtk_widget_show_all(GTK_DIALOG(Dlg)->action_area);
+  gtk_widget_show_all(gtk_dialog_get_content_area(GTK_DIALOG(Dlg)));
+  gtk_widget_show_all(gtk_dialog_get_action_area(GTK_DIALOG(Dlg)));
   gtk_widget_show_now(Dlg);
 
   /* fit_windows_position(GeomDlg, Dlg);*/

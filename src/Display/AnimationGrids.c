@@ -660,7 +660,7 @@ static gchar* get_format_image_from_option()
 /********************************************************************************/
 static void filmSelected(GtkWidget *widget)
 {
-	if(GTK_IS_WIDGET(buttonCheckFilm)&& GTK_TOGGLE_BUTTON (buttonCheckFilm)->active)
+	if(GTK_IS_WIDGET(buttonCheckFilm)&& gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonCheckFilm)))
 	{
 		createFilm = TRUE;
 		if(GTK_IS_WIDGET(buttonDirFilm))  gtk_widget_set_sensitive(buttonDirFilm, TRUE);

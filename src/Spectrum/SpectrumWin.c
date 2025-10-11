@@ -23,7 +23,31 @@ DEALINGS IN THE SOFTWARE.
 #include <gtk/gtk.h>
 #include "../Common/Global.h"
 #include "../Utils/GabeditXYPlot.h"
+#include "../../Config.h"
+#include "../Utils/GabeditXYPlot.h"
 #include "SpectrumWin.h"
+
+// Helper for preservation of old pointer semantics with GTK3-safe calls
+static inline void get_pointer_xy_for_event(GtkWidget* widget, GdkEventMotion* event, gint* out_x, gint* out_y)
+{
+	GdkWindow* win = gtk_widget_get_window(widget);
+    if (!win) { *out_x = 0; *out_y = 0; return; }
+
+    if (event && !event->is_hint && event->window == win) {
+        *out_x = (gint)event->x;
+        *out_y = (gint)event->y;
+        return;
+    }
+
+	#if GTK_CHECK_VERSION(3,20,0)
+		GdkDisplay* display = gdk_window_get_display(win);
+		GdkSeat* seat = gdk_display_get_default_seat(display);
+		GdkDevice* pointer = gdk_seat_get_pointer(seat);
+		gdk_window_get_device_position(win, pointer, out_x, out_y, NULL);
+	#else 
+		gdk_window_get_pointer(win, out_x, out_y, NULL);
+	#endif
+}
 
 /****************************************************************************************/
 static gdouble get_ymax(XYPlotData* dataCurve)
@@ -597,7 +621,7 @@ static void toggle_ymax_to_one_toggled(GtkToggleButton *togglebutton, gpointer u
 static gboolean xyplot_motion_notify_event(GtkWidget *xyplot, GdkEventMotion *event, gpointer user_data)
 {
 	double xv, yv;
-	int x, y;
+	gint x, y;
 	char str[50];
 	int context_id;
 	GtkWidget* statusbar = g_object_get_data(G_OBJECT (xyplot), "StatusBar");
@@ -605,8 +629,7 @@ static gboolean xyplot_motion_notify_event(GtkWidget *xyplot, GdkEventMotion *ev
 	x=event->x;
 	y=event->y;
 
-	if (event->is_hint || (event->window != xyplot->window))
-		gdk_window_get_pointer (xyplot->window, &x, &y, NULL);
+	get_pointer_xy_for_event(xyplot, event, &x, &y);
 
 	if(gabedit_xyplot_get_point(GABEDIT_XYPLOT(xyplot), x, y, &xv, &yv))
 	snprintf(str, 50, _("Mouse position: %lf, %lf"), xv, yv);

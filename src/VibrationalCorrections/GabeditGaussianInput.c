@@ -1389,9 +1389,9 @@ void read_vibcorrection_gaussian_file_dlg()
 	gtk_box_pack_start (GTK_BOX (hbox), labelStep, FALSE, FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), entryTemperatureStep, FALSE, FALSE, 0); 
 
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(filesel)->vbox), hsep1, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(filesel)->vbox), hbox, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(filesel)->vbox), hsep2, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(filesel))), hsep1, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(filesel))), hbox, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area(GTK_DIALOG(filesel))), hsep2, FALSE, FALSE, 0);
 	gtk_widget_show_all(hsep1);
 	gtk_widget_show_all(hsep2);
 	gtk_widget_show_all(hbox);

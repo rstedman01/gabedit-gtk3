@@ -2737,7 +2737,7 @@ static void DialogueTransInVar()
   g_object_ref (frame);
   g_object_set_data_full(G_OBJECT (Dialogue), "frame",frame,(GDestroyNotify) g_object_unref);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->vbox), frame,TRUE,TRUE,0);
+   gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -2746,13 +2746,13 @@ static void DialogueTransInVar()
   gtk_box_pack_start(GTK_BOX(vboxframe), Label,TRUE,TRUE,0);
 
   Bouton = create_button(Dialogue,_("No"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Bouton);
  
   Bouton = create_button(Dialogue,_("Yes"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect(G_OBJECT(Bouton), "clicked", (GCallback)trans_allGeomXYZ_to_variables, NULL);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
@@ -2793,7 +2793,7 @@ static void DialogueTransInConst()
   g_object_set_data_full(G_OBJECT (Dialogue), "frame",
 	  frame,(GDestroyNotify) g_object_unref);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-   gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->vbox), frame,TRUE,TRUE,0);
+   gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -2802,13 +2802,13 @@ static void DialogueTransInConst()
   gtk_box_pack_start(GTK_BOX(vboxframe), Label,TRUE,TRUE,0);
 
   Bouton = create_button(Dialogue,_("No"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Bouton);
  
   Bouton = create_button(Dialogue,_("Yes"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect(G_OBJECT(Bouton), "clicked", (GCallback)trans_allVariables_to_Constants, NULL);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
@@ -3279,7 +3279,7 @@ static void DialogueAdd(GtkWidget *w,gpointer data)
   g_object_set_data_full(G_OBJECT (Dialogue), "frame",
 	  frame,(GDestroyNotify) g_object_unref);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-   gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->vbox), frame,TRUE,TRUE,0);
+   gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -3396,12 +3396,12 @@ static void DialogueAdd(GtkWidget *w,gpointer data)
   gtk_widget_realize(Dialogue);
 
   Bouton = create_button(Dialogue,_("Cancel"));
-  gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
 
   Bouton = create_button(Dialogue,_("OK"));
-  gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect(G_OBJECT(Bouton), "clicked",(GCallback)addAtom,Entry[E_SYMBOL]);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)destroy_dialogue,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
@@ -3459,7 +3459,7 @@ static void DialogueEdit()
   g_object_set_data_full(G_OBJECT (Dialogue), "frame",
 	  frame,(GDestroyNotify) g_object_unref);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-   gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->vbox), frame,TRUE,TRUE,0);
+   gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -3561,12 +3561,12 @@ static void DialogueEdit()
   gtk_widget_realize(Dialogue);
 
   Bouton = create_button(Dialogue,_("Cancel"));
-  gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
 
   Bouton = create_button(Dialogue,_("OK"));
-  gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect(G_OBJECT(Bouton), "clicked",(GCallback)EditAtom,Entry[E_SYMBOL]);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)destroy_dialogue,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
@@ -3609,7 +3609,7 @@ static void DialogueDelete()
   g_object_set_data_full(G_OBJECT (Dialogue), "frame",
 	  frame,(GDestroyNotify) g_object_unref);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-   gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->vbox), frame,TRUE,TRUE,0);
+   gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -3618,13 +3618,13 @@ static void DialogueDelete()
   gtk_box_pack_start(GTK_BOX(vboxframe), Label,TRUE,TRUE,0);
 
   Bouton = create_button(Dialogue,_("No"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Bouton);
  
   Bouton = create_button(Dialogue,_("Yes"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect(G_OBJECT(Bouton), "clicked",(GCallback)DelAtom, NULL);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
@@ -14397,21 +14397,21 @@ void save_xyzmol2tinkerpdbhin_file(GtkWidget* win,gpointer data)
   	dirName = gtk_file_chooser_get_current_folder (GTK_FILE_CHOOSER(buttonDirSelector));
   	fileName = get_dir_file_name(dirName,entrytext);
 	if ((!fileName) || (strcmp(fileName,"") == 0)) return ;
-	if (GTK_TOGGLE_BUTTON (ButtonXYZ)->active)
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonXYZ)))
 	{
 	 	save_xyz_file(fileName);
 	}
 	 else
-	 if (GTK_TOGGLE_BUTTON (ButtonMol2)->active)
+	 if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonMol2)))
 	 {
 		save_mol2_file(fileName);
 	 }
 	 else
-	 if (GTK_TOGGLE_BUTTON (ButtonPDB)->active)
+	 if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonPDB)))
 	 {
 		 save_pdb_file(fileName);
 	 }
-	 if (GTK_TOGGLE_BUTTON (ButtonHIN)->active)
+	 if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(ButtonHIN)))
 	 {
 		 save_hin_file(fileName);
 	 }
@@ -14827,7 +14827,7 @@ static void DialogueDeleteV()
   g_object_set_data_full(G_OBJECT (Dialogue), "frame",
 	  frame,(GDestroyNotify) g_object_unref);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-   gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->vbox), frame,TRUE,TRUE,0);
+   gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -14839,13 +14839,13 @@ static void DialogueDeleteV()
   gtk_box_pack_start(GTK_BOX(vboxframe), Label,TRUE,TRUE,0);
  
   Bouton = create_button(Dialogue,"No");
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
   gtk_widget_grab_default(Bouton);
 
   Bouton = create_button(Dialogue,"Yes");
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect(G_OBJECT(Bouton), "clicked",(GCallback)DelVariable, NULL);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
@@ -14887,7 +14887,7 @@ static void DialogueEditV()
   g_object_set_data_full(G_OBJECT (Dialogue), "frame",
 	  frame,(GDestroyNotify) g_object_unref);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-   gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->vbox), frame,TRUE,TRUE,0);
+   gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -14906,12 +14906,12 @@ static void DialogueEditV()
 
   gtk_widget_realize(Dialogue);
   Bouton = create_button(Dialogue,_("Cancel"));
-  gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start( GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
 
   Bouton = create_button(Dialogue,_("OK"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect(G_OBJECT(Bouton), "clicked",(GCallback)EditVariable,NULL);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)destroy_dialogue,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
@@ -14997,7 +14997,7 @@ static void DialogueAddV()
   g_object_set_data_full(G_OBJECT (Dialogue), "frame",
 	  frame,(GDestroyNotify) g_object_unref);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-   gtk_box_pack_start( GTK_BOX(GTK_DIALOG(Dialogue)->vbox), frame,TRUE,TRUE,0);
+   gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))), frame,TRUE,TRUE,0);
 
   gtk_widget_show (frame);
 
@@ -15012,12 +15012,12 @@ static void DialogueAddV()
   gtk_widget_realize(Dialogue);
 
   Bouton = create_button(Dialogue,_("Cancel"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)delete_child,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
 
   Bouton = create_button(Dialogue,_("OK"));
-  gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->action_area), Bouton,TRUE,TRUE,0);
+  gtk_box_pack_start(GTK_BOX(gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton,TRUE,TRUE,0);
   g_signal_connect(G_OBJECT(Bouton), "clicked",(GCallback)AddVariable,NULL);
   g_signal_connect_swapped(G_OBJECT(Bouton), "clicked",(GCallback)destroy_dialogue,GTK_OBJECT(Dialogue));
   GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);

@@ -568,7 +568,7 @@ static GtkWidget *create_batch_remote_frame( GtkWidget *vboxall,GtkWidget **entr
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
                   1,1);
 	gtk_widget_show (combo);
-	entry[0] = GTK_BIN(combo)->child;
+	entry[0] = gtk_bin_get_child(GTK_BIN(combo));
         g_object_set_data (G_OBJECT (entry[0]), "Combo",combo);
         g_signal_connect(G_OBJECT(GTK_COMBO_BOX(combo)), "changed",G_CALLBACK(changed_host),entry);
 
@@ -581,7 +581,7 @@ static GtkWidget *create_batch_remote_frame( GtkWidget *vboxall,GtkWidget **entr
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
                   1,1);
 
-	entry[1] = GTK_BIN(combo)->child;
+	entry[1] = gtk_bin_get_child(GTK_BIN(combo));
         g_object_set_data (G_OBJECT (entry[1]), "Combo",combo);
 
 

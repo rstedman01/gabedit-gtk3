@@ -309,7 +309,7 @@ static void putFireFlyEXEInfoInTextEditor()
 static void putFireFlyTDHFTDDFT()
 {
 	if(!buttonTD) return;
-	if(!GTK_TOGGLE_BUTTON (buttonTD)->active) return;
+	if(!gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonTD))) return;
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " ",-1);
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, &fireflyColorFore.keyWord, &fireflyColorBack.keyWord, "$CONTRL",-1);
         gabedit_text_insert (GABEDIT_TEXT(text), NULL, NULL, NULL, " CITYP=",-1);

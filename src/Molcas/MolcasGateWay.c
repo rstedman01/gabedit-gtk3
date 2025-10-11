@@ -1291,7 +1291,7 @@ static void activateSolvConductorButton(GtkWidget *button, gpointer data)
 	if(!GTK_IS_WIDGET(button)) return;
 
 	sprintf(molcasSolvation.method,"PCM");
-	if(GTK_TOGGLE_BUTTON (button)->active) 
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button))) 
 			sprintf(molcasSolvation.method,"CPCM");
 }
 /**************************************************************************************************************************************/
@@ -1312,7 +1312,7 @@ static void activateSolvRadioButton(GtkWidget *button, gpointer data)
 		if(entrySolvation) gtk_widget_set_sensitive(entrySolvation, TRUE);
 		if(buttonConductor) gtk_widget_set_sensitive(buttonConductor, TRUE);
 		sprintf(molcasSolvation.method,"PCM");
-		if(buttonConductor && GTK_TOGGLE_BUTTON (buttonConductor)->active) 
+		if(buttonConductor && gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonConductor))) 
 			sprintf(molcasSolvation.method,"CPCM");
 	}
 	else
@@ -1351,7 +1351,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
                   3,3);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 
 	return entry;
@@ -1548,13 +1548,13 @@ static void createViewInfoAbelianGroupWindow(GtkWidget* win, gpointer data)
 	g_signal_connect(G_OBJECT(Dialogue), "delete_event", (GCallback)destroy_button_windows, NULL);
 	g_signal_connect(G_OBJECT(Dialogue), "delete_event", (GCallback)gtk_widget_destroy, NULL);
 
-	TextWid = create_text_widget(GTK_WIDGET(GTK_DIALOG(Dialogue)->vbox),NULL,&frame);
+	TextWid = create_text_widget(GTK_WIDGET(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))),NULL,&frame);
 	gabedit_text_set_editable(GABEDIT_TEXT(TextWid), TRUE);
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), FALSE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), FALSE);
 
 	Bouton = create_button(Dialogue,"OK");
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), Bouton, FALSE, TRUE, 5);	
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Bouton, FALSE, TRUE, 5);	
 	GTK_WIDGET_SET_FLAGS(Bouton, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Bouton);
 	g_signal_connect_swapped(G_OBJECT(Bouton), "clicked", (GCallback)destroy_button_windows, GTK_OBJECT(Dialogue));

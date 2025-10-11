@@ -20,6 +20,8 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __GABEDIT_GABEDITTEXTEDIT_H__
 #define __GABEDIT_GABEDITTEXTEDIT_H__
 
+#include "../../gabeditGTK3compat.h"
+
 #define GABEDIT_TEXT                 (GtkWidget*)
 GtkWidget* gabedit_text_new();
 void gabedit_text_insert(GtkWidget* text, GdkFont* font, GdkColor* colorFore, GdkColor* colorBack, const gchar* str, gint l);

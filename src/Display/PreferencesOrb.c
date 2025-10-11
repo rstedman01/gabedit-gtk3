@@ -340,7 +340,7 @@ static void apply_camera(GtkWidget* Win,gpointer data)
 	else
 		zo = 1/zo*45;
 	if(GTK_IS_WIDGET(buttonPerspective))
-	 perspective =GTK_TOGGLE_BUTTON (buttonPerspective)->active;
+	 perspective =gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPerspective));
 	set_camera_values(zn, zf, zo, perspective);
 	rafresh_perspective_button();
 }
@@ -349,7 +349,7 @@ static void set_sensitive_camera(GtkWidget* buttonPerspective, gpointer data)
 {
 	if(GTK_IS_WIDGET(buttonPerspective))
 	{
-		gboolean perspective = GTK_TOGGLE_BUTTON (buttonPerspective)->active;
+		gboolean perspective = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(buttonPerspective));
 		GtkWidget* EntryZNear = (GtkWidget*)g_object_get_data(G_OBJECT (buttonPerspective), "EntryZNear");
 		GtkWidget* EntryZFar = g_object_get_data(G_OBJECT (buttonPerspective), "EntryZFar");
 		GtkWidget* buttonOptimal = g_object_get_data(G_OBJECT (buttonPerspective), "ButtonOptimal");

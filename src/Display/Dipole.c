@@ -132,17 +132,17 @@ static void create_dipole_window(gdouble DN[], gdouble DE[], gdouble D[], gdoubl
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
-	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(Dialogue)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(Dialogue))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
 
 	vboxframe = create_vbox(frame);
 	create_frame_dipole(Dialogue,vboxframe, DN, DE, D, ne,z);
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), FALSE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), FALSE);
     
 	Button = create_button(Dialogue,"OK");
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(Dialogue)->action_area), Button, FALSE, TRUE, 5);  
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(Dialogue))), Button, FALSE, TRUE, 5);  
 	GTK_WIDGET_SET_FLAGS(Button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(Button);
 	g_signal_connect_swapped(G_OBJECT(Button), "clicked", (GCallback)destroy_button_windows, GTK_OBJECT(Dialogue));
@@ -355,7 +355,7 @@ static GtkWidget* showResultDlg(gchar *message,gchar *title)
 	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
 
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 5);
-	gtk_box_pack_start( GTK_BOX(GTK_DIALOG(dlgWin)->vbox), frame,TRUE,TRUE,0);
+	gtk_box_pack_start( GTK_BOX(gtk_dialog_get_content_area(GTK_DIALOG(dlgWin))), frame,TRUE,TRUE,0);
 
 	gtk_widget_show (frame);
 
@@ -363,10 +363,10 @@ static GtkWidget* showResultDlg(gchar *message,gchar *title)
 	txtWid = create_text_widget(vboxframe,NULL,&frame);
 	if(message) gabedit_text_insert (GABEDIT_TEXT(txtWid), NULL, NULL, NULL,message,-1);   
 
-	gtk_box_set_homogeneous (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), FALSE);
+	gtk_box_set_homogeneous (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dlgWin))), FALSE);
   
 	button = create_button(dlgWin,"Close");
-	gtk_box_pack_end (GTK_BOX( GTK_DIALOG(dlgWin)->action_area), button, FALSE, TRUE, 5);  
+	gtk_box_pack_end (GTK_BOX( gtk_dialog_get_action_area(GTK_DIALOG(dlgWin))), button, FALSE, TRUE, 5);  
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);
 	g_signal_connect_swapped(G_OBJECT(button), "clicked", (GCallback)gtk_widget_destroy, GTK_OBJECT(dlgWin));

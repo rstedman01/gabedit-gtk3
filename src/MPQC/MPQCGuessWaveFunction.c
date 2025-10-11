@@ -325,7 +325,7 @@ static GtkWidget* addComboListToATable(GtkWidget* table,
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
 		(GtkAttachOptions)	(GTK_FILL | GTK_EXPAND),
                   3,3);
-	entry = GTK_BIN (combo)->child;
+	entry = gtk_bin_get_child(GTK_BIN(combo));
 	g_object_set_data(G_OBJECT (entry), "Combo",combo);
 
 	return entry;
@@ -380,7 +380,7 @@ static void addMPQCMethodToTable(GtkWidget *table, gint i, GtkWidget *comboSpinM
 	GtkWidget* labelMethod = NULL;
 	GtkWidget* entrySpinMultiplicity = NULL;
 
-	entrySpinMultiplicity  = GTK_BIN (comboSpinMultiplicity)->child;
+	entrySpinMultiplicity  = gtk_bin_get_child(GTK_BIN(comboSpinMultiplicity));
 
 	add_label_table(table, _("Method"),(gushort) i, 0);
 	add_label_table(table, ":",(gushort) i, 1);
@@ -403,7 +403,7 @@ void coreButtonClicked(GtkWidget *button, gpointer data)
 	GtkWidget* vboxTable = NULL;
 	if(!GTK_IS_BUTTON(button))return;
 	vboxTable = g_object_get_data(G_OBJECT (button), "VboxTable");
-  	if(GTK_TOGGLE_BUTTON (button)->active)
+  	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
 	{
 		if(GTK_IS_WIDGET(vboxTable)) gtk_widget_set_sensitive(vboxTable, FALSE);
 		/* if(GTK_IS_WIDGET(vboxTable)) gtk_widget_hide(vboxTable);*/
@@ -458,7 +458,7 @@ void createMPQCGuess(GtkWidget *box)
 	comboSpinMultiplicity = addMPQCSpinGuessToTable(table, i);
 
 	if(GTK_IS_COMBO_BOX(comboCharge))
-		g_object_set_data(G_OBJECT (GTK_BIN(comboCharge)->child), "ComboSpinMultiplicity", comboSpinMultiplicity);
+		g_object_set_data(G_OBJECT (gtk_bin_get_child(GTK_BIN(comboCharge))), "ComboSpinMultiplicity", comboSpinMultiplicity);
 
 	i = 2;
 	addMPQCMethodToTable(table, i, comboSpinMultiplicity);

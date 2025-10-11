@@ -42,7 +42,7 @@ static void activateButton(GtkWidget *button, gpointer data)
 	 
 	if(!GTK_IS_WIDGET(button)) return;
 
-	if(GTK_TOGGLE_BUTTON (button)->active) activate = TRUE;
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button))) activate = TRUE;
 	type  = g_object_get_data(G_OBJECT (button), "Type");
 	if(type)
 	{
