@@ -1,0 +1,584 @@
+src/Spectrum/SpectrumWin.h:42:  GdkColor point_color, line_color;
+src/Spectrum/SpectrumWin.c:72:	GdkColor line_color = winData->line_color;
+src/Spectrum/SpectrumWin.c:73:	GdkColor point_color = winData->point_color;
+src/Spectrum/SpectrumWin.c:124:	GdkColor line_color = winData->line_color;
+src/Spectrum/SpectrumWin.c:125:	GdkColor point_color = winData->point_color;
+src/Spectrum/SpectrumWin.c:250:	GdkColor line_color = winData->line_color;
+src/Spectrum/SpectrumWin.c:251:	GdkColor point_color = winData->point_color;
+src/Spectrum/VASPSpectra.c:42:static GdkColor get_fore_color(GabeditXYPlot *xyplot)
+src/Spectrum/VASPSpectra.c:44:        GdkGCValues values;
+src/Spectrum/VASPSpectra.c:45:        GdkColormap *colormap;
+src/Spectrum/VASPSpectra.c:46:        GdkColor color;
+src/Spectrum/VASPSpectra.c:88:		GdkColor c = get_fore_color(GABEDIT_XYPLOT(xyplot));
+src/Common/Preferences.c:91:static GdkColor ColorTemp;
+src/Common/Preferences.c:105:	GdkColor color;
+src/Common/Preferences.c:1436:		GdkColor* color = (GdkColor*)tcolor;
+src/Common/Preferences.c:1478:  GdkColor* color = g_malloc(sizeof(GdkColor));
+src/Common/Preferences.c:3788:		GdkColor color;
+src/Common/Preferences.c:3802:		GdkColor color;
+src/Common/Preferences.c:3838:	GdkColor color;
+src/Common/Global.h:81: GdkColor BaseColor;
+src/Common/Global.h:82: GdkColor TextColor;
+src/Common/Install.c:95:static GdkColormap *colormap   = NULL;
+src/Common/Install.c:96:static GdkGC *white_gc = NULL;
+src/Common/Install.c:97:static GdkColor black_color;
+src/Common/Install.c:98:static GdkColor white_color;
+src/Common/Install.c:99:static GdkColor title_color;
+src/Common/Install.c:1168:	GdkColor color;
+src/Common/GabeditType.h:42:	GdkColor color;
+src/Common/GabeditType.h:417: GdkColor BaseColor;
+src/Common/GabeditType.h:418: GdkColor TextColor;
+src/Common/SplashScreen.c:45:static GdkGC *gc = NULL;
+src/Common/SplashScreen.c:215:	GdkColor color;
+src/Common/SplashScreen.c:216:	GdkColor tmpcolor;
+src/Common/SplashScreen.c:217:	GdkColormap *colormap   = NULL;
+src/Common/SplashScreen.c:218:  	GdkPixmap *pixmap = (GdkPixmap *)g_object_get_data(G_OBJECT(widget), "Pixmap");
+src/Common/SplashScreen.c:221:   	GdkColor *pcolor = (GdkColor*)g_object_get_data(G_OBJECT(widget), "Color");
+src/Common/SplashScreen.c:360:  	GdkPixmap *pixmap = NULL;
+src/Common/SplashScreen.c:365:  	pixmap = (GdkPixmap *)g_object_get_data(G_OBJECT(widget), "Pixmap");
+src/Common/SplashScreen.c:385:  GdkPixmap *pixmap = NULL;
+src/Common/SplashScreen.c:386:  GdkColor* color = g_malloc(sizeof(GdkColor));
+src/Common/SplashScreen.c:434:  GdkPixmap *pixmap = NULL;
+src/Common/SplashScreen.c:435:  GdkColor* color = g_malloc(sizeof(GdkColor));
+src/Common/SplashScreen.c:483:  GdkPixmap *pixmap = NULL;
+src/Common/SplashScreen.c:484:  GdkColor* color = g_malloc(sizeof(GdkColor));
+src/Common/SplashScreen.c:535:  GdkPixmap *pixmap = NULL;
+src/Common/SplashScreen.c:536:  GdkColor* color = g_malloc(sizeof(GdkColor));
+src/Common/SplashScreen.c:632:  GdkPixmap *pixmap = NULL;
+src/Common/SplashScreen.c:633:  GdkColor* color = g_malloc(sizeof(GdkColor));
+src/Gamess/GamessTypes.h:7:	GdkColor keyWord;
+src/Gamess/GamessTypes.h:8:	GdkColor description;
+src/Gamess/GamessTypes.h:13:	GdkColor keyWord;
+src/Gamess/GamessTypes.h:14:	GdkColor description;
+src/Display/AxisGL.c:186:	GdkColor color;
+src/Display/AxisGL.c:215:	GdkColor color;
+src/Display/ColorMap.c:33:static GdkGC *gc = NULL;
+src/Display/ColorMap.c:547:	GdkColor color;
+src/Display/ColorMap.c:548:	GdkColor tmpcolor;
+src/Display/ColorMap.c:549:	GdkColormap *colormap   = NULL;
+src/Display/ColorMap.c:550:  	GdkPixmap *pixmap = (GdkPixmap *)g_object_get_data(G_OBJECT(widget), "Pixmap");
+src/Display/ColorMap.c:557:	GdkGC *gc = g_object_get_data(G_OBJECT(widget),"Gdkgc");
+src/Display/ColorMap.c:639:  	GdkPixmap *pixmap = NULL;
+src/Display/ColorMap.c:644:  	pixmap = (GdkPixmap *)g_object_get_data(G_OBJECT(widget), "Pixmap");
+src/Display/ColorMap.c:658:	GdkPixmap *pixmap = NULL;
+src/Display/ColorMap.c:688:	GdkGC *gc = NULL;
+src/Display/PreferencesOrb.c:43:	GdkColor color;
+src/Display/PreferencesOrb.c:80:	GdkColor color;
+src/Display/LabelsGL.c:46:static GdkColor colorTitle = {65535,0,0};
+src/Display/PrincipalAxisGL.c:330:	GdkColor color;
+src/Display/PrincipalAxisGL.c:359:	GdkColor color;
+src/QChem/QChemTypes.h:7:	GdkColor keyWord;
+src/QChem/QChemTypes.h:8:	GdkColor description;
+src/QChem/QChemTypes.h:13:	GdkColor keyWord;
+src/QChem/QChemTypes.h:14:	GdkColor description;
+src/Utils/AtomsProp.c:64:GdkColor ColorTemp;
+src/Utils/AtomsProp.c:297:void set_color_atom(GdkColor color,gchar *Symb)
+src/Utils/GabeditXYPlotWin.h:42:  GdkColor point_color, line_color;
+src/Utils/GabeditXYPlot.h:78:  	GdkColor color;
+src/Utils/GabeditXYPlot.h:106:  GdkColor point_color, line_color;
+src/Utils/GabeditXYPlot.h:118:  GdkPixmap *plotting_area; 
+src/Utils/GabeditXYPlot.h:119:  GdkPixmap *old_area; 
+src/Utils/GabeditXYPlot.h:137:  GdkGC *back_gc; 
+src/Utils/GabeditXYPlot.h:138:  GdkGC *fore_gc; 
+src/Utils/GabeditXYPlot.h:160:  GdkGC *hmajor_grid_gc;
+src/Utils/GabeditXYPlot.h:161:  GdkGC *hminor_grid_gc;
+src/Utils/GabeditXYPlot.h:162:  GdkGC *vmajor_grid_gc;
+src/Utils/GabeditXYPlot.h:163:  GdkGC *vminor_grid_gc;
+src/Utils/GabeditXYPlot.h:181:  GdkGC *data_gc;
+src/Utils/GabeditXYPlot.h:182:  GdkGC *lines_gc;
+src/Utils/GabeditXYPlot.h:269:void gabedit_xyplot_set_background_color (GabeditXYPlot *xyplot, GdkColor color); 
+src/Utils/GabeditXYPlot.h:270:void gabedit_xyplot_set_grids_attributes (GabeditXYPlot *xyplot, GabeditXYPlotGrid grid, GdkColor color, gint line_width, GdkLineStyle line_style);
+src/Utils/GabeditXYPlot.h:271:void gabedit_xyplot_get_grids_attributes (GabeditXYPlot *xyplot, GabeditXYPlotGrid grid, GdkColor *color, gint *line_width, GdkLineStyle *line_style);
+src/Utils/GabeditXYPlot.h:275:void gabedit_xyplot_add_data_peaks(GabeditXYPlot *xyplot, gint numberOfPoints, gdouble* X,  gdouble* Y, GdkColor* color);
+src/Utils/GabeditXYPlot.h:276:void gabedit_xyplot_add_data_conv(GabeditXYPlot *xyplot, gint numberOfPoints, gdouble* X,  gdouble* Y, gdouble halfWidth,GabeditXYPlotConvType convType, GdkColor* color);
+src/Utils/Utils.c:3375:	GdkColor* color = g_object_get_data(G_OBJECT (fp), "Color");
+src/Utils/Utils.c:3881:void gabedit_draw_string(GtkWidget* parent, GdkPixmap* pixmap, PangoFontDescription *font_desc, GdkGC* gc , gint x, gint y, G_CONST_RETURN gchar* t, gboolean centerX, gboolean centerY)
+src/Utils/GabeditTextEdit.c:35:void gabedit_text_insert(GtkWidget* text, GdkFont* font, GdkColor* colorFore, GdkColor* colorBack, const gchar* str, gint l)
+src/Utils/GabeditXYPlot.c:51:static void gabedit_xyplot_cairo_string(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle);
+src/Utils/GabeditXYPlot.c:52:static void gabedit_xyplot_cairo_line(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2);
+src/Utils/GabeditXYPlot.c:53:static void gabedit_xyplot_cairo_lines(cairo_t *cr,  GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size);
+src/Utils/GabeditXYPlot.c:54:static void gabedit_xyplot_cairo_rectangle(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gboolean fill, gdouble x1,gdouble y1,gdouble w,gdouble h);
+src/Utils/GabeditXYPlot.c:55:/* static void gabedit_xyplot_cairo_cercle(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gint xc,gint yc,gint rayon);*/
+src/Utils/GabeditXYPlot.c:57:static void xyplot_cairo_string(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle);
+src/Utils/GabeditXYPlot.c:58:static void xyplot_cairo_line(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2);
+src/Utils/GabeditXYPlot.c:59:static void xyplot_cairo_lines(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size);
+src/Utils/GabeditXYPlot.c:60:static void xyplot_cairo_rectangle(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gboolean fill, gdouble x1,gdouble y1,gdouble w,gdouble h);
+src/Utils/GabeditXYPlot.c:61:/* static void xyplot_cairo_cercle(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint xc,gint yc,gint rayon);*/
+src/Utils/GabeditXYPlot.c:88:static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor, GdkColor* backColor );
+src/Utils/GabeditXYPlot.c:105:static void xyplot_curve_noconv(GabeditXYPlot *xyplot, gint numberOfPoints, gdouble* X,  gdouble* Y, GdkColor* color);
+src/Utils/GabeditXYPlot.c:198:static void gabedit_xyplot_cairo_string(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle)
+src/Utils/GabeditXYPlot.c:205:static void gabedit_xyplot_cairo_line(cairo_t *cr,  GtkWidget* widget, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+src/Utils/GabeditXYPlot.c:207:	GdkGCValues values;
+src/Utils/GabeditXYPlot.c:208:	GdkColor color;
+src/Utils/GabeditXYPlot.c:210:	GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:274:static void gabedit_xyplot_cairo_lines(cairo_t *cr,  GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size)
+src/Utils/GabeditXYPlot.c:281:static void gabedit_xyplot_cairo_rectangle(cairo_t *cr,  GtkWidget* widget, GdkGC* gc, gboolean fill, gdouble x1,gdouble y1,gdouble w,gdouble h)
+src/Utils/GabeditXYPlot.c:283:	GdkGCValues values;
+src/Utils/GabeditXYPlot.c:284:	GdkColor color;
+src/Utils/GabeditXYPlot.c:286:	GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:380:static void xyplot_cairo_string(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle)
+src/Utils/GabeditXYPlot.c:388:static void xyplot_cairo_line(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+src/Utils/GabeditXYPlot.c:395:static void xyplot_cairo_rectangle(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gboolean fill, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+src/Utils/GabeditXYPlot.c:402:static void xyplot_cairo_lines(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size)
+src/Utils/GabeditXYPlot.c:421:static void xyplot_cairo_cercle(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint xc,gint yc,gint rayon)
+src/Utils/GabeditXYPlot.c:489:static GdkColor get_fore_color(GabeditXYPlot *xyplot)
+src/Utils/GabeditXYPlot.c:491:	GdkGCValues values;
+src/Utils/GabeditXYPlot.c:492:	GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:493:	GdkColor color;
+src/Utils/GabeditXYPlot.c:601:		GdkColor c = get_fore_color(GABEDIT_XYPLOT(xyplot));
+src/Utils/GabeditXYPlot.c:646:		GdkColor c = get_fore_color(GABEDIT_XYPLOT(xyplot));
+src/Utils/GabeditXYPlot.c:715:	GdkGCValues values;
+src/Utils/GabeditXYPlot.c:716:	GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:717:	GdkColor color;
+src/Utils/GabeditXYPlot.c:1040:  		GdkColor color,
+src/Utils/GabeditXYPlot.c:1063:  	GdkColor color;
+src/Utils/GabeditXYPlot.c:1073:		GdkGCValues values;
+src/Utils/GabeditXYPlot.c:1074:		GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:1187:		GdkColor c;
+src/Utils/GabeditXYPlot.c:4401:	GdkColor foreColor;
+src/Utils/GabeditXYPlot.c:4402:	GdkColor backColor;
+src/Utils/GabeditXYPlot.c:4403:	GdkGCValues gc_values;
+src/Utils/GabeditXYPlot.c:4404:	GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:4713:	GdkColor foreColor;
+src/Utils/GabeditXYPlot.c:4714:	GdkColor backColor;
+src/Utils/GabeditXYPlot.c:5190:		GdkColor c;
+src/Utils/GabeditXYPlot.c:5319:		GdkColor c;
+src/Utils/GabeditXYPlot.c:7104:  GdkWindowAttr attributes;
+src/Utils/GabeditXYPlot.c:7106:  GdkGCValues gc_values;
+src/Utils/GabeditXYPlot.c:7107:  GdkGCValuesMask gc_values_mask;
+src/Utils/GabeditXYPlot.c:7108:  GdkColor black;
+src/Utils/GabeditXYPlot.c:7109:  GdkColor white;
+src/Utils/GabeditXYPlot.c:7110:  GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:7205:static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor, GdkColor* backColor )
+src/Utils/GabeditXYPlot.c:7208:	GdkGCValues gc_values;
+src/Utils/GabeditXYPlot.c:7209:	GdkGCValuesMask gc_values_mask;
+src/Utils/GabeditXYPlot.c:7210:	GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:7315:	GdkColor black;
+src/Utils/GabeditXYPlot.c:7316:	GdkColor white;
+src/Utils/GabeditXYPlot.c:7330:	GdkColor black;
+src/Utils/GabeditXYPlot.c:7331:	GdkColor green;
+src/Utils/GabeditXYPlot.c:7348:		GdkColor foreColor;
+src/Utils/GabeditXYPlot.c:7349:		GdkColor backColor;
+src/Utils/GabeditXYPlot.c:7350:		GdkGCValues gc_values;
+src/Utils/GabeditXYPlot.c:7353:		GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:7374:		GdkColor foreColor;
+src/Utils/GabeditXYPlot.c:7375:		GdkColor backColor;
+src/Utils/GabeditXYPlot.c:7376:		GdkGCValues gc_values;
+src/Utils/GabeditXYPlot.c:7379:		GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:7398:		GdkColor foreColor;
+src/Utils/GabeditXYPlot.c:7399:		GdkColor backColor;
+src/Utils/GabeditXYPlot.c:7400:		GdkGCValues gc_values;
+src/Utils/GabeditXYPlot.c:7403:		GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:7429:	GdkColor foreColor;
+src/Utils/GabeditXYPlot.c:7430:	GdkColor backColor;
+src/Utils/GabeditXYPlot.c:7431:	GdkGCValues gc_values;
+src/Utils/GabeditXYPlot.c:7434:	GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:7880:static void xyplot_cairo_line_grid(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+src/Utils/GabeditXYPlot.c:8282:static GdkPixmap* gdk_pixmap_copy(GdkPixmap *pixmap)
+src/Utils/GabeditXYPlot.c:8284:	GdkPixmap *pixmap_out;
+src/Utils/GabeditXYPlot.c:8285:	GdkGC *gc;
+src/Utils/GabeditXYPlot.c:9686:void gabedit_xyplot_set_background_color (GabeditXYPlot *xyplot, GdkColor color)
+src/Utils/GabeditXYPlot.c:9698:			GdkColor color, 
+src/Utils/GabeditXYPlot.c:9702:  GdkGC *gc;
+src/Utils/GabeditXYPlot.c:9732:			GdkColor *color, 
+src/Utils/GabeditXYPlot.c:9736:  GdkGC *gc;
+src/Utils/GabeditXYPlot.c:9737:  GdkGCValues gc_values;
+src/Utils/GabeditXYPlot.c:9886:	GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:10058:		GdkColor c;
+src/Utils/GabeditXYPlot.c:10059:		GdkGCValues gc_values;
+src/Utils/GabeditXYPlot.c:10061:		GdkColormap *colormap;
+src/Utils/GabeditXYPlot.c:10700:void gabedit_xyplot_add_data_peaks(GabeditXYPlot *xyplot, gint numberOfPoints, gdouble* X,  gdouble* Y, GdkColor* color)
+src/Utils/GabeditXYPlot.c:10724:			GdkColor c = get_fore_color(xyplot);
+src/Utils/GabeditXYPlot.c:10777:static void xyplot_curve_noconv(GabeditXYPlot *xyplot, gint numberOfPoints, gdouble* X,  gdouble* Y, GdkColor* color)
+src/Utils/GabeditXYPlot.c:10793:		GdkColor c = get_fore_color(xyplot);
+src/Utils/GabeditXYPlot.c:10838:static void build_data_xyplot_curve_withconv(GabeditXYPlot *xyplot, gint numberOfPoints, gdouble* X,  gdouble* Y, gdouble halfWidth, gdouble (*lineshape)(gdouble), GdkColor* color)
+src/Utils/GabeditXYPlot.c:10860:		GdkColor c = get_fore_color(xyplot);
+src/Utils/GabeditXYPlot.c:10962:void gabedit_xyplot_add_data_conv(GabeditXYPlot *xyplot, gint numberOfPoints, gdouble* X,  gdouble* Y, gdouble halfWidth,GabeditXYPlotConvType convType, GdkColor* color)
+src/Utils/UtilsCairo.c:38:void gabedit_cairo_string(cairo_t* cr, GtkWidget* parent, PangoFontDescription *font_desc, GdkGC* gc , gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY)
+src/Utils/UtilsCairo.c:48:	GdkGCValues values;
+src/Utils/UtilsCairo.c:49:	GdkColormap *colormap;
+src/Utils/UtilsCairo.c:50:	GdkColor color;
+src/Utils/UtilsCairo.c:94:void gabedit_cairo_triangle(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
+src/Utils/UtilsCairo.c:97:	GdkGCValues values;
+src/Utils/UtilsCairo.c:98:	GdkColor color;
+src/Utils/UtilsCairo.c:100:	GdkColormap *colormap;
+src/Utils/UtilsCairo.c:168:void gabedit_cairo_line(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+src/Utils/UtilsCairo.c:170:	GdkGCValues values;
+src/Utils/UtilsCairo.c:171:	GdkColor color;
+src/Utils/UtilsCairo.c:173:	GdkColormap *colormap;
+src/Utils/UtilsCairo.c:235:void gabedit_cairo_arc(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
+src/Utils/UtilsCairo.c:238:	GdkGCValues values;
+src/Utils/UtilsCairo.c:239:	GdkColor color;
+src/Utils/UtilsCairo.c:241:	GdkColormap *colormap;
+src/Utils/UtilsCairo.c:287:void gabedit_cairo_cercle(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
+src/Utils/UtilsCairo.c:290:	GdkGCValues values;
+src/Utils/UtilsCairo.c:291:	GdkColor color;
+src/Utils/UtilsCairo.c:293:	GdkColormap *colormap;
+src/Utils/UtilsCairo.c:338:void gabedit_cairo_line_gradient(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, GdkColor color1,  GdkColor color2, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+src/Utils/UtilsCairo.c:340:	GdkGCValues values;
+src/Utils/UtilsCairo.c:397:void gabedit_cairo_cercle_gradient(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
+src/Utils/UtilsCairo.c:400:	GdkGCValues values;
+src/Utils/UtilsCairo.c:401:	GdkColor color;
+src/Utils/UtilsCairo.c:403:	GdkColormap *colormap;
+src/Utils/GabeditTextEdit.h:25:void gabedit_text_insert(GtkWidget* text, GdkFont* font, GdkColor* colorFore, GdkColor* colorBack, const gchar* str, gint l);
+src/Utils/UtilsCairo.h:22:void gabedit_cairo_string(cairo_t* cr, GtkWidget* parent, PangoFontDescription *font_desc, GdkGC* gc , gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY);
+src/Utils/UtilsCairo.h:23:void gabedit_cairo_triangle(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
+src/Utils/UtilsCairo.h:25:void gabedit_cairo_line(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2);
+src/Utils/UtilsCairo.h:26:void gabedit_cairo_arc(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, gint xc,gint yc,gint rayon, gdouble angle1, gdouble angle2 , gdouble scale1, gdouble scale2);
+src/Utils/UtilsCairo.h:27:void gabedit_cairo_cercle(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, gint xc,gint yc,gint rayon);
+src/Utils/UtilsCairo.h:28:void gabedit_cairo_line_gradient(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, GdkColor color1,  GdkColor color2, gdouble x1,gdouble y1,gdouble x2,gdouble y2);
+src/Utils/UtilsCairo.h:29:void gabedit_cairo_cercle_gradient(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, gint xc,gint yc,gint rayon);
+src/Utils/Utils.h:151:void gabedit_draw_string(GtkWidget* parent, GdkPixmap* pixmap, PangoFontDescription *font_desc, GdkGC* gc , gint x, gint y, G_CONST_RETURN gchar* t, gboolean centerX, gboolean centerY);
+src/Utils/UtilsInterface.c:249:  GdkPixmap *gdk_pixmap;
+src/Utils/UtilsInterface.c:265: GdkPixmap *get_pixmap(GtkWidget  *widget,gushort red,gushort green,gushort blue)
+src/Utils/UtilsInterface.c:267:  GdkPixmap *pixmap = NULL;
+src/Utils/UtilsInterface.c:268:  GdkGC *gc = NULL;
+src/Utils/UtilsInterface.c:271:  GdkColormap *colormap;
+src/Utils/UtilsInterface.c:272:  GdkColor Color;
+src/Utils/UtilsInterface.c:299:  GdkPixmap *gdk_pixmap;
+src/Utils/UtilsInterface.c:332:  GdkPixmap *gdk_pixmap;
+src/Utils/UtilsInterface.c:387:  GdkPixmap *gdk_pixmap;
+src/Utils/UtilsInterface.c:408:  GdkPixmap *gdk_pixmap;
+src/Utils/UtilsInterface.c:442:  GdkPixmap *gdk_pixmap;
+src/Utils/UtilsInterface.c:502:  GdkPixmap *gdk_pixmap;
+src/Utils/UtilsInterface.c:3125:	GdkColor* color;
+src/Utils/UtilsInterface.c:3133:	GdkColor* color = g_object_get_data(G_OBJECT (button), "Color");
+src/Utils/UtilsInterface.c:3148:	GdkColor* color = g_object_get_data(G_OBJECT (button), "Color");;
+src/Utils/UtilsInterface.c:3190:  static GdkColor color;
+src/Utils/UtilsVASP.c:338:static GdkColor get_fore_color(GabeditXYPlot *xyplot)
+src/Utils/UtilsVASP.c:340:        GdkGCValues values;
+src/Utils/UtilsVASP.c:341:        GdkColormap *colormap;
+src/Utils/UtilsVASP.c:342:        GdkColor color;
+src/Utils/UtilsVASP.c:366:		GdkColor c = get_fore_color(GABEDIT_XYPLOT(xyplot));
+src/Utils/UtilsVASP.c:433:		GdkColor c = get_fore_color(GABEDIT_XYPLOT(xyplot));
+src/Utils/GabeditContoursPlot.h:78:  	GdkColor color;
+src/Utils/GabeditContoursPlot.h:108:  	GdkColor point_color, line_color;
+src/Utils/GabeditContoursPlot.h:157:  GdkPixmap *plotting_area; 
+src/Utils/GabeditContoursPlot.h:158:  GdkPixmap *old_area; 
+src/Utils/GabeditContoursPlot.h:176:  GdkGC *back_gc; 
+src/Utils/GabeditContoursPlot.h:177:  GdkGC *fore_gc; 
+src/Utils/GabeditContoursPlot.h:206:  GdkGC *hmajor_grid_gc;
+src/Utils/GabeditContoursPlot.h:207:  GdkGC *hminor_grid_gc;
+src/Utils/GabeditContoursPlot.h:208:  GdkGC *vmajor_grid_gc;
+src/Utils/GabeditContoursPlot.h:209:  GdkGC *vminor_grid_gc;
+src/Utils/GabeditContoursPlot.h:226:  GdkGC *data_gc;
+src/Utils/GabeditContoursPlot.h:227:  GdkGC *lines_gc;
+src/Utils/GabeditContoursPlot.h:314:void gabedit_contoursplot_set_background_color (GabeditContoursPlot *contoursplot, GdkColor color); 
+src/Utils/GabeditContoursPlot.h:315:void gabedit_contoursplot_set_grids_attributes (GabeditContoursPlot *contoursplot, GabeditContoursPlotGrid grid, GdkColor color, gint line_width, GdkLineStyle line_style);
+src/Utils/GabeditContoursPlot.h:316:void gabedit_contoursplot_get_grids_attributes (GabeditContoursPlot *contoursplot, GabeditContoursPlotGrid grid, GdkColor *color, gint *line_width, GdkLineStyle *line_style);
+src/Utils/GabeditContoursPlot.h:320:void gabedit_contoursplot_add_data_peaks(GabeditContoursPlot *contoursplot, gint numberOfPoints, gdouble* X,  gdouble* Y, GdkColor color);
+src/Utils/UtilsInterface.h:29:GdkPixmap *get_pixmap(GtkWidget  *widget,gushort red,gushort green,gushort blue);
+src/Utils/GabeditContoursPlot.c:51:static void gabedit_contoursplot_cairo_string(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle);
+src/Utils/GabeditContoursPlot.c:52:static void gabedit_contoursplot_cairo_line(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2);
+src/Utils/GabeditContoursPlot.c:53:static void gabedit_contoursplot_cairo_lines(cairo_t *cr,  GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size);
+src/Utils/GabeditContoursPlot.c:54:static void gabedit_contoursplot_cairo_rectangle(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gboolean fill, gdouble x1,gdouble y1,gdouble w,gdouble h);
+src/Utils/GabeditContoursPlot.c:55:/* static void gabedit_contoursplot_cairo_cercle(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gint xc,gint yc,gint rayon);*/
+src/Utils/GabeditContoursPlot.c:57:static void contoursplot_cairo_string(GabeditContoursPlot *contoursplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle);
+src/Utils/GabeditContoursPlot.c:59:static void contoursplot_cairo_line(GabeditContoursPlot *contoursplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2);
+src/Utils/GabeditContoursPlot.c:60:static void contoursplot_cairo_lines(GabeditContoursPlot *contoursplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size);
+src/Utils/GabeditContoursPlot.c:61:static void contoursplot_cairo_rectangle(GabeditContoursPlot *contoursplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gboolean fill, gdouble x1,gdouble y1,gdouble w,gdouble h);
+src/Utils/GabeditContoursPlot.c:62:/* static void contoursplot_cairo_cercle(GabeditContoursPlot *contoursplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint xc,gint yc,gint rayon);*/
+src/Utils/GabeditContoursPlot.c:110:static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor, GdkColor* backColor );
+src/Utils/GabeditContoursPlot.c:403:static void gabedit_contoursplot_cairo_string(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle)
+src/Utils/GabeditContoursPlot.c:410:static void gabedit_contoursplot_cairo_line(cairo_t *cr,  GtkWidget* widget, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+src/Utils/GabeditContoursPlot.c:412:	GdkGCValues values;
+src/Utils/GabeditContoursPlot.c:413:	GdkColor color;
+src/Utils/GabeditContoursPlot.c:415:	GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:479:static void gabedit_contoursplot_cairo_lines(cairo_t *cr,  GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size)
+src/Utils/GabeditContoursPlot.c:486:static void gabedit_contoursplot_cairo_rectangle(cairo_t *cr,  GtkWidget* widget, GdkGC* gc, gboolean fill, gdouble x1,gdouble y1,gdouble w,gdouble h)
+src/Utils/GabeditContoursPlot.c:488:	GdkGCValues values;
+src/Utils/GabeditContoursPlot.c:489:	GdkColor color;
+src/Utils/GabeditContoursPlot.c:491:	GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:560:static void gabedit_contoursplot_cairo_cercle(cairo_t *cr,  GtkWidget* widget, GdkGC* gc,
+src/Utils/GabeditContoursPlot.c:563:	GdkGCValues values;
+src/Utils/GabeditContoursPlot.c:564:	GdkColor color;
+src/Utils/GabeditContoursPlot.c:566:	GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:639:static void contoursplot_cairo_string(GabeditContoursPlot *contoursplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle)
+src/Utils/GabeditContoursPlot.c:647:static void contoursplot_cairo_line(GabeditContoursPlot *contoursplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+src/Utils/GabeditContoursPlot.c:654:static void contoursplot_cairo_rectangle(GabeditContoursPlot *contoursplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gboolean fill, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+src/Utils/GabeditContoursPlot.c:661:static void contoursplot_cairo_lines(GabeditContoursPlot *contoursplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size)
+src/Utils/GabeditContoursPlot.c:680:static void contoursplot_cairo_cercle(GabeditContoursPlot *contoursplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint xc,gint yc,gint rayon)
+src/Utils/GabeditContoursPlot.c:1868:	GdkGCValues values;
+src/Utils/GabeditContoursPlot.c:1869:	GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:1870:	GdkColor color;
+src/Utils/GabeditContoursPlot.c:2192:  		GdkColor color,
+src/Utils/GabeditContoursPlot.c:2215:  	GdkColor color;
+src/Utils/GabeditContoursPlot.c:2225:		GdkGCValues values;
+src/Utils/GabeditContoursPlot.c:2226:		GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:2339:		GdkColor c;
+src/Utils/GabeditContoursPlot.c:4291:	GdkColor foreColor;
+src/Utils/GabeditContoursPlot.c:4292:	GdkColor backColor;
+src/Utils/GabeditContoursPlot.c:4293:	GdkGCValues gc_values;
+src/Utils/GabeditContoursPlot.c:4294:	GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:4606:	GdkColor foreColor;
+src/Utils/GabeditContoursPlot.c:4607:	GdkColor backColor;
+src/Utils/GabeditContoursPlot.c:5170:		GdkColor c;
+src/Utils/GabeditContoursPlot.c:5253:		GdkColor c;
+src/Utils/GabeditContoursPlot.c:6008:		GdkColor color;
+src/Utils/GabeditContoursPlot.c:6022:		GdkColor color;
+src/Utils/GabeditContoursPlot.c:6060:	GdkColor color;
+src/Utils/GabeditContoursPlot.c:7092:  GdkWindowAttr attributes;
+src/Utils/GabeditContoursPlot.c:7094:  GdkGCValues gc_values;
+src/Utils/GabeditContoursPlot.c:7095:  GdkGCValuesMask gc_values_mask;
+src/Utils/GabeditContoursPlot.c:7096:  GdkColor black;
+src/Utils/GabeditContoursPlot.c:7097:  GdkColor white;
+src/Utils/GabeditContoursPlot.c:7098:  GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:7198:static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor, GdkColor* backColor )
+src/Utils/GabeditContoursPlot.c:7201:	GdkGCValues gc_values;
+src/Utils/GabeditContoursPlot.c:7202:	GdkGCValuesMask gc_values_mask;
+src/Utils/GabeditContoursPlot.c:7203:	GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:7308:	GdkColor black;
+src/Utils/GabeditContoursPlot.c:7309:	GdkColor white;
+src/Utils/GabeditContoursPlot.c:7323:	GdkColor black;
+src/Utils/GabeditContoursPlot.c:7324:	GdkColor green;
+src/Utils/GabeditContoursPlot.c:7341:		GdkColor foreColor;
+src/Utils/GabeditContoursPlot.c:7342:		GdkColor backColor;
+src/Utils/GabeditContoursPlot.c:7343:		GdkGCValues gc_values;
+src/Utils/GabeditContoursPlot.c:7346:		GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:7367:		GdkColor foreColor;
+src/Utils/GabeditContoursPlot.c:7368:		GdkColor backColor;
+src/Utils/GabeditContoursPlot.c:7369:		GdkGCValues gc_values;
+src/Utils/GabeditContoursPlot.c:7372:		GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:7391:		GdkColor foreColor;
+src/Utils/GabeditContoursPlot.c:7392:		GdkColor backColor;
+src/Utils/GabeditContoursPlot.c:7393:		GdkGCValues gc_values;
+src/Utils/GabeditContoursPlot.c:7396:		GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:7422:	GdkColor foreColor;
+src/Utils/GabeditContoursPlot.c:7423:	GdkColor backColor;
+src/Utils/GabeditContoursPlot.c:7424:	GdkGCValues gc_values;
+src/Utils/GabeditContoursPlot.c:7427:	GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:7822:	GdkColor color;
+src/Utils/GabeditContoursPlot.c:8049:static void contoursplot_cairo_line_grid(GabeditContoursPlot *contoursplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+src/Utils/GabeditContoursPlot.c:8530:static GdkPixmap* gdk_pixmap_copy(GdkPixmap *pixmap)
+src/Utils/GabeditContoursPlot.c:8532:	GdkPixmap *pixmap_out;
+src/Utils/GabeditContoursPlot.c:8533:	GdkGC *gc;
+src/Utils/GabeditContoursPlot.c:9079:  			GdkGC* gc;
+src/Utils/GabeditContoursPlot.c:9080:  			GdkGCValues gc_values;
+src/Utils/GabeditContoursPlot.c:9081:  			GdkGCValuesMask gc_values_mask;
+src/Utils/GabeditContoursPlot.c:9082:  			GdkColor col;
+src/Utils/GabeditContoursPlot.c:9083:			GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:9106:  			GdkGC* gc;
+src/Utils/GabeditContoursPlot.c:9107:  			GdkGCValues gc_values;
+src/Utils/GabeditContoursPlot.c:9108:  			GdkGCValuesMask gc_values_mask;
+src/Utils/GabeditContoursPlot.c:9109:  			GdkColor col;
+src/Utils/GabeditContoursPlot.c:9110:			GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:10058:void gabedit_contoursplot_set_background_color (GabeditContoursPlot *contoursplot, GdkColor color)
+src/Utils/GabeditContoursPlot.c:10070:			GdkColor color, 
+src/Utils/GabeditContoursPlot.c:10074:  GdkGC *gc;
+src/Utils/GabeditContoursPlot.c:10104:			GdkColor *color, 
+src/Utils/GabeditContoursPlot.c:10108:  GdkGC *gc;
+src/Utils/GabeditContoursPlot.c:10109:  GdkGCValues gc_values;
+src/Utils/GabeditContoursPlot.c:10258:	GdkColormap *colormap;
+src/Utils/GabeditContoursPlot.c:10430:		GdkColor c;
+src/Utils/GabeditContoursPlot.c:10431:		GdkGCValues gc_values;
+src/Utils/GabeditContoursPlot.c:10433:		GdkColormap *colormap;
+src/NWChem/NWChemTypes.h:7:	GdkColor keyWord;
+src/NWChem/NWChemTypes.h:8:	GdkColor description;
+src/NWChem/NWChemTypes.h:13:	GdkColor keyWord;
+src/NWChem/NWChemTypes.h:14:	GdkColor description;
+src/Mopac/MopacTypes.h:7:	GdkColor keyWord;
+src/Mopac/MopacTypes.h:8:	GdkColor description;
+src/Mopac/MopacTypes.h:13:	GdkColor keyWord;
+src/Mopac/MopacTypes.h:14:	GdkColor description;
+src/Files/ListeFiles.c:2304:	GdkColor nodeColor;
+src/MPQC/MPQCTypes.h:7:	GdkColor keyWord;
+src/MPQC/MPQCTypes.h:8:	GdkColor description;
+src/MPQC/MPQCTypes.h:13:	GdkColor keyWord;
+src/MPQC/MPQCTypes.h:14:	GdkColor description;
+src/Symmetry/MoleculeSymmetryInterface.c:111:	GdkColor blue;
+src/Symmetry/MoleculeSymmetryInterface.c:112:	GdkColor green;
+src/Psicode/PsicodeTypes.h:7:	GdkColor keyWord;
+src/Psicode/PsicodeTypes.h:8:	GdkColor description;
+src/Psicode/PsicodeTypes.h:13:	GdkColor keyWord;
+src/Psicode/PsicodeTypes.h:14:	GdkColor description;
+src/DeMon/DeMonTypes.h:7:	GdkColor keyWord;
+src/DeMon/DeMonTypes.h:8:	GdkColor description;
+src/DeMon/DeMonTypes.h:13:	GdkColor keyWord;
+src/DeMon/DeMonTypes.h:14:	GdkColor description;
+src/Molcas/MolcasTypes.h:75:	GdkColor program;
+src/Molcas/MolcasTypes.h:76:	GdkColor shellCommand;
+src/Molcas/MolcasTypes.h:77:	GdkColor internCommand;
+src/Molcas/MolcasTypes.h:82:	GdkColor program;
+src/Molcas/MolcasTypes.h:83:	GdkColor shellCommand;
+src/Molcas/MolcasTypes.h:84:	GdkColor internCommand;
+src/Molcas/MolcasTypes.h:85:	GdkColor subProgram;
+src/Orca/OrcaTypes.h:7:	GdkColor keyWord;
+src/Orca/OrcaTypes.h:8:	GdkColor description;
+src/Orca/OrcaTypes.h:13:	GdkColor keyWord;
+src/Orca/OrcaTypes.h:14:	GdkColor description;
+src/FireFly/FireFlyTypes.h:7:	GdkColor keyWord;
+src/FireFly/FireFlyTypes.h:8:	GdkColor description;
+src/FireFly/FireFlyTypes.h:13:	GdkColor keyWord;
+src/FireFly/FireFlyTypes.h:14:	GdkColor description;
+src/IsotopeDistribution/IsotopeDistributionCalculatorDlg.c:129:	GdkColor color;
+src/Geometry/ImagesGeom.c:170:  	GdkPixmap* pixmap = get_drawing_pixmap();
+src/Geometry/ImagesGeom.c:171:  	GdkColormap *colormap = get_drawing_colormap();
+src/Geometry/DrawGeomGL.h:203:GdkPixmap* get_drawing_pixmap();
+src/Geometry/DrawGeomGL.h:204:GdkColormap* get_drawing_colormap();
+src/Geometry/PreviewGeom.c:82:	GdkGC* gc;
+src/Geometry/PreviewGeom.c:83:	GdkPixmap* pixmap;
+src/Geometry/PreviewGeom.c:560:static void draw_line(GtkWidget* drawingArea, gint x1,gint y1,gint x2,gint y2,GdkColor colori,gint epaisseuri,
+src/Geometry/PreviewGeom.c:563:	GdkColormap *colormap;
+src/Geometry/PreviewGeom.c:567:	GdkGC* gc = NULL;
+src/Geometry/PreviewGeom.c:568:	GdkPixmap* pixmap;
+src/Geometry/PreviewGeom.c:582:        	GdkColor colorgray;
+src/Geometry/PreviewGeom.c:605:				GdkColor color1,GdkColor color2)
+src/Geometry/PreviewGeom.c:653:static void draw_anneau(GtkWidget* drawingArea, gint x,gint y,gint rayon,GdkColor colori)
+src/Geometry/PreviewGeom.c:655:	GdkColormap *colormap;
+src/Geometry/PreviewGeom.c:657:	GdkGC* gc = NULL;
+src/Geometry/PreviewGeom.c:658:	GdkPixmap* pixmap;
+src/Geometry/PreviewGeom.c:674:static void draw_cercle(GtkWidget* drawingArea, gint xi,gint yi,gint rayoni,GdkColor colori)
+src/Geometry/PreviewGeom.c:676:	GdkColormap *colormap;
+src/Geometry/PreviewGeom.c:679:        GdkColor colorgray;
+src/Geometry/PreviewGeom.c:681:	GdkGC* gc = NULL;
+src/Geometry/PreviewGeom.c:682:	GdkPixmap* pixmap;
+src/Geometry/PreviewGeom.c:798:	GdkColor color1;
+src/Geometry/PreviewGeom.c:799:	GdkColor color2;
+src/Geometry/PreviewGeom.c:800:	GdkColor colorRed;
+src/Geometry/PreviewGeom.c:801:	GdkColor colorGreen;
+src/Geometry/PreviewGeom.c:802:	GdkColor colorBlue;
+src/Geometry/DrawGeomGL.c:216:static	GdkColor* BackColor=NULL;
+src/Geometry/DrawGeomGL.c:1235:		BackColor = g_malloc(sizeof(GdkColor));
+src/Geometry/DrawGeomGL.c:5317:GdkPixmap *get_drawing_pixmap()
+src/Geometry/DrawGeomGL.c:5327:GdkColormap* get_drawing_colormap()
+src/Geometry/DrawGeomGL.c:5329:  GdkColormap *colormap = gdk_drawable_get_colormap(GeomDrawingArea->window);
+src/Geometry/DrawGeomGL.c:8611:void set_color_shad(GdkColor *color,guint i)
+src/Geometry/DrawGeomGL.c:9905:GdkColor get_color_string(guint i)
+src/Geometry/DrawGeomGL.c:9907: GdkColor color;
+src/Geometry/DrawGeomGL.c:9985:static void draw_anneau(gdouble X, gdouble Y, gdouble Z, GLdouble radii, GdkColor* color)
+src/Geometry/DrawGeomGL.c:10202:static void draw_ball(gdouble X, gdouble Y, gdouble Z, GLdouble radii, GdkColor* color)
+src/Geometry/DrawGeomGL.c:10481:static void draw_bond_blend(int i,int j,GLdouble scal, gint connectionType, GdkColor* color)
+src/Geometry/DrawGeomGL.c:10553:	GdkColor colorRed;
+src/Geometry/DrawGeomGL.c:10554:	GdkColor colorGreen;
+src/Geometry/DrawGeomGL.c:10555:	GdkColor colorBlue;
+src/Geometry/DrawGeomGL.c:10556:	GdkColor colorYellow;
+src/Geometry/DrawGeomGL.c:10557:	GdkColor colorFrag;
+src/Geometry/DrawGeomGL.c:10643:	GdkColor colorRed;
+src/Geometry/DrawGeomGL.c:10644:	GdkColor colorGreen;
+src/Geometry/DrawGeomGL.c:10645:	GdkColor colorBlue;
+src/Geometry/DrawGeomGL.c:10646:	GdkColor colorYellow;
+src/Geometry/DrawGeomGL.c:10647:	GdkColor colorFrag;
+src/Geometry/DrawGeomGL.c:10715:	GdkColor colorRed;
+src/Geometry/DrawGeomGL.c:10716:	GdkColor colorGreen;
+src/Geometry/DrawGeomGL.c:10717:	GdkColor colorBlue;
+src/Geometry/DrawGeomGL.c:10718:	GdkColor colorYellow;
+src/Geometry/DrawGeomGL.c:10719:	GdkColor colorFrag;
+src/Geometry/DrawGeomGL.c:11036:	GdkColor color;
+src/Geometry/DrawGeomGL.c:11046:	GdkColor color;
+src/Geometry/DrawGeomGL.c:11059:	GdkColor color;
+src/Geometry/AxesGeomGL.c:192:	GdkColor color;
+src/Geometry/AxesGeomGL.c:221:	GdkColor color;
+src/Geometry/EnergiesCurves.c:115:	GdkColor couleur;
+src/Geometry/EnergiesCurves.c:116:	GdkColormap *colormap;
+src/Geometry/EnergiesCurves.c:117:	GdkGC *gc;
+src/Geometry/EnergiesCurves.c:118: 	GdkPixmap *pixmap = NULL;
+src/Geometry/EnergiesCurves.c:132:        pixmapold  = (GdkPixmap*)(g_object_get_data(G_OBJECT(widget),"Pixmap"));
+src/Geometry/EnergiesCurves.c:164:	GdkPixmap *pixmap = (GdkPixmap*)(g_object_get_data(G_OBJECT(widget),"Pixmap")); 
+src/Geometry/EnergiesCurves.c:178:	GdkPixmap *pixmap = (GdkPixmap*)(g_object_get_data(G_OBJECT(widget),"Pixmap")); 
+src/Geometry/EnergiesCurves.c:181:	GdkColor couleur;
+src/Geometry/EnergiesCurves.c:182:	GdkColormap *colormap;
+src/Geometry/EnergiesCurves.c:183:	GdkGC *gc;
+src/Geometry/EnergiesCurves.c:295:	GdkPixmap *pixmap = (GdkPixmap*)(g_object_get_data(G_OBJECT(dessin),"Pixmap")); 
+src/Geometry/EnergiesCurves.c:296:	GdkColor couleur;
+src/Geometry/EnergiesCurves.c:297:	GdkColormap *colormap;
+src/Geometry/EnergiesCurves.c:298:	GdkGC *gc;
+src/Geometry/EnergiesCurves.c:379:	GdkPixmap *pixmap = (GdkPixmap*)(g_object_get_data(G_OBJECT(dessin),"Pixmap")); 
+src/Geometry/EnergiesCurves.c:380:	GdkColor couleur;
+src/Geometry/EnergiesCurves.c:381:	GdkColormap *colormap;
+src/Geometry/EnergiesCurves.c:382:	GdkGC *gc;
+src/Geometry/EnergiesCurves.c:482:	GdkPixmap *pixmap = (GdkPixmap*)(g_object_get_data(G_OBJECT(widget),"Pixmap")); 
+src/Geometry/EnergiesCurves.c:559: 	GdkPixmap *pixmap = NULL;
+src/Geometry/DrawGeomCairo.h:198:GdkPixmap* get_drawing_pixmap();
+src/Geometry/DrawGeomCairo.h:199:GdkColormap* get_drawing_colormap();
+src/Geometry/DrawGeomCairo.c:190:static  GdkGC* gc=NULL;
+src/Geometry/DrawGeomCairo.c:191:static	GdkColor* BackColor=NULL;
+src/Geometry/DrawGeomCairo.c:192:static GdkPixmap *pixmap = NULL;
+src/Geometry/DrawGeomCairo.c:623:		BackColor = g_malloc(sizeof(GdkColor));
+src/Geometry/DrawGeomCairo.c:2687:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:2688:	GdkColor color;
+src/Geometry/DrawGeomCairo.c:2897:        GdkColor color;
+src/Geometry/DrawGeomCairo.c:2898:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:2942:        GdkColor color;
+src/Geometry/DrawGeomCairo.c:2943:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:4639:GdkPixmap *get_drawing_pixmap()
+src/Geometry/DrawGeomCairo.c:4649:GdkColormap* get_drawing_colormap()
+src/Geometry/DrawGeomCairo.c:4651:  GdkColormap *colormap = gdk_drawable_get_colormap(GeomDrawingArea->window);
+src/Geometry/DrawGeomCairo.c:6494:  GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:7803:void set_color_shad(GdkColor *color,guint i)
+src/Geometry/DrawGeomCairo.c:9370:void draw_triangle(gint x1,gint y1,gint x2,gint y2,gint x3,gint y3, GdkColor colori)
+src/Geometry/DrawGeomCairo.c:9372:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9383:GdkColor get_color_string(guint i)
+src/Geometry/DrawGeomCairo.c:9385: GdkColor color;
+src/Geometry/DrawGeomCairo.c:9404:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9405:        GdkColor color;
+src/Geometry/DrawGeomCairo.c:9433:void draw_line(gdouble x1,gdouble y1,gdouble x2,gdouble y2,GdkColor colori,gint epaisseuri, gboolean round)
+src/Geometry/DrawGeomCairo.c:9435:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9450:static void draw_line_hbond(gint x1,gint y1,gint x2,gint y2,GdkColor color,gint epaisseur)
+src/Geometry/DrawGeomCairo.c:9452:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9463:static void draw_line2_hbond(gint x1,gint y1,gint x2,gint y2, gint i, gint j, GdkColor color1,GdkColor color2, gint epaisseur)
+src/Geometry/DrawGeomCairo.c:9477:	GdkColor colorblack;
+src/Geometry/DrawGeomCairo.c:9529:void draw_anneau(gint xi,gint yi,gint rayoni,GdkColor colori)
+src/Geometry/DrawGeomCairo.c:9531:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9564:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9565:	GdkColor color;
+src/Geometry/DrawGeomCairo.c:9589:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9590:        GdkColor color;
+src/Geometry/DrawGeomCairo.c:9613:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9614:	GdkColor color;
+src/Geometry/DrawGeomCairo.c:9640:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9641:	GdkColor color;
+src/Geometry/DrawGeomCairo.c:9664:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9665:	GdkColor color;
+src/Geometry/DrawGeomCairo.c:9688:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9689:        GdkColor color;
+src/Geometry/DrawGeomCairo.c:9711:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9712:        GdkColor color;
+src/Geometry/DrawGeomCairo.c:9734:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9735:        GdkColor color;
+src/Geometry/DrawGeomCairo.c:9758:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9759:        GdkColor color;
+src/Geometry/DrawGeomCairo.c:9782:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9783:        GdkColor color;
+src/Geometry/DrawGeomCairo.c:9806:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9807:        GdkColor color;
+src/Geometry/DrawGeomCairo.c:9851:				GdkColor color1,GdkColor color2, gboolean hideDistance)
+src/Geometry/DrawGeomCairo.c:9865:	GdkColor colorblack;
+src/Geometry/DrawGeomCairo.c:9916:			GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9943:			GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9970:void draw_cercle(gint xi,gint yi,gint rayoni,GdkColor colori, gboolean fill, gboolean cartoon, gboolean lighting)
+src/Geometry/DrawGeomCairo.c:9972:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:9974:        GdkColor colorblack;
+src/Geometry/DrawGeomCairo.c:10015:void draw_arc(gint xi,gint yi,gint rayoni,gdouble angle1, gdouble angle2, gdouble scale1, gdouble scale2, GdkColor colori)
+src/Geometry/DrawGeomCairo.c:10017:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:10019:        GdkColor colorblack;
+src/Geometry/DrawGeomCairo.c:10132:void draw_ball(gint xi,gint yi,gint rayoni,GdkColor colori)
+src/Geometry/DrawGeomCairo.c:10151:	GdkColor color1;
+src/Geometry/DrawGeomCairo.c:10152:	GdkColor color2;
+src/Geometry/DrawGeomCairo.c:10153:	GdkColor colorRed;
+src/Geometry/DrawGeomCairo.c:10154:	GdkColor colorGreen;
+src/Geometry/DrawGeomCairo.c:10155:	GdkColor colorBlue;
+src/Geometry/DrawGeomCairo.c:10156:	GdkColor colorYellow;
+src/Geometry/DrawGeomCairo.c:10157:	GdkColor colorFrag;
+src/Geometry/DrawGeomCairo.c:10520:	GdkColor color1;
+src/Geometry/DrawGeomCairo.c:10521:	GdkColor color2;
+src/Geometry/DrawGeomCairo.c:10522:	GdkColor colorRed;
+src/Geometry/DrawGeomCairo.c:10523:	GdkColor colorGreen;
+src/Geometry/DrawGeomCairo.c:10524:	GdkColor colorBlue;
+src/Geometry/DrawGeomCairo.c:10525:	GdkColor colorYellow;
+src/Geometry/DrawGeomCairo.c:10526:	GdkColor colorFrag;
+src/Geometry/DrawGeomCairo.c:10776:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:10777:        GdkColor color;
+src/Geometry/DrawGeomCairo.c:10822:	GdkColor color;
+src/Geometry/DrawGeomCairo.c:11005:	GdkColor color;
+src/Geometry/DrawGeomCairo.c:11006:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:11028:	GdkColor color;
+src/Geometry/DrawGeomCairo.c:11029:	GdkColormap *colormap;
+src/Geometry/DrawGeomCairo.c:11053:	GdkColor color;
+src/Geometry/DrawGeomCairo.c:11054:	GdkColormap *colormap;
+src/Geometry/GeomSymmetry.c:56:	GdkColor blue;
+src/Geometry/GeomSymmetry.c:57:	GdkColor green;
+src/Geometry/GeomXYZ.c:15246:  static GdkColor color;
+gabeditGTK3compat.h:34:typedef GdkPixbuf GdkPixmap;
+gabeditGTK3compat.h:39:typedef cairo_t GdkGC;
+gabeditGTK3compat.h:44:typedef GdkRGBA GdkColor;
+grep: incompat1.txt: input file is also the output

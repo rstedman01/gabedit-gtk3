@@ -1,0 +1,350 @@
+grep: incompat2.txt: input file is also the output
+src/Spectrum/VASPSpectra.c:48:        gdk_gc_get_values(xyplot->fore_gc, &values);
+src/Common/Install.c:321:      gdk_draw_arc(widget->window,
+src/Common/Install.c:332:      gdk_draw_arc(widget->window,
+src/Common/Install.c:343:      gdk_draw_arc(widget->window,
+src/Common/Install.c:353:      gdk_draw_arc(widget->window,
+src/Common/Install.c:544:  white_gc = gdk_gc_new(dialog->window);
+src/Common/Install.c:545:  gdk_gc_set_foreground(white_gc, &white_color);
+src/Common/SplashScreen.c:232:	pixmap = gdk_pixmap_new(widget->window,
+src/Common/SplashScreen.c:255:			gdk_gc_set_foreground(gc,&tmpcolor);
+src/Common/SplashScreen.c:256:    			gdk_draw_line(pixmap,gc,i,0,i,height);
+src/Common/SplashScreen.c:260:		gdk_gc_set_foreground(gc,&color);
+src/Common/SplashScreen.c:262:    			gdk_draw_line(pixmap,gc,i,0,i,height);
+src/Common/SplashScreen.c:266:    			gdk_draw_line(pixmap,widget->style->black_gc,0,0,widget->allocation.width,0);
+src/Common/SplashScreen.c:267:    			gdk_draw_line(pixmap,widget->style->white_gc,0,1,widget->allocation.width,1);
+src/Common/SplashScreen.c:268:    			gdk_draw_line(pixmap,widget->style->black_gc,0,2,widget->allocation.width,2);
+src/Common/SplashScreen.c:296:		gdk_gc_set_foreground(gc,&tmpcolor);
+src/Common/SplashScreen.c:341:		gdk_gc_set_foreground(gc,&tmpcolor);
+src/Common/SplashScreen.c:342:		gdk_draw_arc(pixmap, gc, TRUE,x,0, width, widget->allocation.height, 0, 360*64);
+src/Common/SplashScreen.c:347:		gdk_gc_set_foreground(gc,&tmpcolor);
+src/Common/SplashScreen.c:367:		gdk_draw_drawable(widget->window,
+src/Common/SplashScreen.c:411:  pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
+src/Common/SplashScreen.c:460:  pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
+src/Common/SplashScreen.c:510:  pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
+src/Common/SplashScreen.c:561:  pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
+src/Common/SplashScreen.c:596:	gc = gdk_gc_new(MainFrame->window);
+src/Common/SplashScreen.c:659:  pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
+src/Common/SplashScreen.c:689:	gc = gdk_gc_new(MainFrame->window);
+src/Display/AxisGL.c:331:  style = gtk_widget_get_style(fp);
+src/Display/AxisGL.c:357:  style = gtk_widget_get_style(fp);
+src/Display/AxisGL.c:387:  style = gtk_widget_get_style(fp);
+src/Display/ColorMap.c:565:	pixmap = gdk_pixmap_new(widget->window, widget->allocation.width, widget->allocation.height, -1);
+src/Display/ColorMap.c:597:			gdk_gc_set_foreground(gc,&tmpcolor);
+src/Display/ColorMap.c:598:    			gdk_draw_line(pixmap,gc,i,0,i,height);
+src/Display/ColorMap.c:616:				gdk_gc_set_foreground(gc,&color);
+src/Display/ColorMap.c:618:				gdk_gc_set_line_attributes(gc,0,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Display/ColorMap.c:626:		gdk_gc_set_foreground(gc,&color);
+src/Display/ColorMap.c:628:    			gdk_draw_line(pixmap,gc,i,0,i,height);
+src/Display/ColorMap.c:646:		gdk_draw_drawable(widget->window,
+src/Display/ColorMap.c:670:	pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
+src/Display/ColorMap.c:721:	gc = gdk_gc_new(PrincipalWindow->window);
+src/Display/PrincipalAxisGL.c:475:  style = gtk_widget_get_style(fp);
+src/Display/PrincipalAxisGL.c:504:  style = gtk_widget_get_style(fp);
+src/Display/PrincipalAxisGL.c:532:  style = gtk_widget_get_style(fp);
+src/Utils/AtomsProp.c:1407:       GtkStyle *button_style = gtk_widget_get_style(WinTable); 
+src/Utils/Utils.c:2768:        style = gtk_style_copy (gtk_widget_get_style (view));
+src/Utils/Utils.c:3891:	gdk_draw_layout (pixmap,gc,x,y,layout);
+src/Utils/GabeditXYPlot.c:223:	gdk_gc_get_values(gc, &values);
+src/Utils/GabeditXYPlot.c:299:	gdk_gc_get_values(gc, &values);
+src/Utils/GabeditXYPlot.c:495:	gdk_gc_get_values(xyplot->fore_gc, &values);
+src/Utils/GabeditXYPlot.c:726:	gdk_gc_get_values(xyplot->fore_gc, &values);
+src/Utils/GabeditXYPlot.c:1075:		gdk_gc_get_values(xyplot->lines_gc, &values);
+src/Utils/GabeditXYPlot.c:2523:        style = gtk_style_copy (gtk_widget_get_style (view));
+src/Utils/GabeditXYPlot.c:4407:	gdk_gc_get_values(xyplot->back_gc, &gc_values);
+src/Utils/GabeditXYPlot.c:4409:	gdk_gc_get_values(xyplot->fore_gc, &gc_values);
+src/Utils/GabeditXYPlot.c:7167:  xyplot->back_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7173:  xyplot->fore_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7176:  xyplot->hmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7177:  xyplot->vmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7183:  xyplot->hminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7184:  xyplot->vminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7186:  xyplot->data_gc=gdk_gc_new (widget->window);
+src/Utils/GabeditXYPlot.c:7192:  xyplot->lines_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7271:	xyplot->back_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7277:	xyplot->fore_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7280:	xyplot->hmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7281:	xyplot->vmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7288:	xyplot->hminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7289:	xyplot->vminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7291:	xyplot->data_gc=gdk_gc_new (widget->window);
+src/Utils/GabeditXYPlot.c:7304:		xyplot->lines_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditXYPlot.c:7359:		gdk_gc_get_values(xyplot->back_gc, &gc_values);
+src/Utils/GabeditXYPlot.c:7361:		gdk_gc_get_values(xyplot->fore_gc, &gc_values);
+src/Utils/GabeditXYPlot.c:7385:		gdk_gc_get_values(xyplot->fore_gc, &gc_values);
+src/Utils/GabeditXYPlot.c:7409:		gdk_gc_get_values(xyplot->back_gc, &gc_values);
+src/Utils/GabeditXYPlot.c:7440:	gdk_gc_get_values(xyplot->back_gc, &gc_values);
+src/Utils/GabeditXYPlot.c:7443:	gdk_gc_get_values(xyplot->fore_gc, &gc_values);
+src/Utils/GabeditXYPlot.c:7552:	gdk_gc_set_rgb_fg_color (xyplot->data_gc, &data->point_color);
+src/Utils/GabeditXYPlot.c:7583:	gdk_gc_set_rgb_fg_color (xyplot->data_gc, &data->line_color);
+src/Utils/GabeditXYPlot.c:7584:	gdk_gc_set_line_attributes (xyplot->data_gc, data->line_width, data->line_style, GDK_CAP_ROUND, GDK_JOIN_MITER);
+src/Utils/GabeditXYPlot.c:7619:	gdk_draw_rectangle(widget->window,
+src/Utils/GabeditXYPlot.c:7639:		gdk_gc_set_rgb_fg_color (xyplot->lines_gc, &xyplot->objectsLine[i].color);
+src/Utils/GabeditXYPlot.c:7640:		gdk_gc_set_line_attributes (xyplot->lines_gc, 
+src/Utils/GabeditXYPlot.c:7648:	gdk_draw_line(widget->window, xyplot->lines_gc,
+src/Utils/GabeditXYPlot.c:7665:		gdk_draw_line(widget->window, xyplot->lines_gc,
+src/Utils/GabeditXYPlot.c:7671:		gdk_draw_line(widget->window, xyplot->lines_gc,
+src/Utils/GabeditXYPlot.c:7706:	gdk_draw_polygon(widget->window, xyplot->fore_gc, FALSE, points, 4);
+src/Utils/GabeditXYPlot.c:7716:	gdk_draw_rectangle(widget->window,
+src/Utils/GabeditXYPlot.c:7738:	gdk_draw_rectangle(widget->window,
+src/Utils/GabeditXYPlot.c:7788:	gdk_draw_line(widget->window,
+src/Utils/GabeditXYPlot.c:8083:		gdk_gc_set_rgb_fg_color (xyplot->lines_gc, &xyplot->objectsLine[i].color);
+src/Utils/GabeditXYPlot.c:8084:		gdk_gc_set_line_attributes (xyplot->lines_gc, 
+src/Utils/GabeditXYPlot.c:8282:static GdkPixmap* gdk_pixmap_copy(GdkPixmap *pixmap)
+src/Utils/GabeditXYPlot.c:8292:	pixmap_out = gdk_pixmap_new(NULL, width, height, depth);
+src/Utils/GabeditXYPlot.c:8293:	gc = gdk_gc_new(pixmap);
+src/Utils/GabeditXYPlot.c:8294:	gdk_draw_drawable(pixmap_out, gc, pixmap, 0, 0, 0, 0, width, height);
+src/Utils/GabeditXYPlot.c:8306:		xyplot->old_area=gdk_pixmap_copy(widget->window);
+src/Utils/GabeditXYPlot.c:8312:	gdk_draw_drawable (widget->window, 
+src/Utils/GabeditXYPlot.c:8340:		gdk_draw_drawable (widget->window, 
+src/Utils/GabeditXYPlot.c:8358:		gdk_draw_drawable (widget->window, 
+src/Utils/GabeditXYPlot.c:8376:		gdk_draw_drawable (widget->window, 
+src/Utils/GabeditXYPlot.c:8394:		gdk_draw_drawable (widget->window, 
+src/Utils/GabeditXYPlot.c:8412:		gdk_draw_drawable (widget->window, 
+src/Utils/GabeditXYPlot.c:9691:  gdk_gc_set_rgb_fg_color(xyplot->back_gc, &color);
+src/Utils/GabeditXYPlot.c:9724:  gdk_gc_set_rgb_fg_color(gc, &color);
+src/Utils/GabeditXYPlot.c:9725:  gdk_gc_set_line_attributes(gc, line_width, line_style, 0 ,0);
+src/Utils/GabeditXYPlot.c:9762:  gdk_gc_get_values(gc, &gc_values);
+src/Utils/GabeditXYPlot.c:10063:		gdk_gc_get_values(xyplot->back_gc, &gc_values);
+src/Utils/GabeditXYPlot.c:10179:    xyplot->plotting_area=gdk_pixmap_new(widget->window, xyplot->plotting_rect.width, xyplot->plotting_rect.height, -1);
+src/Utils/HydrogenBond.c:249:  button_style = gtk_widget_get_style(winTable); 
+src/Utils/UtilsCairo.c:53:	gdk_gc_get_values(gc, &values);
+src/Utils/UtilsCairo.c:113:	gdk_gc_get_values(gc, &values);
+src/Utils/UtilsCairo.c:186:	gdk_gc_get_values(gc, &values);
+src/Utils/UtilsCairo.c:247:	gdk_gc_get_values(gc, &values);
+src/Utils/UtilsCairo.c:297:	gdk_gc_get_values(gc, &values);
+src/Utils/UtilsCairo.c:348:	gdk_gc_get_values(gc, &values);
+src/Utils/UtilsCairo.c:408:	gdk_gc_get_values(gc, &values);
+src/Utils/UtilsInterface.c:252:  style = gtk_widget_get_style(widget);
+src/Utils/UtilsInterface.c:255:  gdk_pixmap = gdk_pixmap_create_from_xpm_d(widget->window,&mask, &style->bg[GTK_STATE_NORMAL],data);
+src/Utils/UtilsInterface.c:274:  gc = gdk_gc_new(widget->window);
+src/Utils/UtilsInterface.c:279:  pixmap = gdk_pixmap_new(widget->window,width,height, -1);
+src/Utils/UtilsInterface.c:280:  gdk_draw_rectangle (pixmap,
+src/Utils/UtilsInterface.c:286:  gdk_gc_set_foreground(gc,&Color);
+src/Utils/UtilsInterface.c:287:  gdk_draw_rectangle (pixmap,
+src/Utils/UtilsInterface.c:343:  style = gtk_widget_get_style(widget);
+src/Utils/UtilsInterface.c:346:  gdk_pixmap = gdk_pixmap_create_from_xpm_d(widget->window,
+src/Utils/UtilsInterface.c:390:  style = gtk_widget_get_style(widget);
+src/Utils/UtilsInterface.c:391:  gdk_pixmap = gdk_pixmap_create_from_xpm_d (widget->window,&mask, &style->bg[GTK_STATE_NORMAL],gabedit_xpm);
+src/Utils/UtilsInterface.c:417:  style = gtk_widget_get_style(widget);
+src/Utils/UtilsInterface.c:420:  gdk_pixmap = gdk_pixmap_create_from_xpm_d(widget->window,
+src/Utils/UtilsInterface.c:451:  style = gtk_widget_get_style(widget);
+src/Utils/UtilsInterface.c:454:  gdk_pixmap = gdk_pixmap_create_from_xpm_d(widget->window,
+src/Utils/UtilsInterface.c:513:  style = gtk_widget_get_style(widget);
+src/Utils/UtilsInterface.c:516:  gdk_pixmap = gdk_pixmap_create_from_xpm_d (widget->window,&mask, &style->bg[GTK_STATE_NORMAL],data);
+src/Utils/UtilsInterface.c:3269:  style = gtk_widget_get_style(fp);
+src/Utils/UtilsVASP.c:344:        gdk_gc_get_values(xyplot->fore_gc, &values);
+src/Utils/GabeditContoursPlot.c:428:	gdk_gc_get_values(gc, &values);
+src/Utils/GabeditContoursPlot.c:504:	gdk_gc_get_values(gc, &values);
+src/Utils/GabeditContoursPlot.c:570:	gdk_gc_get_values(gc, &values);
+src/Utils/GabeditContoursPlot.c:1879:	gdk_gc_get_values(contoursplot->fore_gc, &values);
+src/Utils/GabeditContoursPlot.c:2227:		gdk_gc_get_values(contoursplot->lines_gc, &values);
+src/Utils/GabeditContoursPlot.c:4297:	gdk_gc_get_values(contoursplot->back_gc, &gc_values);
+src/Utils/GabeditContoursPlot.c:4299:	gdk_gc_get_values(contoursplot->fore_gc, &gc_values);
+src/Utils/GabeditContoursPlot.c:7155:  contoursplot->back_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7161:  contoursplot->fore_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7164:  contoursplot->hmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7165:  contoursplot->vmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7171:  contoursplot->hminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7172:  contoursplot->vminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7174:  contoursplot->data_gc=gdk_gc_new (widget->window);
+src/Utils/GabeditContoursPlot.c:7180:  contoursplot->lines_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7264:	contoursplot->back_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7270:	contoursplot->fore_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7273:	contoursplot->hmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7274:	contoursplot->vmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7281:	contoursplot->hminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7282:	contoursplot->vminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7284:	contoursplot->data_gc=gdk_gc_new (widget->window);
+src/Utils/GabeditContoursPlot.c:7297:		contoursplot->lines_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:7352:		gdk_gc_get_values(contoursplot->back_gc, &gc_values);
+src/Utils/GabeditContoursPlot.c:7354:		gdk_gc_get_values(contoursplot->fore_gc, &gc_values);
+src/Utils/GabeditContoursPlot.c:7378:		gdk_gc_get_values(contoursplot->fore_gc, &gc_values);
+src/Utils/GabeditContoursPlot.c:7402:		gdk_gc_get_values(contoursplot->back_gc, &gc_values);
+src/Utils/GabeditContoursPlot.c:7433:	gdk_gc_get_values(contoursplot->back_gc, &gc_values);
+src/Utils/GabeditContoursPlot.c:7436:	gdk_gc_get_values(contoursplot->fore_gc, &gc_values);
+src/Utils/GabeditContoursPlot.c:7547:		gdk_gc_set_rgb_fg_color (contoursplot->data_gc, &data->contours[n].point_color);
+src/Utils/GabeditContoursPlot.c:7675:		gdk_gc_set_rgb_fg_color (contoursplot->data_gc, &data->contours[n].line_color);
+src/Utils/GabeditContoursPlot.c:7676:		gdk_gc_set_line_attributes (contoursplot->data_gc, 
+src/Utils/GabeditContoursPlot.c:7699:	gdk_draw_rectangle(widget->window,
+src/Utils/GabeditContoursPlot.c:7719:		gdk_gc_set_rgb_fg_color (contoursplot->lines_gc, &contoursplot->objectsLine[i].color);
+src/Utils/GabeditContoursPlot.c:7720:		gdk_gc_set_line_attributes (contoursplot->lines_gc, 
+src/Utils/GabeditContoursPlot.c:7728:	gdk_draw_line(widget->window, contoursplot->lines_gc,
+src/Utils/GabeditContoursPlot.c:7745:		gdk_draw_line(widget->window, contoursplot->lines_gc,
+src/Utils/GabeditContoursPlot.c:7751:		gdk_draw_line(widget->window, contoursplot->lines_gc,
+src/Utils/GabeditContoursPlot.c:7786:	gdk_draw_polygon(widget->window, contoursplot->fore_gc, FALSE, points, 4);
+src/Utils/GabeditContoursPlot.c:7796:	gdk_draw_rectangle(widget->window,
+src/Utils/GabeditContoursPlot.c:7872:		gdk_gc_set_rgb_fg_color (contoursplot->data_gc, &color);
+src/Utils/GabeditContoursPlot.c:7873:		gdk_gc_set_line_attributes (contoursplot->data_gc, 2, GDK_LINE_SOLID, GDK_CAP_ROUND, GDK_JOIN_MITER);
+src/Utils/GabeditContoursPlot.c:7905:	gdk_draw_rectangle(widget->window,
+src/Utils/GabeditContoursPlot.c:7955:	gdk_draw_line(widget->window,
+src/Utils/GabeditContoursPlot.c:8254:		gdk_gc_set_rgb_fg_color (contoursplot->lines_gc, &contoursplot->objectsLine[i].color);
+src/Utils/GabeditContoursPlot.c:8255:		gdk_gc_set_line_attributes (contoursplot->lines_gc, 
+src/Utils/GabeditContoursPlot.c:8530:static GdkPixmap* gdk_pixmap_copy(GdkPixmap *pixmap)
+src/Utils/GabeditContoursPlot.c:8540:	pixmap_out = gdk_pixmap_new(NULL, width, height, depth);
+src/Utils/GabeditContoursPlot.c:8541:	gc = gdk_gc_new(pixmap);
+src/Utils/GabeditContoursPlot.c:8542:	gdk_draw_drawable(pixmap_out, gc, pixmap, 0, 0, 0, 0, width, height);
+src/Utils/GabeditContoursPlot.c:8554:		contoursplot->old_area=gdk_pixmap_copy(widget->window);
+src/Utils/GabeditContoursPlot.c:8560:	gdk_draw_drawable (widget->window, 
+src/Utils/GabeditContoursPlot.c:8639:		gdk_draw_drawable (widget->window, 
+src/Utils/GabeditContoursPlot.c:8657:		gdk_draw_drawable (widget->window, 
+src/Utils/GabeditContoursPlot.c:8675:		gdk_draw_drawable (widget->window, 
+src/Utils/GabeditContoursPlot.c:8693:		gdk_draw_drawable (widget->window, 
+src/Utils/GabeditContoursPlot.c:8711:		gdk_draw_drawable (widget->window, 
+src/Utils/GabeditContoursPlot.c:9063:		gdk_draw_line(widget->window,
+src/Utils/GabeditContoursPlot.c:9071:		gdk_draw_line(widget->window,
+src/Utils/GabeditContoursPlot.c:9095:			gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:9096:			 gdk_gc_set_foreground(gc,&col);
+src/Utils/GabeditContoursPlot.c:9097:			gdk_draw_line(widget->window,gc,
+src/Utils/GabeditContoursPlot.c:9122:			gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+src/Utils/GabeditContoursPlot.c:9123:			 gdk_gc_set_foreground(gc,&col);
+src/Utils/GabeditContoursPlot.c:9124:			gdk_draw_line(widget->window,gc,
+src/Utils/GabeditContoursPlot.c:10063:  gdk_gc_set_rgb_fg_color(contoursplot->back_gc, &color);
+src/Utils/GabeditContoursPlot.c:10096:  gdk_gc_set_rgb_fg_color(gc, &color);
+src/Utils/GabeditContoursPlot.c:10097:  gdk_gc_set_line_attributes(gc, line_width, line_style, 0 ,0);
+src/Utils/GabeditContoursPlot.c:10134:  gdk_gc_get_values(gc, &gc_values);
+src/Utils/GabeditContoursPlot.c:10435:		gdk_gc_get_values(contoursplot->back_gc, &gc_values);
+src/Utils/GabeditContoursPlot.c:10554:    contoursplot->plotting_area=gdk_pixmap_new(widget->window, contoursplot->plotting_rect.width, contoursplot->plotting_rect.height, -1);
+src/Molpro/MInterfaceBasis.c:1040:  button_style = gtk_widget_get_style(FenetreTable); 
+src/Molpro/MolproBasisLibrary.c:748:  button_style = gtk_widget_get_style(FenetreTable); 
+src/Files/ListeFiles.c:1355:	  	style = gtk_style_copy(gtk_widget_get_style(labelOngletOut)); 
+src/Files/ListeFiles.c:1362:	  	style = gtk_style_copy(gtk_widget_get_style(labelOngletErr)); 
+src/MolecularMechanics/SetMMParameters.c:342:  button_style = gtk_widget_get_style(FenetreTable); 
+src/MPQC/MPQCBasisLibrary.c:702:  button_style = gtk_widget_get_style(FenetreTable); 
+src/Molcas/MolcasBasisLibrary.c:732:  button_style = gtk_widget_get_style(FenetreTable); 
+src/Geometry/MenuToolBarGeom.c:91:	GtkStyle *button_style = gtk_widget_get_style(WinTable); 
+src/Geometry/MenuToolBarGeom.c:131:	button_style = gtk_widget_get_style(WinTable); 
+src/Geometry/BuildRing.c:157:  button_style = gtk_widget_get_style(FenetreTable); 
+src/Geometry/BuildPolySaccharide.c:851:  button_style = gtk_widget_get_style(Dlg); 
+src/Geometry/PreviewGeom.c:598:	    gdk_gc_set_foreground(gc,&colori);
+src/Geometry/PreviewGeom.c:599:	    gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
+src/Geometry/PreviewGeom.c:600:	    if(v2>=0) gdk_draw_line(pixmap,gc,x1,y1,x2,y2);
+src/Geometry/PreviewGeom.c:668:	gdk_gc_set_foreground(gc,&colori);
+src/Geometry/PreviewGeom.c:669:	gdk_gc_set_line_attributes(gc,2,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/PreviewGeom.c:670:	gdk_gc_set_fill(gc,GDK_STIPPLED);
+src/Geometry/PreviewGeom.c:671:	gdk_draw_arc(pixmap,gc,FALSE,x-rayon,y-rayon,2*rayon,2*rayon,0,380*64);
+src/Geometry/PreviewGeom.c:709:	gdk_gc_set_foreground(gc,&colori);
+src/Geometry/PreviewGeom.c:710:	gdk_gc_set_line_attributes(gc,2,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/PreviewGeom.c:711:	gdk_gc_set_fill(gc,GDK_SOLID);
+src/Geometry/PreviewGeom.c:712:	gdk_draw_arc(pixmap,gc,TRUE,x-rayon,y-rayon,2*rayon,2*rayon,0,380*64);
+src/Geometry/PreviewGeom.c:714:	gdk_gc_set_foreground(gc,&colorgray);
+src/Geometry/PreviewGeom.c:715:	gdk_draw_arc(pixmap,gc,TRUE,x-rayon,y-rayon,2*rayon,2*rayon,90*64,180*64);
+src/Geometry/PreviewGeom.c:716:	gdk_gc_set_foreground(gc,&colori);
+src/Geometry/PreviewGeom.c:717:	gdk_draw_arc(pixmap,gc,TRUE,x-rayon/2,y-rayon,rayon,2*rayon,0,380*64);
+src/Geometry/PreviewGeom.c:771:	gdk_draw_rectangle (prevData->pixmap,
+src/Geometry/PreviewGeom.c:783:	gdk_draw_drawable(drawingArea->window,
+src/Geometry/PreviewGeom.c:1000:	if(!prevData->gc) prevData->gc = gdk_gc_new(drawingArea->window);
+src/Geometry/PreviewGeom.c:1002:	prevData->pixmap = gdk_pixmap_new(drawingArea->window, 
+src/Geometry/PreviewGeom.c:1014:	gdk_draw_drawable(widget->window,
+src/Geometry/BuildPolyPeptide.c:1477:  button_style = gtk_widget_get_style(Dlg); 
+src/Geometry/DrawGeomGL.c:4024:	 button_style = gtk_widget_get_style(winDlg); 
+src/Geometry/BuildRoZPhi.c:213:  button_style = gtk_widget_get_style(WinTable); 
+src/Geometry/GeomZmatrix.c:3040:  button_style = gtk_widget_get_style(FenetreTable); 
+src/Geometry/AxesGeomGL.c:336:  style = gtk_widget_get_style(fp);
+src/Geometry/AxesGeomGL.c:362:  style = gtk_widget_get_style(fp);
+src/Geometry/AxesGeomGL.c:392:  style = gtk_widget_get_style(fp);
+src/Geometry/BuildLinear.c:142:  button_style = gtk_widget_get_style(FenetreTable); 
+src/Geometry/EnergiesCurves.c:138:	gc = gdk_gc_new(widget->window);
+src/Geometry/EnergiesCurves.c:140:	gdk_gc_set_foreground(gc,&couleur);
+src/Geometry/EnergiesCurves.c:142:	pixmap = gdk_pixmap_new(widget->window,
+src/Geometry/EnergiesCurves.c:148:  	gdk_draw_rectangle (	pixmap,
+src/Geometry/EnergiesCurves.c:165:  	gdk_draw_drawable(widget->window,
+src/Geometry/EnergiesCurves.c:190:	  gdk_draw_drawable(widget->window,
+src/Geometry/EnergiesCurves.c:198:	gc = gdk_gc_new(widget->window);
+src/Geometry/EnergiesCurves.c:203:	gdk_gc_set_foreground(gc,&couleur);
+src/Geometry/EnergiesCurves.c:204:	gdk_gc_set_line_attributes(gc,1,GDK_LINE_SOLID,GDK_CAP_BUTT,GDK_JOIN_MITER);
+src/Geometry/EnergiesCurves.c:223:	gdk_draw_arc(widget->window,gc,FALSE,x-rayon,y-rayon,2*rayon,2*rayon,0,380*64);
+src/Geometry/EnergiesCurves.c:321:	gc = gdk_gc_new(dessin->window);
+src/Geometry/EnergiesCurves.c:322:	gdk_gc_set_foreground(gc,&couleur);
+src/Geometry/EnergiesCurves.c:324:	gdk_gc_set_line_attributes(gc,1,GDK_LINE_SOLID,GDK_CAP_PROJECTING,GDK_JOIN_MITER);
+src/Geometry/EnergiesCurves.c:327:		gdk_draw_line(pixmap,gc,i,ymin,i,ymax);
+src/Geometry/EnergiesCurves.c:330:		gdk_draw_line(pixmap,gc,xmin,i,xmax,i);
+src/Geometry/EnergiesCurves.c:341:	gdk_gc_set_foreground(gc,&couleur);
+src/Geometry/EnergiesCurves.c:396:	gc = gdk_gc_new(dessin->window);
+src/Geometry/EnergiesCurves.c:401:	gdk_gc_set_foreground(gc,&couleur);
+src/Geometry/EnergiesCurves.c:402:	gdk_gc_set_line_attributes(gc,2,GDK_LINE_SOLID,GDK_CAP_PROJECTING,GDK_JOIN_MITER);
+src/Geometry/EnergiesCurves.c:405:	gdk_draw_line(pixmap,gc,tabx[i],taby[i],
+src/Geometry/EnergiesCurves.c:408:	gdk_gc_set_fill(gc,GDK_SOLID);
+src/Geometry/EnergiesCurves.c:409:    gdk_gc_set_line_attributes(gc,1,GDK_LINE_SOLID,GDK_CAP_PROJECTING,GDK_JOIN_MITER);
+src/Geometry/EnergiesCurves.c:414:	gdk_gc_set_foreground(gc,&couleur);
+src/Geometry/EnergiesCurves.c:417:		gdk_draw_arc(pixmap,gc,TRUE,tabx[i]-rayon,taby[i]-rayon,2*rayon,2*rayon,0,380*64);
+src/Geometry/EnergiesCurves.c:654:	pixmap = gdk_pixmap_new(dessin->window,
+src/Geometry/DrawGeomCairo.c:2700:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:2907:    	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:2928:	gdk_gc_set_line_attributes(gc,1,GDK_LINE_DOUBLE_DASH,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
+src/Geometry/DrawGeomCairo.c:2930:  	gdk_draw_rectangle (GeomDrawingArea->window,gc,FALSE,xi, yi, xf, yf);
+src/Geometry/DrawGeomCairo.c:2932:  	gdk_draw_rectangle (GeomDrawingArea->window,GeomDrawingArea->style->white_gc,FALSE,xi, yi, xf, yf);
+src/Geometry/DrawGeomCairo.c:2952:    	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:2974:	gdk_gc_set_line_attributes(gc,1,GDK_LINE_DOUBLE_DASH,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
+src/Geometry/DrawGeomCairo.c:2975:	gdk_draw_arc(GeomDrawingArea->window,gc,FALSE,xi,yi,xf,yf,0,380*64);
+src/Geometry/DrawGeomCairo.c:6483:  gdk_draw_drawable(GeomDrawingArea->window,
+src/Geometry/DrawGeomCairo.c:6497:  gdk_draw_rectangle (pixmap,
+src/Geometry/DrawGeomCairo.c:6507:	gdk_gc_set_foreground(gc,BackColor);
+src/Geometry/DrawGeomCairo.c:6509:        gdk_draw_rectangle (pixmap,
+src/Geometry/DrawGeomCairo.c:6520:	if(!gc) gc = gdk_gc_new(GeomDrawingArea->window);
+src/Geometry/DrawGeomCairo.c:6522:	pixmap = gdk_pixmap_new(widget->window, widget->allocation.width, widget->allocation.height, -1);
+src/Geometry/DrawGeomCairo.c:6532:	gdk_draw_drawable(widget->window,
+src/Geometry/DrawGeomCairo.c:9376:	gdk_gc_set_foreground(gc,&colori);
+src/Geometry/DrawGeomCairo.c:9377:	gdk_gc_set_line_attributes(gc,1,GDK_LINE_SOLID,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
+src/Geometry/DrawGeomCairo.c:9424:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9441:	gdk_gc_set_foreground(gc,&colori);
+src/Geometry/DrawGeomCairo.c:9443:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9445:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_NOT_LAST,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9456:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9457:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_ON_OFF_DASH,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
+src/Geometry/DrawGeomCairo.c:9535:	gdk_gc_set_foreground(gc,&colori);
+src/Geometry/DrawGeomCairo.c:9536:	gdk_gc_set_line_attributes(gc,4,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9537:	gdk_gc_set_fill(gc,GDK_STIPPLED);
+src/Geometry/DrawGeomCairo.c:9541:	gdk_gc_set_fill(gc,GDK_SOLID);
+src/Geometry/DrawGeomCairo.c:9574:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9576:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9599:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9601:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9626:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9628:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9650:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9652:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9674:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9676:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9698:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9700:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9720:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9722:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9744:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9746:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9768:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9770:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9792:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9794:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9820:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:9822:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9896:	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9919:			gdk_gc_set_foreground(gc,&color1);
+src/Geometry/DrawGeomCairo.c:9922:			gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_NOT_LAST,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9923:			else gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9946:			gdk_gc_set_foreground(gc,&color1);
+src/Geometry/DrawGeomCairo.c:9949:			gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_NOT_LAST,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9951:			gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9985:		gdk_gc_set_line_attributes(gc,1,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:9988:		gdk_gc_set_foreground(gc,&colorblack);
+src/Geometry/DrawGeomCairo.c:9989:		gdk_gc_set_fill(gc,GDK_STIPPLED);
+src/Geometry/DrawGeomCairo.c:9992:		gdk_gc_set_fill(gc,GDK_SOLID);
+src/Geometry/DrawGeomCairo.c:9999:		gdk_gc_set_foreground(gc,&colori);
+src/Geometry/DrawGeomCairo.c:10000:		gdk_gc_set_fill(gc,GDK_SOLID);
+src/Geometry/DrawGeomCairo.c:10031:		gdk_gc_set_line_attributes(gc,lw,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
+src/Geometry/DrawGeomCairo.c:10035:		gdk_gc_set_foreground(gc,&colorblack);
+src/Geometry/DrawGeomCairo.c:10043:	gdk_gc_set_foreground(gc,&colori);
+src/Geometry/DrawGeomCairo.c:10044:	gdk_gc_set_fill(gc,GDK_SOLID);
+src/Geometry/DrawGeomCairo.c:10793:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:10994:        gdk_draw_rectangle (pixmap,
+src/Geometry/DrawGeomCairo.c:11014:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:11016:        gdk_draw_rectangle (pixmap,
+src/Geometry/DrawGeomCairo.c:11039:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:11041:        gdk_draw_rectangle (pixmap,
+src/Geometry/DrawGeomCairo.c:11074:	gdk_gc_set_foreground(gc,&color);
+src/Geometry/DrawGeomCairo.c:11076:        gdk_draw_rectangle (pixmap,
+src/Geometry/DrawGeomCairo.c:11642:	 button_style = gtk_widget_get_style(winDlg); 
+src/Geometry/BuildCrystal.c:746:  /* button_style = gtk_widget_get_style(Dlg); */
+src/Geometry/GeomXYZ.c:2982:  button_style = gtk_widget_get_style(FenetreTable); 
+incompat1.txt:177:src/Utils/GabeditXYPlot.c:8282:static GdkPixmap* gdk_pixmap_copy(GdkPixmap *pixmap)
+incompat1.txt:352:src/Utils/GabeditContoursPlot.c:8530:static GdkPixmap* gdk_pixmap_copy(GdkPixmap *pixmap)
