@@ -23,6 +23,8 @@ DEALINGS IN THE SOFTWARE.
 #include <gdk/gdkkeysyms.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <cairo.h>
+#include <pango/pangocairo.h>
 #include "../Common/Global.h"
 #include "../Utils/UtilsInterface.h"
 #include "../Utils/Utils.h"
@@ -43,19 +45,146 @@ DEALINGS IN THE SOFTWARE.
 #include "../Display/UtilsOrb.h"
 #include "../Compat/gabedit_gdk_compat.h"
 
+#define SPLASH_SURFACE_KEY "splash-surface"
+
 static GdkGC *gc = NULL;
 /*static guint IdTimer = 0;*/
 static	GtkWidget *status = NULL;
 static guint idStatus = 0;
 static gint splash_screen_cb(gpointer data);
 static gint progress( gpointer data,gdouble step);
+static cairo_surface_t *splash_surface = NULL;
+static GtkWidget *status;
+static guint idStatus;
+
+static gboolean progress(gpointer data, gdouble step);
+static void draw_splash_contents_on_surface(GtkWidget *widget, cairo_surface_t *surface);
+static gboolean splash_configure_cb(GtkWidget *widget, GdkEventConfigure *event, gpointer user_data);
+static gboolean splash_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer user_data);
+static void splash_destroy_cb(GtkWidget *widget, gpointer user_data);
+static void create_surface_for_widget(GtkWidget *widget);
+
+/********************************************************************************/
+static void splash_create_surface(GtkWidget *widget)
+{
+    GtkAllocation alloc;
+    gtk_widget_get_allocation(widget, &alloc);
+    GdkWindow *win = gtk_widget_get_window(widget);
+    if (!win) return;
+
+    if (splash_surface) {
+        cairo_surface_destroy(splash_surface);
+        splash_surface = NULL;
+    }
+
+    /* create a surface compatible with the widget window */
+    splash_surface = gdk_window_create_similar_surface(win,
+                                                       CAIRO_CONTENT_COLOR_ALPHA,
+                                                       alloc.width,
+                                                       alloc.height);
+    if (!splash_surface) return;
+
+    cairo_t *cr = cairo_create(splash_surface);
+
+    /* Example: gradient background */
+    cairo_rectangle(cr, 0, 0, alloc.width, alloc.height);
+    cairo_pattern_t *pat = cairo_pattern_create_linear(0, 0, 0, alloc.height);
+    cairo_pattern_add_color_stop_rgba(pat, 0.0, 0.95, 0.97, 1.0, 1.0);
+    cairo_pattern_add_color_stop_rgba(pat, 1.0, 0.75, 0.85, 0.95, 1.0);
+    cairo_set_source(cr, pat);
+    cairo_fill(cr);
+    cairo_pattern_destroy(pat);
+
+    /* Example: draw arcs / decorations */
+    cairo_set_line_width(cr, 1.0);
+    cairo_set_source_rgba(cr, 0.2, 0.2, 0.2, 0.8);
+    /* draw a corner arc (top-left) */
+    double radius = MIN(alloc.width, alloc.height) * 0.15;
+    cairo_arc(cr, radius, radius, radius, G_PI, 1.5 * G_PI);
+    cairo_stroke(cr);
+
+    /* Example: render text using PangoCairo */
+    PangoLayout *layout = pango_cairo_create_layout(cr);
+    PangoFontDescription *fd = pango_font_description_from_string("sans bold 20");
+    pango_layout_set_font_description(layout, fd);
+    pango_layout_set_text(layout, "Gabedit", -1);
+    int tw, th;
+    pango_layout_get_pixel_size(layout, &tw, &th);
+    cairo_set_source_rgb(cr, 0.05, 0.05, 0.05);
+    cairo_move_to(cr, 20.0, 20.0);
+    pango_cairo_show_layout(cr, layout);
+
+    g_object_unref(layout);
+    pango_font_description_free(fd);
+
+    cairo_destroy(cr);
+}
+/********************************************************************************/
+static void gdkcolor_to_rgba(const GdkColor *c, double *r, double *g, double *b)
+{
+    if (!c) { *r = *g = *b = 0.0; return; }
+    *r = c->red   / 65535.0;
+    *g = c->green / 65535.0;
+    *b = c->blue  / 65535.0;
+}
+/********************************************************************************/
+static void splash_destroy_cb(GtkWidget *widget, gpointer user_data)
+{
+    (void)user_data;
+    cairo_surface_t *surface = (cairo_surface_t*)g_object_get_data(G_OBJECT(widget), SPLASH_SURFACE_KEY);
+    if (surface) {
+        g_object_set_data(G_OBJECT(widget), SPLASH_SURFACE_KEY, NULL);
+        cairo_surface_destroy(surface);
+    }
+}
+/********************************************************************************/
+static gboolean splash_configure_cb(GtkWidget *widget, GdkEventConfigure *event, gpointer user_data)
+{
+    (void)event; (void)user_data;
+    create_surface_for_widget(widget);
+	gtk_widget_queue_draw(widget);
+    return TRUE;
+}
+/********************************************************************************/
+static gboolean splash_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+{
+	(void)user_data;
+	cairo_surface_t *surface = (cairo_surface_t*)g_object_get_data(G_OBJECT(widget), SPLASH_SURFACE_KEY);
+    if (splash_surface) {
+        cairo_set_source_surface(cr, splash_surface, 0, 0);
+        cairo_paint(cr);
+		return FALSE;
+    } else {
+        
+	    GtkAllocation alloc;
+	    gtk_widget_get_allocation(widget, &alloc);
+	    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+	    cairo_rectangle(cr, 0, 0, alloc.width, alloc.height);
+	    cairo_fill(cr);
+
+        return FALSE;
+    }
+}
+/********************************************************************************/
+static void splash_draw_text(cairo_t *cr, const char *text, const char *font_desc, double x, double y, double r, double g, double b)
+{
+    PangoLayout *layout = pango_cairo_create_layout(cr);
+    PangoFontDescription *fd = pango_font_description_from_string(font_desc);
+    pango_layout_set_font_description(layout, fd);
+    pango_layout_set_text(layout, text, -1);
+    cairo_set_source_rgb(cr, r, g, b);
+    cairo_move_to(cr, x, y);
+    pango_cairo_show_layout(cr, layout);
+    g_object_unref(layout);
+    pango_font_description_free(fd);
+}
 /********************************************************************************/
 static void set_statubar_str(gchar* str)
 {
 	if(str)
 	{
-		gtk_statusbar_pop(GTK_STATUSBAR(status),idStatus);
-		gtk_statusbar_push(GTK_STATUSBAR(status),idStatus,str);
+		gtk_statusbar_pop(GTK_STATUSBAR(status), idStatus);
+		gtk_statusbar_push(GTK_STATUSBAR(status), idStatus, str);
 	}
 	while(gtk_events_pending())
 		gtk_main_iteration();
@@ -143,7 +272,6 @@ static void read_ressource_files(GtkWidget* MainFrame,GtkWidget* ProgressBar)
 static gint show_gabedit(gpointer data)
 {
 	gtk_widget_show_all(Fenetre);
-	//gtk_window_move(GTK_WINDOW(Fenetre),0,0);
 	hide_progress_connection();
   	gtk_widget_hide (GTK_WIDGET(FrameWins));
 	{
@@ -154,18 +282,15 @@ static gint show_gabedit(gpointer data)
 	return FALSE;
 }
 /********************************************************************************/
-/* show the splash screen*/
 static gint splash_screen_cb(gpointer data)
 {
 	gtk_widget_hide(GTK_WIDGET(data));
-	/* gtk_timeout_remove(IdTimer);*/
 	gtk_object_destroy(GTK_OBJECT(data));
 	show_gabedit(NULL);
 	return FALSE;
 }
 /********************************************************************************/
-/* static gint progress( gpointer data)*/
-static gint progress( gpointer data, gdouble step)
+static gint progress(gpointer data, gdouble step)
 {
     gdouble new_val;
 
@@ -173,10 +298,10 @@ static gint progress( gpointer data, gdouble step)
     {
 	return FALSE;	
     }
-    new_val = gtk_progress_bar_get_fraction( GTK_PROGRESS_BAR(data) ) + step;
+    new_val = gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(data)) + step;
     if (new_val > 1) new_val = 1;
 
-     gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (data), (gdouble)(new_val));
+     gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR(data), (gdouble)(new_val));
 
     return TRUE;
 } 
@@ -209,410 +334,216 @@ static GtkWidget *create_progress_bar_splash(GtkWidget *box)
 	return ProgressBar;
 }
 /********************************************************************************/
-static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
+static gint configure_event(GtkWidget *widget, GdkEventConfigure *event)
 {
- 
-  	gint height = 0;
-	GdkColor color;
-	GdkColor tmpcolor;
-	GdkColormap *colormap   = NULL;
-  	GdkPixmap *pixmap = (GdkPixmap *)g_object_get_data(G_OBJECT(widget), "Pixmap");
-  	PangoFontDescription* font_desc = (PangoFontDescription*)g_object_get_data(G_OBJECT(widget), "FontDesc");
-	gchar* txt = (gchar*)g_object_get_data(G_OBJECT(widget), "Text");
-   	GdkColor *pcolor = (GdkColor*)g_object_get_data(G_OBJECT(widget), "Color");
-   	gint* lentxt = (gint*)g_object_get_data(G_OBJECT(widget), "LenTxt");
-	gboolean Ok = TRUE;
-        GdkVisual* vis;
-	gint i;
-	gint x;
-	gint y;
-	
-	if (pixmap) g_object_unref(pixmap);
-
-	pixmap = gdk_pixmap_new(widget->window,
-                          widget->allocation.width,
-                          widget->allocation.height,
-                          -1);
-	
-        color = *pcolor;
-	colormap  = gdk_drawable_get_colormap(widget->window);
-
-  	height = widget->allocation.height;
-        vis = gdk_colormap_get_visual(colormap);
-        if(vis->depth >15)
-		Ok = TRUE;
-	else
-		Ok = FALSE;
-	gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
-	if(Ok)
-  		for(i=0;i<widget->allocation.width;i++)
-  		{
-			gdouble t= 0.1+i/(gdouble)(widget->allocation.width)/4; 
-    			tmpcolor.red = (gushort)(color.red*t);
-			tmpcolor.green = (gushort)(color.green*t);
-			tmpcolor.blue = (gushort)(color.blue*t);
-			gdk_colormap_alloc_color(colormap, &tmpcolor, FALSE, TRUE);
-			gdk_gc_set_foreground(gc,&tmpcolor);
-    			gdk_draw_line(pixmap,gc,i,0,i,height);
-  		}
-	else
-	{
-		gdk_gc_set_foreground(gc,&color);
-  		for(i=0;i<widget->allocation.width;i++)
-    			gdk_draw_line(pixmap,gc,i,0,i,height);
-  	}
-	if(strstr(txt,"Copyright"))
-	{
-    			gdk_draw_line(pixmap,widget->style->black_gc,0,0,widget->allocation.width,0);
-    			gdk_draw_line(pixmap,widget->style->white_gc,0,1,widget->allocation.width,1);
-    			gdk_draw_line(pixmap,widget->style->black_gc,0,2,widget->allocation.width,2);
-	}
-	
-
-	if(strstr(txt,"Gabedit") && !strstr(txt,"Copyright"))
-	{
-		x = 20;
-		y = 10;
-		gabedit_draw_string(widget, pixmap, font_desc, widget->style->black_gc , x+height/20,y+height/18, txt, FALSE, FALSE);
-		gabedit_draw_string(widget, pixmap, font_desc, widget->style->white_gc , x,y, txt, FALSE, FALSE);
-	}
-	else
-	if(strstr(txt,"Allouche")  && !strstr(txt,"Copyright"))
-	{
-		x = widget->allocation.width/4;
-		y = 10;
-		gabedit_draw_string(widget, pixmap, font_desc, widget->style->black_gc , x+height/20,y+height/18, txt, FALSE, FALSE);
-		gabedit_draw_string(widget, pixmap, font_desc, widget->style->white_gc , x,y, txt, FALSE, FALSE);
-	}
-	else
-	if(strstr(txt,_("Graphical")))
-	{
-		x = 6;
-		y = 10;
-    		tmpcolor.red = 0;
-		tmpcolor.green =60000;
-		tmpcolor.blue = 65535;
-		gdk_colormap_alloc_color(colormap, &tmpcolor, FALSE, TRUE);
-		gdk_gc_set_foreground(gc,&tmpcolor);
-		if(vis->depth >15)
-		{
-			gabedit_draw_string(widget, pixmap, font_desc, widget->style->black_gc , x+height/15,y+height/15, txt, FALSE, FALSE);
-			gabedit_draw_string(widget, pixmap, font_desc, gc , x,y, txt, FALSE, FALSE);
-		}
-		else
-			gabedit_draw_string(widget, pixmap, font_desc, gc , x,y, txt, FALSE, FALSE);
-	}
-	else
-	{
-		x = 6;
-		y = 10;
-		gabedit_draw_string(widget, pixmap, font_desc, widget->style->black_gc , x+height/20,y+height/18, txt, FALSE, FALSE);
-		gabedit_draw_string(widget, pixmap, font_desc, widget->style->white_gc , x,y, txt, FALSE, FALSE);
-	}
-
-	if(strstr(txt,"Gabedit"))
-	{
-		gdouble t;
-        	gchar* Version_S = g_strdup_printf("%d.%d.%d",MAJOR_VERSION,MINOR_VERSION,MICRO_VERSION);
-		gint width = 0;
-		gint dum = 0;
-		x = *lentxt;
-  		gabedit_string_get_pixel_size(Fenetre, font_desc, Version_S, &i, &dum);
-		width = 9.0/8*i;
-#ifdef G_OS_WIN32
-		x = *lentxt-(gint)(i/15.0);
-#endif
-    		tmpcolor.red = 20000;
-		tmpcolor.green = 10000;
-		tmpcolor.blue = 20000;
-   		if(!gdk_color_parse("sky blue",&tmpcolor))
-		{
-    		tmpcolor.red = 65000;
-		tmpcolor.green = 10000;
-		tmpcolor.blue = 65000;
-		}
-		t = 0.1 + 0.25;
-		t = 0.5;
-    		tmpcolor.red = (gushort)(tmpcolor.red*t);
-		tmpcolor.green = (gushort)(tmpcolor.green*t);
-		tmpcolor.blue = (gushort)(tmpcolor.blue*t);
-
-		gdk_colormap_alloc_color(colormap, &tmpcolor, FALSE, TRUE);
-		gdk_gc_set_foreground(gc,&tmpcolor);
-		gdk_draw_arc(pixmap, gc, TRUE,x,0, width, widget->allocation.height, 0, 360*64);
-    		tmpcolor.red = 10000;
-		tmpcolor.green = 10000;
-		tmpcolor.blue = 50000;
-		gdk_colormap_alloc_color(colormap, &tmpcolor, FALSE, TRUE);
-		gdk_gc_set_foreground(gc,&tmpcolor);
-        	x = *lentxt + 1.0/20*i;
-		gabedit_draw_string(widget, pixmap, font_desc, gc , x,5, Version_S, FALSE, FALSE);
-
-		g_free(Version_S);
-	}
-
-  	g_object_set_data(G_OBJECT(widget), "Pixmap", pixmap);
-  	return TRUE;
+    (void)event;
+    if (!GTK_IS_WIDGET(widget)) return FALSE;
+    create_surface_for_widget(widget);
+    gtk_widget_queue_draw(widget);
+    return TRUE;
 }
 /********************************************************************************/   
-static gint expose_event(GtkWidget  *widget,GdkEventExpose *event )
+static gint expose_event(GtkWidget *widget,GdkEventExpose *event, gpointer user_data)
 {
-  	GdkPixmap *pixmap = NULL;
+  	(void)user_data;
+    if (!GTK_IS_WIDGET(widget)) return FALSE;
 
-	if(event->count >0)
-		return FALSE;
+    cairo_surface_t *surface = (cairo_surface_t*)g_object_get_data(G_OBJECT(widget), SPLASH_SURFACE_KEY);
+    if (!surface) return FALSE;
 
-  	pixmap = (GdkPixmap *)g_object_get_data(G_OBJECT(widget), "Pixmap");
-	if(pixmap)
-		gdk_draw_drawable(widget->window,
-                  widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
-                  pixmap,
-                  event->area.x, event->area.y,
-                  event->area.x, event->area.y,
-                  event->area.width, event->area.height);
-  	return FALSE;
+    GdkWindow *win = gtk_widget_get_window(widget);
+    if (!win) return FALSE;
+
+    cairo_t *cr = gdk_cairo_create(win);
+    cairo_rectangle(cr, event->area.x, event->area.y, event->area.width, event->area.height);
+    cairo_clip(cr);
+
+    cairo_set_source_surface(cr, surface, 0, 0);
+    cairo_paint(cr);
+    cairo_destroy(cr);
+    return FALSE;
 }
 /********************************************************************************/
-static void create_welcome_frame_popup(GtkWidget *vbox,GtkWidget *MainFrame)
+static void setup_text_darea(GtkWidget *darea, gchar *txt, PangoFontDescription *font_desc, GdkColor *color, gint *lentxt)
 {
-  GtkWidget *vboxframe;
-  GtkWidget *darea;
-  gint height = 0;
-  gint width = 0;
-  gint widthVersion = 0;
-  gint heightVersion = 0;
-  gchar* txt = g_strdup(_("       Welcome to :"));
-  GdkPixmap *pixmap = NULL;
-  GdkColor* color = g_malloc(sizeof(GdkColor));
-  gchar* Version_S = g_strdup_printf("%d.%d.%d",MAJOR_VERSION,MINOR_VERSION,MICRO_VERSION);
-  gint* lentxt = g_malloc(sizeof(gint));
-  PangoFontDescription *font_desc = pango_font_description_from_string ("sans bold 20");
+    g_object_set_data(G_OBJECT(darea), "Text", txt);
+    g_object_set_data(G_OBJECT(darea), "FontDesc", font_desc);
+    g_object_set_data(G_OBJECT(darea), "Color", color);
+    g_object_set_data(G_OBJECT(darea), "LenTxt", lentxt);
 
-/*   if(!gdk_color_parse("royal blue",color))*/
-   if(!gdk_color_parse("sky blue",color))
-/*  if(!gdk_color_parse("dark orange",color))*/
-  { 
-	 	color->red = 40000; 
-	  	color->green = 40000; 
-	  	color->blue = 40000; 
-  }
-  gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, &height);
-  gabedit_string_get_pixel_size(Fenetre, font_desc, Version_S, &widthVersion, &heightVersion);
-  height += 10;
-  width = *lentxt + widthVersion;
-
-  g_free(Version_S);
-
-  vboxframe = vbox;
-  darea = gtk_drawing_area_new();
-  gtk_widget_set_size_request(GTK_WIDGET(darea), width, height);
-  gtk_box_pack_start (GTK_BOX(vboxframe),darea, FALSE, FALSE, 0);
-  gtk_widget_realize(darea);
-  pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
-  g_object_set_data(G_OBJECT(darea), "Text", txt);
-  g_object_set_data(G_OBJECT(darea), "Pixmap", pixmap);
-  g_object_set_data(G_OBJECT(darea), "FontDesc", font_desc);
-  g_object_set_data(G_OBJECT(darea), "Color", color);
-  g_object_set_data(G_OBJECT(darea), "LenTxt", lentxt);
-
-  g_signal_connect(G_OBJECT(darea),"configure_event",(GCallback)configure_event,NULL);
-  g_signal_connect(G_OBJECT(darea),"expose_event",(GCallback)expose_event,NULL);
- 
-
- /* gtk_widget_show(darea);*/
+    /* connect modern handlers */
+    g_signal_connect(G_OBJECT(darea), "configure-event", G_CALLBACK(splash_configure_cb), NULL);
+    g_signal_connect(G_OBJECT(darea), "draw", G_CALLBACK(splash_draw_cb), NULL);
+    g_signal_connect(G_OBJECT(darea), "destroy", G_CALLBACK(splash_destroy_cb), NULL);
 }
 /********************************************************************************/
-static void create_name_frame_popup(GtkWidget *vbox,GtkWidget *MainFrame)
+static void create_welcome_frame_popup(GtkWidget *vbox, GtkWidget *MainFrame)
 {
-  GtkWidget *vboxframe;
-  GtkWidget *darea;
-  gint height = 0;
-  gint width = 0;
-  gint widthVersion = 0;
-  gint heightVersion = 0;
-  gchar* txt = g_strdup(_("Abdul-Rahman Allouche presents : "));
-  GdkPixmap *pixmap = NULL;
-  GdkColor* color = g_malloc(sizeof(GdkColor));
-  gchar* Version_S = g_strdup_printf("%d.%d.%d",MAJOR_VERSION,MINOR_VERSION,MICRO_VERSION);
-  gint* lentxt = g_malloc(sizeof(gint));
-  PangoFontDescription *font_desc = pango_font_description_from_string ("sans bold 16");
+    GtkWidget *darea;
+    gchar *txt = g_strdup(_("       Welcome to :"));
+    GdkColor* color = g_malloc(sizeof(GdkColor));
+    PangoFontDescription *font_desc = pango_font_description_from_string ("sans bold 20");
+    gint* lentxt = g_malloc(sizeof(gint));
 
-/*   if(!gdk_color_parse("royal blue",color))*/
-   if(!gdk_color_parse("sky blue",color))
-/*  if(!gdk_color_parse("dark orange",color))*/
-  { 
-	 	color->red = 40000; 
-	  	color->green = 40000; 
-	  	color->blue = 40000; 
-  }
-  gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, &height);
-  gabedit_string_get_pixel_size(Fenetre, font_desc, Version_S, &widthVersion, &heightVersion);
-  height += 10;
-  width = *lentxt + widthVersion;
+    if(!gdk_color_parse("sky blue", color)) {
+        color->red = 40000;
+        color->green = 40000;
+        color->blue = 40000;
+    }
 
-  g_free(Version_S);
+    gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, NULL);
+    gint height = 0;
+    gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, &height);
+    gint width = *lentxt + 0; /* conservative; version string not included here */
 
-  vboxframe = vbox;
-  darea = gtk_drawing_area_new();
-  gtk_widget_set_size_request(GTK_WIDGET(darea), width, height);
-  gtk_box_pack_start (GTK_BOX(vboxframe),darea, FALSE, FALSE, 0);
-  gtk_widget_realize(darea);
-  pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
-  g_object_set_data(G_OBJECT(darea), "Text", txt);
-  g_object_set_data(G_OBJECT(darea), "Pixmap", pixmap);
-  g_object_set_data(G_OBJECT(darea), "FontDesc", font_desc);
-  g_object_set_data(G_OBJECT(darea), "Color", color);
-  g_object_set_data(G_OBJECT(darea), "LenTxt", lentxt);
+    darea = gtk_drawing_area_new();
+    gtk_widget_set_size_request(GTK_WIDGET(darea), width, height + 10);
+    gtk_box_pack_start(GTK_BOX(vbox), darea, FALSE, FALSE, 0);
 
-  g_signal_connect(G_OBJECT(darea),"configure_event",(GCallback)configure_event,NULL);
-  g_signal_connect(G_OBJECT(darea),"expose_event",(GCallback)expose_event,NULL);
- 
-
- /* gtk_widget_show(darea);*/
+    setup_text_darea(darea, txt, font_desc, color, lentxt);
 }
 /********************************************************************************/
-static void create_program_frame_popup(GtkWidget *vbox,GtkWidget *MainFrame)
+static void create_name_frame_popup(GtkWidget *vbox, GtkWidget *MainFrame)
 {
-  GtkWidget *vboxframe;
-  GtkWidget *darea;
-  gint height = 0;
-  gint width = 0;
-  gint widthVersion = 0;
-  gint heightVersion = 0;
-  gchar* txt = g_strdup("  The Gabedit ");
-  GdkPixmap *pixmap = NULL;
-  GdkColor* color = g_malloc(sizeof(GdkColor));
-  gchar* Version_S = g_strdup_printf("%d.%d.%d",MAJOR_VERSION,MINOR_VERSION,MICRO_VERSION);
-  gint* lentxt = g_malloc(sizeof(gint));
-  PangoFontDescription *font_desc = pango_font_description_from_string ("sans bold 50");
+    GtkWidget *darea;
+    gchar *txt = g_strdup(_("Abdul-Rahman Allouche presents : "));
+    GdkColor* color = g_malloc(sizeof(GdkColor));
+    PangoFontDescription *font_desc = pango_font_description_from_string ("sans bold 16");
+    gint* lentxt = g_malloc(sizeof(gint));
 
-/*   if(!gdk_color_parse("royal blue",color))*/
-   if(!gdk_color_parse("sky blue",color))
-/*  if(!gdk_color_parse("dark orange",color))*/
-  { 
-	 	color->red = 40000; 
-	  	color->green = 40000; 
-	  	color->blue = 40000; 
-  }
-  gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, &height);
-  gabedit_string_get_pixel_size(Fenetre, font_desc, Version_S, &widthVersion, &heightVersion);
-  height += heightVersion/4;
-  *lentxt = *lentxt + 4.0/8*widthVersion;
-  width = *lentxt + 9.0/8*widthVersion+2;
+    if(!gdk_color_parse("sky blue",color))
+    {
+        color->red = 40000;
+        color->green = 40000;
+        color->blue = 40000;
+    }
 
-  g_free(Version_S);
+    gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, NULL);
+    gint height = 0;
+    gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, &height);
+    gint width = *lentxt + 0;
 
-  vboxframe = vbox;
-  darea = gtk_drawing_area_new();
-  gtk_widget_set_size_request(GTK_WIDGET(darea), width, height);
-  gtk_box_pack_start (GTK_BOX(vboxframe),darea, FALSE, FALSE, 0);
-  gtk_widget_realize(darea);
-  pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
-  g_object_set_data(G_OBJECT(darea), "Text", txt);
-  g_object_set_data(G_OBJECT(darea), "Pixmap", pixmap);
-  g_object_set_data(G_OBJECT(darea), "FontDesc", font_desc);
-  g_object_set_data(G_OBJECT(darea), "Color", color);
-  g_object_set_data(G_OBJECT(darea), "LenTxt", lentxt);
+    darea = gtk_drawing_area_new();
+    gtk_widget_set_size_request(GTK_WIDGET(darea), width, height + 10);
+    gtk_box_pack_start(GTK_BOX(vbox), darea, FALSE, FALSE, 0);
 
-  g_signal_connect(G_OBJECT(darea),"configure_event",(GCallback)configure_event,NULL);
-  g_signal_connect(G_OBJECT(darea),"expose_event",(GCallback)expose_event,NULL);
- 
-
- /* gtk_widget_show(darea);*/
+    setup_text_darea(darea, txt, font_desc, color, lentxt);
 }
 /********************************************************************************/
-static void create_gui_frame_popup(GtkWidget *vbox,GtkWidget *MainFrame)
+static void create_program_frame_popup(GtkWidget *vbox, GtkWidget *MainFrame)
 {
-  GtkWidget *vboxframe;
-  GtkWidget *darea;
-  gint height = 0;
-  gint width = 0;
-  gint widthVersion = 0;
-  gint heightVersion = 0;
-  /* gchar* txt = g_strdup("The Graphical User Interface for Gamess, Gaussian, Molcas, Molpro, MPQC, PG Gamess and Q-Chem ab initio programs");
-   */
-  gchar* txt = g_strdup(_("The Graphical User Interface for computational chemistry packages"));
-  GdkPixmap *pixmap = NULL;
-  GdkColor* color = g_malloc(sizeof(GdkColor));
-  gchar* Version_S = g_strdup_printf("%d.%d.%d",MAJOR_VERSION,MINOR_VERSION,MICRO_VERSION);
-  gint* lentxt = g_malloc(sizeof(gint));
-  PangoFontDescription *font_desc = pango_font_description_from_string ("sans bold 16");
+    GtkWidget *darea;
+    gchar *txt = g_strdup("  The Gabedit ");
+    GdkColor* color = g_malloc(sizeof(GdkColor));
+    PangoFontDescription *font_desc = pango_font_description_from_string ("sans bold 50");
+    gint* lentxt = g_malloc(sizeof(gint));
 
-/*   if(!gdk_color_parse("royal blue",color))*/
-   if(!gdk_color_parse("sky blue",color))
-/*  if(!gdk_color_parse("dark orange",color))*/
-  { 
-	 	color->red = 40000; 
-	  	color->green = 40000; 
-	  	color->blue = 40000; 
-  }
-  gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, &height);
-  gabedit_string_get_pixel_size(Fenetre, font_desc, Version_S, &widthVersion, &heightVersion);
-  height += 20;
-  width = *lentxt + widthVersion;
+    if(!gdk_color_parse("sky blue",color))
+    {
+        color->red = 40000;
+        color->green = 40000;
+        color->blue = 40000;
+    }
 
-  g_free(Version_S);
+    gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, NULL);
+    gint height = 0;
+    gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, &height);
+    *lentxt = *lentxt + (gint)(0.5 * (*lentxt));
+    gint width = *lentxt + 2;
 
-  vboxframe = vbox;
-  darea = gtk_drawing_area_new();
-  gtk_widget_set_size_request(GTK_WIDGET(darea), width, height);
-  gtk_box_pack_start (GTK_BOX(vboxframe),darea, FALSE, FALSE, 0);
-  gtk_widget_realize(darea);
-  pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
-  g_object_set_data(G_OBJECT(darea), "Text", txt);
-  g_object_set_data(G_OBJECT(darea), "Pixmap", pixmap);
-  g_object_set_data(G_OBJECT(darea), "FontDesc", font_desc);
-  g_object_set_data(G_OBJECT(darea), "Color", color);
-  g_object_set_data(G_OBJECT(darea), "LenTxt", lentxt);
+    darea = gtk_drawing_area_new();
+    gtk_widget_set_size_request(GTK_WIDGET(darea), width, height + 10);
+    gtk_box_pack_start(GTK_BOX(vbox), darea, FALSE, FALSE, 0);
 
-  g_signal_connect(G_OBJECT(darea),"configure_event",(GCallback)configure_event,NULL);
-  g_signal_connect(G_OBJECT(darea),"expose_event",(GCallback)expose_event,NULL);
- 
+    setup_text_darea(darea, txt, font_desc, color, lentxt);
+}
+/********************************************************************************/
+static void create_gui_frame_popup(GtkWidget *vbox, GtkWidget *MainFrame)
+{
+    GtkWidget *darea;
+    gchar *txt = g_strdup(_("The Graphical User Interface for computational chemistry packages"));
+    GdkColor* color = g_malloc(sizeof(GdkColor));
+    PangoFontDescription *font_desc = pango_font_description_from_string ("sans bold 16");
+    gint* lentxt = g_malloc(sizeof(gint));
 
- /* gtk_widget_show(darea);*/
+    if(!gdk_color_parse("sky blue",color))
+    {
+        color->red = 40000;
+        color->green = 40000;
+        color->blue = 40000;
+    }
+
+    gint height = 0;
+    gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, &height);
+    gint width = *lentxt + height;
+
+    darea = gtk_drawing_area_new();
+    gtk_widget_set_size_request(GTK_WIDGET(darea), width, height + 10);
+    gtk_box_pack_start(GTK_BOX(vbox), darea, FALSE, FALSE, 0);
+
+    setup_text_darea(darea, txt, font_desc, color, lentxt);
 }
 /********************************************************************************/
 static void create_splash_popupwin()
 {
-	GtkWidget *MainFrame;
-	GtkWidget *ProgressBar;
-	GtkWidget *vbox = gtk_vbox_new(0,FALSE);
-	
-	MainFrame = gtk_window_new (GTK_WINDOW_POPUP);
+    GtkWidget *MainFrame;
+    GtkWidget *ProgressBar;
+    GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
-	/* center it on the screen*/
-	gtk_window_set_position(GTK_WINDOW (MainFrame), GTK_WIN_POS_CENTER);
-  	gtk_container_set_border_width (GTK_CONTAINER (MainFrame), 4);
+    MainFrame = gtk_window_new(GTK_WINDOW_POPUP);
 
-	/* set up key and mound button press to hide splash screen*/
+    /* center it on the screen */
+    gtk_window_set_position(GTK_WINDOW(MainFrame), GTK_WIN_POS_CENTER);
+    gtk_container_set_border_width(GTK_CONTAINER(MainFrame), 4);
 
-	gtk_widget_add_events(MainFrame,
-                              GDK_BUTTON_PRESS_MASK|
-                              GDK_BUTTON_RELEASE_MASK|
-                              GDK_KEY_PRESS_MASK);
+    gtk_widget_add_events(MainFrame,
+                          GDK_BUTTON_PRESS_MASK |
+                          GDK_BUTTON_RELEASE_MASK |
+                          GDK_KEY_PRESS_MASK);
 
-	gtk_widget_realize(MainFrame);
+    gtk_widget_realize(MainFrame);
 
-	gc = gdk_gc_new(GDK_WINDOW(MainFrame));
-	gtk_container_add (GTK_CONTAINER (MainFrame), vbox);
-	
-	/* create_name_frame_popup(vbox,MainFrame);*/
-	create_welcome_frame_popup(vbox, MainFrame);
-	create_program_frame_popup(vbox,MainFrame);
- 	create_gui_frame_popup(vbox,MainFrame);
-	ProgressBar = create_progress_bar_splash(vbox);
-  	g_object_set_data(G_OBJECT(ProgressBar), "MainFrame", MainFrame);
-	gtk_widget_show_all(MainFrame);
+    gtk_container_add(GTK_CONTAINER(MainFrame), vbox);
 
-	/* for force expose */
-  	gtk_widget_set_size_request (GTK_WIDGET(MainFrame), -1, 20);
+    /* create the sub-popups (they create and pack their drawing areas into vbox) */
+    create_welcome_frame_popup(vbox, MainFrame);
+    create_program_frame_popup(vbox, MainFrame);
+    create_gui_frame_popup(vbox, MainFrame);
 
-	/* go into main loop, processing events.*/
-	while(gtk_events_pending())
-		gtk_main_iteration();
+    ProgressBar = create_progress_bar_splash(vbox);
+    g_object_set_data(G_OBJECT(ProgressBar), "MainFrame", MainFrame);
 
-  	/* IdTimer = gtk_timeout_add(10, (GtkFunction)progress, ProgressBar);*/
-	read_ressource_files(MainFrame,ProgressBar);
+    gtk_widget_show_all(MainFrame);
+
+    /* process pending events before loading resources */
+    while (gtk_events_pending())
+        gtk_main_iteration();
+
+    read_ressource_files(MainFrame, ProgressBar);
+}
+/********************************************************************************/
+static void create_copyright_frame_popup(GtkWidget *vbox, GtkWidget *MainFrame)
+{
+    GtkWidget *darea;
+    gchar *txt = g_strdup("Copyright (c) 2002-2021 Abdul-Rahman Allouche.");
+    GdkColor* color = g_malloc(sizeof(GdkColor));
+    PangoFontDescription *font_desc = pango_font_description_from_string("sans bold 16");
+    gint* lentxt = g_malloc(sizeof(gint));
+
+    if(!gdk_color_parse("sky blue", color)) {
+        color->red = 40000; color->green = 40000; color->blue = 40000;
+    }
+
+    gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, NULL);
+    gint height = 0;
+    gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, &height);
+    gint width = *lentxt + 10;
+
+    darea = gtk_drawing_area_new();
+    gtk_widget_set_size_request(GTK_WIDGET(darea), width, height + 10);
+    gtk_box_pack_start(GTK_BOX(vbox), darea, FALSE, FALSE, 0);
+
+    setup_text_darea(darea, txt, font_desc, color, lentxt);
 }
 /********************************************************************************/
 void splash_screen()
@@ -620,83 +551,144 @@ void splash_screen()
       create_splash_popupwin();
 }
 /********************************************************************************/
-static void create_copyright_frame_popup(GtkWidget *vbox,GtkWidget *MainFrame)
-{
-  GtkWidget *vboxframe;
-  GtkWidget *darea;
-  gint height = 0;
-  gint width = 0;
-  gint widthVersion = 0;
-  gint heightVersion = 0;
-  gchar* txt = g_strdup("Copyright (c) 2002-2021 Abdul-Rahman Allouche.");
-  GdkPixmap *pixmap = NULL;
-  GdkColor* color = g_malloc(sizeof(GdkColor));
-  gchar* Version_S = g_strdup_printf("%d.%d.%d",MAJOR_VERSION,MINOR_VERSION,MICRO_VERSION);
-  gint* lentxt = g_malloc(sizeof(gint));
-  PangoFontDescription *font_desc = pango_font_description_from_string ("sans bold 16");
-
-/*  if(!gdk_color_parse("dark orange",color))*/
-/*   if(!gdk_color_parse("royal blue",color))*/
-   if(!gdk_color_parse("sky blue",color))
-/*  if(!gdk_color_parse("black",color))*/
-  { 
-	 	color->red = 40000; 
-	  	color->green = 40000; 
-	  	color->blue = 40000; 
-  }
-  gabedit_string_get_pixel_size(Fenetre, font_desc, txt, lentxt, &height);
-  gabedit_string_get_pixel_size(Fenetre, font_desc, Version_S, &widthVersion, &heightVersion);
-  height += 20;
-  width = *lentxt + widthVersion;
-
-  g_free(Version_S);
-
-  vboxframe = vbox;
-  darea = gtk_drawing_area_new();
-  gtk_widget_set_size_request(GTK_WIDGET(darea), width, height);
-  gtk_box_pack_start (GTK_BOX(vboxframe),darea, FALSE, FALSE, 0);
-  gtk_widget_realize(darea);
-  pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
-  g_object_set_data(G_OBJECT(darea), "Text", txt);
-  g_object_set_data(G_OBJECT(darea), "Pixmap", pixmap);
-  g_object_set_data(G_OBJECT(darea), "FontDesc", font_desc);
-  g_object_set_data(G_OBJECT(darea), "Color", color);
-  g_object_set_data(G_OBJECT(darea), "LenTxt", lentxt);
-
-  g_signal_connect(G_OBJECT(darea),"configure_event",(GCallback)configure_event,NULL);
-  g_signal_connect(G_OBJECT(darea),"expose_event",(GCallback)expose_event,NULL);
- 
-}
-/********************************************************************************/
 void create_about_frame()
 {
-	GtkWidget *MainFrame;
-	GtkWidget *vbox = gtk_vbox_new(0,FALSE);
-	
-	MainFrame = gtk_window_new (GTK_WINDOW_POPUP);
+    GtkWidget *MainFrame;
+    GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
-	/* center it on the screen*/
-	gtk_window_set_position(GTK_WINDOW (MainFrame), GTK_WIN_POS_CENTER);
-  	gtk_container_set_border_width (GTK_CONTAINER (MainFrame), 4);
+    MainFrame = gtk_window_new(GTK_WINDOW_POPUP);
 
-	gtk_widget_add_events(MainFrame, GDK_BUTTON_PRESS_MASK| GDK_BUTTON_RELEASE_MASK| GDK_KEY_PRESS_MASK|GDK_KEY_RELEASE_MASK);
+    gtk_window_set_position(GTK_WINDOW(MainFrame), GTK_WIN_POS_CENTER);
+    gtk_container_set_border_width(GTK_CONTAINER(MainFrame), 4);
 
-	g_signal_connect(G_OBJECT(MainFrame),"button_release_event", G_CALLBACK(gtk_widget_destroy),NULL);
-	g_signal_connect(G_OBJECT(MainFrame),"key_press_event", G_CALLBACK(gtk_widget_destroy),NULL);
+    gtk_widget_add_events(MainFrame, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK);
 
-	gtk_widget_realize(MainFrame);
+    g_signal_connect(G_OBJECT(MainFrame), "button_release_event", G_CALLBACK(gtk_widget_destroy), NULL);
+    g_signal_connect(G_OBJECT(MainFrame), "key_press_event", G_CALLBACK(gtk_widget_destroy), NULL);
 
-	gc = gdk_gc_new(MainFrame->window);
-/*	gtk_widget_show(vbox);*/
-	gtk_container_add (GTK_CONTAINER (MainFrame), vbox);
-	
-	create_name_frame_popup(vbox,MainFrame);
-	create_program_frame_popup(vbox,MainFrame);
- 	create_gui_frame_popup(vbox,MainFrame);
-	create_copyright_frame_popup(vbox,MainFrame);
+    gtk_widget_realize(MainFrame);
 
+    gtk_container_add(GTK_CONTAINER(MainFrame), vbox);
 
-	gtk_widget_show_all(MainFrame);
+    create_name_frame_popup(vbox, MainFrame);
+    create_program_frame_popup(vbox, MainFrame);
+    create_gui_frame_popup(vbox, MainFrame);
+    create_copyright_frame_popup(vbox, MainFrame);
+
+    gtk_widget_show_all(MainFrame);
 }
 /********************************************************************************/
-  
+static void draw_splash_contents_on_surface(GtkWidget *widget, cairo_surface_t *surface)
+{
+    if (!GTK_IS_WIDGET(widget) || !surface) return;
+
+    GtkAllocation alloc;
+    gtk_widget_get_allocation(widget, &alloc);
+    int width = alloc.width;
+    int height = alloc.height;
+    if (width <= 0 || height <= 0) return;
+
+    /* Obtain per-widget metadata */
+    gchar *txt = (gchar*)g_object_get_data(G_OBJECT(widget), "Text");
+    PangoFontDescription *font_desc = (PangoFontDescription*)g_object_get_data(G_OBJECT(widget), "FontDesc");
+    GdkColor *pcolor = (GdkColor*)g_object_get_data(G_OBJECT(widget), "Color");
+    gint *lentxt = (gint*)g_object_get_data(G_OBJECT(widget), "LenTxt");
+
+    cairo_t *cr = cairo_create(surface);
+
+    /* Background: simple vertical gradient based on pcolor if available */
+    if (pcolor) {
+        double r,g,b;
+        gdkcolor_to_rgba(pcolor, &r, &g, &b);
+        cairo_pattern_t *pat = cairo_pattern_create_linear(0, 0, 0, height);
+        /* Slight variation of color to create subtle gradient */
+        cairo_pattern_add_color_stop_rgba(pat, 0.0, MIN(1.0, r+0.1), MIN(1.0, g+0.05), MIN(1.0, b+0.02), 1.0);
+        cairo_pattern_add_color_stop_rgba(pat, 1.0, r*0.75, g*0.75, b*0.75, 1.0);
+        cairo_set_source(cr, pat);
+        cairo_rectangle(cr, 0, 0, width, height);
+        cairo_fill(cr);
+        cairo_pattern_destroy(pat);
+    } else {
+        /* fallback plain background */
+        cairo_set_source_rgb(cr, 0.95, 0.97, 1.0);
+        cairo_rectangle(cr, 0, 0, width, height);
+        cairo_fill(cr);
+    }
+
+    /* Decorative arcs (corner accents), use proportions similar to original */
+    cairo_set_line_width(cr, 1.0);
+    cairo_set_source_rgba(cr, 0.15, 0.15, 0.15, 0.6);
+    double radius = MIN(width, height) * 0.15;
+    /* top-left */
+    cairo_arc(cr, radius, radius, radius, G_PI, 1.5 * G_PI);
+    cairo_stroke(cr);
+    /* top-right */
+    cairo_arc(cr, width - radius, radius, radius, 1.5 * G_PI, 2.0 * G_PI);
+    cairo_stroke(cr);
+    /* bottom-left */
+    cairo_arc(cr, radius, height - radius, radius, 0.5 * G_PI, G_PI);
+    cairo_stroke(cr);
+    /* bottom-right */
+    cairo_arc(cr, width - radius, height - radius, radius, 0.0, 0.5 * G_PI);
+    cairo_stroke(cr);
+
+    /* Render main text (txt) using PangoCairo */
+    if (txt && font_desc) {
+        PangoLayout *layout = pango_cairo_create_layout(cr);
+        pango_layout_set_font_description(layout, font_desc);
+        pango_layout_set_text(layout, txt, -1);
+
+        int tw=0, th=0;
+        pango_layout_get_pixel_size(layout, &tw, &th);
+
+        /* Positioning: replicate original heuristics */
+        int x = 6;
+        int y = 10;
+        if (g_strstr_len(txt, -1, "Gabedit") && !g_strstr_len(txt, -1, "Copyright")) {
+            x = 20;
+            y = 10;
+        } else if (g_strstr_len(txt, -1, "Allouche") && !g_strstr_len(txt, -1, "Copyright")) {
+            x = width / 4;
+            y = 10;
+        } else if (g_strstr_len(txt, -1, "Graphical")) {
+            x = 6;
+            y = 10;
+        }
+
+        /* Draw drop-shadow / highlight effect similar to original black/white layering */
+        cairo_move_to(cr, x + (height / 20.0), y + (height / 18.0));
+        cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 0.85);
+        pango_cairo_show_layout(cr, layout);
+
+        cairo_move_to(cr, x, y);
+        cairo_set_source_rgba(cr, 1.0, 1.0, 1.0, 1.0);
+        pango_cairo_show_layout(cr, layout);
+
+        g_object_unref(layout);
+    }
+
+    /* Draw Version string on the right when text contains "Gabedit" */
+    if (txt && g_strstr_len(txt, -1, "Gabedit")) {
+        gchar *Version_S = g_strdup_printf("%d.%d.%d", MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION);
+        PangoFontDescription *vfd = pango_font_description_from_string("sans 12");
+        PangoLayout *vlayout = pango_cairo_create_layout(cr);
+        pango_layout_set_font_description(vlayout, vfd);
+        pango_layout_set_text(vlayout, Version_S, -1);
+        int vw, vh;
+        pango_layout_get_pixel_size(vlayout, &vw, &vh);
+
+        int vx = (lentxt && *lentxt > 0) ? (*lentxt + (int)(0.05 * vw)) : (width - vw - 10);
+        int vy = 5;
+
+        cairo_move_to(cr, vx, vy);
+        cairo_set_source_rgba(cr, 0.05, 0.05, 0.5, 1.0);
+        pango_cairo_show_layout(cr, vlayout);
+
+        g_object_unref(vlayout);
+        pango_font_description_free(vfd);
+        g_free(Version_S);
+    }
+
+    cairo_destroy(cr);
+}
+/********************************************************************************/

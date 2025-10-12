@@ -2239,7 +2239,7 @@ static void resetGridColorMap()
 			g_object_set_data(G_OBJECT(entryRight),"ColorMap", colorMap);
 			g_object_set_data(G_OBJECT(darea),"ColorMap", colorMap);
 			color_map_refresh(handleBoxColorMapGrid);
-			if(GTK_WIDGET_VISIBLE(handleBoxColorMapGrid))
+			if(gtk_widget_is_drawable(handleBoxColorMapGrid))
 			{
 				gtk_widget_hide(handleBoxColorMapGrid);
 				gtk_widget_show(handleBoxColorMapGrid);
@@ -2270,7 +2270,7 @@ static void resetPlanesMappedColorMap()
 			g_object_set_data(G_OBJECT(entryRight),"ColorMap", colorMap);
 			g_object_set_data(G_OBJECT(darea),"ColorMap", colorMap);
 			color_map_refresh(handleBoxColorMapPlanesMapped);
-			if(GTK_WIDGET_VISIBLE(handleBoxColorMapPlanesMapped))
+			if(gtk_widget_is_drawable(handleBoxColorMapPlanesMapped))
 			{
 				gtk_widget_hide(handleBoxColorMapPlanesMapped);
 				gtk_widget_show(handleBoxColorMapPlanesMapped);
@@ -2303,7 +2303,7 @@ static void resetContoursColorMap()
 			g_object_set_data(G_OBJECT(entryRight),"ColorMap", colorMap);
 			g_object_set_data(G_OBJECT(darea),"ColorMap", colorMap);
 			color_map_refresh(handleBoxColorMapContours);
-			if(GTK_WIDGET_VISIBLE(handleBoxColorMapContours))
+			if(gtk_widget_is_drawable(handleBoxColorMapContours))
 			{
 				gtk_widget_hide(handleBoxColorMapContours);
 				gtk_widget_show(handleBoxColorMapContours);

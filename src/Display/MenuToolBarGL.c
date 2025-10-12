@@ -2231,7 +2231,7 @@ static void add_widget (GtkUIManager *merge, GtkWidget   *widget, GtkContainer *
 		toolbar = GTK_TOOLBAR (widget);
 		gtk_toolbar_set_show_arrow (toolbar, TRUE);
 		gtk_toolbar_set_style(toolbar, GTK_TOOLBAR_ICONS);
-		gtk_toolbar_set_orientation(toolbar,  GTK_ORIENTATION_VERTICAL);
+		gtk_orientable_set_orientation(GTK_ORIENTABLE(toolbar),  GTK_ORIENTATION_VERTICAL);
 		toolBar = toolbar;
 		handleBoxToolBar = handlebox;
 	}

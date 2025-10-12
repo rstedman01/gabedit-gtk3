@@ -173,6 +173,34 @@ static inline void gb_table_set_col_spacings(GtkWidget* table, guint spacing)
     gtk_grid_set_column_spacing(GTK_GRID(table), spacing);
 }
 
+// Return widget allocation width; replaces widget->allocation.width
+static inline gint gabedit_widget_allocated_width(GtkWidget *w)
+{
+    GtkAllocation alloc;
+    if (!GTK_IS_WIDGET(w)) return 0;
+    gtk_widget_get_allocation(GTK_WIDGET(w), &alloc);
+    #if GTK_CHECK_VERSION(3,0,0)
+        gint scale = gtk_widget_get_scale_factor(GTK_WIDGET(w));
+        return alloc.width * scale;
+    #else
+        return alloc.width;
+    #endif
+}
+
+// Return widget allocation height; replaces widget->allocation.height
+static inline gint gabedit_widget_allocated_height(GtkWidget *w)
+{
+    GtkAllocation alloc;
+    if (!GTK_IS_WIDGET(w)) return 0;
+    gtk_widget_get_allocation(GTK_WIDGET(w), &alloc);
+    #if GTK_CHECK_VERSION(3,0,0)
+        gint scale = gtk_widget_get_scale_factor(GTK_WIDGET(w));
+        return alloc.height * scale;
+    #else
+        return alloc.height;
+    #endif
+}
+
 // Remap macros, keep call sites unchanged
 #undef gtk_vbox_new
 #undef gtk_hbox_new

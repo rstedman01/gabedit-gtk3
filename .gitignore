@@ -1,0 +1,18 @@
+# Compiled Files #
+#################
+*.o
+*.a
+*.so
+
+# Logs #
+########
+*.log
+build.txt
+
+# Other Files #
+###############
+.vscode
+Makefile.bak
+CONFIG.bak
+quick-replace.sh
+Agents.md

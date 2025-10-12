@@ -231,8 +231,8 @@ static gchar* save_ppm(gchar* fileName)
 		return message;
 	}
   
-	width =  GLArea->allocation.width;
-	height = GLArea->allocation.height;
+	width =  gabedit_widget_allocated_width(GTK_WIDGET(GLArea));
+	height = gabedit_widget_allocated_height(GTK_WIDGET(GLArea));
 
 	glPixelStorei(GL_PACK_ROW_LENGTH,width);
 	glPixelStorei(GL_PACK_ALIGNMENT,1);
@@ -342,8 +342,8 @@ static gchar* save_bmp(gchar* fileName)
 		return message;
 	}
   
-	width =  GLArea->allocation.width;
-	height = GLArea->allocation.height;
+	width =  gabedit_widget_allocated_width(GTK_WIDGET(GLArea));
+	height = gabedit_widget_allocated_height(GTK_WIDGET(GLArea));
 
 	glPixelStorei(GL_PACK_ROW_LENGTH,width);
 	glPixelStorei(GL_PACK_ALIGNMENT,1);
@@ -517,8 +517,8 @@ void save_ps_file(GabeditFileChooser *SelecFile, gint response_id)
 	while( gtk_events_pending() )
 		gtk_main_iteration();
   
-	width =  GLArea->allocation.width;
-	height = GLArea->allocation.height;
+	width =  gabedit_widget_allocated_width(GTK_WIDGET(GLArea));
+	height = gabedit_widget_allocated_height(GTK_WIDGET(GLArea));
 
 
 	glPixelStorei(GL_PACK_ROW_LENGTH,width);

@@ -5,6 +5,9 @@
 #include <pango/pangocairo.h>
 #include "../../gabeditGTK3compat.h"
 
+#ifndef GABEDIT_GDK_COMPAT_H
+#define GABEDIT_GDK_COMPAT_H
+
 // Minimal GdkGC values & mask for calls in this codebase
 typedef struct {
     GdkColor     foreground;
@@ -33,6 +36,9 @@ typedef guint GdkGCValuesMask;
 #endif
 #ifndef GDK_GC_JOIN_STYLE
 #define GDK_GC_JOIN_STYLE   (1u<<5)
+#endif
+#ifndef gtk_object_destroy
+#define gtk_object_destroy(obj) gtk_widget_destroy(GTK_WIDGET(obj))
 #endif
 
 // GdkColormap placeholder type for legacy code
@@ -87,3 +93,31 @@ static inline void gabedit_color_to_rgba(const GdkColor* c, double* r, double* g
     *b = (c->blue  / 65535.0);
     *a = 1.0;
 }
+
+static inline GdkWindow* gabedit_widget_get_window(GtkWidget *w) 
+{
+    return GTK_IS_WIDGET(w) ? gtk_widget_get_window(GTK_WIDGET(w)) : NULL;
+}
+static inline void gabedit_widget_get_allocation(GtkWidget *w, GtkAllocation *alloc) 
+{
+    if (GTK_IS_WIDGET(w)) gtk_widget_get_allocation(GTK_WIDGET(w), alloc);
+    else { alloc->x = alloc->y = alloc->width = alloc->height = 0; }
+}
+
+static inline gboolean gabedit_parse_color_as_gdkcolor(const gchar *name, GdkColor *out) {
+    GdkRGBA rgba;
+    if (!gdk_rgba_parse(&rgba, name)) return FALSE;
+    out->red   = (gushort)(rgba.red   * 65535.0);
+    out->green = (gushort)(rgba.green * 65535.0);
+    out->blue  = (gushort)(rgba.blue  * 65535.0);
+    return TRUE;
+}
+
+#ifndef gtk_object_destroy
+#define gtk_object_destroy(obj) gtk_widget_destroy(GTK_WIDGET(obj))
+#endif
+#ifndef GDK_DRAWABLE
+typedef GdkWindow GdkDrawable;
+#endif
+
+#endif

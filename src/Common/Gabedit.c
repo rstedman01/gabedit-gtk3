@@ -21,7 +21,7 @@ DEALINGS IN THE SOFTWARE.
 #include "../../Config.h"
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
-#include <gtk/gtkgl.h>
+#include <locale.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <stdlib.h>

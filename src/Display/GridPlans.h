@@ -30,7 +30,8 @@ typedef struct _Plane
 	gdouble limits[3][2]; /* xmin,xmax,ymin,ymax,zmin and zmax */
 }Plane;
 Grid* define_plane_grid(Point5 C, Point5 V, gdouble *len, gint *N);
-void create_planeGrid_center_vector();
+
+void create_planeGrid_center_vector(gchar *type);
 
 #endif /* __GABEDIT_GRIDPLANS_H__ */
 
