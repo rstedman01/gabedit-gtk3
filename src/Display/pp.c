@@ -1,3 +1,8 @@
+#include <glib.h>
+#include <math.h>
+#include "Vibration.h"
+#include "PrincipalAxisGL.h"
+
 #define HEV 27.21138469
 #define KEV 8.61734355e-05
 #define UMASI 1.66053873e-27
@@ -6,10 +11,28 @@
 #define ATMSI 101325.33538686
 #define EVCAL 23.06054819e3
 #define CM1K 1.43877505
+
+#ifndef M_PI
+#ifdef G_PI
+#define M_PI G_PI
+#else 
+#define M_PI 3.14159265358979323846
+#endif
+#endif
+
+#if !defined(__STDC_VERSION__ ) || (__STDC_VERSION__ < 199901L)
+#include <stdlib.h>
+#endif
+
 /********************************************************************************/
+static inline void getRotConstants(const gdouble I[3], gdouble TRot[3])
+{
+        extern void getTrotConstants(const gdouble I[3], gdouble TRot[3]);
+        getTRotConstants(I, TRot);
+}
 static void getTRotConstants(double I[], double TRot[])
 {
-	static gdouble x = 6.62606867/8.0/PI/PI/2.99792458/1.66053873/0.5291772083/0.5291772083*1.0e3;
+	static gdouble x = 6.62606867/8.0/M_PI/M_PI/2.99792458/1.66053873/0.5291772083/0.5291772083*1.0e3;
 	gint i;
 	// en cm-1
 	for(i=0;i<3;i++)

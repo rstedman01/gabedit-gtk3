@@ -48,6 +48,12 @@ typedef struct _AxisDef
 
 static AxisDef axis;
 /************************************************************************/
+typedef struct {
+	GtkWidget *target_button;
+	GtkStyle *style;
+	gdouble *v;
+} AxisColorContext;
+
 void getAxisProperties(gboolean* show, gboolean* negative, gdouble origin[], gdouble* radius, gdouble* scal, gdouble xColor[], gdouble yColor[], gdouble zColor[])
 {
 	gint i;
@@ -193,6 +199,39 @@ static void set_axis_color(GtkColorSelection *Sel,gpointer *d)
 	v[2] =color.blue/65535.0;
 }
 /******************************************************************/
+// New response handler for per-button callbacks using GTK3 
+static void axis_color_chooser_response_cb(GtkDialog *dialog, gint response_id, gpointer user_data)
+{
+	AxisColorContext *ctx = (AxisColorContext*)user_data;
+	if (!ctx)
+	{
+		gtk_widget_destroy(GTK_WIDGET(dialog));
+		return;
+	}
+
+	if (response_id == GTK_RESPONSE_OK)
+	{
+		GdkRGBA rgba;
+		gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(dialog), &rgba);
+		if (ctx->v) {
+			ctx->v[0] = rgba.red;
+			ctx->v[1] = rgba.green;
+			ctx->v[2] = rgba.blue;
+		}
+
+		if (ctx->style && ctx->target_button) 
+		{
+		GtkStyle *s = gtk_style_copy(ctx->style);
+		s->bg[0].red   = (gushort)(ctx->v[0] * 65535.0);
+		s->bg[0].green = (gushort)(ctx->v[1] * 65535.0);
+		s->bg[0].blue  = (gushort)(ctx->v[2] * 65535.0);
+		gtk_widget_set_style(ctx->target_button, s);
+		}
+	}
+	gtk_widget_destroy(GTK_WIDGET(dialog));
+	g_free(ctx);
+}
+/******************************************************************/
 static void set_axis_button_color(GtkObject *button,gpointer *data)
 {
 	GtkStyle *style = g_object_get_data(G_OBJECT (button), "Style");
@@ -205,50 +244,43 @@ static void set_axis_button_color(GtkObject *button,gpointer *data)
 	gtk_widget_set_style(OldButton, style);
 }
 /******************************************************************/
-static void open_color_dlg_axis(GtkWidget *button,gpointer data)
+static void open_color_dlg_axis(GtkWidget *button, gpointer data)
 {
+	(void)data;
 
-	GtkColorSelectionDialog *colorDlg;
-  	GtkStyle* style = g_object_get_data(G_OBJECT (button), "Style");
-  	GtkWidget *win = g_object_get_data(G_OBJECT (button), "Win");
-	gdouble* v = g_object_get_data(G_OBJECT (button), "Color");;
-	GdkColor color;
+  	GtkStyle *style = g_object_get_data(G_OBJECT(button), "Style");
+  	GtkWidget *win = g_object_get_data(G_OBJECT(button), "Win");
+	gdouble *v = g_object_get_data(G_OBJECT(button), "Color");
 
-	colorDlg = (GtkColorSelectionDialog *)gtk_color_selection_dialog_new("Set Axis Color");
-	color.red = (gushort)(v[0]*65535);
-	color.green = (gushort)(v[1]*65535);
-	color.blue = (gushort)(v[2]*65535);
-	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (colorDlg->colorsel), &color);
-	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (colorDlg->colorsel), &color);
-	gtk_window_set_transient_for(GTK_WINDOW(colorDlg),GTK_WINDOW(win));
-        gtk_window_set_position(GTK_WINDOW(colorDlg),GTK_WIN_POS_CENTER);
-  	gtk_window_set_modal (GTK_WINDOW (colorDlg), TRUE);
- 	g_signal_connect(G_OBJECT(colorDlg), "delete_event",(GCallback)destroy_button_windows,NULL);
-  	g_signal_connect(G_OBJECT(colorDlg), "delete_event",G_CALLBACK(gtk_widget_destroy),NULL);
+	AxisColorContext *ctx = g_new0(AxisColorContext, 1);
+	ctx->target_button = button;
+	ctx->style = style;
+	ctx->v = v;
 
-  	g_object_set_data(G_OBJECT (colorDlg->colorsel), "Color", v);
-  	gtk_widget_hide(colorDlg->help_button);
-	g_signal_connect_swapped(G_OBJECT(colorDlg->ok_button),"clicked",
-		(GCallback)set_axis_color,GTK_OBJECT(colorDlg->colorsel));
+	GtkWidget *parent_widget = win ? win : gtk_widget_get_toplevel(button);
+	GtkWindow *parent_window = GTK_WINDOW(parent_widget);
+	GtkWidget *colorDlg = gtk_color_chooser_dialog_new(_("Set Axis Color"), parent_window);
 
-  	g_object_set_data(G_OBJECT (colorDlg->ok_button), "Color", v);
-  	g_object_set_data(G_OBJECT (colorDlg->ok_button), "Button", button);
-  	g_object_set_data(G_OBJECT (colorDlg->ok_button), "Style", style);
-	g_signal_connect(G_OBJECT(colorDlg->ok_button),"clicked", (GCallback)set_axis_button_color,NULL);
+	if(v)
+	{
+		GdkRGBA init;
+		init.red = v[0];
+		init.green = v[1];
+		init.blue = v[2];
+		init.alpha = 1.0;
+		gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(colorDlg), &init);
+	}
 
-  	g_signal_connect_swapped(G_OBJECT(colorDlg->ok_button), "clicked",
-		(GCallback)destroy_button_windows,GTK_OBJECT(colorDlg));
-	g_signal_connect_swapped(G_OBJECT(colorDlg->ok_button),"clicked",
-		(GCallback)gtk_widget_destroy,GTK_OBJECT(colorDlg));
+	if(parent_window)
+	{
+		gtk_window_set_transient_for(GTK_WINDOW(colorDlg), GTK_WINDOW(parent_window));
+	}
 
-  	g_signal_connect_swapped(G_OBJECT(colorDlg->cancel_button), "clicked",
-		(GCallback)destroy_button_windows,GTK_OBJECT(colorDlg));
-	g_signal_connect_swapped(G_OBJECT(colorDlg->cancel_button),"clicked",
-		(GCallback)gtk_widget_destroy,GTK_OBJECT(colorDlg));
+	gtk_window_set_position(GTK_WINDOW(colorDlg), GTK_WIN_POS_CENTER);
+	gtk_window_set_modal(GTK_WINDOW(colorDlg), TRUE);
 
-  	add_button_windows(" Set Color ",GTK_WIDGET(colorDlg));
-	gtk_widget_show(GTK_WIDGET(colorDlg));
-
+	g_signal_connect(colorDlg, "response", G_CALLBACK(axis_color_chooser_response_cb), ctx);
+	gtk_widget_show(colorDlg);
 }
 /*********************************************************************/
 void set_axis_dialog ()

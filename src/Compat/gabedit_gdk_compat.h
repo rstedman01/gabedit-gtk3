@@ -113,6 +113,21 @@ static inline gboolean gabedit_parse_color_as_gdkcolor(const gchar *name, GdkCol
     return TRUE;
 }
 
+static inline void gdk_rgba_to_gdk_color(const GdkRGBA *rgba, GdkColor *out)
+{
+    out->red   = (gushort)(rgba->red   * 65535.0);
+    out->green = (gushort)(rgba->green * 65535.0);
+    out->blue  = (gushort)(rgba->blue  * 65535.0);
+}
+
+static inline void gdk_color_to_gdk_rgba(const GdkColor *c, GdkRGBA *out)
+{
+    out->red   = c->red   / 65535.0;
+    out->green = c->green / 65535.0;
+    out->blue  = c->blue  / 65535.0;
+    out->alpha = 1.0;
+}
+
 #ifndef gtk_object_destroy
 #define gtk_object_destroy(obj) gtk_widget_destroy(GTK_WIDGET(obj))
 #endif

@@ -19,6 +19,9 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __GABEDIT_VIBRATION_H__
 #define __GABEDIT_VIBRATION_H__
 
+#include <math.h>
+#include <stdlib.h>
+
 typedef struct _VibrationMode
 {
 	gdouble frequence;

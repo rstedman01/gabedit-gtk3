@@ -20,6 +20,7 @@ DEALINGS IN THE SOFTWARE.
 #define __GABEDIT_VIBRATIONLOCAL_H__
 
 #include "../Display/Vibration.h"
+#include <math.h>
 
 typedef struct _LocalVibration
 {

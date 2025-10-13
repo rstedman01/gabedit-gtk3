@@ -29,6 +29,8 @@ DEALINGS IN THE SOFTWARE.
 #include "../Utils/UtilsInterface.h"
 #include "../Utils/GabeditTextEdit.h"
 #include "../Common/Windows.h"
+#include <math.h>
+#include <glib.h>
 
 #define Deg_Rad 180.0/PI
 
