@@ -19,6 +19,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 #include "../../Config.h"
+#include "../../gabeditGTK3compat.h"
 #include <stdlib.h>
 #include <ctype.h>
 #include <math.h>
@@ -26,6 +27,7 @@ DEALINGS IN THE SOFTWARE.
 #include <GL/gl.h>
 #include <GL/glu.h>
 
+#include "../Compat/gabedit_gdk_compat.h"
 #include "../Common/Global.h"
 #include "../Utils/Constants.h"
 #include "../Utils/Vector3d.h"

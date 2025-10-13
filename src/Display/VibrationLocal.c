@@ -32,6 +32,14 @@ DEALINGS IN THE SOFTWARE.
 #include <math.h>
 #include <glib.h>
 
+#ifndef M_PI
+#ifdef G_PI
+#define M_PI G_PI
+#else
+#define M_PI 3.14159265358979323846
+#endif 
+#endif
+
 #define Deg_Rad 180.0/PI
 
 /* 

@@ -19,7 +19,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../../Config.h"
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtkgl.h>
+#include <gtk/gtkglarea.h>
 /* #include <pthread.h>*/
 #include "GlobalOrb.h"
 #include "../Utils/Vector3d.h"

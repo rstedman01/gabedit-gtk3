@@ -19,6 +19,10 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __GABEDIT_GABEDITTYPE_H__
 #define __GABEDIT_GABEDITTYPE_H__
 
+#include "../../Config.h"
+#include "../../gabeditGTK3compat.h"
+#include "../Compat/gabedit_gdk_compat.h"
+
 #define MAXISOTOP 10
 typedef void (*GabeditSignalFunc)(GtkWidget*);
 typedef enum
