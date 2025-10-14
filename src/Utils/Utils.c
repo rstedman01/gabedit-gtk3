@@ -26,6 +26,7 @@ DEALINGS IN THE SOFTWARE.
 #include <time.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <gtk/gtk.h>
 
 #include "../Compat/gabedit_gdk_compat.h"
 #include "../Common/Global.h"
@@ -88,7 +89,7 @@ void timing(double* cpu,double *sys)
 }
 #endif
 #ifdef G_OS_WIN32
-void addUnitDisk(FILE* file, G_CONST_RETURN gchar* name)
+void addUnitDisk(FILE* file, const gchar* name)
 {
 	if(name && strlen(name)>1 && name[1]==':')
 		fprintf(file,"%c%c\n", name[0],name[1]);
@@ -314,7 +315,7 @@ void filegets(gchar *temp,FILE* fd)
 /********************************************************************************/
 gboolean  this_is_an_object(GtkObject *obj)
 {  
-	return GTK_IS_OBJECT(obj);
+	return G_IS_OBJECT(obj);
 }
 /********************************************************************************/
 gboolean  add_dir_to_user(User* user, const gchar* dir)
@@ -442,7 +443,7 @@ void add_host(const gchar *hostname, const gchar* username, const gchar* passwor
   }
 }
 /********************************************************************************/
-G_CONST_RETURN gchar *get_local_user()
+const gchar *get_local_user()
 {  
 	
 
@@ -736,7 +737,7 @@ void DeleteLastChar(gchar *str)
         str[strlen(str)-1]='\0';
 }
 /*************************************************************************************/
-gchar *get_dir_file_name(G_CONST_RETURN gchar* dirname, G_CONST_RETURN gchar* filename)
+gchar *get_dir_file_name(const gchar* dirname, const gchar* filename)
 {
    gchar *name = NULL;
 
@@ -2792,18 +2793,18 @@ void set_tab_size (GtkWidget *view, gint tab_size)
 GtkStyle *set_text_style(GtkWidget *text,gushort red,gushort green,gushort blue)
 {
 	  GtkStyle *style;
-          style =  gtk_style_copy(text->style); 
+          style =  gtk_style_copy(style); 
           style->text[0].red=red;
           style->text[0].green=green;
           style->text[0].blue=blue;
-	  gtk_widget_set_style(text, style );
+	  gtk_widget_set_style(text, style);
           return style;
 }
 /********************************************************************************/
 GtkStyle *set_base_style(GtkWidget *text,gushort red,gushort green,gushort blue)
 {
 	  GtkStyle *style;
-          style =  gtk_style_copy(text->style); 
+          style =  gtk_style_copy(style); 
           style->base[0].red=red;
           style->base[0].green=green;
           style->base[0].blue=blue;
@@ -2814,7 +2815,7 @@ GtkStyle *set_base_style(GtkWidget *text,gushort red,gushort green,gushort blue)
 GtkStyle *set_fg_style(GtkWidget *wid,gushort red,gushort green,gushort blue)
 {
 	  GtkStyle *style;
-          style =  gtk_style_copy(wid->style); 
+          style =  gtk_style_copy(style); 
           style->fg[0].red=red;
           style->fg[0].green=green;
           style->fg[0].blue=blue;
@@ -2825,7 +2826,7 @@ GtkStyle *set_fg_style(GtkWidget *wid,gushort red,gushort green,gushort blue)
 GtkStyle *set_bg_style(GtkWidget *wid,gushort red,gushort green,gushort blue)
 {
 	  GtkStyle *style;
-          style =  gtk_style_copy(wid->style); 
+          style =  gtk_style_copy(style); 
           style->bg[0].red=red;
           style->bg[0].green=green;
           style->bg[0].blue=blue;
@@ -3375,7 +3376,7 @@ void set_dipole(GtkWidget* fp,gpointer data)
 {
 	GtkWidget** entrys = (GtkWidget**)data;
 	GdkColor* color = g_object_get_data(G_OBJECT (fp), "Color");
-	G_CONST_RETURN gchar* tentry;
+	const gchar* tentry;
 	gint i;
 	gdouble fact=1.0;
 
@@ -3871,7 +3872,7 @@ gint get_type_of_program(FILE* file)
 	return PROG_IS_OTHER;
 }
 /**************************************************************************************************************************************/
-void gabedit_string_get_pixel_size(GtkWidget* parent, PangoFontDescription *font_desc, G_CONST_RETURN gchar* t, int *width, int* height)
+void gabedit_string_get_pixel_size(GtkWidget* parent, PangoFontDescription *font_desc, const gchar* t, int *width, int* height)
 {
 	PangoLayout *layout = gtk_widget_create_pango_layout(parent, t);
 	if(font_desc) pango_layout_set_font_description (layout,font_desc);
@@ -3880,7 +3881,7 @@ void gabedit_string_get_pixel_size(GtkWidget* parent, PangoFontDescription *font
 	g_object_unref (layout);
 }
 /**********************************************************************************/
-void gabedit_draw_string(GtkWidget* parent, GdkPixmap* pixmap, PangoFontDescription *font_desc, GdkGC* gc , gint x, gint y, G_CONST_RETURN gchar* t, gboolean centerX, gboolean centerY)
+void gabedit_draw_string(GtkWidget* parent, GdkWindow* win, PangoFontDescription *font_desc, GdkGC* gc , gint x, gint y, const gchar* t, gboolean centerX, gboolean centerY)
 {
 	int width  = 0;
 	int height = 0;
@@ -3890,7 +3891,7 @@ void gabedit_draw_string(GtkWidget* parent, GdkPixmap* pixmap, PangoFontDescript
 	if(centerX || centerY) pango_layout_get_pixel_size(layout, &width,&height);
 	 if(centerX) x -= width/2;
 	 if(centerY) y -= height/2;
-	gdk_draw_layout (pixmap,gc,x,y,layout);
+	gdk_draw_layout (win,gc,x,y,layout);
 	g_object_unref (layout);
 }
 /**********************************************************************************************************************************/
@@ -3899,12 +3900,11 @@ void gabedit_save_image(GtkWidget* widget, gchar *fileName, gchar* type)
 	int width;
 	int height;
 	GError *error = NULL;
-	GdkPixbuf  *pixbuf = NULL;
+	GdkPixbuf  *pixbuf;
 
-	width =  widget->allocation.width;
-	height = widget->allocation.height;
-	pixbuf = gdk_pixbuf_get_from_drawable(NULL, widget->window, NULL, 0, 0, 0, 0, width, height);
-	/* printf("width = %d height = %d\n",width,height);*/
+	width =  gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
+	pixbuf = gdk_pixbuf_get_from_window(widget, 0, 0, width, height);
 	if(pixbuf)
 	{
 		if(!fileName)
@@ -3933,7 +3933,7 @@ void gabedit_save_image(GtkWidget* widget, gchar *fileName, gchar* type)
 	/* else printf("Warnning pixbuf = NULL\n");*/
 }
 /**********************************************************************************************************************************/
-G_CONST_RETURN gchar* get_open_babel_command()
+const gchar* get_open_babel_command()
 {       
 	return babelCommand;
 }
@@ -4400,7 +4400,7 @@ GabEditTypeFile get_type_file(gchar* filename)
 	return GABEDIT_TYPEFILE_UNKNOWN;
 }
 /************************************************/
-gchar * mystrcasestr(G_CONST_RETURN gchar *haystack, G_CONST_RETURN gchar *needle)
+gchar * mystrcasestr(const gchar *haystack, const gchar *needle)
 {
 	gchar *i, *startn = 0, *j = 0;
 	for (i = (gchar*)haystack; *i; i++)

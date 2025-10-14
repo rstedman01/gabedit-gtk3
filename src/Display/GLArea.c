@@ -19,7 +19,11 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../../Config.h"
 #include <gdk/gdkkeysyms.h>
+#include <gdk/gdkkeysyms-compat.h>
+#include <gdk/gdk.h>
 #include <gtk/gtkglarea.h>
+#include <gdk/gdkgltypes.h>
+#include <epoxy/gl.h>
 /* #include <pthread.h>*/
 #include "GlobalOrb.h"
 #include "../Utils/Vector3d.h"
@@ -52,6 +56,8 @@ DEALINGS IN THE SOFTWARE.
 #include "LabelsGL.h"
 #include "RingsOrb.h"
 #include "RingsPov.h"
+#include "../Compat/gabedit_gdk_compat.h"
+#include "../../gabeditGTK3compat.h"
 
 
 /* static pthread_mutex_t theRender_mutex = PTHREAD_MUTEX_INITIALIZER;*/
@@ -120,6 +126,62 @@ static V4d BackColor[7] =
   {1.0, 0.5, 0.5, 1.0}, /* peach */
   {0.7, 0.7, 0.7, 1.0}, /* Grey  */
 };
+/*********************************************************************************************/
+static gboolean on_glarea_render(GtkGLArea *area, GdkGLContext *context, gpointer user_data)
+{
+	GtkWidget *widget = GTK_WIDGET(area);
+	gint width = gtk_widget_get_allocated_width(widget);
+	gint height = gtk_widget_get_allocated_height(widget);
+
+	glViewport(0, 0, width, height);
+	glClearColor(0.2, 0.2, 0.2, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	return TRUE;
+}
+/*********************************************************************************************/
+static gboolean on_glarea_realize(GtkGLArea *area, GdkGLContext *context, gpointer user_data)
+{
+	GtkWidget *widget = GTK_WIDGET(area);
+	gint width = gtk_widget_get_allocated_width(widget);
+	gint height = gtk_widget_get_allocated_height(widget);
+
+	glViewport(0, 0, width, height);
+	glClearColor(0.2, 0.2, 0.2, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	return TRUE;
+}
+/*********************************************************************************************/
+static gboolean make_glarea_context_current(GtkWidget *area_widget)
+{
+    GError *error = NULL;
+	if (!area_widget || !GTK_IS_GL_AREA(area_widget))
+	{
+		g_warning("make_glarea_context_current: not a GtkGLArea");
+		return FALSE;
+	}
+    gtk_gl_area_make_current(GTK_GL_AREA(area_widget));
+    error = gtk_gl_area_get_error(GTK_GL_AREA(area_widget));
+    if (error != NULL)
+    {
+        g_warning("Failed to create GL context: %s", error->message);
+        g_clear_error(&error);
+        return FALSE;
+    }
+    return TRUE;
+}
+/*********************************************************************************************/
+static GtkWidget* create_gl_area(void)
+{
+	GtkWidget *glarea = gtk_gl_area_new();
+	if (!glarea) return NULL;
+
+	g_signal_connect(glarea, "render", G_CALLBACK(on_glarea_render), NULL);
+	g_signal_connect(glarea, "realize", G_CALLBACK(on_glarea_realize), NULL);
+
+	return glarea;
+}
 /*********************************************************************************************/
 gdouble getScaleBall()
 {
@@ -322,8 +384,8 @@ void  get_camera_values(gdouble* zn, gdouble* zf, gdouble* angle, gdouble* aspec
 
 	if(GLArea)
 	{
-		width =  GLArea->allocation.width;
-		height = GLArea->allocation.height;
+		width =  gtk_widget_get_allocated_width(GLArea);
+		height = gtk_widget_get_allocated_height(GLArea);
 	}
 	*aspect = width/height;
 	*zn = zNear;
@@ -785,19 +847,16 @@ void	InitGL()
 /*****************************************************************************/
 gint init(GtkWidget *widget)
 {
-	GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
-	GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
-	
-	if(!GTK_IS_WIDGET(widget)) return TRUE;
-	if(!GTK_WIDGET_REALIZED(widget)) return TRUE;
+	if (!GLArea || !GTK_IS_WIDGET(GLArea)) return TRUE;
+	if (!gtk_widget_get_realized(GTK_WIDGET(GLArea))) return TRUE;
+	if (!make_glarea_context_current(GLArea)) return FALSE;
 
-	if (gdk_gl_drawable_gl_begin (gldrawable, glcontext))
-	{
-		glViewport(0,0, widget->allocation.width, widget->allocation.height);
-		InitGL();
-		gdk_window_invalidate_rect (gtk_widget_get_parent_window (widget), &widget->allocation, TRUE);
-		/* gdk_window_process_updates (gtk_widget_get_parent_window (widget), TRUE);*/
-	}
+	gdouble glwidth = gtk_widget_get_allocated_width(GLArea);
+	gdouble glheight = gtk_widget_get_allocated_height(GLArea);
+
+	glViewport(0,0, (GLsizei)glwidth, (GLsizei)glheight);
+	InitGL();
+
 	return TRUE;
 }
 /*****************************************************************************/
@@ -1043,36 +1102,40 @@ static void createImagesFiles()
 		if(!createBMPFiles && !createPPMFiles && !createPOVFiles) setTextInProgress(" ");
 }
 /*****************************************************************************/
-gint redrawGL2PS()
+gint redrawGL2PS(void)
 {
-	GLdouble m[4][4];
-	GtkWidget *widget = GLArea;
-	if(!GTK_IS_WIDGET(widget)) return TRUE;
-	if(!GTK_WIDGET_REALIZED(widget)) return TRUE;
+	if (!GLArea || !GTK_IS_WIDGET(GLArea)) return TRUE;
+	if (!gtk_widget_get_realized(GTK_WIDGET(GLArea))) return TRUE;
+	if (!make_glarea_context_current(GLArea)) return FALSE;
 
-    	glMatrixMode(GL_PROJECTION);
-    	glLoadIdentity();
+	GLdouble m[4][4];
+	gdouble glwidth = gtk_widget_get_allocated_width(GLArea);
+	gdouble glheight = gtk_widget_get_allocated_height(GLArea);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 	addFog();
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	set_background_color();
 
-	mYPerspective(45,(GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height,1,100);
-    	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	if(optcol==-1) drawChecker();
 
-    	glMatrixMode(GL_PROJECTION);
-    	glLoadIdentity();
+	mYPerspective(45,(GLdouble)glwidth / (GLdouble)glheight, 1, 100);
+    glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	if(optcol == -1) drawChecker();
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 	if(perspective)
-		mYPerspective(Zoom,(GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height,zNear,zFar);
+		mYPerspective(Zoom,(GLdouble)glwidth/(GLdouble)glheight,zNear,zFar);
 	else
 	{
-	  	gdouble fw = (GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height;
+	  	gdouble fw = (GLdouble)glwidth / (GLdouble)glheight;
 	  	gdouble fh = 1.0;
 		glOrtho(-fw,fw,-fh,fh,-1,1);
 	}
 
-    	glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	if(perspective)
 		glTranslatef(Trans[0],Trans[1],Trans[2]);
@@ -1096,7 +1159,7 @@ gint redrawGL2PS()
 	if(get_show_distances()) showLabelDistances(ft2_context);
 	if(get_show_axes()) showLabelAxes(ft2_context);
 	if(get_show_axes()) showLabelPrincipalAxes(ft2_context);
-	showLabelTitle(GLArea->allocation.width,GLArea->allocation.height, ft2_context);
+	showLabelTitle(glwidth, glheight, ft2_context);
 
 	/* Swap backbuffer to front */
 	glFlush();
@@ -1106,40 +1169,44 @@ gint redrawGL2PS()
 /*****************************************************************************/
 static gint redraw(GtkWidget *widget, gpointer data)
 {
-	GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
-	GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+	(void)data;
+
+	// GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
+	// GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+	if(!widget || !GTK_IS_WIDGET(widget)) return TRUE;
+	if(!gtk_widget_get_realized(widget)) return TRUE;
+
+	if (!make_glarea_context_current(GLArea)) return FALSE;
+
 	GLdouble m[4][4];
-	if(!GTK_IS_WIDGET(widget)) return TRUE;
-	if(!GTK_WIDGET_REALIZED(widget)) return TRUE;
+	gdouble glwidth = gtk_widget_get_allocated_width(GLArea);
+	gdouble glheight = gtk_widget_get_allocated_height(GLArea);
 
-	if (!gdk_gl_drawable_gl_begin (gldrawable, glcontext)) return FALSE;
-
-    	glMatrixMode(GL_PROJECTION);
-    	glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 	addFog();
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	set_background_color();
 
-	mYPerspective(45,(GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height,1,100);
-    	glMatrixMode(GL_MODELVIEW);
+	mYPerspective(45,(GLdouble)glwidth/(GLdouble)glheight,1,100);
+    glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	if(optcol==-1) drawChecker();
 
-    	glMatrixMode(GL_PROJECTION);
-    	glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 	if(perspective)
-		mYPerspective(Zoom,(GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height,zNear,zFar);
+		mYPerspective(Zoom,(GLdouble)glwidth/(GLdouble)glheight,zNear,zFar);
 	else
 	{
-	  	gdouble fw = (GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height;
+	  	gdouble fw = (GLdouble)glwidth/(GLdouble)glheight;
 	  	gdouble fh = 1.0;
 		glOrtho(-fw,fw,-fh,fh,-1,1);
 	}
 
-    	glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	if(perspective)
-		glTranslatef(Trans[0],Trans[1],Trans[2]);
+	if(perspective) glTranslatef(Trans[0],Trans[1],Trans[2]);
 	else
 	{
 		 glTranslatef(Trans[0]/10,Trans[1]/10,0);
@@ -1160,23 +1227,13 @@ static gint redraw(GtkWidget *widget, gpointer data)
 	if(get_show_distances()) showLabelDistances(ft2_context);
 	if(get_show_axes()) showLabelAxes(ft2_context);
 	if(get_show_axes()) showLabelPrincipalAxes(ft2_context);
-	showLabelTitle(GLArea->allocation.width,GLArea->allocation.height, ft2_context);
+	showLabelTitle(glwidth, glheight, ft2_context);
 
-	/*
-	glEnable(GL_DEPTH_TEST);	
-	glDepthMask(GL_TRUE);
-	glDepthRange(0.0f,1.0f);
-	*/
-
-	if (gdk_gl_drawable_is_double_buffered (gldrawable))
-		gdk_gl_drawable_swap_buffers (gldrawable);
-	else glFlush ();
-	gdk_gl_drawable_gl_end (gldrawable);
+	glFlush ();
 	
-        while( gtk_events_pending() ) gtk_main_iteration();
+    while(gtk_events_pending()) gtk_main_iteration();
 
 	createImagesFiles();
-	/* gtk_widget_queue_draw(PrincipalWindow);*/
 
 	return TRUE;
 }
@@ -1187,7 +1244,7 @@ static gint draw(GtkWidget *widget, GdkEventExpose *event)
 	static gint i = 0;
 	i++;
 	if (!GTK_IS_WIDGET(widget)) return TRUE;
-	if(!GTK_WIDGET_REALIZED(widget)) return TRUE;
+	if(!gtk_widget_get_realized(widget)) return TRUE;
 	/* Draw only last expose. */
 	if (event->count > 0) return FALSE;
 
@@ -1200,34 +1257,31 @@ static gint draw(GtkWidget *widget, GdkEventExpose *event)
 /* When GLArea widget size changes, viewport size is set to match the new size */
 static gint reshape(GtkWidget *widget, GdkEventConfigure *event)
 {
-	GdkGLContext *glcontext = gtk_widget_get_gl_context (widget);
-	GdkGLDrawable *gldrawable = gtk_widget_get_gl_drawable (widget);
+	(void)event;
 
-	if(!GTK_IS_WIDGET(widget)) return TRUE;
-	if(!GTK_WIDGET_REALIZED(widget)) return TRUE;
+	if(!widget || !GTK_IS_WIDGET(widget)) return TRUE;
+	if(!gtk_widget_get_realized(widget)) return TRUE;
 
-	if (gdk_gl_drawable_gl_begin (gldrawable, glcontext))
+	if(!make_glarea_context_current(GLArea)) return FALSE;
+
+	gdouble glwidth = gtk_widget_get_allocated_width(GLArea);
+	gdouble glheight = gtk_widget_get_allocated_height(GLArea);
+
+	glViewport(0,0, (GLsizei)glwidth, (GLsizei)glheight);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	if(perspective)
+		mYPerspective(Zoom,(GLdouble)glwidth/(GLdouble)glheight,zNear,zFar);
+	else
 	{
-		/* pthread_mutex_lock (&theRender_mutex);*/
-		glViewport(0,0, widget->allocation.width, widget->allocation.height);
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		if(perspective)
-			mYPerspective(Zoom,(GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height,zNear,zFar);
-		else
-		{
-			gdouble fw = (GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height;
-			gdouble fh = 1.0;
-			glOrtho(-fw,fw,-fh,fh,-1,1);
-		}
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		gdk_gl_drawable_gl_end (gldrawable);
-		/* pthread_mutex_unlock (&theRender_mutex);*/
-
-		gdk_window_invalidate_rect (gtk_widget_get_parent_window (widget), &widget->allocation, TRUE);
-		gdk_window_process_updates (gtk_widget_get_parent_window (widget), TRUE);
+		gdouble fw = (GLdouble)glwidth/(GLdouble)glheight;
+		gdouble fh = 1.0;
+		glOrtho(-fw,fw,-fh,fh,-1,1);
 	}
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	gtk_widget_queue_draw(GTK_WIDGET(GLArea));
 	return TRUE;
 }
 
@@ -1316,8 +1370,8 @@ static void rotation(GtkWidget *widget, GdkEventMotion *event,gint x, gint y)
 	gdouble width;
 	gdouble height;
 
-	width  = widget->allocation.width;
-	height = widget->allocation.height;
+	width  = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
 	GLdouble spin_quat[4];
   
 	/* drag in progress, simulate trackball */
@@ -1349,17 +1403,17 @@ void rotationAboutAnAxis(GtkWidget *widget, gdouble phi, gint axe)
 static void rotationXYZ(GtkWidget *widget, GdkEventMotion *event,gint x, gint y, gint axe)
 {
   GLdouble spin_quat[4];
-  gint width = widget->allocation.width;
-  gint height = widget->allocation.height;
+  gdouble width = gtk_widget_get_allocated_width(widget);
+  gdouble height = gtk_widget_get_allocated_height(widget);
 
 
   if(axe==0)
   {
-    BeginX = x = widget->allocation.width/2;
+    BeginX = x = width / 2;
   }
   if(axe==1)
   {
-    BeginY = y = widget->allocation.height/2;
+    BeginY = y = height / 2;
   }
   if(axe==2)
   {
@@ -1401,11 +1455,11 @@ static void rotationXYZ(GtkWidget *widget, GdkEventMotion *event,gint x, gint y,
 static void zoom(GtkWidget *widget, GdkEventMotion *event,gint x,gint y)
 {
   
-	/* gdouble width;*/
+	gdouble width;
 	gdouble height;
 
-	/* width  = widget->allocation.width;*/
-	height = widget->allocation.height;
+	height = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
 
 	/* zooming drag */
 	Zoom -= ((y - BeginY) / height) * 40;
@@ -1421,8 +1475,8 @@ static void translate(GtkWidget *widget, GdkEventMotion *event,gint x,gint y)
 	gdouble width;
 	gdouble height;
 
-	width  = widget->allocation.width;
-	height = widget->allocation.height;
+	width  = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
   
 	Trans[0] += ((x - BeginX) / width) * 40;
 	Trans[1] += ((BeginY - y) / height) * 40;
@@ -1507,7 +1561,7 @@ void rafresh_window_orb()
 	 }
 }
 /********************************************************************************************/
-/* Configure the OpenGL framebuffer.*/
+#ifdef GDK_GL_MODE_RGB
 static GdkGLConfig *configure_gl()
 {
 	GdkGLConfig *glconfig;
@@ -1521,18 +1575,15 @@ static GdkGLConfig *configure_gl()
 	if(openGLOptions.depthSize!=0) mode |= GDK_GL_MODE_DEPTH;
 	if(openGLOptions.alphaSize!=0) mode |= GDK_GL_MODE_ALPHA;
 	if(openGLOptions.doubleBuffer!=0) mode |= GDK_GL_MODE_DOUBLE;
-	glconfig = gdk_gl_config_new_by_mode (mode);
+	glconfig = gdk_gl_config_new_by_mode(mode);
 	if(glconfig!=NULL) return glconfig;
-		
 
-	/* Try double-buffered visual */
 	glconfig = gdk_gl_config_new_by_mode (modedouble);
 	if (glconfig == NULL)
 	{
       		printf ("\n*** Cannot find the double-buffered visual.\n");
       		printf ("\n*** Trying single-buffered visual.\n");
 
-		/* Try single-buffered visual */
 		glconfig = gdk_gl_config_new_by_mode (modesimple);
 		if (glconfig == NULL)
 		{
@@ -1542,6 +1593,12 @@ static GdkGLConfig *configure_gl()
 	}
 	return glconfig;
 }
+#else
+static void *configure_gl()
+{
+	return NULL;
+}
+#endif
 /********************************************************************************/
 static void open_menu(GtkWidget *Win,  GdkEvent *event, gpointer Menu)
 {
@@ -1563,70 +1620,39 @@ static void add_menu_button(GtkWidget *Win, GtkWidget *box)
 gboolean NewGLArea(GtkWidget* vboxwin)
 {
 	GtkWidget* frame;
-  /*
-	gchar *info_str;
-  */
 	GtkWidget* table; 
 	GtkWidget* hboxtoolbar; 
 	GtkWidget* vbox; 
 
-#define DIMAL 13
-	/* int k = 0;*/
-	GdkGLConfig *glconfig;
-
-	/*
-	k = 0;
-	if(openGLOptions.alphaSize!=0)
-	{
-		attrlist[k++] = GDK_GL_ALPHA_SIZE;
-		attrlist[k++] = 1;
-	}
-	if(openGLOptions.depthSize!=0)
-	{
-		attrlist[k++] = GDK_GL_DEPTH_SIZE;
-		attrlist[k++] = 1;
-	}
-	if(openGLOptions.doubleBuffer!=0) attrlist[k++] = GDK_GL_DOUBLEBUFFER;
-	*/
 	set_show_symbols(FALSE);
 	set_show_distances(FALSE);
 	trackball(Quat , 0.0, 0.0, 0.0, 0.0);
 
 	frame = gtk_frame_new (NULL);
-	gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
-  	gtk_frame_set_shadow_type( GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
-	gtk_box_pack_start (GTK_BOX (vboxwin), frame, TRUE, TRUE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER(frame), 0);
+  	gtk_frame_set_shadow_type(GTK_FRAME(frame),GTK_SHADOW_ETCHED_OUT);
+	gtk_box_pack_start (GTK_BOX(vboxwin), frame, TRUE, TRUE, 0);
 	gtk_widget_show (frame);
 
 	table = gtk_table_new(2,2,FALSE);
 	gtk_container_add(GTK_CONTAINER(frame),table);
 	gtk_widget_show(GTK_WIDGET(table));
 
-/*
-	hboxtoolbar = gtk_hbox_new (FALSE, 0);
-	gtk_widget_show (hboxtoolbar);
-	gtk_table_attach(GTK_TABLE(table), hboxtoolbar,0,1,0,1, (GtkAttachOptions)(GTK_FILL | GTK_SHRINK  ), (GtkAttachOptions)(GTK_FILL | GTK_EXPAND ), 0,0);
-*/
-
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_table_attach(GTK_TABLE(table), vbox, 0,1, 0,1, GTK_FILL , GTK_FILL, 0, 0);
 	gtk_widget_show(vbox);
 	add_menu_button(PrincipalWindow, vbox);
+
 	hboxtoolbar = gtk_hbox_new (FALSE, 0);
   	gtk_box_pack_start (GTK_BOX (vbox), hboxtoolbar, TRUE, TRUE, 0);	
 	gtk_widget_show(hboxtoolbar);
 
+	GLArea = create_gl_area();
+	if(!GLArea) return false;
 
-	gtk_quit_add_destroy(1, GTK_OBJECT(PrincipalWindow));
-
-	/* Create new OpenGL widget. */
-	/* pthread_mutex_init (&theRender_mutex, NULL);*/
-	GLArea = gtk_drawing_area_new ();
-	//gtk_drawing_area_size(GTK_DRAWING_AREA(GLArea),(gint)(ScreenHeightD*0.2),(gint)(ScreenHeightD*0.2));
-	gtk_drawing_area_size(GTK_DRAWING_AREA(GLArea),(gint)(ScreenHeightD*0.5),(gint)(ScreenHeightD*0.45));
-	gtk_table_attach(GTK_TABLE(table),GLArea,1,2,0,1, (GtkAttachOptions)(GTK_FILL | GTK_EXPAND  ), (GtkAttachOptions)(GTK_FILL | GTK_EXPAND ), 0,0);
+	gtk_widget_set_size_request(GTK_WIDGET(GLArea), (gint)(ScreenHeightD*0.5), (gint)(ScreenHeightD*0.45));
 	gtk_widget_show(GTK_WIDGET(GLArea));
-	/* Events for widget must be set beforee X Window is created */
+
 	gtk_widget_set_events(GLArea,
 			GDK_EXPOSURE_MASK|
 			GDK_BUTTON_PRESS_MASK|
@@ -1635,24 +1661,10 @@ gboolean NewGLArea(GtkWidget* vboxwin)
 			GDK_POINTER_MOTION_HINT_MASK |
 			GDK_SCROLL_MASK
 			);
-	/* prepare GL */
-	glconfig = configure_gl();
-	if (!glconfig) { g_assert_not_reached (); }
-	if (!gtk_widget_set_gl_capability (GLArea, glconfig, NULL, TRUE, GDK_GL_RGBA_TYPE)) { g_assert_not_reached (); }
-
-
+	
 	g_signal_connect(G_OBJECT(GLArea), "realize", G_CALLBACK(init), NULL);
 	g_signal_connect(G_OBJECT(GLArea), "configure_event", G_CALLBACK(reshape), NULL);
 	g_signal_connect(G_OBJECT(GLArea), "expose_event", G_CALLBACK(draw), NULL);
-	/*gtk_widget_set_size_request(GTK_WIDGET(GLArea ),(gint)(ScreenHeightD*0.2),(gint)(ScreenHeightD*0.2));*/
-  
-
-	gtk_widget_realize(GTK_WIDGET(PrincipalWindow));
-	/*
-	info_str = gdk_gl_get_info();
-	Debug("%s\n",info_str);
-	g_free(info_str);
-	*/
 
 	g_signal_connect (G_OBJECT(GLArea), "button_press_event", G_CALLBACK(glarea_button_press), NULL);
 	g_signal_connect_after(G_OBJECT(GLArea), "button_press_event", G_CALLBACK(event_dispatcher), NULL);
@@ -1660,11 +1672,12 @@ gboolean NewGLArea(GtkWidget* vboxwin)
 	g_signal_connect (G_OBJECT(GLArea), "button_release_event", G_CALLBACK(glarea_button_release), NULL);
 
 
+	g_signal_connect(G_OBJECT (PrincipalWindow), "key_press_event", G_CALLBACK(set_key_press), GLArea);
+	g_signal_connect(G_OBJECT (PrincipalWindow), "key_release_event", G_CALLBACK(set_key_release), NULL);
 	create_toolbar_and_popup_menu_GL(hboxtoolbar);
-	g_signal_connect(G_OBJECT (PrincipalWindow), "key_press_event", (GCallback) set_key_press, GLArea);
-	g_signal_connect(G_OBJECT (PrincipalWindow), "key_release_event", (GCallback) set_key_release, NULL);
 
- 
+	gtk_widget_realize(GTK_WIDGET(PrincipalWindow));
+
 	return TRUE;
 }
 /*****************************************************************************/

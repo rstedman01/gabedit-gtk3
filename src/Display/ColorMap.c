@@ -26,6 +26,14 @@ DEALINGS IN THE SOFTWARE.
 #include "../Utils/Constants.h"
 #include "ColorMap.h"
 #include "GLArea.h"
+#include "../Compat/gabedit_gdk_compat.h"
+#include <pango/pangocairo.h>
+#include <cairo.h>
+
+static GtkWidget *color_map_window = NULL;
+static GtkWidget *color_map_darea = NULL;
+static cairo_surface_t *colormap_surface = NULL;
+static gint surf_w = 0, surf_h = 0;
 
 /*
 static ColorMap myColorMap =  {0,NULL};
@@ -506,11 +514,10 @@ void  reset_colorMap(GtkWidget* entry, gpointer data)
 	GtkWidget* otherEntry = g_object_get_data(G_OBJECT(entry), "OtherEntry");
 
 	if(!colorMap) return;
-
 	if(colorMap->numberOfColors<1) return;
 
 
-	if(data) /* this is right entry */
+	if(data)
 	{
 		minValue = colorMap->colorValue[0].value;
 		tmp  = gtk_entry_get_text(GTK_ENTRY(entry));
@@ -522,6 +529,7 @@ void  reset_colorMap(GtkWidget* entry, gpointer data)
 		tmp  = gtk_entry_get_text(GTK_ENTRY(entry));
 		minValue = atof(tmp);
 	}
+
 	newColorMap = new_colorMap_min_max(minValue, maxValue);
 	colormap_free(colorMap);
 	g_free(colorMap);
@@ -532,7 +540,6 @@ void  reset_colorMap(GtkWidget* entry, gpointer data)
 	g_object_set_data(G_OBJECT(darea),"ColorMap", colorMap);
 	g_object_set_data(G_OBJECT(otherEntry),"ColorMap", colorMap);
 
-	/* print_colorMap(&myColorMap);*/
 	RebuildSurf = TRUE;
 	glarea_rafresh(GLArea);
 	color_map_hide(handlebox);
@@ -540,6 +547,99 @@ void  reset_colorMap(GtkWidget* entry, gpointer data)
 	color_map_show(handlebox);
 }
 /********************************************************************************/
+static void update_colormap_surface_from_widget(GtkWidget *widget)
+{
+	gint w = gtk_widget_get_allocated_width(widget);
+	gint h = gtk_widget_get_allocated_height(widget);
+	ColorMap* gabColorMap = g_object_get_data(G_OBJECT(widget), "ColorMap");
+
+	if (w <= 0 || h <= 0) return;
+	if (colormap_surface) cairo_surface_destroy(colormap_surface);
+
+	colormap_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, w, h);
+	cairo_t *cr = cairo_create(colormap_surface);
+
+	cairo_set_source_rgb(cr, 1, 1, 1);
+	cairo_paint(cr);
+
+	if (gabColorMap && gabColorMap -> numberOfColors > 0)
+	{
+		gdouble min = gabColorMap->colorValue[0].value;
+		gdouble max = gabColorMap->colorValue[gabColorMap->numberOfColors-1].value;
+		gdouble range = (max-min);
+		if (range < 1e-20) range = 1.0;
+
+		cairo_pattern_t *pat = cairo_pattern_create_linear(0,0,w,0);
+		for (gint i=0; i < gabColorMap->numberOfColors; i++)
+		{
+			gdouble off = (gabColorMap->colorValue[i].value - min) / range;
+			if (off<0) off = 0; if (off>1) off = 1;
+			gdouble r = gabColorMap->colorValue[i].color[0];
+			gdouble g = gabColorMap->colorValue[i].color[1];
+			gdouble b = gabColorMap->colorValue[i].color[2];
+			cairo_pattern_add_color_stop_rgb(pat, off, r, g, b);
+		}
+		cairo_set_source(cr, pat);
+		cairo_rectangle(cr, 0, 0, w, h);
+		cairo_fill(cr);
+		cairo_pattern_destroy(pat);
+
+		cairo_set_source_rgb(cr, 0, 0, 0);
+		for(int t = 1; t <= 3; t++)
+		{
+			gdouble x = (w * t)/4.0;
+			gdouble v = min + (max-min)*(x/(gdouble)w);
+			char buf[64];
+			if (fabs(v)>1e-3) sprintf(buf, "%0.1e", v);
+			else if (fabs(v) < 1e-8) sprintf(buf, "%0.1e", v);
+			else sprintf(buf, "%1f", v);
+
+			PangoLayout *layout = pango_cairo_create_layout(cr);
+			pango_layout_set_text(layout, buf, -1);
+			cairo_move_to(cr, x+2, h-16);
+			pango_cairo_show_layout(cr, layout);
+			g_object_unref(layout);
+		}
+	}
+	else 
+	{
+		cairo_set_source_rgb(cr, 0.8,0.8,0.8);
+		cairo_rectangle(cr, 0, 0, w, h);
+		cairo_fill(cr);
+	}
+	cairo_destroy(cr);
+	surf_w = w; surf_h = h;
+	if (color_map_darea) gtk_widget_queue_draw(color_map_darea);
+}
+/********************************************************************************/
+static gboolean colormap_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data)
+{
+	gint w = gtk_widget_get_allocated_width(widget);
+	gint h = gtk_widget_get_allocated_height(widget);
+
+	if (!colormap_surface || surf_w != w || surf_h != h) update_colormap_surface_from_widget(widget);
+
+	if(colormap_surface) 
+	{
+		cairo_set_source_surface(cr, colormap_surface, 0, 0);
+		cairo_paint(cr);
+	} 
+	else 
+	{
+		GdkRGBA bg = {1.0,1.0,1.0,1.0};
+		gdk_cairo_set_source_rgba(cr, &bg);
+		cairo_paint(cr);
+
+		PangoLayout *layout = pango_cairo_create_layout(cr);
+		pango_layout_set_text(layout, "Color Map", -1);
+		cairo_move_to(cr, 10, 10);
+		cairo_set_source_rgb(cr, 0,0,0);
+		pango_cairo_show_layout(cr, layout);
+		g_object_unref(layout);
+	}
+	return TRUE;
+}
+/********************************************************************************
 static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 {
  
@@ -562,14 +662,16 @@ static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 	if (pixmap) g_object_unref(pixmap);
 	if (cr) cairo_destroy (cr);
 
-	pixmap = gdk_pixmap_new(widget->window, widget->allocation.width, widget->allocation.height, -1);
+	gint wwidth = gtk_widget_get_allocated_width(widget);
+	gint wheight = gtk_widget_get_allocated_height(widget);
+
+	pixmap = gdk_pixmap_new(widget, wwidth, wheight, -1);
 	cr = gdk_cairo_create (pixmap);
 	
-	colormap  = gdk_drawable_get_colormap(widget->window);
-
-  	height = widget->allocation.height;
-        vis = gdk_colormap_get_visual(colormap);
-        if(vis->depth >15) Ok = TRUE;
+	colormap  = gdk_drawable_get_colormap(widget);
+    
+	vis = gdk_colormap_get_visual(colormap);
+    if(gdk_visual_get_depth(vis) >15) Ok = TRUE;
 	else Ok = FALSE;
 
 	 color.red = 40000; 
@@ -583,9 +685,9 @@ static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 		
 		gdouble max  = myColorMap->colorValue[myColorMap->numberOfColors-1].value;
 		gdouble min  = myColorMap->colorValue[0].value;
-  		for(i=0;i<widget->allocation.width;i++)
+  		for(i=0;i<wwidth;i++)
   		{
-			gdouble v = i/(gdouble)(widget->allocation.width)*(max-min)+min;
+			gdouble v = i/(gdouble)(wwidth)*(max-min)+min;
 			gdouble color[3];
 
 			set_Color_From_colorMap(myColorMap, color, v);
@@ -599,9 +701,9 @@ static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 			
   		}
 	
-  		for(i=widget->allocation.width/4;i<widget->allocation.width-widget->allocation.width/8;i+=widget->allocation.width/4)
+  		for(i=wwidth/4;i<wwidth-wwidth/8;i+=wwidth/4)
   		{
-			gdouble v = i/(gdouble)(widget->allocation.width)*(max-min)+min;
+			gdouble v = i/(gdouble)(wwidth)*(max-min)+min;
 			{
 				gint x = i;
 				gint y = height-height/4;
@@ -624,7 +726,7 @@ static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 	else
 	{
 		gdk_gc_set_foreground(gc,&color);
-  		for(i=0;i<widget->allocation.width;i++)
+  		for(i=0;i<wwidth;i++)
     			gdk_draw_line(pixmap,gc,i,0,i,height);
   	}
 
@@ -633,132 +735,87 @@ static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 	if(font_desc) pango_font_description_free (font_desc);
   	return TRUE;
 }
-/********************************************************************************/   
-static gint expose_event(GtkWidget  *widget,GdkEventExpose *event )
-{
-  	GdkPixmap *pixmap = NULL;
-
-	if(event->count >0)
-		return FALSE;
-
-  	pixmap = (GdkPixmap *)g_object_get_data(G_OBJECT(widget), "Pixmap");
-	if(pixmap)
-		gdk_draw_drawable(widget->window,
-                  widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
-                  pixmap,
-                  event->area.x, event->area.y,
-                  event->area.x, event->area.y,
-                  event->area.width, event->area.height);
-  	return FALSE;
-}
 /********************************************************************************/
-static GtkWidget *add_drawing_area(GtkWidget *table, gint i)
+/*static GtkWidget *add_drawing_area(GtkWidget *container, gint req_w, gint req_h)
 {
-	GtkWidget *darea;
-	GdkPixmap *pixmap = NULL;
-	cairo_t* cr = NULL;
+	GtkWidget *da = gtk_drawing_area_new();
+	if (req_w > 0 && req_h > 0) gtk_widget_set_size_request(da, req_w, req_h);
 
-	darea = gtk_drawing_area_new();
-	 gtk_widget_set_size_request(GTK_WIDGET(darea), 300, -1);
-
-
-	gtk_table_attach(GTK_TABLE(table),darea,i,i+1,0,1,
-			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
-			(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
-			0,0);
-	gtk_widget_realize(darea);
-	pixmap = gdk_pixmap_new(darea->window,darea->allocation.width,darea->allocation.height,-1);
-	cr = gdk_cairo_create (pixmap);
-	g_object_set_data(G_OBJECT(darea), "Pixmap", pixmap);
-	g_object_set_data(G_OBJECT(darea), "Cairo", cr);
-
-	g_signal_connect(G_OBJECT(darea),"configure_event",(GCallback)configure_event,NULL);
-	g_signal_connect(G_OBJECT(darea),"expose_event",(GCallback)expose_event,NULL);
-	return darea;
-}
-/******************************************************************************************************************************/
+	gtk_widget_add_events(da, GDK_BUTTON_PRESS_MASK | 
+							  GDK_BUTTON_RELEASE_MASK | 
+							  GDK_POINTER_MOTION_MASK | 
+							  GDK_SCROLL_MASK | 
+							  GDK_KEY_PRESS_MASK | 
+							  GDK_KEY_RELEASE_MASK);
+	
+	g_signal_connect(da,"draw",G_CALLBACK(colormap_draw),NULL);
+	g_signal_connect(da,"button-press-event",G_CALLBACK(on_button_press),NULL);
+	g_signal_connect(da,"motion-notify-event",G_CALLBACK(on_da_motion),NULL);
+	return da;
+}*/
 GtkWidget* create_color_map_show(GtkWidget* box, ColorMap* colorMap, gchar* label)
 {
   	GtkWidget *handlebox;
 	GtkWidget* table; 
-	GtkWidget* entry; 
 	GtkWidget* entryLeft; 
 	GtkWidget* entryRight; 
 	GtkWidget *darea;
-	GdkGC *gc = NULL;
-	gint i;
+	gint i = 0;
 
   	handlebox = gtk_handle_box_new ();
   	gtk_handle_box_set_shadow_type(GTK_HANDLE_BOX(handlebox),GTK_SHADOW_NONE);    
-	gtk_handle_box_set_handle_position  (GTK_HANDLE_BOX(handlebox),GTK_POS_LEFT);
-  	gtk_widget_show (handlebox);
-  	gtk_box_pack_start (GTK_BOX (box), handlebox, FALSE, FALSE, 0);
-	table = gtk_table_new(1,4,FALSE);
+	gtk_handle_box_set_handle_position(GTK_HANDLE_BOX(handlebox),GTK_POS_LEFT);
+  	gtk_box_pack_start(GTK_BOX(box), handlebox, FALSE, FALSE, 0);
+	gtk_widget_show(handlebox);
 
-	gtk_container_add (GTK_CONTAINER (handlebox), table);
-	
-	i = 0;
+	table = gtk_table_new(1,4,FALSE);
+	gtk_container_add(GTK_CONTAINER(handlebox), table);
+
 	if(label)
 	{
-		GtkWidget* labelWid = gtk_label_new(label);
-		gtk_widget_show(labelWid);
-		gtk_table_attach(GTK_TABLE(table),labelWid,i,i+1,0,1,
-			(GtkAttachOptions)(GTK_FILL | GTK_SHRINK),
-			(GtkAttachOptions)(GTK_FILL | GTK_SHRINK),
-			0,0);
+		GtkWidget* lab = gtk_label_new(label);
+		gtk_misc_set_alignment(GTK_MISC(lab), 0.0, 0.5);
+		gtk_table_attach(GTK_TABLE(table), lab, 0,1, 0,1, GTK_FILL, GTK_FILL, 4, 2);
+		gtk_widget_show(lab);
+		i = 1;
 	}
-	i = 1;
-	entry = gtk_entry_new();
-	gtk_widget_set_size_request(entry,80,-1);
-	gtk_widget_show(entry);
-	gtk_table_attach(GTK_TABLE(table),entry,i,i+1,0,i,
-			(GtkAttachOptions)(GTK_FILL | GTK_SHRINK),
-			(GtkAttachOptions)(GTK_FILL | GTK_SHRINK),
-			0,0);
-	entryLeft = entry;
 
-	i = 2;
-	gc = gdk_gc_new(PrincipalWindow->window);
-	darea = add_drawing_area(table, i);
+	darea = gtk_drawing_area_new();
+	gtk_widget_set_size_request(darea, 300, 20);
+	color_map_darea = darea;
+	g_object_set_data(G_OBJECT(darea), "ColorMap", colorMap);
+	gtk_table_attach(GTK_TABLE(table), darea, i, i+1, 0,1, (GtkAttachOptions)(GTK_FILL|GTK_EXPAND), GTK_FILL, 4, 2);
+	g_signal_connect(darea, "draw", G_CALLBACK(colormap_draw), NULL);
+	gtk_widget_show(darea);
 
-	i = 3;
-	entry = gtk_entry_new();
-	gtk_widget_set_size_request(entry,80,-1);
-	gtk_widget_show(entry);
-	gtk_table_attach(GTK_TABLE(table),entry,i,i+1,0,1,
-			(GtkAttachOptions)(GTK_FILL | GTK_SHRINK),
-			(GtkAttachOptions)(GTK_FILL | GTK_SHRINK),
-			0,0);
-	entryRight = entry;
+	entryLeft = gtk_entry_new();
+	gtk_entry_set_width_chars(GTK_ENTRY(entryLeft), 8);
+	gtk_table_attach(GTK_TABLE(table), entryLeft, i+1, i+2, 0,1, GTK_FILL, GTK_FILL, 4, 2);
+	gtk_widget_show(entryLeft);
+
+	entryRight = gtk_entry_new();
+	gtk_entry_set_width_chars(GTK_ENTRY(entryRight), 8);
+	gtk_table_attach(GTK_TABLE(table), entryRight, i+2, i+3, 0,1, GTK_FILL, GTK_FILL, 4, 2);
+	gtk_widget_show(entryRight);
 
 	gtk_widget_show(table);
-	g_object_set_data(G_OBJECT(handlebox), "EntryLeft", entryLeft);
-	g_object_set_data(G_OBJECT(handlebox), "EntryRight", entryRight);
-	g_object_set_data(G_OBJECT(handlebox), "DrawingArea", darea);
+
 	g_object_set_data(G_OBJECT(handlebox),"ColorMap", colorMap);
-	g_object_set_data(G_OBJECT(handlebox),"Gdkgc", gc);
-
-	g_object_set_data(G_OBJECT(darea),"ColorMap", colorMap);
-	g_object_set_data(G_OBJECT(darea),"Gdkgc", gc);
-
-	g_object_set_data(G_OBJECT(entryLeft), "DrawingArea", darea);
-	g_object_set_data(G_OBJECT(entryRight), "DrawingArea", darea);
+	g_object_set_data(G_OBJECT(handlebox),"EntryLeft", entryLeft);
+	g_object_set_data(G_OBJECT(handlebox),"EntryRight", entryRight);
+	g_object_set_data(G_OBJECT(handlebox),"DrawingArea", darea);
 
 	g_object_set_data(G_OBJECT(entryLeft),"ColorMap", colorMap);
 	g_object_set_data(G_OBJECT(entryRight),"ColorMap", colorMap);
-
 	g_object_set_data(G_OBJECT(entryLeft),"Handlebox", handlebox);
 	g_object_set_data(G_OBJECT(entryRight),"Handlebox", handlebox);
-
 	g_object_set_data(G_OBJECT(entryLeft),"DrawingArea", darea);
 	g_object_set_data(G_OBJECT(entryRight),"DrawingArea", darea);
-
 	g_object_set_data(G_OBJECT(entryLeft),"OtherEntry", entryRight);
 	g_object_set_data(G_OBJECT(entryRight),"OtherEntry", entryLeft);
-
-
-	g_signal_connect(G_OBJECT (entryLeft), "activate",(GCallback)reset_colorMap, NULL);
-	g_signal_connect(G_OBJECT (entryRight), "activate",(GCallback)reset_colorMap, GTK_OBJECT(entryLeft));
+	
+	g_signal_connect(G_OBJECT(entryLeft), "activate",(GCallback)reset_colorMap, NULL);
+	g_signal_connect(G_OBJECT(entryRight), "activate",(GCallback)reset_colorMap, GTK_OBJECT(entryLeft));
 
 	return handlebox;
 }
@@ -797,7 +854,8 @@ void color_map_show(GtkWidget* handlebox)
 void color_map_refresh(GtkWidget* handlebox)
 {
 	GtkWidget* darea = g_object_get_data(G_OBJECT(handlebox), "DrawingArea");
-	configure_event(darea, NULL);
+	if (!darea) return;
+	update_colormap_surface_from_widget(darea);
 }
 /******************************************************************************************************************************/
 void color_map_hide(GtkWidget* handlebox)

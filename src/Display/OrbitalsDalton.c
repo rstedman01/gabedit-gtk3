@@ -32,6 +32,7 @@ DEALINGS IN THE SOFTWARE.
 #include "StatusOrb.h"
 #include "Basis.h"
 #include "Orbitals.h"
+#include "BondsOrb.h"
 
 #define MAXSYM 8
 
@@ -47,7 +48,7 @@ typedef struct _OneBasisSymmetry
  gint** signe;
 }OneBasisSymmetry;
 /*****************************************/
-static void DefineType()
+void DefineType()
 {
  gint i,j;
  gint OK;

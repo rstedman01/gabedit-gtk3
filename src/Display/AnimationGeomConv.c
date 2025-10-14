@@ -18,6 +18,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../../Config.h"
 #include <stdlib.h>
+#include <math.h>
 #include "GlobalOrb.h"
 #include "../Utils/AtomsProp.h"
 #include "../Utils/Utils.h"
@@ -41,6 +42,10 @@ DEALINGS IN THE SOFTWARE.
 #include "../Display/RingsOrb.h"
 #include "../Utils/GabeditXYPlot.h"
 #include "../../pixmaps/Open.xpm"
+
+#ifndef M_PI
+#define M_PI 3.141592653589793238462643383279502884
+#endif
 
 /* extern nimationGeomConv.h */
 GeometryConvergence geometryConvergence;
@@ -5695,7 +5700,7 @@ static void activate_action (GtkAction *action)
 	else if(!strcmp(name, "HelpAnimation")) help_animated_file();
 	else if(!strcmp(name, "CreateGaussInput")) create_gaussian_file_dlg(FALSE);
 	else if(!strcmp(name, "CreateGaussInputLink")) create_gaussian_file_dlg(TRUE);
-	else if(!strcmp(name, "CreateGr")) create_gr_dlg(TRUE);
+	else if(!strcmp(name, "CreateGr")) create_gr_dlg();
 	else if(!strcmp(name, "ComputeConformerTpes")) computeConformerTypes();
 }
 /*--------------------------------------------------------------------*/

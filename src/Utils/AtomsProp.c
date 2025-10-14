@@ -852,7 +852,7 @@ static void open_color_dlg_atoms(GtkWidget *win,gpointer tdata)
 	v[1] =style->bg[0].green/65535.0;
 	v[2] =style->bg[0].blue/65535.0;
 	ColorDlg = (GtkColorSelectionDialog *)gtk_color_selection_dialog_new("Set Atom Color");
-	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (ColorDlg->colorsel), &style->bg[0]);
+	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION(ColorDlg), &style->bg[0]);
 
 	gtk_window_set_transient_for(GTK_WINDOW(ColorDlg),GTK_WINDOW(data->Window));
         gtk_window_set_position(GTK_WINDOW(ColorDlg),GTK_WIN_POS_CENTER);
@@ -860,21 +860,21 @@ static void open_color_dlg_atoms(GtkWidget *win,gpointer tdata)
  	g_signal_connect(G_OBJECT(ColorDlg), "delete_event",(GCallback)destroy_button_windows,NULL);
   	g_signal_connect(G_OBJECT(ColorDlg), "delete_event",G_CALLBACK(gtk_widget_destroy),NULL);
 
-  	gtk_widget_hide(ColorDlg->help_button);
-	g_signal_connect_swapped(G_OBJECT(ColorDlg->ok_button),"clicked",
-		(GCallback)set_atom_color,GTK_OBJECT(ColorDlg->colorsel));
+  	gtk_widget_hide(win);
+	g_signal_connect_swapped(G_OBJECT(ColorDlg),"clicked",
+		(GCallback)set_atom_color,GTK_OBJECT(ColorDlg));
 
-	g_signal_connect(G_OBJECT(ColorDlg->ok_button),"clicked",
+	g_signal_connect(G_OBJECT(ColorDlg),"clicked",
 		(GCallback)set_button_color,tdata);
 
-  	g_signal_connect_swapped(G_OBJECT(ColorDlg->ok_button), "clicked",
+  	g_signal_connect_swapped(G_OBJECT(ColorDlg), "clicked",
 		(GCallback)destroy_button_windows,GTK_OBJECT(ColorDlg));
-	g_signal_connect_swapped(G_OBJECT(ColorDlg->ok_button),"clicked",
+	g_signal_connect_swapped(G_OBJECT(ColorDlg),"clicked",
 		(GCallback)gtk_widget_destroy,GTK_OBJECT(ColorDlg));
 
-  	g_signal_connect_swapped(G_OBJECT(ColorDlg->cancel_button), "clicked",
+  	g_signal_connect_swapped(G_OBJECT(ColorDlg), "clicked",
 		(GCallback)destroy_button_windows,GTK_OBJECT(ColorDlg));
-	g_signal_connect_swapped(G_OBJECT(ColorDlg->cancel_button),"clicked",
+	g_signal_connect_swapped(G_OBJECT(ColorDlg),"clicked",
 		(GCallback)gtk_widget_destroy,GTK_OBJECT(ColorDlg));
 
   	add_button_windows(" Set Color ",GTK_WIDGET(ColorDlg));

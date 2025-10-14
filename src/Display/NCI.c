@@ -21,7 +21,6 @@ DEALINGS IN THE SOFTWARE.
 #include "../../Config.h"
 #ifdef ENABLE_OMP
 #include <omp.h>
-
 #endif
 #include "../Utils/Constants.h"
 #include "GlobalOrb.h"
@@ -33,6 +32,10 @@ DEALINGS IN THE SOFTWARE.
 #include "../Utils/Utils.h"
 #include "../Display/Grid.h"
 #include "../Display/Orbitals.h"
+
+#ifndef M_PI 
+#define M_PI 3.141592653589793238462643383279502884
+#endif
 
 /*********************************************************************************************************************************/
 static gint compute_nci2D_from_density_grid(Grid* grid, gdouble densityCutOff, gdouble RDGCutOff, gint nBoundary, gdouble**pX, gdouble**pY)

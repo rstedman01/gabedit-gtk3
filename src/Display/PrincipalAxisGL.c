@@ -362,32 +362,32 @@ static void open_color_dlg_axis(GtkWidget *button,gpointer data)
 	color.red = (gushort)(v[0]*65535);
 	color.green = (gushort)(v[1]*65535);
 	color.blue = (gushort)(v[2]*65535);
-	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (colorDlg->colorsel), &color);
-	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (colorDlg->colorsel), &color);
+	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION(colorDlg), &color);
+	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION(colorDlg), &color);
 	gtk_window_set_transient_for(GTK_WINDOW(colorDlg),GTK_WINDOW(win));
         gtk_window_set_position(GTK_WINDOW(colorDlg),GTK_WIN_POS_CENTER);
   	gtk_window_set_modal (GTK_WINDOW (colorDlg), TRUE);
  	g_signal_connect(G_OBJECT(colorDlg), "delete_event",(GCallback)destroy_button_windows,NULL);
   	g_signal_connect(G_OBJECT(colorDlg), "delete_event",G_CALLBACK(gtk_widget_destroy),NULL);
 
-  	g_object_set_data(G_OBJECT (colorDlg->colorsel), "Color", v);
-  	gtk_widget_hide(colorDlg->help_button);
-	g_signal_connect_swapped(G_OBJECT(colorDlg->ok_button),"clicked",
-		(GCallback)set_axis_color,GTK_OBJECT(colorDlg->colorsel));
+  	g_object_set_data(G_OBJECT(colorDlg), "Color", v);
+  	gtk_widget_hide(button);
+	g_signal_connect_swapped(G_OBJECT(button),"clicked",
+		(GCallback)set_axis_color,GTK_OBJECT(colorDlg));
 
-  	g_object_set_data(G_OBJECT (colorDlg->ok_button), "Color", v);
-  	g_object_set_data(G_OBJECT (colorDlg->ok_button), "Button", button);
-  	g_object_set_data(G_OBJECT (colorDlg->ok_button), "Style", style);
-	g_signal_connect(G_OBJECT(colorDlg->ok_button),"clicked", (GCallback)set_axis_button_color,NULL);
+  	g_object_set_data(G_OBJECT(colorDlg), "Color", v);
+  	g_object_set_data(G_OBJECT(colorDlg), "Button", button);
+  	g_object_set_data(G_OBJECT(colorDlg), "Style", style);
+	g_signal_connect(G_OBJECT(colorDlg),"clicked", (GCallback)set_axis_button_color,NULL);
 
-  	g_signal_connect_swapped(G_OBJECT(colorDlg->ok_button), "clicked",
+  	g_signal_connect_swapped(G_OBJECT(colorDlg), "clicked",
 		(GCallback)destroy_button_windows,GTK_OBJECT(colorDlg));
-	g_signal_connect_swapped(G_OBJECT(colorDlg->ok_button),"clicked",
+	g_signal_connect_swapped(G_OBJECT(colorDlg),"clicked",
 		(GCallback)gtk_widget_destroy,GTK_OBJECT(colorDlg));
 
-  	g_signal_connect_swapped(G_OBJECT(colorDlg->cancel_button), "clicked",
+  	g_signal_connect_swapped(G_OBJECT(colorDlg), "clicked",
 		(GCallback)destroy_button_windows,GTK_OBJECT(colorDlg));
-	g_signal_connect_swapped(G_OBJECT(colorDlg->cancel_button),"clicked",
+	g_signal_connect_swapped(G_OBJECT(colorDlg),"clicked",
 		(GCallback)gtk_widget_destroy,GTK_OBJECT(colorDlg));
 
   	add_button_windows(" Set Color ",GTK_WIDGET(colorDlg));
