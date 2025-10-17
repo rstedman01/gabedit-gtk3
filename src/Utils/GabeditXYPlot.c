@@ -18,6 +18,7 @@ DEALINGS IN THE SOFTWARE.
 ************************************************************************************************************/
 
 #define GETTEXT_PACKAGE "gabedit"
+#define _USE_MATH_DEFINES
 #include <stdlib.h>
 #include <ctype.h>
 #include <math.h>
@@ -27,11 +28,18 @@ DEALINGS IN THE SOFTWARE.
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <cairo.h>
 #include <cairo-pdf.h>
 #include <cairo-ps.h>
 #include <cairo-svg.h>
+#include <pango/pangocairo.h>
 
 #include "GabeditXYPlot.h"
+#include "GabeditXYPlotCairo.h"
+
+#ifndef M_PI
+#define M_PI G_PI
+#endif
 
 #define XYPLOT_DEFAULT_SIZE 300
 #define BSIZE 1024
@@ -207,7 +215,6 @@ static void gabedit_xyplot_cairo_line(cairo_t *cr,  GtkWidget* widget, GdkGC* gc
 	GdkGCValues values;
 	GdkColor color;
 	double r,g,b;
-	GdkColormap *colormap;
 	double dashes[] = {5.0,  /* ink */
 		           5.0,  /* skip */
 			   10.0,  /* ink */
@@ -253,8 +260,8 @@ static void gabedit_xyplot_cairo_line(cairo_t *cr,  GtkWidget* widget, GdkGC* gc
 		case GDK_LINE_DOUBLE_DASH : break;
 		default  : ndash = 0;
 	}
-   	colormap  = gdk_window_get_colormap(widget->window);
-        gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
+	/* Get color from GdkGC - in GTK3 we get it directly from the foreground */
+	color = values.foreground;
 
 	if( ndash != 0) cairo_set_dash (cr, dashes, ndash, offset);
 
@@ -283,7 +290,6 @@ static void gabedit_xyplot_cairo_rectangle(cairo_t *cr,  GtkWidget* widget, GdkG
 	GdkGCValues values;
 	GdkColor color;
 	double r,g,b;
-	GdkColormap *colormap;
 	double dashes[] = {5.0,  /* ink */
 		           5.0,  /* skip */
 			   10.0,  /* ink */
@@ -329,8 +335,8 @@ static void gabedit_xyplot_cairo_rectangle(cairo_t *cr,  GtkWidget* widget, GdkG
 		case GDK_LINE_DOUBLE_DASH : break;
 		default  : ndash = 0;
 	}
-   	colormap  = gdk_window_get_colormap(widget->window);
-        gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
+	/* Get color from GdkGC - in GTK3 we get it directly from the foreground */
+	color = values.foreground;
 
 	if( ndash != 0) cairo_set_dash (cr, dashes, ndash, offset);
 
@@ -489,12 +495,11 @@ static void destroy_xyplot_window(GtkWidget* xyplot)
 static GdkColor get_fore_color(GabeditXYPlot *xyplot)
 {
 	GdkGCValues values;
-	GdkColormap *colormap;
 	GdkColor color;
 
 	gdk_gc_get_values(xyplot->fore_gc, &values);
-   	colormap  = gdk_window_get_colormap(GTK_WIDGET(xyplot)->window);
-        gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
+	/* In GTK3, get color directly from foreground */
+	color = values.foreground;
 	return color;
 }
 /****************************************************************************************/
@@ -713,7 +718,6 @@ static PangoLayout* get_pango_str(GabeditXYPlot *xyplot, G_CONST_RETURN gchar* t
 {
 	gchar *str = NULL;
 	GdkGCValues values;
-	GdkColormap *colormap;
 	GdkColor color;
 	gchar* rgb = NULL;
 	PangoLayout* pango;
@@ -724,8 +728,8 @@ static PangoLayout* get_pango_str(GabeditXYPlot *xyplot, G_CONST_RETURN gchar* t
 	pango_layout_set_alignment(pango,PANGO_ALIGN_LEFT);
 
 	gdk_gc_get_values(xyplot->fore_gc, &values);
-   	colormap  = gdk_window_get_colormap(GTK_WIDGET(xyplot)->window);
-        gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
+	/* In GTK3, get color directly from foreground */
+	color = values.foreground;
 	rgb = g_strdup_printf("#%02x%02x%02x", color.red >> 8, color.green >> 8, color.blue >> 8);
 	str = g_strconcat("<span foreground='", rgb, "'>",txt, "</span>", NULL);
 	pango_layout_set_markup(pango, str, -1);
