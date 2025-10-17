@@ -1,9 +1,8 @@
 CC ?= gcc
 CFLAGS ?= -std=c17 -O2 -pipe -Wall -Wextra -Wno-deprecated-declarations
-INCDIR ?= $(pkg-config --cflags gtk+-3.0)
-GTK_CFLAGS := $(pkg-config --cflags gtk+-3.0)
-GTK_LIBS   := $(pkg-config --libs gtk+-3.0)
-EPOXY_LIBS := $(pkg-config --libs epoxy)
+GTK_CFLAGS := $(shell pkg-config --cflags gtk+-3.0)
+GTK_LIBS   := $(shell pkg-config --libs gtk+-3.0)
+EPOXY_LIBS := $(shell pkg-config --libs epoxy)
 
 SRC := $(shell find src -name '*.c')
 OBJ := $(SRC:.c=.o)
@@ -18,7 +17,7 @@ gabedit-gtk3: $(OBJ)
 # Compile rule for .c -> .o
 %.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(GTK_CFLAGS) $(INCDIR) -c $< -o $@
+	$(CC) $(CFLAGS) $(GTK_CFLAGS) -c $< -o $@
 
 clean:
 	find . -name '*.o' -delete
