@@ -208,6 +208,7 @@ static void gabedit_xyplot_cairo_line(cairo_t *cr,  GtkWidget* widget, GdkGC* gc
 	GdkColor color;
 	double r,g,b;
 	GdkColormap *colormap;
+	GdkWindow *window;
 	double dashes[] = {5.0,  /* ink */
 		           5.0,  /* skip */
 			   10.0,  /* ink */
@@ -253,7 +254,8 @@ static void gabedit_xyplot_cairo_line(cairo_t *cr,  GtkWidget* widget, GdkGC* gc
 		case GDK_LINE_DOUBLE_DASH : break;
 		default  : ndash = 0;
 	}
-   	colormap  = gdk_window_get_colormap(widget->window);
+	window = gtk_widget_get_window(widget);
+   	colormap  = gdk_window_get_colormap(window);
         gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
 
 	if( ndash != 0) cairo_set_dash (cr, dashes, ndash, offset);
@@ -5048,9 +5050,10 @@ static void gabedit_xyplot_export(GabeditXYPlot *xyplot, gchar* fileName, gchar*
 	widget = GTK_WIDGET(xyplot);
 	if(!strcmp(fileType,"pdf"))
 	{
-		
+		GtkAllocation allocation;
+		gtk_widget_get_allocation(widget, &allocation);
 		cairo_surface_t *surface;
-		surface = cairo_pdf_surface_create(fileName, widget->allocation.width, widget->allocation.height);
+		surface = cairo_pdf_surface_create(fileName, allocation.width, allocation.height);
 		xyplot->cairo_export = cairo_create(surface);
 		force_expose(widget);
 		cairo_show_page(xyplot->cairo_export);
@@ -5062,9 +5065,10 @@ static void gabedit_xyplot_export(GabeditXYPlot *xyplot, gchar* fileName, gchar*
 	else
 	if(!strcmp(fileType,"ps"))
 	{
-		
+		GtkAllocation allocation;
+		gtk_widget_get_allocation(widget, &allocation);
 		cairo_surface_t *surface;
-		surface = cairo_ps_surface_create(fileName, widget->allocation.width, widget->allocation.height);
+		surface = cairo_ps_surface_create(fileName, allocation.width, allocation.height);
 		xyplot->cairo_export = cairo_create(surface);
 		force_expose(widget);
 		cairo_show_page(xyplot->cairo_export);
@@ -5076,9 +5080,10 @@ static void gabedit_xyplot_export(GabeditXYPlot *xyplot, gchar* fileName, gchar*
 	else
 	if(!strcmp(fileType,"eps"))
 	{
-		
+		GtkAllocation allocation;
+		gtk_widget_get_allocation(widget, &allocation);
 		cairo_surface_t *surface;
-		surface = cairo_ps_surface_create(fileName, widget->allocation.width, widget->allocation.height);
+		surface = cairo_ps_surface_create(fileName, allocation.width, allocation.height);
 		cairo_ps_surface_set_eps(surface, TRUE);
 		xyplot->cairo_export = cairo_create(surface);
 		force_expose(widget);
@@ -5091,9 +5096,10 @@ static void gabedit_xyplot_export(GabeditXYPlot *xyplot, gchar* fileName, gchar*
 	else
 	if(!strcmp(fileType,"svg"))
 	{
-		
+		GtkAllocation allocation;
+		gtk_widget_get_allocation(widget, &allocation);
 		cairo_surface_t *surface;
-		surface = cairo_svg_surface_create(fileName, widget->allocation.width, widget->allocation.height);
+		surface = cairo_svg_surface_create(fileName, allocation.width, allocation.height);
 		xyplot->cairo_export = cairo_create(surface);
 		force_expose(widget);
 		cairo_show_page(xyplot->cairo_export);
@@ -7108,17 +7114,21 @@ static void gabedit_xyplot_realize (GtkWidget *widget)
   GdkColor black;
   GdkColor white;
   GdkColormap *colormap;
+  GtkAllocation allocation;
+  GdkWindow *window;
+  GdkWindow *parent_window;
      
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GABEDIT_IS_XYPLOT (widget));
 
-  GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
+  gtk_widget_set_realized(widget, TRUE);
   xyplot = GABEDIT_XYPLOT (widget);
 
-  attributes.x = widget->allocation.x;
-  attributes.y = widget->allocation.y;
-  attributes.width = widget->allocation.width;
-  attributes.height = widget->allocation.height;
+  gtk_widget_get_allocation(widget, &allocation);
+  attributes.x = allocation.x;
+  attributes.y = allocation.y;
+  attributes.width = allocation.width;
+  attributes.height = allocation.height;
   attributes.wclass = GDK_INPUT_OUTPUT;
   attributes.window_type = GDK_WINDOW_CHILD;
   attributes.event_mask = 
@@ -7133,22 +7143,21 @@ static void gabedit_xyplot_realize (GtkWidget *widget)
 	GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
 
   attributes.visual = gtk_widget_get_visual (widget);
-  attributes.colormap = gtk_widget_get_colormap (widget);
 
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-  widget->window = gdk_window_new (widget->parent->window, &attributes, attributes_mask);
+  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL;
+  parent_window = gtk_widget_get_parent_window(widget);
+  window = gdk_window_new (parent_window, &attributes, attributes_mask);
+  gtk_widget_set_window(widget, window);
+  gtk_widget_register_window(widget, window);
 
-  widget->style = gtk_style_attach (widget->style, widget->window);
-
-  gdk_window_set_user_data (widget->window, widget);
-
-  gtk_style_set_background (widget->style, widget->window, GTK_STATE_ACTIVE);
+  gdk_window_set_user_data (window, widget);
        
-  colormap=gdk_drawable_get_colormap(widget->window); 
+  colormap=gdk_drawable_get_colormap(window); 
 
   black.red = 0;
   black.green = 0;
   black.blue = 0;
+  /* gdk_colormap_alloc_color already has compat shim */
   gdk_colormap_alloc_color (colormap, &black, FALSE, TRUE);
 
   white.red = 65535;
@@ -7156,42 +7165,54 @@ static void gabedit_xyplot_realize (GtkWidget *widget)
   white.blue = 65535;
   gdk_colormap_alloc_color (colormap, &white, FALSE, TRUE);
 
-
-  gtk_widget_modify_bg (widget, GTK_STATE_NORMAL, &white);
-  gtk_widget_modify_fg (widget, GTK_STATE_NORMAL, &black);
+  /* Use GTK3 override_background_color/override_color instead of modify_bg/fg */
+  GdkRGBA white_rgba, black_rgba;
+  gdk_color_to_gdk_rgba(&white, &white_rgba);
+  gdk_color_to_gdk_rgba(&black, &black_rgba);
+  gtk_widget_override_background_color(widget, GTK_STATE_FLAG_NORMAL, &white_rgba);
+  gtk_widget_override_color(widget, GTK_STATE_FLAG_NORMAL, &black_rgba);
     
   gc_values.foreground=white;
   gc_values.line_style=GDK_LINE_SOLID;
   gc_values.line_width=1;
   gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-  xyplot->back_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+  xyplot->back_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
 
   gc_values.foreground=black;
   gc_values.line_style=GDK_LINE_SOLID;
   gc_values.line_width=2;
   gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-  xyplot->fore_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+  xyplot->fore_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
   
   gc_values.foreground=black;
-  xyplot->hmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
-  xyplot->vmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+  xyplot->hmajor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+  xyplot->vmajor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
   
   gc_values.foreground=black;
   gc_values.line_style=GDK_LINE_ON_OFF_DASH;
   gc_values.line_width=1;
   gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-  xyplot->hminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
-  xyplot->vminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+  xyplot->hminor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+  xyplot->vminor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
 
-  xyplot->data_gc=gdk_gc_new (widget->window);
+  xyplot->data_gc=gdk_gc_new (window);
 
   gc_values.foreground=black;
   gc_values.line_style=GDK_LINE_SOLID;
   gc_values.line_width=2;
   gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-  xyplot->lines_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+  xyplot->lines_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
 
-  xyplot->font_size =  xyplot_get_font_size (widget, widget->style->font_desc);
+  /* Get font description from widget style context instead of deprecated widget->style */
+  PangoFontDescription *font_desc = NULL;
+  GtkStyleContext *style_context = gtk_widget_get_style_context(widget);
+  gtk_style_context_get(style_context, GTK_STATE_FLAG_NORMAL, GTK_STYLE_PROPERTY_FONT, &font_desc, NULL);
+  if(font_desc) {
+    xyplot->font_size = xyplot_get_font_size (widget, font_desc);
+    pango_font_description_free(font_desc);
+  } else {
+    xyplot->font_size = 10; /* default font size */
+  }
 
   /* Create the initial legends*/
   xyplot->v_legends_str = NULL;
@@ -7208,19 +7229,25 @@ static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor,
 	GdkGCValues gc_values;
 	GdkGCValuesMask gc_values_mask;
 	GdkColormap *colormap;
+	GdkWindow *window;
 		 
 	g_return_if_fail (widget != NULL);
 	g_return_if_fail (GABEDIT_IS_XYPLOT (widget));
 
 	xyplot = GABEDIT_XYPLOT (widget);
+	window = gtk_widget_get_window(widget);
 
-	colormap=gdk_drawable_get_colormap(widget->window); 
+	colormap=gdk_drawable_get_colormap(window); 
 
 	gdk_colormap_alloc_color (colormap, backColor, FALSE, TRUE);
 	gdk_colormap_alloc_color (colormap, foreColor, FALSE, TRUE);
 
-	gtk_widget_modify_bg (widget, GTK_STATE_NORMAL, backColor);
-	gtk_widget_modify_fg (widget, GTK_STATE_NORMAL, foreColor);
+	/* Use GTK3 override functions instead of deprecated modify_bg/fg */
+	GdkRGBA back_rgba, fore_rgba;
+	gdk_color_to_gdk_rgba(backColor, &back_rgba);
+	gdk_color_to_gdk_rgba(foreColor, &fore_rgba);
+	gtk_widget_override_background_color(widget, GTK_STATE_FLAG_NORMAL, &back_rgba);
+	gtk_widget_override_color(widget, GTK_STATE_FLAG_NORMAL, &fore_rgba);
 
 	if (xyplot->back_gc && G_IS_OBJECT(xyplot->back_gc))
 	{
@@ -7268,27 +7295,27 @@ static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor,
 	gc_values.line_style=GDK_LINE_SOLID;
 	gc_values.line_width=line_width;
 	gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-	xyplot->back_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+	xyplot->back_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
 
 	gc_values.foreground=*foreColor;
 	gc_values.line_style=GDK_LINE_SOLID;
 	gc_values.line_width=line_width;
 	gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-	xyplot->fore_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+	xyplot->fore_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
 	
 	gc_values.foreground=*foreColor;
-	xyplot->hmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
-	xyplot->vmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+	xyplot->hmajor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+	xyplot->vmajor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
 	
 	gc_values.foreground=*foreColor;
 	gc_values.line_style=GDK_LINE_ON_OFF_DASH;
 	if(line_width/2>0) gc_values.line_width=line_width/2;
 	else gc_values.line_width=line_width;
 	gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-	xyplot->hminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
-	xyplot->vminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+	xyplot->hminor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+	xyplot->vminor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
 
-	xyplot->data_gc=gdk_gc_new (widget->window);
+	xyplot->data_gc=gdk_gc_new (window);
 
 	if (xyplot->nObjectsLine<1)
 	{
@@ -7301,7 +7328,7 @@ static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor,
 		gc_values.line_style=GDK_LINE_SOLID;
 		gc_values.line_width=line_width;
 		gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-		xyplot->lines_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+		xyplot->lines_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
 	}
 
 	xyplot_build_legends(xyplot);
@@ -7542,13 +7569,15 @@ static void draw_points(GtkWidget *widget, GabeditXYPlot *xyplot, XYPlotData* da
 	gint i;
 	gint x, y;
 	GdkRectangle rect;
+	GtkAllocation allocation;
 
 	if ( data->point_size<1 ) return;
 
+	gtk_widget_get_allocation(widget, &allocation);
 	rect.x=0;
 	rect.y=0;
-	rect.width=widget->allocation.width;
-	rect.height=widget->allocation.height;
+	rect.width=allocation.width;
+	rect.height=allocation.height;
 	gdk_gc_set_rgb_fg_color (xyplot->data_gc, &data->point_color);
 
 	for (i=0; i<data->size; i++)
@@ -7752,10 +7781,15 @@ static void draw_distance_line(GtkWidget *widget, GabeditXYPlot *xyplot)
 	gchar end[100] = " ";
 	gdouble x1,y1,x2,y2;
 	gint x,y;
+	GtkAllocation allocation;
+	GdkWindow *window;
 
 
 	if (!xyplot->mouse_distance_enabled || xyplot->mouse_button != xyplot->mouse_distance_button) return;
 
+	gtk_widget_get_allocation(widget, &allocation);
+	window = gtk_widget_get_window(widget);
+	
 	x=xyplot->distance_rect.x;
 	y=xyplot->distance_rect.y;
 	if(gabedit_xyplot_get_point(GABEDIT_XYPLOT(xyplot), x, y, &x1, &y1))
@@ -7766,26 +7800,23 @@ static void draw_distance_line(GtkWidget *widget, GabeditXYPlot *xyplot)
 		sprintf(end,"(%f ; %f)",x2,y2);
 	rect.x=0; 
 	rect.y=0; 
-	rect.width=widget->allocation.width;
-	rect.height=widget->allocation.height;
+	rect.width=allocation.width;
+	rect.height=allocation.height;
 	playout=gtk_widget_create_pango_layout (widget, begin);
 	if(!playout) return;
-	gtk_paint_layout (widget->style, widget->window, 
-			GTK_STATE_NORMAL, FALSE, 
-			&rect, widget, NULL, 
+	/* Use gdk_draw_layout instead of deprecated gtk_paint_layout */
+	gdk_draw_layout(window, xyplot->fore_gc,
 			xyplot->distance_rect.x,
 			xyplot->distance_rect.y,
 			playout);
 	if (playout) g_object_unref(G_OBJECT(playout));
 	playout=gtk_widget_create_pango_layout (widget, end);
-	gtk_paint_layout (widget->style, widget->window, 
-			GTK_STATE_NORMAL, FALSE, 
-			&rect, widget, NULL, 
+	gdk_draw_layout(window, xyplot->fore_gc,
 			xyplot->distance_rect.x+xyplot->distance_rect.width,
 			xyplot->distance_rect.y+xyplot->distance_rect.height,
 			playout);
 	if (playout) g_object_unref(G_OBJECT(playout));
-	gdk_draw_line(widget->window,
+	gdk_draw_line(window,
 			xyplot->fore_gc,
 			xyplot->distance_rect.x,
 			xyplot->distance_rect.y,
@@ -7823,11 +7854,13 @@ static void draw_hmajor_ticks_and_xlegends(GtkWidget *widget, GabeditXYPlot *xyp
 {
 	gint i;
 	GdkRectangle rect;
+	GtkAllocation allocation;
 
+	gtk_widget_get_allocation(widget, &allocation);
 	rect.x=0;
 	rect.y=0;
-	rect.width=widget->allocation.width;
-	rect.height=widget->allocation.height;
+	rect.width=allocation.width;
+	rect.height=allocation.height;
   
 	if (xyplot->hmajor_ticks>1)
 	for (i=0; i < xyplot->hmajor_ticks; i++)
@@ -7951,11 +7984,13 @@ static void draw_vmajor_ticks_and_ylegends(GtkWidget *widget, GabeditXYPlot *xyp
 {
 	gint i;
 	GdkRectangle rect;
+	GtkAllocation allocation;
 
+	gtk_widget_get_allocation(widget, &allocation);
 	rect.x=0;
 	rect.y=0;
-	rect.width=widget->allocation.width;
-	rect.height=widget->allocation.height;
+	rect.width=allocation.width;
+	rect.height=allocation.height;
 
 	if (xyplot->vmajor_ticks>1)
 	for (i=0; i < xyplot->vmajor_ticks; i++)
@@ -8142,6 +8177,9 @@ static void draw_objects_image(GtkWidget *widget, GabeditXYPlot *xyplot)
 /****************************************************************************************/
 static void clean_borders(GtkWidget *widget, GabeditXYPlot *xyplot)
 {
+	GtkAllocation allocation;
+	gtk_widget_get_allocation(widget, &allocation);
+	
 	if(xyplot->cairo_export)
 	{
 		xyplot_cairo_rectangle(xyplot, xyplot->cairo_export,  widget, xyplot->back_gc, 
@@ -8149,27 +8187,27 @@ static void clean_borders(GtkWidget *widget, GabeditXYPlot *xyplot)
 			0,
 			0,
 			xyplot->plotting_rect.x,
-			widget->allocation.height);
+			allocation.height);
 		xyplot_cairo_rectangle(xyplot, xyplot->cairo_export,  widget, xyplot->back_gc, 
 			TRUE,
 			0,
 			0,
-			widget->allocation.width,
+			allocation.width,
 			xyplot->plotting_rect.y
 			);
 		xyplot_cairo_rectangle(xyplot, xyplot->cairo_export,  widget, xyplot->back_gc, 
 			TRUE,
 			0,
 			xyplot->plotting_rect.y+xyplot->plotting_rect.height,
-			widget->allocation.width,
-			widget->allocation.height-xyplot->plotting_rect.y-xyplot->plotting_rect.height
+			allocation.width,
+			allocation.height-xyplot->plotting_rect.y-xyplot->plotting_rect.height
 			);
 		xyplot_cairo_rectangle(xyplot, xyplot->cairo_export,  widget, xyplot->back_gc, 
 			TRUE,
 			xyplot->plotting_rect.x+xyplot->plotting_rect.width,
 			0,
-			widget->allocation.width-xyplot->plotting_rect.x-xyplot->plotting_rect.width,
-			widget->allocation.height
+			allocation.width-xyplot->plotting_rect.x-xyplot->plotting_rect.width,
+			allocation.height
 			);
 	}
 }
@@ -8227,23 +8265,23 @@ static void draw_borders(GtkWidget *widget, GabeditXYPlot *xyplot)
 static void draw_background(GtkWidget *widget, GabeditXYPlot *xyplot)
 {
 	GdkRectangle rect;
+	GtkAllocation allocation;
+	GdkWindow *window;
 
+	gtk_widget_get_allocation(widget, &allocation);
 	rect.x=0;
 	rect.y=0;
-	rect.width=widget->allocation.width;
-	rect.height=widget->allocation.height;
+	rect.width=allocation.width;
+	rect.height=allocation.height;
 
-	gtk_paint_flat_box (widget->style,
-			widget->window,
-			GTK_STATE_NORMAL,
-			GTK_SHADOW_NONE,
-			&rect,
-			widget,
-			NULL, 
-			0, 
-			0, 
-			-1,
-			-1);
+	/* Use Cairo to draw background instead of deprecated gtk_paint_flat_box */
+	window = gtk_widget_get_window(widget);
+	if(window) {
+		cairo_t *cr = gdk_cairo_create(window);
+		GtkStyleContext *context = gtk_widget_get_style_context(widget);
+		gtk_render_background(context, cr, 0, 0, allocation.width, allocation.height);
+		cairo_destroy(cr);
+	}
   
 	/* Filling the plotting area*/
 	xyplot_cairo_rectangle(xyplot, xyplot->cairo_area,  widget, xyplot->back_gc, 
@@ -8738,13 +8776,16 @@ static gint gabedit_xyplot_button_press (GtkWidget *widget, GdkEventButton *even
 	if(playout)
 	{
 		GdkRectangle rect;
+		GtkAllocation allocation;
+		GdkWindow *window;
+		gtk_widget_get_allocation(widget, &allocation);
+		window = gtk_widget_get_window(widget);
 		rect.x=0; 
 		rect.y=0; 
-		rect.width=widget->allocation.width;
-		rect.height=widget->allocation.height;
-		gtk_paint_layout (widget->style, widget->window, 
-			GTK_STATE_NORMAL, FALSE, 
-			&rect, widget, NULL, 
+		rect.width=allocation.width;
+		rect.height=allocation.height;
+		/* Use gdk_draw_layout instead of deprecated gtk_paint_layout */
+		gdk_draw_layout(window, xyplot->fore_gc,
 			event->x,
 			event->y,
 			playout);
@@ -9061,6 +9102,8 @@ static gint gabedit_xyplot_motion_notify (GtkWidget *widget, GdkEventMotion *eve
   {
 	gint i = xyplot->selected_objects_image_num;
 	XYPlotObjectImage* objectImage = &GABEDIT_XYPLOT(xyplot)->objectsImage[i];
+	GtkAllocation allocation;
+	gtk_widget_get_allocation(widget, &allocation);
 	if(xyplot->object_begin_point.x>0)
 	{
 		gint dx,dy;
@@ -9068,9 +9111,9 @@ static gint gabedit_xyplot_motion_notify (GtkWidget *widget, GdkEventMotion *eve
 		y -= xyplot->object_begin_point.y;
 		if(x<0) x = 0;
 		if(y<0) y = 0;
-		dx = x+objectImage->widthi-widget->allocation.width;
+		dx = x+objectImage->widthi-allocation.width;
 		if(dx>0) x-=dx;
-		dy = y+objectImage->heighti-widget->allocation.height;
+		dy = y+objectImage->heighti-allocation.height;
 		if(dy>0) y-=dy;
 		set_object_image(xyplot, objectImage,  x, y, objectImage->widthi, objectImage->heighti);
 	}
@@ -9081,8 +9124,8 @@ static gint gabedit_xyplot_motion_notify (GtkWidget *widget, GdkEventMotion *eve
 		y += xyplot->object_end_point.y;
 		if(x<objectImage->xi) x = objectImage->xi+20;
 		if(y<objectImage->yi) y = objectImage->yi+20;
-		if(x>widget->allocation.width) x = widget->allocation.width;
-		if(y>widget->allocation.height) y = widget->allocation.height;
+		if(x>allocation.width) x = allocation.width;
+		if(y>allocation.height) y = allocation.height;
 		w = (gint)(x-objectImage->xi);
 		h = (gint)(y-objectImage->yi);
 		set_object_image(xyplot, objectImage,  objectImage->xi, objectImage->yi, w, h);
@@ -9397,10 +9440,12 @@ gboolean gabedit_xyplot_get_point_control(GabeditXYPlot *xyplot, gint x, gint y,
 	gint hcos;
 	gint hsin;
 	GtkWidget *widget = GTK_WIDGET(xyplot);
+	GtkAllocation allocation;
 
 
 	g_return_val_if_fail (xyplot != NULL, FALSE);
 	g_return_val_if_fail (GABEDIT_IS_XYPLOT (xyplot),FALSE);
+	gtk_widget_get_allocation(widget, &allocation);
 	if(width>0) alpha -= atan((gdouble)height/width);
 	l = sqrt(width*width+height*height);
 	lcos = (gint)(l*cos(alpha));
@@ -9424,13 +9469,13 @@ gboolean gabedit_xyplot_get_point_control(GabeditXYPlot *xyplot, gint x, gint y,
 	if(ixmax<lcos) ixmax = lcos;
 	if(ixmax<wcos) ixmax = wcos;
 	if(ixmax<hcos) ixmax = hcos;
-	ixmax = widget->allocation.width-ixmax;
+	ixmax = allocation.width-ixmax;
 
 	iymax = 0;
 	if(iymax<-lsin) iymax = -lsin;
 	if(iymax<-wsin) iymax = -wsin;
 	if(iymax<-hsin) iymax = -hsin;
-	iymax = widget->allocation.height-iymax;
+	iymax = allocation.height-iymax;
 
 	/* printf("iminmax = %d %d %d %d\n",ixmin,ixmax,iymin,iymax);*/
 	a[0] = ixmin;
@@ -10048,9 +10093,15 @@ static void writeTransparentPNG(GabeditXYPlot *xyplot, gchar *fileName)
 	int height;
 	GError *error = NULL;
 	GdkPixbuf  *pixbuf = NULL;
-	width =  widget->allocation.width;
-	height = widget->allocation.height;
-	pixbuf = gdk_pixbuf_get_from_drawable(NULL, widget->window, NULL, 0, 0, 0, 0, width, height);
+	GtkAllocation allocation;
+	GdkWindow *window;
+	
+	gtk_widget_get_allocation(widget, &allocation);
+	window = gtk_widget_get_window(widget);
+	width =  allocation.width;
+	height = allocation.height;
+	/* Use gdk_pixbuf_get_from_window instead of deprecated gdk_pixbuf_get_from_drawable */
+	pixbuf = gdk_pixbuf_get_from_window(window, 0, 0, width, height);
 	if(pixbuf)
 	{
 		GdkPixbuf  *pixbufNew = NULL;
@@ -10094,9 +10145,15 @@ void gabedit_xyplot_save_image(GabeditXYPlot *xyplot, gchar *fileName, gchar* ty
 		return;
 	}
 
-	width =  widget->allocation.width;
-	height = widget->allocation.height;
-	pixbuf = gdk_pixbuf_get_from_drawable(NULL, widget->window, NULL, 0, 0, 0, 0, width, height);
+	GtkAllocation allocation;
+	GdkWindow *window;
+	
+	gtk_widget_get_allocation(widget, &allocation);
+	window = gtk_widget_get_window(widget);
+	width =  allocation.width;
+	height = allocation.height;
+	/* Use gdk_pixbuf_get_from_window instead of deprecated gdk_pixbuf_get_from_drawable */
+	pixbuf = gdk_pixbuf_get_from_window(window, 0, 0, width, height);
 	if(pixbuf)
 	{
 		if(!fileName)
@@ -10131,11 +10188,13 @@ static void xyplot_calculate_sizes (GabeditXYPlot *xyplot)
   gint right = 10;
   gint top = 5;
   gint bottom = 5;
+  GtkAllocation allocation;
   
   g_return_if_fail (xyplot != NULL);
   g_return_if_fail (GABEDIT_IS_XYPLOT (xyplot));
   
   widget = GTK_WIDGET(xyplot);
+  gtk_widget_get_allocation(widget, &allocation);
   left += 0.75*((gdouble)xyplot->y_legends_width);
   right += 0.75*((gdouble)xyplot->y_legends_width);
   top += 0.5*((gdouble)xyplot->x_legends_height);
@@ -10145,18 +10204,18 @@ static void xyplot_calculate_sizes (GabeditXYPlot *xyplot)
   if(xyplot->show_top_legends) top = xyplot->length_ticks*2+1.5*((gdouble)xyplot->x_legends_height)+1.0*((gdouble)xyplot->h_label_height);
   if(xyplot->show_bottom_legends) bottom = xyplot->length_ticks*2+1.5*((gdouble)xyplot->x_legends_height)+1.0*((gdouble)xyplot->h_label_height);
 
-  left += (gint)(xyplot->left_margins/100.0*widget->allocation.width);
-  right += (gint)(xyplot->right_margins/100.0*widget->allocation.width);
-  top += (gint)(xyplot->top_margins/100.0*widget->allocation.height);
-  bottom += (gint)(xyplot->bottom_margins/100.0*widget->allocation.height);
+  left += (gint)(xyplot->left_margins/100.0*allocation.width);
+  right += (gint)(xyplot->right_margins/100.0*allocation.width);
+  top += (gint)(xyplot->top_margins/100.0*allocation.height);
+  bottom += (gint)(xyplot->bottom_margins/100.0*allocation.height);
 
   xyplot->plotting_rect.x = left;
   xyplot->plotting_rect.y = top;
   
  
-  xyplot->plotting_rect.width=widget->allocation.width  -left - right;
+  xyplot->plotting_rect.width=allocation.width  -left - right;
 
-  xyplot->plotting_rect.height=widget->allocation.height  - top - bottom ;
+  xyplot->plotting_rect.height=allocation.height  - top - bottom ;
   
   if (xyplot->hmajor_ticks>1){
     xyplot->d_hmajor=((gdouble)xyplot->plotting_rect.width)/((gdouble)xyplot->hmajor_ticks-1.0);
