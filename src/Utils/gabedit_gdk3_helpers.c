@@ -92,8 +92,5 @@ void draw_pango_layout_with_cairo(cairo_t *cr, PangoLayout *layout, int x, int y
 	/* Draw the layout */
 	pango_cairo_show_layout(cr, layout);
 	
-	/* Stroke the path */
-	cairo_stroke(cr);
-	
 	cairo_restore(cr);
 }
