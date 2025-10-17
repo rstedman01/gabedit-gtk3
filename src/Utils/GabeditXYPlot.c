@@ -70,18 +70,19 @@ static void xyplot_cairo_rectangle(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget
 
 static void gabedit_xyplot_class_init (GabeditXYPlotClass    *klass);
 static void gabedit_xyplot_init (GabeditXYPlot         *xyplot);
-static void gabedit_xyplot_destroy (GtkObject        *object);
+static void gabedit_xyplot_destroy (GObject        *object);
 static void gabedit_xyplot_realize (GtkWidget        *widget);
-static void gabedit_xyplot_size_request (GtkWidget      *widget, GtkRequisition *requisition);
+static void gabedit_xyplot_get_preferred_width (GtkWidget *widget, gint *minimal_width, gint *natural_width);
+static void gabedit_xyplot_get_preferred_height (GtkWidget *widget, gint *minimal_height, gint *natural_height);
 static void gabedit_xyplot_size_allocate (GtkWidget     *widget, GtkAllocation *allocation);
-static gint gabedit_xyplot_expose (GtkWidget        *widget, GdkEventExpose   *event);
+static gboolean gabedit_xyplot_draw (GtkWidget *widget, cairo_t *cr);
 static gint gabedit_xyplot_button_press (GtkWidget   *widget, GdkEventButton   *event);
 static gint gabedit_xyplot_button_release (GtkWidget *widget, GdkEventButton   *event);
 static gint gabedit_xyplot_motion_notify (GtkWidget  *widget, GdkEventMotion   *event);
 static gint gabedit_xyplot_key_press(GtkWidget* widget, GdkEventKey *event);
 static gint gabedit_xyplot_key_release(GtkWidget* widget, GdkEventKey *event);
 static gint gabedit_xyplot_scroll (GtkWidget        *widget, GdkEventScroll   *event);
-static void gabedit_xyplot_style_set (GtkWidget      *widget, GtkStyle       *previous_style);
+static void gabedit_xyplot_style_updated (GtkWidget      *widget);
 static gint gabedit_xyplot_grab(GtkWidget* widget, GdkEventCrossing* event);
 static void xyplot_enable_grids (GabeditXYPlot *xyplot, GabeditXYPlotGrid grid, gboolean enable);
 static void xyplot_show_left_legends (GabeditXYPlot *xyplot, gboolean show);
@@ -6779,25 +6780,26 @@ GType gabedit_xyplot_get_type ()
 /****************************************************************************************/
 static void gabedit_xyplot_class_init (GabeditXYPlotClass *class)
 {
-  GtkObjectClass *object_class;
+  GObjectClass *object_class;
   GtkWidgetClass *widget_class;
 
-  object_class = (GtkObjectClass*) class;
+  object_class = G_OBJECT_CLASS(class);
   widget_class = (GtkWidgetClass*) class;
 
   parent_class = g_type_class_peek_parent (class);
 
-  object_class->destroy = gabedit_xyplot_destroy;
+  object_class->finalize = (GObjectFinalizeFunc)gabedit_xyplot_destroy;
 
   widget_class->realize = gabedit_xyplot_realize;
-  widget_class->expose_event = gabedit_xyplot_expose;
-  widget_class->size_request = gabedit_xyplot_size_request;
+  widget_class->draw = gabedit_xyplot_draw;
+  widget_class->get_preferred_width = gabedit_xyplot_get_preferred_width;
+  widget_class->get_preferred_height = gabedit_xyplot_get_preferred_height;
   widget_class->size_allocate = gabedit_xyplot_size_allocate;
   widget_class->button_press_event = gabedit_xyplot_button_press;
   widget_class->button_release_event = gabedit_xyplot_button_release;
   widget_class->motion_notify_event = gabedit_xyplot_motion_notify;
   widget_class->scroll_event = gabedit_xyplot_scroll;
-  widget_class->style_set = gabedit_xyplot_style_set;
+  widget_class->style_updated = gabedit_xyplot_style_updated;
   widget_class->key_press_event = gabedit_xyplot_key_press;
   widget_class->key_release_event = gabedit_xyplot_key_release;
   widget_class->enter_notify_event = gabedit_xyplot_grab;
@@ -6901,7 +6903,7 @@ GtkWidget* gabedit_xyplot_new ()
   return GTK_WIDGET (xyplot);
 }
 /****************************************************************************************/
-static void gabedit_xyplot_destroy (GtkObject *object)
+static void gabedit_xyplot_destroy (GObject *object)
 {
   GabeditXYPlot *xyplot;
 
@@ -6995,10 +6997,8 @@ static void gabedit_xyplot_destroy (GtkObject *object)
     	xyplot->objectsText = NULL;
   }
 
-  if (GTK_OBJECT_CLASS (parent_class)->destroy)
-    (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
-  
-  gtk_object_destroy (object);
+  if (G_OBJECT_CLASS(parent_class)->finalize)
+    (* G_OBJECT_CLASS(parent_class)->finalize) (object);
 }
 /****************************************************************************************/
 static gint xyplot_get_font_size (GtkWidget* widget, PangoFontDescription* font_desc)
@@ -7045,20 +7045,20 @@ static gint gabedit_xyplot_key_press(GtkWidget* widget, GdkEventKey *event)
 
 	xyplot = GABEDIT_XYPLOT (widget);
 
-	if((event->keyval == GDK_Shift_L || event->keyval == GDK_Shift_R) )
+	if((event->keyval == GDK_KEY_Shift_L || event->keyval == GDK_KEY_Shift_R) )
   		xyplot->shift_key_pressed = TRUE;
-	if((event->keyval == GDK_Control_L || event->keyval == GDK_Control_R) )
+	if((event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R) )
   		xyplot->control_key_pressed = TRUE;
-	if((event->keyval == GDK_Alt_L || event->keyval == GDK_Alt_L) )
+	if((event->keyval == GDK_KEY_Alt_L || event->keyval == GDK_KEY_Alt_L) )
   		xyplot->control_key_pressed = TRUE;
 
-	if((event->keyval == GDK_c || event->keyval == GDK_C) )
+	if((event->keyval == GDK_KEY_c || event->keyval == GDK_KEY_C) )
 	{
 		if(xyplot->control_key_pressed) 
 			copyImageToClipBoard(widget);
 
 	}
-	if((event->keyval == GDK_v || event->keyval == GDK_V) )
+	if((event->keyval == GDK_KEY_v || event->keyval == GDK_KEY_V) )
 	{
 		if(xyplot->control_key_pressed) 
 		{
@@ -7067,13 +7067,13 @@ static gint gabedit_xyplot_key_press(GtkWidget* widget, GdkEventKey *event)
 		}
 	}
 
-	if((event->keyval == GDK_t || event->keyval == GDK_T) )
+	if((event->keyval == GDK_KEY_t || event->keyval == GDK_KEY_T) )
   		xyplot->t_key_pressed = TRUE;
-	if((event->keyval == GDK_l || event->keyval == GDK_L) )
+	if((event->keyval == GDK_KEY_l || event->keyval == GDK_KEY_L) )
   		xyplot->l_key_pressed = TRUE;
-	if((event->keyval == GDK_i || event->keyval == GDK_I) )
+	if((event->keyval == GDK_KEY_i || event->keyval == GDK_KEY_I) )
   		xyplot->i_key_pressed = TRUE;
-	if((event->keyval == GDK_r || event->keyval == GDK_R) )
+	if((event->keyval == GDK_KEY_r || event->keyval == GDK_KEY_R) )
   		xyplot->r_key_pressed = TRUE;
 	return TRUE;
 }
@@ -7087,17 +7087,17 @@ static gint gabedit_xyplot_key_release(GtkWidget* widget, GdkEventKey *event)
 
 	xyplot = GABEDIT_XYPLOT (widget);
 
-	if((event->keyval == GDK_Shift_L || event->keyval == GDK_Shift_R) )
+	if((event->keyval == GDK_KEY_Shift_L || event->keyval == GDK_KEY_Shift_R) )
   		xyplot->shift_key_pressed = FALSE;
-	if((event->keyval == GDK_Control_L || event->keyval == GDK_Control_R) )
+	if((event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R) )
   		xyplot->control_key_pressed = FALSE;
-	if((event->keyval == GDK_Alt_L || event->keyval == GDK_Alt_R) )
+	if((event->keyval == GDK_KEY_Alt_L || event->keyval == GDK_Alt_R) )
   		xyplot->control_key_pressed = FALSE;
-	if((event->keyval == GDK_T || event->keyval == GDK_t) )
+	if((event->keyval == GDK_KEY_T || event->keyval == GDK_KEY_t) )
   		xyplot->t_key_pressed = FALSE;
-	if((event->keyval == GDK_l || event->keyval == GDK_L) )
+	if((event->keyval == GDK_KEY_l || event->keyval == GDK_KEY_L) )
   		xyplot->l_key_pressed = FALSE;
-	if((event->keyval == GDK_r || event->keyval == GDK_R) )
+	if((event->keyval == GDK_KEY_r || event->keyval == GDK_KEY_R) )
   		xyplot->r_key_pressed = FALSE;
 	return TRUE;
 }
@@ -7520,6 +7520,28 @@ static void gabedit_xyplot_size_request (GtkWidget *widget, GtkRequisition *requ
   requisition->height = XYPLOT_DEFAULT_SIZE;
 }
 /****************************************************************************************/
+static void gabedit_xyplot_get_preferred_width (GtkWidget *widget,
+                                                  gint      *minimal_width,
+                                                  gint      *natural_width)
+{
+  GtkRequisition requisition;
+  
+  gabedit_xyplot_size_request (widget, &requisition);
+  
+  *minimal_width = *natural_width = requisition.width;
+}
+/****************************************************************************************/
+static void gabedit_xyplot_get_preferred_height (GtkWidget *widget,
+                                                   gint      *minimal_height,
+                                                   gint      *natural_height)
+{
+  GtkRequisition requisition;
+  
+  gabedit_xyplot_size_request (widget, &requisition);
+  
+  *minimal_height = *natural_height = requisition.height;
+}
+/****************************************************************************************/
 static void gabedit_xyplot_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
 {
   GabeditXYPlot *xyplot;
@@ -7528,10 +7550,10 @@ static void gabedit_xyplot_size_allocate (GtkWidget *widget, GtkAllocation *allo
   g_return_if_fail (GABEDIT_IS_XYPLOT (widget));
   g_return_if_fail (allocation != NULL);
 
-  widget->allocation = *allocation;
+  gtk_widget_set_allocation(widget, allocation);
   xyplot=GABEDIT_XYPLOT(widget);  
 
-  if (GTK_WIDGET_REALIZED (widget))
+  if (gtk_widget_get_realized(widget))
     gdk_window_move_resize (gtk_widget_get_window(widget),
 			allocation->x, 
 			allocation->y,
@@ -8305,7 +8327,7 @@ static void set_old_area(GtkWidget *widget, GabeditXYPlot *xyplot)
 	if (xyplot->old_area!=NULL) g_object_unref(G_OBJECT(xyplot->old_area));
 	xyplot->old_area=NULL;
 
-	if (GTK_WIDGET_REALIZED(widget) &&  gtk_widget_get_window(widget)) 
+	if (gtk_widget_get_realized(widget) &&  gtk_widget_get_window(widget)) 
 	{
 		xyplot->old_area=gdk_pixmap_copy(gtk_widget_get_window(widget));
 	}
@@ -8467,6 +8489,34 @@ static gint gabedit_xyplot_expose (GtkWidget *widget, GdkEventExpose *event)
 	draw_objects_text(widget, xyplot);
 
 	return 0;
+}
+/****************************************************************************************/
+/* GTK3 draw handler - wraps the expose function for now */
+static gboolean gabedit_xyplot_draw (GtkWidget *widget, cairo_t *cr)
+{
+	GdkEventExpose event;
+	
+	/* Create a fake expose event for compatibility */
+	event.type = GDK_EXPOSE;
+	event.window = gtk_widget_get_window(widget);
+	event.send_event = FALSE;
+	event.area.x = 0;
+	event.area.y = 0;
+	event.area.width = gtk_widget_get_allocated_width(widget);
+	event.area.height = gtk_widget_get_allocated_height(widget);
+	event.region = NULL;
+	event.count = 0;
+	
+	return gabedit_xyplot_expose(widget, &event) == 0 ? FALSE : TRUE;
+}
+/****************************************************************************************/
+/* Stub for style_updated - replaces style_set */
+static void gabedit_xyplot_style_updated (GtkWidget *widget)
+{
+	/* Call parent class first */
+	GTK_WIDGET_CLASS(parent_class)->style_updated(widget);
+	
+	/* TODO: Update any style-dependent properties */
 }
 /****************************************************************************************/
 static gint get_distance_M_AB(GabeditXYPlot *xyplot,gint xM, gint yM, gint ixA, gint iyA, gint ixB, gint iyB)
@@ -10178,7 +10228,7 @@ static void xyplot_calculate_sizes (GabeditXYPlot *xyplot)
   if (xyplot->cairo_widget!=NULL) cairo_destroy (xyplot->cairo_widget);
   if (xyplot->cairo_area!=NULL) cairo_destroy (xyplot->cairo_area);
 
-  if (GTK_WIDGET_REALIZED(widget)) 
+  if (gtk_widget_get_realized(widget)) 
   {
     xyplot->plotting_area=gdk_pixmap_new(gtk_widget_get_window(widget), xyplot->plotting_rect.width, xyplot->plotting_rect.height, -1);
     xyplot->cairo_area = gdk_cairo_create (xyplot->plotting_area);
