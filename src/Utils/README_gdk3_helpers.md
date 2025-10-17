@@ -87,10 +87,10 @@ The `draw_pango_layout_with_cairo()` function implements a specific coordinate t
 This approach ensures that when both centering and rotation are enabled, the center of the rotated text appears at the specified (x, y) coordinate.
 
 The centering calculation uses trigonometry to pre-compute the offset:
-- For X centering: `x -= (w/2)*cos(angle) - (h/2)*sin(angle)`
-- For Y centering: `y -= (w/2)*sin(angle) + (h/2)*cos(angle)`
+- For X centering: `x -= (w/2/PANGO_SCALE)*cos(angle) - (h/2/PANGO_SCALE)*sin(angle)`
+- For Y centering: `y -= (w/2/PANGO_SCALE)*sin(angle) + (h/2/PANGO_SCALE)*cos(angle)`
 
-Where `w` and `h` are the layout width and height in pixels.
+Where `w` and `h` are the layout width and height in Pango units, which are then converted to pixels by dividing by PANGO_SCALE.
 
 ## Compatibility
 
