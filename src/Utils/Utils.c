@@ -3904,7 +3904,10 @@ void gabedit_save_image(GtkWidget* widget, gchar *fileName, gchar* type)
 
 	width =  gtk_widget_get_allocated_width(widget);
 	height = gtk_widget_get_allocated_height(widget);
-	pixbuf = gdk_pixbuf_get_from_window(widget, 0, 0, width, height);
+	GdkWindow *win = gtk_widget_get_window(widget);
+	if (win) pixbuf = gdk_pixbuf_get_from_window(win, 0, 0, width, height);
+	else pixbuf = NULL;
+	
 	if(pixbuf)
 	{
 		if(!fileName)

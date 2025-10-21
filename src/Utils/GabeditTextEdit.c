@@ -299,7 +299,7 @@ void gabedit_text_cut_clipboard (GtkWidget* text)
 	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text));
 	GtkClipboard *clipboard = gtk_widget_get_clipboard (GTK_WIDGET (text), GDK_SELECTION_CLIPBOARD);
   
-	gtk_text_buffer_cut_clipboard (buffer, clipboard, GTK_TEXT_VIEW(text)->editable);
+	gtk_text_buffer_cut_clipboard (buffer, clipboard, TRUE);
 	gtk_text_view_scroll_mark_onscreen (GTK_TEXT_VIEW(text), gtk_text_buffer_get_mark (buffer, "insert"));
 }
 /************************************************************************************************************/
@@ -322,6 +322,6 @@ void gabedit_text_paste_clipboard (GtkWidget* text)
 	buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text));
 	GtkClipboard *clipboard = gtk_widget_get_clipboard (GTK_WIDGET (text), GDK_SELECTION_CLIPBOARD);
   
-	gtk_text_buffer_paste_clipboard (buffer, clipboard, NULL, GTK_TEXT_VIEW(text)->editable);
+	gtk_text_buffer_paste_clipboard (buffer, clipboard, NULL, TRUE);
 	gtk_text_view_scroll_mark_onscreen (GTK_TEXT_VIEW(text), gtk_text_buffer_get_mark (buffer, "insert"));
 }
