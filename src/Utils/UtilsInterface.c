@@ -1998,7 +1998,8 @@ static void show_about_new()
 	gchar *GABEDIT_VERSION =
 		g_strdup_printf("%d.%d.%d",MAJOR_VERSION,MINOR_VERSION,MICRO_VERSION);
 	
-	gtk_about_dialog_set_url_hook(show_homepage, NULL, NULL);
+	/* GTK3 Migration: gtk_about_dialog_set_url_hook is deprecated and no longer needed
+	 * URLs are now automatically clickable in GTK3 */
 
 	gtk_show_about_dialog (
 		NULL,
@@ -2112,7 +2113,8 @@ void  gtk_combo_box_entry_set_popdown_strings(GtkWidget* comboBoxEntry, GList *l
 	l = list;
 	while(l)
 	{
-		gtk_combo_box_append_text (GTK_COMBO_BOX (comboBoxEntry), (gchar*)(l->data));
+		/* GTK3 Migration: Use gtk_combo_box_text_append_text for GtkComboBoxText */
+		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (comboBoxEntry), (gchar*)(l->data));
 		l = l->next;
 	}
   	gtk_combo_box_set_active(GTK_COMBO_BOX (comboBoxEntry), 0);
@@ -2123,7 +2125,7 @@ GtkWidget*  create_combo_box_entry(gchar **tlist,gint nlist, gboolean edit,gint 
 	GtkWidget* combo;
 	gint i;
 	combo = gtk_combo_box_text_new_with_entry();
-	for (i=0;i<nlist;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), tlist[i]);
+	for (i=0;i<nlist;i++) gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), tlist[i]);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),elen,-1);
  	gtk_editable_set_editable((GtkEditable*) (gtk_bin_get_child(GTK_BIN(combo))),edit);
 	if(nlist>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
@@ -2149,7 +2151,7 @@ GtkWidget *create_combo_box_entry_liste(GtkWidget* Window,GtkWidget* hbox,gchar 
   gtk_widget_show (combo);
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 2);
 
-  for (i=0;i<n;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), liste[i]);
+  for (i=0;i<n;i++) gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), liste[i]);
   if(n>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
 
   combo_entry = (gtk_bin_get_child(GTK_BIN(combo)));
@@ -2178,7 +2180,7 @@ GtkWidget*  create_label_combo_in_table(GtkWidget *table,gchar *tlabel,gchar **t
 	gtk_table_attach(GTK_TABLE(table), label, 1, 2, iligne, iligne+1, (GtkAttachOptions)(GTK_FILL|GTK_EXPAND), (GtkAttachOptions)(GTK_FILL|GTK_SHRINK), 1, 1);
 
         combo = gtk_combo_box_text_new_with_entry();
-        for (i=0;i<nlist;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), tlist[i]);
+        for (i=0;i<nlist;i++) gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), tlist[i]);
         if(nlist>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
         gtk_widget_set_size_request(GTK_WIDGET(combo),elen,-1);
 	gtk_table_attach(GTK_TABLE(table), combo, 2, 3, iligne, iligne+1, (GtkAttachOptions)(GTK_FILL|GTK_EXPAND), (GtkAttachOptions)(GTK_FILL|GTK_SHRINK), 1, 1);
@@ -2442,7 +2444,7 @@ GtkWidget*  create_label_combo(GtkWidget *hbox,gchar *tlabel,gchar **tlist,gint 
 	gtk_box_pack_start(GTK_BOX(hbox), label,FALSE,FALSE,2);
 
 	combo = gtk_combo_box_text_new_with_entry();
-	for (i=0;i<nlist;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), tlist[i]);
+	for (i=0;i<nlist;i++) gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), tlist[i]);
 	if(nlist>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),elen,-1);
 	gtk_box_pack_start(GTK_BOX(hbox), combo,FALSE,FALSE,2);
