@@ -53,13 +53,13 @@ typedef enum
 
 /****************************************************************************************/
 static gint get_distance_M_AB(GabeditXYPlot* xyplot, gint xM, gint yM, gint ixA, gint iyA, gint ixB, gint iyB);
-static void gabedit_xyplot_cairo_string(cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle);
+static void gabedit_xyplot_cairo_string(cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, const gchar* str, gboolean centerX, gboolean centerY, gdouble angle);
 static void gabedit_xyplot_cairo_line(cairo_t* cr, GtkWidget* widget, GdkGC* gc, gdouble x1, gdouble y1, gdouble x2, gdouble y2);
 static void gabedit_xyplot_cairo_lines(cairo_t* cr, GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size);
 static void gabedit_xyplot_cairo_rectangle(cairo_t* cr, GtkWidget* widget, GdkGC* gc, gboolean fill, gdouble x1, gdouble y1, gdouble w, gdouble h);
 /* static void gabedit_xyplot_cairo_cercle(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gint xc,gint yc,gint rayon);*/
 
-static void xyplot_cairo_string(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle);
+static void xyplot_cairo_string(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, const gchar* str, gboolean centerX, gboolean centerY, gdouble angle);
 static void xyplot_cairo_line(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gdouble x1, gdouble y1, gdouble x2, gdouble y2);
 static void xyplot_cairo_lines(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size);
 static void xyplot_cairo_rectangle(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gboolean fill, gdouble x1, gdouble y1, gdouble w, gdouble h);
@@ -110,7 +110,7 @@ static void xyplot_calculate_legends_sizes(GabeditXYPlot* xyplot);
 static void xyplot_build_legends(GabeditXYPlot* xyplot);
 static void xyplot_free_legends(GabeditXYPlot* xyplot);
 static void xyplot_build_points_data(GabeditXYPlot* xyplot, XYPlotData* data);
-static PangoLayout* get_pango_str(GabeditXYPlot* xyplot, G_CONST_RETURN gchar* txt);
+static PangoLayout* get_pango_str(GabeditXYPlot* xyplot, const gchar* txt);
 static void xyplot_curve_noconv(GabeditXYPlot* xyplot, gint numberOfPoints, gdouble* X, gdouble* Y, GdkColor* color);
 
 /****************************************************************************************/
@@ -204,7 +204,7 @@ static void gabedit_xyplot_cairo_image(cairo_t* cr, GtkWidget* widget, gint x, g
 	cairo_restore(cr);
 }
 /**********************************************************************************/
-static void gabedit_xyplot_cairo_string(cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle)
+static void gabedit_xyplot_cairo_string(cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, const gchar* str, gboolean centerX, gboolean centerY, gdouble angle)
 {
 	PangoLayout* pango = get_pango_str(GABEDIT_XYPLOT(widget), str);
 	gabedit_xyplot_cairo_layout(cr, x, y, pango, centerX, centerY, angle);
@@ -390,7 +390,7 @@ static void xyplot_cairo_image(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* wi
 		gabedit_xyplot_cairo_image(xyplot->cairo_export, widget, x, y, w, h, image);
 }
 /****************************************************************************************/
-static void xyplot_cairo_string(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY, gdouble angle)
+static void xyplot_cairo_string(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, const gchar* str, gboolean centerX, gboolean centerY, gdouble angle)
 {
 
 	gabedit_xyplot_cairo_string(cr, widget, gc, x, y, str, centerX, centerY, angle);
@@ -723,7 +723,7 @@ static void set_object_text_pixels(GabeditXYPlot* xyplot, XYPlotObjectText* obje
 	objectText->yi += xyplot->plotting_rect.y;
 }
 /****************************************************************************************/
-static PangoLayout* get_pango_str(GabeditXYPlot* xyplot, G_CONST_RETURN gchar* txt)
+static PangoLayout* get_pango_str(GabeditXYPlot* xyplot, const gchar* txt)
 {
 	gchar* str = NULL;
 	GdkGCValues values;
@@ -755,7 +755,7 @@ static void set_object_text_pango(GabeditXYPlot* xyplot, XYPlotObjectText* objec
 	objectText->pango = get_pango_str(xyplot, objectText->str);
 }
 /****************************************************************************************/
-static void set_object_text(GabeditXYPlot* xyplot, XYPlotObjectText* objectText, gdouble x, gdouble y, gdouble angle, G_CONST_RETURN gchar* str)
+static void set_object_text(GabeditXYPlot* xyplot, XYPlotObjectText* objectText, gdouble x, gdouble y, gdouble angle, const gchar* str)
 {
 	if (!str) return;
 	objectText->x = x;
@@ -766,7 +766,7 @@ static void set_object_text(GabeditXYPlot* xyplot, XYPlotObjectText* objectText,
 	set_object_text_pixels(xyplot, objectText);
 }
 /****************************************************************************************/
-static void add_object_text(GabeditXYPlot* xyplot, gdouble x, gdouble y, gdouble angle, G_CONST_RETURN gchar* str)
+static void add_object_text(GabeditXYPlot* xyplot, gdouble x, gdouble y, gdouble angle, const gchar* str)
 {
 	gint i;
 	if (!str) return;
@@ -861,8 +861,8 @@ static void delete_objects_text(GtkWidget* widget)
 /********************************************************************************/
 static void activate_entry_object_text(GtkWidget* entry, gpointer user_data)
 {
-	G_CONST_RETURN gchar* tlabel;
-	G_CONST_RETURN gchar* tangle;
+	const gchar* tlabel;
+	const gchar* tangle;
 	GtkWidget* xyplot = NULL;
 	GtkWidget* window = NULL;
 	GtkWidget* entry_label = NULL;
@@ -1522,7 +1522,7 @@ static cairo_surface_t* get_image_from_clipboard()
 	return surface;
 }
 /**************************************************************************************************/
-static XYPlotObjectImage get_object_image(GabeditXYPlot* xyplot, gint xi, gint yi, G_CONST_RETURN gchar* fileName)
+static XYPlotObjectImage get_object_image(GabeditXYPlot* xyplot, gint xi, gint yi, const gchar* fileName)
 {
 	gint w;
 	gint h;
@@ -1566,7 +1566,7 @@ static XYPlotObjectImage get_object_image(GabeditXYPlot* xyplot, gint xi, gint y
 	return objectImage;
 }
 /****************************************************************************************/
-static void add_object_image(GabeditXYPlot* xyplot, gint xi, gint yi, gint width, gint height, G_CONST_RETURN gchar* fileName)
+static void add_object_image(GabeditXYPlot* xyplot, gint xi, gint yi, gint width, gint height, const gchar* fileName)
 {
 	XYPlotObjectImage objectImage = get_object_image(xyplot, xi, yi, fileName);
 	if (!objectImage.image) return;
@@ -1661,7 +1661,7 @@ static gboolean read_image_png(GtkFileChooser* filesel, gint response_id)
 /********************************************************************************/
 static void activate_entry_object_image(GtkWidget* entry, gpointer user_data)
 {
-	G_CONST_RETURN gchar* t;
+	const gchar* t;
 	GtkWidget* xyplot = NULL;
 	GtkWidget* window = NULL;
 	XYPlotObjectImage* objectImage = NULL;
@@ -2593,7 +2593,7 @@ static void build_fourier(GtkWidget* buttonDFT, gpointer user_data)
 		gdouble scale = 1.0;
 		gdouble temperature = 1.0;
 		gdouble xmax = 6000.0;
-		G_CONST_RETURN gchar* t;
+		const gchar* t;
 		GtkWidget* xyplot = GTK_WIDGET(user_data);
 		XYPlotData* data = g_object_get_data(G_OBJECT(xyplot), "CurentData");
 		GtkWidget* parentWindow = (GtkWidget*)g_object_get_data(G_OBJECT(buttonDFT), "ParentWindow");
@@ -3102,7 +3102,7 @@ static void set_digits_dialog(GtkWidget* xyplot)
 /********************************************************************************/
 static void activate_entry_xlabel(GtkWidget* entry, gpointer user_data)
 {
-	G_CONST_RETURN gchar* t;
+	const gchar* t;
 	GtkWidget* xyplot = NULL;
 
 
@@ -3115,7 +3115,7 @@ static void activate_entry_xlabel(GtkWidget* entry, gpointer user_data)
 /********************************************************************************/
 static void activate_entry_ylabel(GtkWidget* entry, gpointer user_data)
 {
-	G_CONST_RETURN gchar* t;
+	const gchar* t;
 	GtkWidget* xyplot = NULL;
 
 
@@ -3201,7 +3201,7 @@ static void set_labels_dialog(GtkWidget* xyplot)
 /********************************************************************************/
 static void activate_entry_xmin(GtkWidget* entry, gpointer user_data)
 {
-	G_CONST_RETURN gchar* t;
+	const gchar* t;
 	gdouble a;
 	GtkWidget* xyplot = NULL;
 	gdouble xmin;
@@ -3229,7 +3229,7 @@ static void activate_entry_xmin(GtkWidget* entry, gpointer user_data)
 /********************************************************************************/
 static void activate_entry_xmax(GtkWidget* entry, gpointer user_data)
 {
-	G_CONST_RETURN gchar* t;
+	const gchar* t;
 	gdouble a;
 	GtkWidget* xyplot = NULL;
 	gdouble xmin;
@@ -3257,7 +3257,7 @@ static void activate_entry_xmax(GtkWidget* entry, gpointer user_data)
 /********************************************************************************/
 static void activate_entry_ymin(GtkWidget* entry, gpointer user_data)
 {
-	G_CONST_RETURN gchar* t;
+	const gchar* t;
 	gdouble a;
 	GtkWidget* xyplot = NULL;
 	gdouble xmin;
@@ -3285,7 +3285,7 @@ static void activate_entry_ymin(GtkWidget* entry, gpointer user_data)
 /********************************************************************************/
 static void activate_entry_ymax(GtkWidget* entry, gpointer user_data)
 {
-	G_CONST_RETURN gchar* t;
+	const gchar* t;
 	gdouble a;
 	GtkWidget* xyplot = NULL;
 	gdouble xmin;
@@ -3943,7 +3943,7 @@ static void activate_entry_xmincut(GtkWidget* entry, gpointer user_data)
 		XYPlotData* data = g_object_get_data(G_OBJECT(entry), "CurentData");
 		gint loop;
 		gdouble a;
-		G_CONST_RETURN gchar* t;
+		const gchar* t;
 		g_return_if_fail(GABEDIT_IS_XYPLOT(xyplot));
 		t = gtk_entry_get_text(GTK_ENTRY(entry));
 		if (!t) return;
@@ -3983,7 +3983,7 @@ static void activate_entry_xmaxcut(GtkWidget* entry, gpointer user_data)
 		XYPlotData* data = g_object_get_data(G_OBJECT(entry), "CurentData");
 		gint loop;
 		gdouble a;
-		G_CONST_RETURN gchar* t;
+		const gchar* t;
 		g_return_if_fail(GABEDIT_IS_XYPLOT(xyplot));
 		t = gtk_entry_get_text(GTK_ENTRY(entry));
 		if (!t) return;
@@ -4067,7 +4067,7 @@ static void activate_entry_x_linear(GtkWidget* entry, gpointer user_data)
 		GtkWidget* xyplot = GTK_WIDGET(user_data);
 		XYPlotData* data = g_object_get_data(G_OBJECT(entry), "CurentData");
 		gint N;
-		G_CONST_RETURN gchar* t;
+		const gchar* t;
 		g_return_if_fail(GABEDIT_IS_XYPLOT(xyplot));
 		t = gtk_entry_get_text(GTK_ENTRY(entry));
 		if (!t) return;
@@ -5435,7 +5435,7 @@ static GtkWidget* add_line_types_combo(GtkWidget* hbox)
 	return combobox;
 }
 /****************************************************************************************/
-static gdouble evaluate_formula(G_CONST_RETURN gchar* t)
+static gdouble evaluate_formula(const gchar* t)
 {
 	gdouble a = 1.0;
 	gchar* pos = strstr(t, "/");
@@ -5457,7 +5457,7 @@ static void activate_entry_scale_x(GtkEntry* entry, gpointer user_data)
 		XYPlotData* data = g_object_get_data(G_OBJECT(entry), "CurentData");
 		gint loop;
 		gdouble a;
-		G_CONST_RETURN gchar* t;
+		const gchar* t;
 
 		g_return_if_fail(GABEDIT_IS_XYPLOT(xyplot));
 
@@ -5490,7 +5490,7 @@ static void activate_entry_scale_y(GtkEntry* entry, gpointer user_data)
 		XYPlotData* data = g_object_get_data(G_OBJECT(entry), "CurentData");
 		gint loop;
 		gdouble a;
-		G_CONST_RETURN gchar* t;
+		const gchar* t;
 		g_return_if_fail(GABEDIT_IS_XYPLOT(xyplot));
 		t = gtk_entry_get_text(GTK_ENTRY(entry));
 		if (!t) return;
@@ -5521,7 +5521,7 @@ static void activate_entry_shift_x(GtkEntry* entry, gpointer user_data)
 		XYPlotData* data = g_object_get_data(G_OBJECT(entry), "CurentData");
 		gint loop;
 		gdouble a;
-		G_CONST_RETURN gchar* t;
+		const gchar* t;
 		g_return_if_fail(GABEDIT_IS_XYPLOT(xyplot));
 		t = gtk_entry_get_text(GTK_ENTRY(entry));
 		if (!t) return;
@@ -5552,7 +5552,7 @@ static void activate_entry_shift_y(GtkEntry* entry, gpointer user_data)
 		XYPlotData* data = g_object_get_data(G_OBJECT(entry), "CurentData");
 		gint loop;
 		gdouble a;
-		G_CONST_RETURN gchar* t;
+		const gchar* t;
 		g_return_if_fail(GABEDIT_IS_XYPLOT(xyplot));
 		t = gtk_entry_get_text(GTK_ENTRY(entry));
 		if (!t) return;
@@ -5580,7 +5580,7 @@ static void build_filter(GtkWidget* buttonFilter, gpointer user_data)
 	if (user_data && G_IS_OBJECT(user_data))
 	{
 		gdouble sigma = 10.0;
-		G_CONST_RETURN gchar* t;
+		const gchar* t;
 		GtkWidget* xyplot = GTK_WIDGET(user_data);
 		XYPlotData* data = g_object_get_data(G_OBJECT(xyplot), "CurentData");
 		GtkWidget* parentWindow = (GtkWidget*)g_object_get_data(G_OBJECT(buttonFilter), "ParentWindow");
@@ -6736,7 +6736,8 @@ static void add_widget(GtkUIManager* merge, GtkWidget* widget, GtkContainer* con
 		toolbar = GTK_TOOLBAR(widget);
 		gtk_toolbar_set_show_arrow(toolbar, TRUE);
 		gtk_toolbar_set_style(toolbar, GTK_TOOLBAR_ICONS);
-		gtk_toolbar_set_orientation(toolbar, GTK_ORIENTATION_VERTICAL);
+		/* GTK3: Use gtk_orientable_set_orientation instead of gtk_toolbar_set_orientation */
+		gtk_orientable_set_orientation(GTK_ORIENTABLE(toolbar), GTK_ORIENTATION_VERTICAL);
 	}
 	gtk_widget_show(widget);
 	gtk_container_add(GTK_CONTAINER(handlebox), widget);
@@ -6923,17 +6924,38 @@ static void gabedit_xyplot_dispose(GObject* gobject)
 	}
 }
 /****************************************************************************************/
+/* GTK3: Properly implement draw signal handler using provided cairo context */
+/* GTK4 TODO: Consider using GtkSnapshot API for more efficient rendering */
 static gboolean gabedit_xyplot_draw(GtkWidget *widget, cairo_t *cr)
 {
-	#ifdef HAVE_OLD_EXPOSE
-		return gabedit_xyplot_expose(widget, NULL);
-	#else
-		GtkStyleContext *context = gtk_widget_get_style(widget);
-		GdkRGBA bg;
-		cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
-		cairo_paint(cr);
+	GabeditXYPlot* xyplot;
+	
+	g_return_val_if_fail(widget != NULL, FALSE);
+	g_return_val_if_fail(GABEDIT_IS_XYPLOT(widget), FALSE);
+	g_return_val_if_fail(cr != NULL, FALSE);
+	
+	xyplot = GABEDIT_XYPLOT(widget);
+	
+	/* Handle special drawing modes for interactive overlays */
+	if (xyplot->mouse_zoom_enabled && xyplot->mouse_button == xyplot->mouse_zoom_button)
+	{
+		if (xyplot->old_area_pixbuf) {
+			gdk_cairo_set_source_pixbuf(cr, xyplot->old_area_pixbuf, 0, 0);
+			cairo_paint(cr);
+		}
+		/* Draw zoom rectangle would need to be adapted to use cr */
 		return TRUE;
-	#endif
+	}
+	
+	/* For normal drawing, render the plotting area surface */
+	if (xyplot->plotting_area_surface) {
+		cairo_set_source_surface(cr, xyplot->plotting_area_surface,
+			xyplot->plotting_rect.x,
+			xyplot->plotting_rect.y);
+		cairo_paint(cr);
+	}
+	
+	return FALSE;
 }
 /****************************************************************************************/
 static void gabedit_xyplot_get_preferred_width(GtkWidget *widget, gint *minimum_width, gint *natural_width)
@@ -7062,6 +7084,9 @@ static gint gabedit_xyplot_key_release(GtkWidget* widget, GdkEventKey* event)
 	return TRUE;
 }
 /****************************************************************************************/
+/* GTK3: Widget realization - creates GdkWindow and initializes GCs */
+/* GTK4 TODO: GdkWindow is removed in GTK4. Use GdkSurface and modern rendering. */
+/* GTK4 TODO: GdkGC is already deprecated - this code uses compatibility layer. */
 static void gabedit_xyplot_realize(GtkWidget* widget)
 {
 	GabeditXYPlot* xyplot;
@@ -7108,12 +7133,13 @@ static void gabedit_xyplot_realize(GtkWidget* widget)
 
 	gdk_window_set_user_data(win, widget);
 
-	colormap = gdk_drawable_get_colormap(win);
-
+	/* GTK3: No colormap allocation needed - GdkColor already has RGB values */
 	black.red = 0;
 	black.green = 0;
 	black.blue = 0;
-	gdk_colormap_alloc_color(colormap, &black, FALSE, TRUE);
+	white.red = 65535;
+	white.green = 65535;
+	white.blue = 65535;
 
 	GdkRGBA white_rgba, black_rgba;
 	gdk_color_to_gdk_rgba(&white, &white_rgba);
@@ -7178,7 +7204,6 @@ static void reset_theme(GtkWidget* widget, gint line_width, GdkColor* foreColor,
 	GabeditXYPlot* xyplot;
 	GdkGCValues gc_values;
 	GdkGCValuesMask gc_values_mask;
-	GdkColormap* colormap;
 	GdkWindow *win = NULL;
 
 	g_return_if_fail(widget != NULL);
@@ -7187,13 +7212,13 @@ static void reset_theme(GtkWidget* widget, gint line_width, GdkColor* foreColor,
 	xyplot = GABEDIT_XYPLOT(widget);
 	win = gabedit_widget_get_window(widget);
 
-	colormap = gdk_drawable_get_colormap(win);
-
-	gdk_colormap_alloc_color(colormap, backColor, FALSE, TRUE);
-	gdk_colormap_alloc_color(colormap, foreColor, FALSE, TRUE);
-
-	gtk_widget_modify_bg(widget, GTK_STATE_NORMAL, backColor);
-	gtk_widget_modify_fg(widget, GTK_STATE_NORMAL, foreColor);
+	/* GTK3: No colormap allocation needed */
+	GdkRGBA back_rgba, fore_rgba;
+	gdk_color_to_gdk_rgba(backColor, &back_rgba);
+	gdk_color_to_gdk_rgba(foreColor, &fore_rgba);
+	
+	gtk_widget_override_background_color(widget, GTK_STATE_FLAG_NORMAL, &back_rgba);
+	gtk_widget_override_color(widget, GTK_STATE_FLAG_NORMAL, &fore_rgba);
 
 	if (xyplot->back_gc && G_IS_OBJECT(xyplot->back_gc))
 	{
@@ -7331,12 +7356,11 @@ static void theme_line_width_changed_value(GtkSpinButton* spinbutton, gpointer u
 		xyplot = GABEDIT_XYPLOT(widget);
 		win = gabedit_widget_get_window(widget);
 		if (!win) g_warning("No GdkWindow for widget"); return;
-		colormap = gdk_drawable_get_colormap(win);
-
+		/* GTK3: Get colors directly from GC values */
 		gdk_gc_get_values(xyplot->back_gc, &gc_values);
-		gdk_colormap_query_color(colormap, gc_values.foreground.pixel, &backColor);
+		backColor = gc_values.foreground;
 		gdk_gc_get_values(xyplot->fore_gc, &gc_values);
-		gdk_colormap_query_color(colormap, gc_values.foreground.pixel, &foreColor);
+		foreColor = gc_values.foreground;
 		line_width = gc_values.line_width;
 		line_width = gtk_spin_button_get_value(spinbutton);
 		reset_theme(widget, line_width, &foreColor, &backColor);
@@ -7359,10 +7383,10 @@ static void theme_back_color_changed_value(GtkColorButton* colorbutton, gpointer
 		g_return_if_fail(GABEDIT_IS_XYPLOT(widget));
 		xyplot = GABEDIT_XYPLOT(widget);
 		win = gabedit_widget_get_window(widget);
-		colormap = gdk_drawable_get_colormap(win);
+		/* GTK3: Get colors directly from GC values */
 		gtk_color_button_get_color(colorbutton, &backColor);
 		gdk_gc_get_values(xyplot->fore_gc, &gc_values);
-		gdk_colormap_query_color(colormap, gc_values.foreground.pixel, &foreColor);
+		foreColor = gc_values.foreground;
 		line_width = gc_values.line_width;
 		reset_theme(widget, line_width, &foreColor, &backColor);
 
@@ -7385,10 +7409,10 @@ static void theme_fore_color_changed_value(GtkColorButton* colorbutton, gpointer
 		g_return_if_fail(GABEDIT_IS_XYPLOT(widget));
 		xyplot = GABEDIT_XYPLOT(widget);
 		win = gabedit_widget_get_window(widget);
-		colormap = gdk_drawable_get_colormap(win);
+		/* GTK3: Get colors directly from GC values */
 		gtk_color_button_get_color(colorbutton, &foreColor);
 		gdk_gc_get_values(xyplot->back_gc, &gc_values);
-		gdk_colormap_query_color(colormap, gc_values.foreground.pixel, &backColor);
+		backColor = gc_values.foreground;
 		line_width = gc_values.line_width;
 		reset_theme(widget, line_width, &foreColor, &backColor);
 	}
@@ -7418,13 +7442,12 @@ static void set_theme_dialog(GtkWidget* widget)
 	g_return_if_fail(GABEDIT_IS_XYPLOT(widget));
 	xyplot = GABEDIT_XYPLOT(widget);
 	win = gabedit_widget_get_window(widget);
-	colormap = gdk_drawable_get_colormap(win);
-
+	/* GTK3: Get colors directly from GC values */
 	gdk_gc_get_values(xyplot->back_gc, &gc_values);
-	gdk_colormap_query_color(colormap, gc_values.foreground.pixel, &backColor);
+	backColor = gc_values.foreground;
 
 	gdk_gc_get_values(xyplot->fore_gc, &gc_values);
-	gdk_colormap_query_color(colormap, gc_values.foreground.pixel, &foreColor);
+	foreColor = gc_values.foreground;
 	line_width = gc_values.line_width;
 
 	gtk_window_set_title(GTK_WINDOW(window), _("Set theme"));
@@ -7511,7 +7534,7 @@ static void gabedit_xyplot_size_allocate(GtkWidget* widget, GtkAllocation* alloc
 	if (win) gdk_window_move_resize(win, allocation->x, allocation->y, allocation->width, allocation->height);
 	xyplot = GABEDIT_XYPLOT(widget);
 
-	if (GTK_WIDGET_REALIZED(widget))
+	if (gtk_widget_get_realized(widget))
 		gdk_window_move_resize(gtk_widget_get_window(widget),
 			allocation->x,
 			allocation->y,
@@ -8274,47 +8297,63 @@ static void draw_data(GtkWidget* widget, GabeditXYPlot* xyplot)
 
 }
 /****************************************************************************************/
-static GdkPixmap* gdk_pixmap_copy(GdkPixmap* pixmap)
+/* GTK3: Capture window content to pixbuf instead of pixmap copy */
+/* GTK4 TODO: Use GdkTexture and GtkSnapshot for more efficient texture handling */
+static GdkPixbuf* capture_window_to_pixbuf(GdkWindow* window)
 {
-	GdkPixmap* pixmap_out;
-	GdkGC* gc;
-	gint width, height, depth;
-
-	g_return_val_if_fail(pixmap != NULL, NULL);
-
-	gdk_drawable_get_size(pixmap, &width, &height);
-	depth = gdk_drawable_get_depth(pixmap);
-	pixmap_out = gdk_pixmap_new(NULL, width, height, depth);
-	gc = gdk_gc_new(pixmap);
-	gdk_draw_drawable(pixmap_out, gc, pixmap, 0, 0, 0, 0, width, height);
-	g_object_unref(gc);
-	return pixmap_out;
+	gint width, height;
+	GdkPixbuf* pixbuf;
+	
+	g_return_val_if_fail(window != NULL, NULL);
+	
+	width = gdk_window_get_width(window);
+	height = gdk_window_get_height(window);
+	
+	pixbuf = gdk_pixbuf_get_from_window(window, 0, 0, width, height);
+	
+	return pixbuf;
 }
 /****************************************************************************************/
 static void set_old_area(GtkWidget* widget, GabeditXYPlot* xyplot)
 {
 
-	if (xyplot->old_area != NULL) g_object_unref(G_OBJECT(xyplot->old_area));
-	xyplot->old_area = NULL;
+	if (xyplot->old_area_pixbuf != NULL) g_object_unref(G_OBJECT(xyplot->old_area_pixbuf));
+	xyplot->old_area_pixbuf = NULL;
 
-	if (GTK_WIDGET_REALIZED(widget) && gtk_widget_get_window(widget))
+	if (gtk_widget_get_realized(widget) && gtk_widget_get_window(widget))
 	{
-		xyplot->old_area = gdk_pixmap_copy(gtk_widget_get_window(widget));
+		xyplot->old_area_pixbuf = capture_window_to_pixbuf(gtk_widget_get_window(widget));
 	}
 }
 /****************************************************************************************/
+/* GTK3: Draw the plotting area surface to the widget window */
 static void draw_plotting_area(GtkWidget* widget, GabeditXYPlot* xyplot)
 {
-	gdk_draw_drawable(gtk_widget_get_window(widget),
-		xyplot->back_gc,
-		xyplot->plotting_area,
-		0,
-		0,
+	GdkWindow* win = gtk_widget_get_window(widget);
+	if (!win || !xyplot->plotting_area_surface) return;
+	
+	cairo_t* cr = gdk_cairo_create(win);
+	cairo_set_source_surface(cr, xyplot->plotting_area_surface,
 		xyplot->plotting_rect.x,
-		xyplot->plotting_rect.y,
-		xyplot->plotting_rect.width,
-		xyplot->plotting_rect.height);
-
+		xyplot->plotting_rect.y);
+	cairo_paint(cr);
+	cairo_destroy(cr);
+}
+/****************************************************************************************/
+/* GTK3: Helper to draw old_area pixbuf to window */
+static void draw_old_area(GtkWidget* widget, GabeditXYPlot* xyplot)
+{
+	GdkWindow* win = gtk_widget_get_window(widget);
+	if (!win || !xyplot->old_area_pixbuf) return;
+	
+	gint width = gdk_pixbuf_get_width(xyplot->old_area_pixbuf);
+	gint height = gdk_pixbuf_get_height(xyplot->old_area_pixbuf);
+	
+	cairo_t* cr = gdk_cairo_create(win);
+	gdk_cairo_set_source_pixbuf(cr, xyplot->old_area_pixbuf, 0, 0);
+	cairo_rectangle(cr, 0, 0, width, height);
+	cairo_fill(cr);
+	cairo_destroy(cr);
 }
 /****************************************************************************************/
 static gint gabedit_xyplot_expose(GtkWidget* widget, GdkEventExpose* event)
@@ -8330,91 +8369,31 @@ static gint gabedit_xyplot_expose(GtkWidget* widget, GdkEventExpose* event)
 
 	if (xyplot->mouse_zoom_enabled && xyplot->mouse_button == xyplot->mouse_zoom_button)
 	{
-		gint width;
-		gint height;
-		gdk_drawable_get_size(xyplot->old_area, &width, &height);
-		gdk_draw_drawable(gtk_widget_get_window(widget),
-			xyplot->back_gc,
-			xyplot->old_area,
-			0,
-			0,
-			0,
-			0,
-			width,
-			height
-		);
+		draw_old_area(widget, xyplot);
 		draw_zoom_rectangle(widget, xyplot);
 		return TRUE;
 	}
 	if (xyplot->mouse_distance_enabled && xyplot->mouse_button == xyplot->mouse_distance_button)
 	{
-		gint width;
-		gint height;
-		gdk_drawable_get_size(xyplot->old_area, &width, &height);
-		gdk_draw_drawable(gtk_widget_get_window(widget),
-			xyplot->back_gc,
-			xyplot->old_area,
-			0,
-			0,
-			0,
-			0,
-			width,
-			height
-		);
+		draw_old_area(widget, xyplot);
 		draw_distance_line(widget, xyplot);
 		return TRUE;
 	}
 	if (xyplot->selected_objects_text_num > -1)
 	{
-		gint width;
-		gint height;
-		gdk_drawable_get_size(xyplot->old_area, &width, &height);
-		gdk_draw_drawable(gtk_widget_get_window(widget),
-			xyplot->back_gc,
-			xyplot->old_area,
-			0,
-			0,
-			0,
-			0,
-			width,
-			height
-		);
+		draw_old_area(widget, xyplot);
 		draw_selected_objects_text_rectangle(widget, xyplot);
 		return TRUE;
 	}
 	if (xyplot->selected_objects_image_num > -1)
 	{
-		gint width;
-		gint height;
-		gdk_drawable_get_size(xyplot->old_area, &width, &height);
-		gdk_draw_drawable(gtk_widget_get_window(widget),
-			xyplot->back_gc,
-			xyplot->old_area,
-			0,
-			0,
-			0,
-			0,
-			width,
-			height
-		);
+		draw_old_area(widget, xyplot);
 		draw_selected_objects_image_rectangle(widget, xyplot);
 		return TRUE;
 	}
 	if (xyplot->object_begin_point.x > -1)
 	{
-		gint width;
-		gint height;
-		gdk_drawable_get_size(xyplot->old_area, &width, &height);
-		gdk_draw_drawable(gtk_widget_get_window(widget),
-			xyplot->back_gc,
-			xyplot->old_area,
-			0,
-			0,
-			0,
-			0,
-			width,
-			height
-		);
+		draw_old_area(widget, xyplot);
 		draw_object_line_gdk(widget, xyplot);
 		return TRUE;
 	}
@@ -9885,95 +9864,48 @@ void gabedit_xyplot_configure_mouse_autorange(GabeditXYPlot* xyplot, gboolean en
 	xyplot->mouse_autorange_button = button;
 }
 /********************************************************************************/
+/* GTK3: Get RGB image data using GdkPixbuf instead of GdkImage */
 static guchar* get_rgb_image(GtkWidget* drawable)
 {
-	gdouble fac = 255.0 / 65535.0;
-	GdkColormap* colormap;
 	GdkWindow *win = NULL;
 	gint height;
 	gint width;
-	gint32 pixel;
-	GdkImage* image = NULL;
-	GdkVisual* v;
-	gint8 component;
-	gint k = 0;
-	gint x;
-	gint y;
-	gint i;
 	guchar* rgbbuf = NULL;
+	GdkPixbuf* pixbuf = NULL;
 
 	win = gabedit_widget_get_window(drawable);
-	colormap = gdk_drawable_get_colormap(win);
+	if (!win) return NULL;
+	
 	height = gtk_widget_get_allocated_height(drawable);
 	width = gtk_widget_get_allocated_width(drawable);
+	
+	/* Capture window content to pixbuf */
+	pixbuf = gdk_pixbuf_get_from_window(win, 0, 0, width, height);
+	if (!pixbuf) return NULL;
+	
+	/* Convert pixbuf to RGB buffer */
+	gint n_channels = gdk_pixbuf_get_n_channels(pixbuf);
+	gint rowstride = gdk_pixbuf_get_rowstride(pixbuf);
+	guchar* pixels = gdk_pixbuf_get_pixels(pixbuf);
+	
 	rgbbuf = (guchar*)g_malloc(3 * width * height * sizeof(guchar));
-
-	if (!colormap) return NULL;
-	if (!rgbbuf) return NULL;
-
-	image = gdk_image_get(win, 0, 0, width, height);
-
-	v = gdk_colormap_get_visual(colormap);
-
-	switch (v->type)
-	{
-	case GDK_VISUAL_STATIC_GRAY:
-	case GDK_VISUAL_GRAYSCALE:
-	case GDK_VISUAL_STATIC_COLOR:
-	case GDK_VISUAL_PSEUDO_COLOR:
-		for (y = height - 1;y >= 0;y--)
-			for (x = 0;x < (gint)width;x++)
-			{
-				pixel = gdk_image_get_pixel(image, x, y);
-				rgbbuf[k] = (guchar)(colormap->colors[pixel].red * fac);
-				rgbbuf[k + 1] = (guchar)(colormap->colors[pixel].green * fac);
-				rgbbuf[k + 2] = (guchar)(colormap->colors[pixel].blue * fac);
-				k += 3;
-			}
-		break;
-
-	case GDK_VISUAL_TRUE_COLOR:
-		for (y = height - 1;y >= 0;y--)
-			for (x = 0;x < (gint)width;x++)
-			{
-				pixel = gdk_image_get_pixel(image, x, y);
-				component = 0;
-				for (i = 24; i < 32; i += v->red_prec)
-					component |= ((pixel & v->red_mask) << (32 - v->red_shift - v->red_prec)) >> i;
-				rgbbuf[k] = (guchar)(component);
-
-				component = 0;
-				for (i = 24; i < 32; i += v->green_prec)
-					component |= ((pixel & v->green_mask) << (32 - v->green_shift - v->green_prec)) >> i;
-				rgbbuf[k + 1] = (guchar)(component);
-				component = 0;
-				for (i = 24; i < 32; i += v->blue_prec)
-					component |= ((pixel & v->blue_mask) << (32 - v->blue_shift - v->blue_prec)) >> i;
-				rgbbuf[k + 2] = (guchar)(component);
-				k += 3;
-			}
-		break;
-	case GDK_VISUAL_DIRECT_COLOR:
-		for (y = height - 1;y >= 0;y--)
-			for (x = 0;x < (gint)width;x++)
-			{
-				pixel = gdk_image_get_pixel(image, x, y);
-				component = colormap->colors[((pixel & v->red_mask) << (32 - v->red_shift - v->red_prec)) >> 24].red;
-				rgbbuf[k] = (guchar)(component * fac);
-
-				component = colormap->colors[((pixel & v->green_mask) << (32 - v->green_shift - v->green_prec)) >> 24].green;
-				rgbbuf[k + 1] = (guchar)(component * fac);
-				component = colormap->colors[((pixel & v->blue_mask) << (32 - v->blue_shift - v->blue_prec)) >> 24].blue;
-				rgbbuf[k + 2] = (guchar)(component * fac);
-				k += 3;
-			}
-		break;
-	default:
-	{
-		g_free(rgbbuf);
+	if (!rgbbuf) {
+		g_object_unref(pixbuf);
 		return NULL;
 	}
+	
+	/* Copy RGB data, handling alpha channel if present */
+	gint k = 0;
+	for (gint y = 0; y < height; y++) {
+		guchar* row = pixels + y * rowstride;
+		for (gint x = 0; x < width; x++) {
+			rgbbuf[k++] = row[x * n_channels];     /* R */
+			rgbbuf[k++] = row[x * n_channels + 1]; /* G */
+			rgbbuf[k++] = row[x * n_channels + 2]; /* B */
+		}
 	}
+	
+	g_object_unref(pixbuf);
 	return rgbbuf;
 }
 /********************************************************************************/
@@ -10189,20 +10121,19 @@ static void xyplot_calculate_sizes(GabeditXYPlot* xyplot)
 		xyplot->d_vminor = ((gdouble)xyplot->d_vmajor) / ((gdouble)xyplot->vminor_ticks + 1.0);
 	}
 
-	/* Creating the plotting area (everytime the plotting area's size is changed, the size of the pismap
+	/* Creating the plotting area (everytime the plotting area's size is changed, the size of the surface
 	   must be changed too, so, a new one, with the right size is created*/
-	if (xyplot->plotting_area != NULL) g_object_unref(G_OBJECT(xyplot->plotting_area));
+	/* GTK3: Using cairo surfaces instead of GdkPixmap */
+	if (xyplot->plotting_area_surface != NULL) cairo_surface_destroy(xyplot->plotting_area_surface);
 	if (xyplot->cairo_widget != NULL) cairo_destroy(xyplot->cairo_widget);
 	if (xyplot->cairo_area != NULL) cairo_destroy(xyplot->cairo_area);
 
- 	if (GTK_WIDGET_REALIZED(widget)) 
+ 	if (gtk_widget_get_realized(widget)) 
   	{
 	    GdkWindow *win = gtk_widget_get_window(widget);
-	    xyplot->plotting_area=gdk_pixmap_new(win, xyplot->plotting_rect.width, xyplot->plotting_rect.height, -1);
-	    cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
+	    xyplot->plotting_area_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
 	        xyplot->plotting_rect.width, xyplot->plotting_rect.height);
-	    xyplot->cairo_area = cairo_create(surface);
-	    cairo_surface_destroy(surface);
+	    xyplot->cairo_area = cairo_create(xyplot->plotting_area_surface);
 	    xyplot->cairo_widget = gdk_cairo_create (win);
 	  }
 	reset_object_text_pixels(xyplot);
@@ -10600,7 +10531,7 @@ void gabedit_xyplot_set_font(GabeditXYPlot* xyplot, gchar* fontName)
 	}
 }
 /****************************************************************************************/
-void gabedit_xyplot_set_x_label(GabeditXYPlot* xyplot, G_CONST_RETURN gchar* str)
+void gabedit_xyplot_set_x_label(GabeditXYPlot* xyplot, const gchar* str)
 {
 	GtkWidget* widget = NULL;
 	g_return_if_fail(xyplot != NULL);
@@ -10623,7 +10554,7 @@ void gabedit_xyplot_set_x_label(GabeditXYPlot* xyplot, G_CONST_RETURN gchar* str
 	gtk_widget_queue_draw(GTK_WIDGET(xyplot));
 }
 /****************************************************************************************/
-void gabedit_xyplot_set_y_label(GabeditXYPlot* xyplot, G_CONST_RETURN gchar* str)
+void gabedit_xyplot_set_y_label(GabeditXYPlot* xyplot, const gchar* str)
 {
 	GtkWidget* widget = NULL;
 	g_return_if_fail(xyplot != NULL);
@@ -11250,7 +11181,7 @@ void gabedit_xyplot_set_last_data_point_size(GabeditXYPlot* xyplot, gdouble poin
 	gtk_widget_queue_draw(GTK_WIDGET(xyplot));
 }
 /****************************************************************************************/
-void gabedit_xyplot_add_object_text(GabeditXYPlot* xyplot, gdouble x, gdouble y, gdouble angle, G_CONST_RETURN gchar* str)
+void gabedit_xyplot_add_object_text(GabeditXYPlot* xyplot, gdouble x, gdouble y, gdouble angle, const gchar* str)
 {
 	add_object_text(GABEDIT_XYPLOT(xyplot), x, y, angle, str);
 }

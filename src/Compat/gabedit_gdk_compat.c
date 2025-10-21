@@ -86,7 +86,7 @@ void gdk_gc_get_values(GdkGC* gc, GdkGCValues* values)
     *values = gc->values;
 }
 
-void gdk_gc_set_foregroud(GdkGC* gc, const GdkColor* color)
+void gdk_gc_set_foreground(GdkGC* gc, const GdkColor* color)
 {
     if (!gc || !color) return;
     gc->values.foreground = *color;
@@ -94,7 +94,7 @@ void gdk_gc_set_foregroud(GdkGC* gc, const GdkColor* color)
 
 void gdk_gc_set_rgb_fg_color(GdkGC* gc, const GdkColor* color)
 {
-    gdk_gc_set_foregroud(gc, color);
+    gdk_gc_set_foreground(gc, color);
 }
 
 void gdk_gc_set_line_attributes(GdkGC* gc, gint line_width, gint line_style, gint cap_style, gint join_style)
