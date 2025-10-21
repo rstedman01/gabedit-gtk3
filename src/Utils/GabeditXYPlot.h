@@ -116,8 +116,9 @@ struct _GabeditXYPlot
   GtkWidget widget;
   gdouble xmin, xmax, ymin, ymax; 
   
-  GdkPixmap *plotting_area; 
-  GdkPixmap *old_area; 
+  /* GTK3: Replaced GdkPixmap with cairo surfaces and GdkPixbuf */
+  cairo_surface_t *plotting_area_surface; 
+  GdkPixbuf *old_area_pixbuf; 
   cairo_t *cairo_widget; 
   cairo_t *cairo_area; 
   cairo_t *cairo_export; 
@@ -289,8 +290,8 @@ void gabedit_xyplot_show_top_legends (GabeditXYPlot *xyplot, gboolean show);
 void gabedit_xyplot_show_bottom_legends (GabeditXYPlot *xyplot, gboolean show);
 void gabedit_xyplot_show_rectangle_legends (GabeditXYPlot *xyplot, gboolean show);
 void gabedit_xyplot_set_font (GabeditXYPlot *xyplot, gchar* fontName);
-void gabedit_xyplot_set_x_label (GabeditXYPlot *xyplot, G_CONST_RETURN gchar* str);
-void gabedit_xyplot_set_y_label (GabeditXYPlot *xyplot, G_CONST_RETURN gchar* str);
+void gabedit_xyplot_set_x_label (GabeditXYPlot *xyplot, const gchar* str);
+void gabedit_xyplot_set_y_label (GabeditXYPlot *xyplot, const gchar* str);
 GtkWidget* gabedit_xyplot_new_window(gchar* title, GtkWidget*parent);
 void gabedit_xyplot_help();
 void gabedit_xyplot_set_data_line_width (GabeditXYPlot *xyplot, gdouble line_width);
@@ -300,7 +301,7 @@ void gabedit_xyplot_set_data_point_color (GabeditXYPlot *xyplot, gdouble red, gd
 void gabedit_xyplot_add_new_data(GtkWidget* xyplot, gint numberOfPoints, gdouble* X,  gdouble* Y);
 void gabedit_xyplot_set_last_data_line_width (GabeditXYPlot *xyplot, gdouble line_width);
 void gabedit_xyplot_set_last_data_point_size (GabeditXYPlot *xyplot, gdouble point_size);
-void gabedit_xyplot_add_object_text (GabeditXYPlot *xyplot, gdouble x, gdouble y, gdouble angle, G_CONST_RETURN gchar* str);
+void gabedit_xyplot_add_object_text (GabeditXYPlot *xyplot, gdouble x, gdouble y, gdouble angle, const gchar* str);
 
 G_END_DECLS
 
