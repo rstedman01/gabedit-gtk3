@@ -31,6 +31,10 @@ DEALINGS IN THE SOFTWARE.
 #include <gtk/gtk.h>
 #include <glib.h>
 
+#ifndef M_PI 
+#define M_PI G_PI
+#endif
+
 
 /**********************************************************************************/
 #define SCALE(i) (i / 65535.)
@@ -51,8 +55,7 @@ void gabedit_cairo_string(cairo_t* cr, GtkWidget* parent, PangoFontDescription *
 
 	cairo_save (cr); /* stack-pen-size */
 	gdk_gc_get_values(gc, &values);
-   	colormap  = gdk_drawable_get_colormap(parent->window);
-        gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
+   	color = values.foreground;
 
 	switch(style)
 	{
@@ -97,7 +100,6 @@ void gabedit_cairo_triangle(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
 	GdkGCValues values;
 	GdkColor color;
 	double r,g,b;
-	GdkColormap *colormap;
 	double dashes[] = {5.0,  /* ink */
 		           5.0,  /* skip */
 			   10.0,  /* ink */
@@ -143,8 +145,7 @@ void gabedit_cairo_triangle(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
 		case GDK_LINE_DOUBLE_DASH : break;
 		default  : ndash = 0;
 	}
-   	colormap  = gdk_drawable_get_colormap(parent->window);
-        gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
+   	color = values.foreground;
 	if( ndash != 0) cairo_set_dash (cr, dashes, ndash, offset);
 
 	r = SCALE(color.red);
@@ -170,7 +171,6 @@ void gabedit_cairo_line(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, gdouble x1,g
 	GdkGCValues values;
 	GdkColor color;
 	double r,g,b;
-	GdkColormap *colormap;
 	double dashes[] = {5.0,  /* ink */
 		           5.0,  /* skip */
 			   10.0,  /* ink */
@@ -216,8 +216,7 @@ void gabedit_cairo_line(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, gdouble x1,g
 		case GDK_LINE_DOUBLE_DASH : break;
 		default  : ndash = 0;
 	}
-   	colormap  = gdk_drawable_get_colormap(parent->window);
-        gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
+   	color = values.foreground;
 	if( ndash != 0) cairo_set_dash (cr, dashes, ndash, offset);
 
 	r = SCALE(color.red);
@@ -238,7 +237,6 @@ void gabedit_cairo_arc(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
 	GdkGCValues values;
 	GdkColor color;
 	double r,g,b;
-	GdkColormap *colormap;
 	if(!cr) return;
 	if(!gc) return;
 	cairo_save (cr); /* stack-pen-size */
@@ -271,8 +269,7 @@ void gabedit_cairo_arc(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
 		default:
 			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
 	}
-   	colormap  = gdk_drawable_get_colormap(parent->window);
-        gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
+   	color = values.foreground;
 	r = SCALE(color.red);
 	g = SCALE(color.green);
 	b = SCALE(color.blue);
@@ -321,8 +318,7 @@ void gabedit_cairo_cercle(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
 		default:
 			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
 	}
-   	colormap  = gdk_drawable_get_colormap(parent->window);
-        gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
+   	color = values.foreground;
 	r = SCALE(color.red);
 	g = SCALE(color.green);
 	b = SCALE(color.blue);
@@ -330,7 +326,7 @@ void gabedit_cairo_cercle(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
 
 	cairo_set_line_width (cr, values.line_width);
 	cairo_arc (cr, xc, yc, rayon, 0, 2 * M_PI);
-	if(values.fill==GDK_SOLID) cairo_fill (cr);
+	cairo_fill (cr);
 	cairo_stroke (cr);
 	cairo_restore (cr); /* stack-pen-size */
 }
@@ -432,8 +428,7 @@ void gabedit_cairo_cercle_gradient(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
 		default:
 			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
 	}
-   	colormap  = gdk_drawable_get_colormap(parent->window);
-        gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
+   	color = values.foreground;
 	r = SCALE(color.red);
 	g = SCALE(color.green);
 	b = SCALE(color.blue);
@@ -443,7 +438,7 @@ void gabedit_cairo_cercle_gradient(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
 	cairo_set_source (cr, pat);
 	cairo_set_line_width (cr, values.line_width);
 	cairo_arc (cr, xc, yc, rayon, 0, 2 * M_PI);
-	if(values.fill==GDK_SOLID) cairo_fill (cr);
+	cairo_fill (cr);
 	cairo_stroke (cr);
 	cairo_restore (cr); /* stack-pen-size */
 	cairo_pattern_destroy (pat);

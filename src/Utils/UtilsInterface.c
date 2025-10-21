@@ -3315,9 +3315,9 @@ void fit_windows_position(GtkWidget* parent, GtkWidget* child)
 {
 	gint wChild = 0, hChild = 0;
 	gint wParent=0, hParent=0;
-	gdk_drawable_get_size(parent->window,&wParent,&hParent);
+	gtk_drawable_get_size(gtk_widget_get_window(parent),&wParent,&hParent);
 	gtk_window_move(GTK_WINDOW(parent),0,0);
-	gdk_drawable_get_size(child->window,&wChild,&hChild);
+	gtk_drawable_get_size(gtk_widget_get_window(child),&wChild,&hChild);
 	if(wParent+wChild+10<ScreenWidth) gtk_window_move(GTK_WINDOW(child),wParent+10,0);
 	else if(wChild<ScreenWidth) gtk_window_move(GTK_WINDOW(child),ScreenWidth-wChild,0);
 }

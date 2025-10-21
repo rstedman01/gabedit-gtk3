@@ -26,7 +26,7 @@ DEALINGS IN THE SOFTWARE.
 #include <gtk/gtk.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <gtk/gtkgl.h>
+#include <gtk/gtkglarea.h>
 
 #include <pango/pangoft2.h>
 
