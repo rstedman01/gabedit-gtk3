@@ -92,6 +92,8 @@ static gint destroy_popup(gpointer data)
         return FALSE;
 }
 /********************************************************************************/
+/* GTK3 Migration: Updated to use gdk_display_flush and modern icon setting
+ * See: https://developer.gnome.org/gdk3/stable/GdkDisplay.html */
 void create_popup_win(gchar* label)
 {
 	GtkWidget *MainFrame;
@@ -127,7 +129,7 @@ void create_popup_win(gchar* label)
         gtk_widget_show(MainFrame);
 
 	/* force it to draw now.*/
-	gdk_flush();
+	gdk_display_flush(gdk_display_get_default());
 
 	/* go into main loop, processing events.*/
         while(gtk_events_pending())
@@ -242,73 +244,76 @@ void destroy_children(GtkWidget *widget)
 }
 /********************************************************************************/
 /* create_pixmap, convenience function to create a pixmap widget, from data */
+/* GTK3 Migration: Replaced gdk_pixmap_create_from_xpm_d with gdk_pixbuf_new_from_xpm_data
+ * See: https://developer.gnome.org/gtk3/stable/gtk-migrating-2-to-3.html */
 GtkWidget *create_pixmap(GtkWidget *widget, gchar **data)
 {
-  GtkStyle *style;
-  GdkBitmap *mask;
-  GdkPixmap *gdk_pixmap;
-  GtkWidget *gtk_pixmap;
+  GdkPixbuf *pixbuf;
+  GtkWidget *gtk_image;
 
-  style = gtk_widget_get_style(widget);
-  g_assert(style != NULL);
+  (void)widget; /* Unused in GTK3 */
+  
+  pixbuf = gdk_pixbuf_new_from_xpm_data((const char **)data);
+  g_assert(pixbuf != NULL);
+  gtk_image = gtk_image_new_from_pixbuf(pixbuf);
+  
+  g_object_unref(pixbuf);
 
-  gdk_pixmap = gdk_pixmap_create_from_xpm_d(widget->window,&mask, &style->bg[GTK_STATE_NORMAL],data);
-  g_assert(gdk_pixmap != NULL);
-  gtk_pixmap = gtk_image_new_from_pixmap(gdk_pixmap, mask);
+  g_assert(gtk_image != NULL);
+  gtk_widget_show(gtk_image);
 
-  g_assert(gtk_pixmap != NULL);
-  gtk_widget_show(gtk_pixmap);
-
-  return(gtk_pixmap);
+  return(gtk_image);
 }
 /********************************************************************************/
- GdkPixmap *get_pixmap(GtkWidget  *widget,gushort red,gushort green,gushort blue)
+/* GTK3 Migration: Replaced GdkPixmap/GdkGC with GdkPixbuf/Cairo
+ * See: https://developer.gnome.org/gtk3/stable/gtk-migrating-2-to-3.html */
+ GdkPixbuf *get_pixmap(GtkWidget  *widget,gushort red,gushort green,gushort blue)
 {
-  GdkPixmap *pixmap = NULL;
-  GdkGC *gc = NULL;
+  GdkPixbuf *pixbuf = NULL;
   gint width = ScreenHeight/20;
   gint height = ScreenHeight/50;
-  GdkColormap *colormap;
-  GdkColor Color;
+  cairo_surface_t *surface;
+  cairo_t *cr;
 
-  gc = gdk_gc_new(widget->window);
-  Color.red =  red;
-  Color.green =  green;
-  Color.blue =  blue;
+  (void)widget; /* Not used in GTK3 */
 
-  pixmap = gdk_pixmap_new(widget->window,width,height, -1);
-  gdk_draw_rectangle (pixmap,
-                      widget->style->black_gc,
-                      TRUE,
-                      0, 0, width, height);    
-  colormap  = gdk_drawable_get_colormap(widget->window);
-  gdk_colormap_alloc_color(colormap,&Color,FALSE,TRUE);
-  gdk_gc_set_foreground(gc,&Color);
-  gdk_draw_rectangle (pixmap,
-                      gc,
-                      TRUE,
-                      1, 1, width-1, height-1);    
+  /* Create a surface to draw on */
+  surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+  cr = cairo_create(surface);
 
-  g_object_unref(gc);
-  return pixmap;
+  /* Draw black border */
+  cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
+  cairo_rectangle(cr, 0, 0, width, height);
+  cairo_fill(cr);
+
+  /* Draw colored interior */
+  cairo_set_source_rgb(cr, red/65535.0, green/65535.0, blue/65535.0);
+  cairo_rectangle(cr, 1, 1, width-2, height-2);
+  cairo_fill(cr);
+
+  cairo_destroy(cr);
+
+  /* Convert surface to pixbuf */
+  pixbuf = gdk_pixbuf_get_from_surface(surface, 0, 0, width, height);
+  cairo_surface_destroy(surface);
+
+  return pixbuf;
 }   
 /********************************************************************************/
 GtkWidget *create_hbox_pixmap_color(GtkWidget *widget,gushort red,gushort green,gushort blue)
 {
-  GdkBitmap *mask = NULL;
-  GdkPixmap *gdk_pixmap;
-  GtkWidget *gtk_pixmap;
+  GdkPixbuf *gdk_pixbuf;
+  GtkWidget *gtk_image;
   GtkWidget *hbox;
 
   hbox = gtk_hbox_new (TRUE, 0);
  
-  gdk_pixmap = get_pixmap(widget,red,green,blue);
-  gtk_pixmap = gtk_image_new_from_pixmap(gdk_pixmap, mask);
+  gdk_pixbuf = get_pixmap(widget,red,green,blue);
+  gtk_image = gtk_image_new_from_pixbuf(gdk_pixbuf);
  
-  g_object_unref(gdk_pixmap);
+  g_object_unref(gdk_pixbuf);
  
- 
-  gtk_box_pack_start (GTK_BOX (hbox), gtk_pixmap, TRUE, TRUE, 1);
+  gtk_box_pack_start (GTK_BOX (hbox), gtk_image, TRUE, TRUE, 1);
  
   return hbox ;
 }  
@@ -325,12 +330,11 @@ GtkWidget *create_button_pixmap_color(GtkWidget *widget,gushort red,gushort gree
   return Button ;
 }  
 /********************************************************************************/
+/* GTK3 Migration: Replaced GdkPixmap with GdkPixbuf */
 GtkWidget *create_radio_button_pixmap(GtkWidget *widget, gchar **data,gchar *string,GtkWidget *oldbutton)
 {
-  GtkStyle *style;
-  GdkBitmap *mask;
-  GdkPixmap *gdk_pixmap;
-  GtkWidget *gtk_pixmap;
+  GdkPixbuf *gdk_pixbuf;
+  GtkWidget *gtk_image;
   GtkWidget *Button;
   GtkWidget *hbox;
   GtkWidget *Label = NULL;
@@ -339,20 +343,16 @@ GtkWidget *create_radio_button_pixmap(GtkWidget *widget, gchar **data,gchar *str
   g_object_ref (hbox);
   gtk_widget_show (hbox);
  
+  (void)widget; /* Not used in GTK3 */
+  (void)oldbutton; /* Not used */
+
+  gdk_pixbuf = gdk_pixbuf_new_from_xpm_data((const char **)data);
+  g_assert(gdk_pixbuf != NULL);
+  gtk_image = gtk_image_new_from_pixbuf(gdk_pixbuf);
  
-  style = gtk_widget_get_style(widget);
-  g_assert(style != NULL);
+  g_object_unref(gdk_pixbuf);
  
-  gdk_pixmap = gdk_pixmap_create_from_xpm_d(widget->window,
-                                            &mask, &style->bg[GTK_STATE_NORMAL],data);
-  g_assert(gdk_pixmap != NULL);
-  gtk_pixmap = gtk_image_new_from_pixmap(gdk_pixmap, mask);
- 
-  g_object_unref(gdk_pixmap);
-  g_object_unref(mask);
- 
-  g_assert(gtk_pixmap != NULL);
-/*  gtk_widget_show(gtk_pixmap);*/
+  g_assert(gtk_image != NULL);
  
   /*
   if(oldbutton)
@@ -365,7 +365,7 @@ GtkWidget *create_radio_button_pixmap(GtkWidget *widget, gchar **data,gchar *str
   gtk_container_add(GTK_CONTAINER(Button),hbox);
   if(string)
   	Label = gtk_label_new(string);
-  gtk_box_pack_start (GTK_BOX (hbox), gtk_pixmap, FALSE, FALSE, 1);
+  gtk_box_pack_start (GTK_BOX (hbox), gtk_image, FALSE, FALSE, 1);
   if(string)
   	gtk_box_pack_start (GTK_BOX (hbox), Label, FALSE, FALSE, 1);
  
@@ -380,16 +380,17 @@ void set_icon_default()
   gtk_window_set_default_icon (pixbuf);
 }     
 /********************************************************************************/
+/* GTK3 Migration: Replaced gdk_window_set_icon with gtk_window_set_icon
+ * See: https://developer.gnome.org/gtk3/stable/GtkWindow.html#gtk-window-set-icon */
 void set_icone(GtkWidget *widget)
 {
-  GtkStyle *style;
-  GdkBitmap *mask;
-  GdkPixmap *gdk_pixmap;
-
+  GdkPixbuf *pixbuf;
    
-  style = gtk_widget_get_style(widget);
-  gdk_pixmap = gdk_pixmap_create_from_xpm_d (widget->window,&mask, &style->bg[GTK_STATE_NORMAL],gabedit_xpm);
-  gdk_window_set_icon(widget->window,NULL,gdk_pixmap,mask); 
+  if(!GTK_IS_WINDOW(widget)) return;
+  
+  pixbuf = gdk_pixbuf_new_from_xpm_data((const char **)gabedit_xpm);
+  gtk_window_set_icon(GTK_WINDOW(widget), pixbuf); 
+  g_object_unref(pixbuf);
 }     
 /********************************************************************************/
 void data_modify(gboolean mod)
@@ -401,12 +402,11 @@ void data_modify(gboolean mod)
  	change_all_labels();
 }     
 /********************************************************************************/
+/* GTK3 Migration: Replaced GdkPixmap with GdkPixbuf */
 GtkWidget *create_label_pixmap(GtkWidget *widget, gchar **data,gchar *string)
 {
-  GtkStyle *style;
-  GdkBitmap *mask;
-  GdkPixmap *gdk_pixmap;
-  GtkWidget *gtk_pixmap;
+  GdkPixbuf *gdk_pixbuf;
+  GtkWidget *gtk_image;
   GtkWidget *Label;
   GtkWidget *hbox;
 
@@ -414,33 +414,29 @@ GtkWidget *create_label_pixmap(GtkWidget *widget, gchar **data,gchar *string)
   g_object_ref (hbox);
   gtk_widget_show (hbox);
  
-  style = gtk_widget_get_style(widget);
-  g_assert(style != NULL);
+  (void)widget; /* Not used in GTK3 */
+
+  gdk_pixbuf = gdk_pixbuf_new_from_xpm_data((const char **)data);
+  g_assert(gdk_pixbuf != NULL);
+  gtk_image = gtk_image_new_from_pixbuf(gdk_pixbuf);
  
-  gdk_pixmap = gdk_pixmap_create_from_xpm_d(widget->window,
-                                            &mask, &style->bg[GTK_STATE_NORMAL],data);
-  g_assert(gdk_pixmap != NULL);
-  gtk_pixmap = gtk_image_new_from_pixmap(gdk_pixmap, mask);
+  g_object_unref(gdk_pixbuf);
  
-  g_object_unref(gdk_pixmap);
-  g_object_unref(mask);
- 
-  g_assert(gtk_pixmap != NULL);
+  g_assert(gtk_image != NULL);
  
   Label = gtk_label_new(string);
   gtk_label_set_justify(GTK_LABEL(Label),GTK_JUSTIFY_LEFT);
-  gtk_box_pack_end (GTK_BOX (hbox), gtk_pixmap, FALSE, FALSE, 2);
+  gtk_box_pack_end (GTK_BOX (hbox), gtk_image, FALSE, FALSE, 2);
   gtk_box_pack_start (GTK_BOX (hbox), Label, FALSE, FALSE, 2);
  
   return hbox;
 }  
 /********************************************************************************/
+/* GTK3 Migration: Replaced GdkPixmap with GdkPixbuf */
 GtkWidget *create_pixmap_label(GtkWidget *widget, gchar **data,gchar *string)
 {
-  GtkStyle *style;
-  GdkBitmap *mask;
-  GdkPixmap *gdk_pixmap;
-  GtkWidget *gtk_pixmap;
+  GdkPixbuf *gdk_pixbuf;
+  GtkWidget *gtk_image;
   GtkWidget *Label;
   GtkWidget *hbox;
 
@@ -448,22 +444,19 @@ GtkWidget *create_pixmap_label(GtkWidget *widget, gchar **data,gchar *string)
   g_object_ref (hbox);
   gtk_widget_show (hbox);
  
-  style = gtk_widget_get_style(widget);
-  g_assert(style != NULL);
+  (void)widget; /* Not used in GTK3 */
+
+  gdk_pixbuf = gdk_pixbuf_new_from_xpm_data((const char **)data);
+  g_assert(gdk_pixbuf != NULL);
+  gtk_image = gtk_image_new_from_pixbuf(gdk_pixbuf);
  
-  gdk_pixmap = gdk_pixmap_create_from_xpm_d(widget->window,
-                                            &mask, &style->bg[GTK_STATE_NORMAL],data);
-  g_assert(gdk_pixmap != NULL);
-  gtk_pixmap = gtk_image_new_from_pixmap(gdk_pixmap, mask);
+  g_object_unref(gdk_pixbuf);
  
-  g_object_unref(gdk_pixmap);
-  g_object_unref(mask);
- 
-  g_assert(gtk_pixmap != NULL);
+  g_assert(gtk_image != NULL);
  
   Label = gtk_label_new(string);
   gtk_label_set_justify(GTK_LABEL(Label),GTK_JUSTIFY_LEFT);
-  gtk_box_pack_start (GTK_BOX (hbox), gtk_pixmap, FALSE, FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), gtk_image, FALSE, FALSE, 2);
   gtk_box_pack_start (GTK_BOX (hbox), Label, FALSE, FALSE, 2);
  
   return hbox;
@@ -495,12 +488,11 @@ GtkWidget *create_label_with_pixmap(GtkWidget *Win,gchar *string,gchar *type)
     return hbox;
 }
 /********************************************************************************/
+/* GTK3 Migration: Replaced GdkPixmap with GdkPixbuf */
 GtkWidget *create_button_pixmap(GtkWidget *widget, gchar **data,gchar *string)
 {
-  GtkStyle *style;
-  GdkBitmap *mask;
-  GdkPixmap *gdk_pixmap;
-  GtkWidget *gtk_pixmap;
+  GdkPixbuf *gdk_pixbuf;
+  GtkWidget *gtk_image;
   GtkWidget *Button;
   GtkWidget *Label = NULL;
   GtkWidget *hbox;
@@ -509,22 +501,19 @@ GtkWidget *create_button_pixmap(GtkWidget *widget, gchar **data,gchar *string)
   g_object_ref (hbox);
   gtk_widget_show (hbox);
  
+  (void)widget; /* Not used in GTK3 */
+
+  gdk_pixbuf = gdk_pixbuf_new_from_xpm_data((const char **)data);
+  g_assert(gdk_pixbuf != NULL);
+  gtk_image = gtk_image_new_from_pixbuf(gdk_pixbuf);
  
-  style = gtk_widget_get_style(widget);
-  g_assert(style != NULL);
+  g_object_unref(gdk_pixbuf);
  
-  gdk_pixmap = gdk_pixmap_create_from_xpm_d (widget->window,&mask, &style->bg[GTK_STATE_NORMAL],data);
-  g_assert(gdk_pixmap != NULL);
-  gtk_pixmap = gtk_image_new_from_pixmap(gdk_pixmap, mask);
- 
-  g_object_unref(gdk_pixmap);
-  g_object_unref(mask);
- 
-  g_assert(gtk_pixmap != NULL);
+  g_assert(gtk_image != NULL);
  
   Button = gtk_button_new();
   gtk_container_add(GTK_CONTAINER(Button),hbox);
-  gtk_box_pack_start (GTK_BOX (hbox), gtk_pixmap, FALSE, FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), gtk_image, FALSE, FALSE, 2);
 
   if(string)
   {
@@ -534,7 +523,6 @@ GtkWidget *create_button_pixmap(GtkWidget *widget, gchar **data,gchar *string)
  
   return Button ;
 }  
-
 /********************************************************************************/
 void exit_all(GtkWidget *widget, gchar *data)
 {
@@ -2010,7 +1998,8 @@ static void show_about_new()
 	gchar *GABEDIT_VERSION =
 		g_strdup_printf("%d.%d.%d",MAJOR_VERSION,MINOR_VERSION,MICRO_VERSION);
 	
-	gtk_about_dialog_set_url_hook(show_homepage, NULL, NULL);
+	/* GTK3 Migration: gtk_about_dialog_set_url_hook is deprecated and no longer needed
+	 * URLs are now automatically clickable in GTK3 */
 
 	gtk_show_about_dialog (
 		NULL,
@@ -2124,7 +2113,8 @@ void  gtk_combo_box_entry_set_popdown_strings(GtkWidget* comboBoxEntry, GList *l
 	l = list;
 	while(l)
 	{
-		gtk_combo_box_append_text (GTK_COMBO_BOX (comboBoxEntry), (gchar*)(l->data));
+		/* GTK3 Migration: Use gtk_combo_box_text_append_text for GtkComboBoxText */
+		gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (comboBoxEntry), (gchar*)(l->data));
 		l = l->next;
 	}
   	gtk_combo_box_set_active(GTK_COMBO_BOX (comboBoxEntry), 0);
@@ -2135,7 +2125,7 @@ GtkWidget*  create_combo_box_entry(gchar **tlist,gint nlist, gboolean edit,gint 
 	GtkWidget* combo;
 	gint i;
 	combo = gtk_combo_box_text_new_with_entry();
-	for (i=0;i<nlist;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), tlist[i]);
+	for (i=0;i<nlist;i++) gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), tlist[i]);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),elen,-1);
  	gtk_editable_set_editable((GtkEditable*) (gtk_bin_get_child(GTK_BIN(combo))),edit);
 	if(nlist>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
@@ -2161,7 +2151,7 @@ GtkWidget *create_combo_box_entry_liste(GtkWidget* Window,GtkWidget* hbox,gchar 
   gtk_widget_show (combo);
   gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 2);
 
-  for (i=0;i<n;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), liste[i]);
+  for (i=0;i<n;i++) gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), liste[i]);
   if(n>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
 
   combo_entry = (gtk_bin_get_child(GTK_BIN(combo)));
@@ -2190,7 +2180,7 @@ GtkWidget*  create_label_combo_in_table(GtkWidget *table,gchar *tlabel,gchar **t
 	gtk_table_attach(GTK_TABLE(table), label, 1, 2, iligne, iligne+1, (GtkAttachOptions)(GTK_FILL|GTK_EXPAND), (GtkAttachOptions)(GTK_FILL|GTK_SHRINK), 1, 1);
 
         combo = gtk_combo_box_text_new_with_entry();
-        for (i=0;i<nlist;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), tlist[i]);
+        for (i=0;i<nlist;i++) gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), tlist[i]);
         if(nlist>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
         gtk_widget_set_size_request(GTK_WIDGET(combo),elen,-1);
 	gtk_table_attach(GTK_TABLE(table), combo, 2, 3, iligne, iligne+1, (GtkAttachOptions)(GTK_FILL|GTK_EXPAND), (GtkAttachOptions)(GTK_FILL|GTK_SHRINK), 1, 1);
@@ -2252,50 +2242,36 @@ GtkWidget *create_label_button(GtkWidget *win,GtkWidget *frame,GtkWidget* Vbox,
   return button;
 }
 /********************************************************************************/
+/* GTK3 Migration: Updated to use CSS for styling instead of GtkStyle
+ * See: https://developer.gnome.org/gtk3/stable/GtkStyleContext.html */
 void change_label_onglet()
 {
 	GtkWidget *LabelOnglet = GTK_WIDGET(g_object_get_data(G_OBJECT(text),"LabelOnglet"));
 	gchar *temp;
-	GtkStyle *style;
+	GtkStyleContext *context;
+	GtkCssProvider *provider;
 
 	temp=get_name_file(fileopen.datafile);
 	gtk_label_set_text(GTK_LABEL(LabelOnglet),temp);
 
 	if(imodif == DATA_MOD_YES)
 	{
-		/*
-		PangoFontDescription *font_desc;
-
-		font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
-		*/
-		style = (GtkStyle*)g_object_get_data(G_OBJECT(text),"StyleRed");
-	
-
-		/*
-		if (style && font_desc)
-		{
-			style->font_desc = font_desc;
-		}
-		*/
-		gtk_widget_set_style(LabelOnglet, style );
+		/* Apply red color for modified state */
+		context = gtk_widget_get_style_context(LabelOnglet);
+		provider = gtk_css_provider_new();
+		gtk_css_provider_load_from_data(provider, 
+		                                 "* { color: red; }", 
+		                                 -1, NULL);
+		gtk_style_context_add_provider(context, 
+		                                GTK_STYLE_PROVIDER(provider),
+		                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+		g_object_unref(provider);
 	}
 	else
 	{
-		/*
-  		PangoFontDescription *font_desc;
-
-		font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
-		*/
-		style = (GtkStyle*)g_object_get_data(G_OBJECT(text),"StyleDef");
-
-		/*
-		if (style && font_desc)
-		{
-			style->font_desc = font_desc;
-		}
-		*/
-
-		if(style) gtk_widget_set_style(LabelOnglet, style );
+		/* Reset to default style */
+		context = gtk_widget_get_style_context(LabelOnglet);
+		gtk_style_context_invalidate(context);
 	}
 
 	temp=get_name_file(fileopen.outputfile);
@@ -2468,7 +2444,7 @@ GtkWidget*  create_label_combo(GtkWidget *hbox,gchar *tlabel,gchar **tlist,gint 
 	gtk_box_pack_start(GTK_BOX(hbox), label,FALSE,FALSE,2);
 
 	combo = gtk_combo_box_text_new_with_entry();
-	for (i=0;i<nlist;i++) gtk_combo_box_append_text (GTK_COMBO_BOX (combo), tlist[i]);
+	for (i=0;i<nlist;i++) gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), tlist[i]);
 	if(nlist>0) gtk_combo_box_set_active(GTK_COMBO_BOX (combo), 0);
 	gtk_widget_set_size_request(GTK_WIDGET(combo),elen,-1);
 	gtk_box_pack_start(GTK_BOX(hbox), combo,FALSE,FALSE,2);
@@ -3120,62 +3096,84 @@ gchar* get_last_directory()
 	return lastdirectory;
 }
 /******************************************************************/
-static void set_dipole_color(GtkColorSelection *Sel,gpointer *d)
+/* GTK3 Migration: Updated to use GtkStyleContext */
+static void set_dipole_color(GtkColorChooser *chooser,gpointer *d)
 {
 	GdkColor* color;
-	color = g_object_get_data(G_OBJECT (Sel), "Color");
-	gtk_color_selection_get_current_color(Sel, color);
+	GdkRGBA rgba;
+	color = g_object_get_data(G_OBJECT (chooser), "Color");
+	gtk_color_chooser_get_rgba(chooser, &rgba);
+	/* Convert GdkRGBA to GdkColor for backward compatibility */
+	color->red = (gushort)(rgba.red * 65535.0);
+	color->green = (gushort)(rgba.green * 65535.0);
+	color->blue = (gushort)(rgba.blue * 65535.0);
 }
 /******************************************************************/
 static void set_dipole_button_color(GtkObject *button,gpointer *data)
 {
-	GtkStyle *style = g_object_get_data(G_OBJECT (button), "Style");
 	GdkColor* color = g_object_get_data(G_OBJECT (button), "Color");
 	GtkWidget *OldButton  = g_object_get_data(G_OBJECT (button), "Button");
-  	style =  gtk_style_copy(style); 
-  	style->bg[0].red=color->red;
-  	style->bg[0].green=color->green;
-  	style->bg[0].blue= color->blue;
-	gtk_widget_set_style(OldButton, style);
+	GdkRGBA rgba;
+	GtkStyleContext *context;
+	GtkCssProvider *provider;
+	gchar *css_string;
+	
+	/* Convert GdkColor to GdkRGBA */
+	rgba.red = color->red / 65535.0;
+	rgba.green = color->green / 65535.0;
+	rgba.blue = color->blue / 65535.0;
+	rgba.alpha = 1.0;
+	
+	/* Apply CSS to set background color */
+	context = gtk_widget_get_style_context(OldButton);
+	provider = gtk_css_provider_new();
+	css_string = g_strdup_printf("* { background-color: rgb(%d,%d,%d); }",
+	                             (int)(rgba.red * 255),
+	                             (int)(rgba.green * 255),
+	                             (int)(rgba.blue * 255));
+	gtk_css_provider_load_from_data(provider, css_string, -1, NULL);
+	gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider),
+	                               GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	g_free(css_string);
+	g_object_unref(provider);
 }
 /******************************************************************/
+/* GTK3 Migration: Replaced GtkColorSelectionDialog with GtkColorChooserDialog 
+ * See: https://developer.gnome.org/gtk3/stable/GtkColorChooserDialog.html */
 static void open_color_dlg_dipole(GtkWidget *button,gpointer data)
 {
+	GtkWidget *colorDlg;
+	GtkWidget *win = g_object_get_data(G_OBJECT (button), "Win");
+	GdkColor* color = g_object_get_data(G_OBJECT (button), "Color");
+	GdkRGBA rgba;
 
-	GtkColorSelectionDialog *colorDlg;
-  	GtkStyle* style = g_object_get_data(G_OBJECT (button), "Style");
-  	GtkWidget *win = g_object_get_data(G_OBJECT (button), "Win");
-	GdkColor* color = g_object_get_data(G_OBJECT (button), "Color");;
+	/* Convert GdkColor to GdkRGBA */
+	rgba.red = color->red / 65535.0;
+	rgba.green = color->green / 65535.0;
+	rgba.blue = color->blue / 65535.0;
+	rgba.alpha = 1.0;
 
-	colorDlg = (GtkColorSelectionDialog *)gtk_color_selection_dialog_new(_("Set Dipole Color"));
-	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (colorDlg->colorsel), color);
-	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (colorDlg->colorsel), color);
-	gtk_window_set_transient_for(GTK_WINDOW(colorDlg),GTK_WINDOW(win));
-        gtk_window_set_position(GTK_WINDOW(colorDlg),GTK_WIN_POS_CENTER);
-  	gtk_window_set_modal (GTK_WINDOW (colorDlg), TRUE);
- 	g_signal_connect(G_OBJECT(colorDlg), "delete_event",(GCallback)destroy_button_windows,NULL);
-  	g_signal_connect(G_OBJECT(colorDlg), "delete_event",G_CALLBACK(gtk_widget_destroy),NULL);
+	colorDlg = gtk_color_chooser_dialog_new(_("Set Dipole Color"), GTK_WINDOW(win));
+	gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(colorDlg), &rgba);
+	gtk_window_set_transient_for(GTK_WINDOW(colorDlg), GTK_WINDOW(win));
+	gtk_window_set_position(GTK_WINDOW(colorDlg), GTK_WIN_POS_CENTER);
+	gtk_window_set_modal(GTK_WINDOW(colorDlg), TRUE);
+	
+	g_signal_connect(G_OBJECT(colorDlg), "delete_event", (GCallback)destroy_button_windows, NULL);
+	g_signal_connect(G_OBJECT(colorDlg), "delete_event", G_CALLBACK(gtk_widget_destroy), NULL);
 
-  	g_object_set_data(G_OBJECT (colorDlg->colorsel), "Color", color);
-  	gtk_widget_hide(colorDlg->help_button);
-	g_signal_connect_swapped(G_OBJECT(colorDlg->ok_button),"clicked", (GCallback)set_dipole_color,GTK_OBJECT(colorDlg->colorsel));
+	g_object_set_data(G_OBJECT(colorDlg), "Color", color);
 
-  	g_object_set_data(G_OBJECT (colorDlg->ok_button), "Color", color);
-  	g_object_set_data(G_OBJECT (colorDlg->ok_button), "Button", button);
-  	g_object_set_data(G_OBJECT (colorDlg->ok_button), "Style", style);
-	g_signal_connect(G_OBJECT(colorDlg->ok_button),"clicked", (GCallback)set_dipole_button_color,NULL);
+	if (gtk_dialog_run(GTK_DIALOG(colorDlg)) == GTK_RESPONSE_OK) {
+		set_dipole_color(GTK_COLOR_CHOOSER(colorDlg), NULL);
+		set_dipole_button_color(GTK_OBJECT(button), NULL);
+	}
 
-  	g_signal_connect_swapped(G_OBJECT(colorDlg->ok_button), "clicked", (GCallback)destroy_button_windows,GTK_OBJECT(colorDlg));
-	g_signal_connect_swapped(G_OBJECT(colorDlg->ok_button),"clicked", (GCallback)gtk_widget_destroy,GTK_OBJECT(colorDlg));
-
-  	g_signal_connect_swapped(G_OBJECT(colorDlg->cancel_button), "clicked", (GCallback)destroy_button_windows,GTK_OBJECT(colorDlg));
-	g_signal_connect_swapped(G_OBJECT(colorDlg->cancel_button),"clicked", (GCallback)gtk_widget_destroy,GTK_OBJECT(colorDlg));
-
-  	add_button_windows(_(" Set Color "),GTK_WIDGET(colorDlg));
-	gtk_widget_show(GTK_WIDGET(colorDlg));
-
+	destroy_button_windows(colorDlg);
+	gtk_widget_destroy(colorDlg);
 }
 /*********************************************************************/
+/* GTK3 Migration: Updated for GtkStyleContext and CSS */
 GtkWidget* set_dipole_dialog ()
 {
   GtkWidget *fp;
@@ -3185,7 +3183,9 @@ GtkWidget* set_dipole_dialog ()
   GtkWidget *hbox;
   GtkWidget *button;
   GtkWidget *label;
-  GtkStyle *style;
+  GtkStyleContext *context;
+  GtkCssProvider *provider;
+  gchar *css_string;
   static GtkWidget* entrys[8];
   static GdkColor color;
   gchar* tlabel[8]={"Factor : ","X(D) : ","Y(D) : ","Z(D) : ","Radius : ","X0(Ang) : ","Y0(Ang) : ","Z0(Ang) : "};
@@ -3266,20 +3266,28 @@ GtkWidget* set_dipole_dialog ()
   label = gtk_label_new (_("Color : "));
   gtk_widget_show (label);
   gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, FALSE, 0);
-  style = gtk_widget_get_style(fp);
+  
   button = gtk_button_new_with_label(" ");
-  style =  gtk_style_copy(style); 
-  style->bg[0].red=Dipole.color[0];
-  style->bg[0].green=Dipole.color[1];
-  style->bg[0].blue=Dipole.color[2];
-
-  color.red =style->bg[0].red;
-  color.green =style->bg[0].green;
-  color.blue =style->bg[0].blue;
-  gtk_widget_set_style(button, style );
+  
+  /* Set button background color using CSS */
+  color.red = Dipole.color[0];
+  color.green = Dipole.color[1];
+  color.blue = Dipole.color[2];
+  
+  context = gtk_widget_get_style_context(button);
+  provider = gtk_css_provider_new();
+  css_string = g_strdup_printf("* { background-color: rgb(%d,%d,%d); }",
+                               (int)(color.red / 65535.0 * 255),
+                               (int)(color.green / 65535.0 * 255),
+                               (int)(color.blue / 65535.0 * 255));
+  gtk_css_provider_load_from_data(provider, css_string, -1, NULL);
+  gtk_style_context_add_provider(context, GTK_STYLE_PROVIDER(provider),
+                                 GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+  g_free(css_string);
+  g_object_unref(provider);
+  
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, TRUE, 1);
   gtk_widget_show (button);
-  g_object_set_data(G_OBJECT (button), "Style", style);
   g_object_set_data(G_OBJECT (button), "Win", fp);
   g_object_set_data(G_OBJECT (button), "Color", &color);
   g_signal_connect(G_OBJECT(button), "clicked", (GCallback)open_color_dlg_dipole, NULL);
@@ -3311,15 +3319,27 @@ GtkWidget* set_dipole_dialog ()
   return fp;
 }
 /*************************************************************************************/
+/* GTK3 Migration: Replaced gdk_drawable_get_size with gdk_window_get_geometry 
+ * See: https://developer.gnome.org/gdk3/stable/gdk3-Windows.html#gdk-window-get-geometry */
 void fit_windows_position(GtkWidget* parent, GtkWidget* child)
 {
 	gint wChild = 0, hChild = 0;
-	gint wParent=0, hParent=0;
-	gtk_drawable_get_size(gtk_widget_get_window(parent),&wParent,&hParent);
-	gtk_window_move(GTK_WINDOW(parent),0,0);
-	gtk_drawable_get_size(gtk_widget_get_window(child),&wChild,&hChild);
-	if(wParent+wChild+10<ScreenWidth) gtk_window_move(GTK_WINDOW(child),wParent+10,0);
-	else if(wChild<ScreenWidth) gtk_window_move(GTK_WINDOW(child),ScreenWidth-wChild,0);
+	gint wParent = 0, hParent = 0;
+	GdkWindow *parent_window = gtk_widget_get_window(parent);
+	GdkWindow *child_window = gtk_widget_get_window(child);
+	
+	if(parent_window) {
+		gdk_window_get_geometry(parent_window, NULL, NULL, &wParent, &hParent);
+		gtk_window_move(GTK_WINDOW(parent), 0, 0);
+	}
+	
+	if(child_window) {
+		gdk_window_get_geometry(child_window, NULL, NULL, &wChild, &hChild);
+		if(wParent + wChild + 10 < ScreenWidth) 
+			gtk_window_move(GTK_WINDOW(child), wParent + 10, 0);
+		else if(wChild < ScreenWidth) 
+			gtk_window_move(GTK_WINDOW(child), ScreenWidth - wChild, 0);
+	}
 }
 /*************************************************************************************/
 static gdouble** readOneFile(gchar* fileName, gint n0, gint* nP, gdouble* dt)

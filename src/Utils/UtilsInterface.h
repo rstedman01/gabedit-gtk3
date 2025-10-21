@@ -26,7 +26,7 @@ void delete_child(GtkWidget *childwidget);
 void delete_all_children(GtkWidget *widget);
 void destroy_children(GtkWidget *widget);
 GtkWidget *create_pixmap(GtkWidget *widget, gchar **data);
-GdkPixmap *get_pixmap(GtkWidget  *widget,gushort red,gushort green,gushort blue);
+GdkPixbuf *get_pixmap(GtkWidget  *widget,gushort red,gushort green,gushort blue);
 GtkWidget *create_hbox_pixmap_color(GtkWidget *widget,gushort red,gushort green,gushort blue);
 GtkWidget *create_button_pixmap_color(GtkWidget *widget,gushort red,gushort green,gushort blue);
 GtkWidget *create_radio_button_pixmap(GtkWidget *widget, gchar **data,gchar *string,GtkWidget *oldbutton);
