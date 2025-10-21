@@ -6924,17 +6924,38 @@ static void gabedit_xyplot_dispose(GObject* gobject)
 	}
 }
 /****************************************************************************************/
+/* GTK3: Properly implement draw signal handler using provided cairo context */
+/* GTK4 TODO: Consider using GtkSnapshot API for more efficient rendering */
 static gboolean gabedit_xyplot_draw(GtkWidget *widget, cairo_t *cr)
 {
-	#ifdef HAVE_OLD_EXPOSE
-		return gabedit_xyplot_expose(widget, NULL);
-	#else
-		GtkStyleContext *context = gtk_widget_get_style(widget);
-		GdkRGBA bg;
-		cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
-		cairo_paint(cr);
+	GabeditXYPlot* xyplot;
+	
+	g_return_val_if_fail(widget != NULL, FALSE);
+	g_return_val_if_fail(GABEDIT_IS_XYPLOT(widget), FALSE);
+	g_return_val_if_fail(cr != NULL, FALSE);
+	
+	xyplot = GABEDIT_XYPLOT(widget);
+	
+	/* Handle special drawing modes for interactive overlays */
+	if (xyplot->mouse_zoom_enabled && xyplot->mouse_button == xyplot->mouse_zoom_button)
+	{
+		if (xyplot->old_area_pixbuf) {
+			gdk_cairo_set_source_pixbuf(cr, xyplot->old_area_pixbuf, 0, 0);
+			cairo_paint(cr);
+		}
+		/* Draw zoom rectangle would need to be adapted to use cr */
 		return TRUE;
-	#endif
+	}
+	
+	/* For normal drawing, render the plotting area surface */
+	if (xyplot->plotting_area_surface) {
+		cairo_set_source_surface(cr, xyplot->plotting_area_surface,
+			xyplot->plotting_rect.x,
+			xyplot->plotting_rect.y);
+		cairo_paint(cr);
+	}
+	
+	return FALSE;
 }
 /****************************************************************************************/
 static void gabedit_xyplot_get_preferred_width(GtkWidget *widget, gint *minimum_width, gint *natural_width)
@@ -7063,6 +7084,9 @@ static gint gabedit_xyplot_key_release(GtkWidget* widget, GdkEventKey* event)
 	return TRUE;
 }
 /****************************************************************************************/
+/* GTK3: Widget realization - creates GdkWindow and initializes GCs */
+/* GTK4 TODO: GdkWindow is removed in GTK4. Use GdkSurface and modern rendering. */
+/* GTK4 TODO: GdkGC is already deprecated - this code uses compatibility layer. */
 static void gabedit_xyplot_realize(GtkWidget* widget)
 {
 	GabeditXYPlot* xyplot;
@@ -8274,6 +8298,7 @@ static void draw_data(GtkWidget* widget, GabeditXYPlot* xyplot)
 }
 /****************************************************************************************/
 /* GTK3: Capture window content to pixbuf instead of pixmap copy */
+/* GTK4 TODO: Use GdkTexture and GtkSnapshot for more efficient texture handling */
 static GdkPixbuf* capture_window_to_pixbuf(GdkWindow* window)
 {
 	gint width, height;

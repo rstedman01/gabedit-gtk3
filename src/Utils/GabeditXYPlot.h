@@ -117,6 +117,7 @@ struct _GabeditXYPlot
   gdouble xmin, xmax, ymin, ymax; 
   
   /* GTK3: Replaced GdkPixmap with cairo surfaces and GdkPixbuf */
+  /* GTK4 TODO: Consider using GdkTexture instead of GdkPixbuf */
   cairo_surface_t *plotting_area_surface; 
   GdkPixbuf *old_area_pixbuf; 
   cairo_t *cairo_widget; 
@@ -136,6 +137,8 @@ struct _GabeditXYPlot
   
   gdouble d_hlegend, d_vlegend; 
   
+  /* GTK3: Using GdkGC compatibility layer (see gabedit_gdk_compat.h) */
+  /* GTK4 TODO: Remove GdkGC entirely, use only Cairo for all drawing */
   GdkGC *back_gc; 
   GdkGC *fore_gc; 
   
