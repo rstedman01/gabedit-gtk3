@@ -51,16 +51,18 @@ void save_doc(void);
 void enreg_selec_doc(GabeditFileChooser *, gint response_id);
 void desole();
 void change_insert();
-void new_doc_molpro();
-void new_doc_gauss();
-void new_doc_orca();
-void new_doc_qchem();
+/* GTK3 Migration: Signal handlers must use standard GtkWidget*, gpointer signature */
+void new_doc_molpro(GtkWidget* widget, gpointer data);
+void new_doc_gauss(GtkWidget* widget, gpointer data);
+void new_doc_orca(GtkWidget* widget, gpointer data);
+void new_doc_qchem(GtkWidget* widget, gpointer data);
 void insert_doc_gauss();
 gchar* get_license();
 void new_psicode(GtkWidget *widget, gchar *data);
 void show_about();
 void show_version();
-void show_homepage();
+/* GTK3 Migration: Signal handlers must use standard GtkWidget*, gpointer signature */
+void show_homepage(GtkWidget* widget, gpointer data);
 void  create_label_hbox(GtkWidget *,gchar *,gint );
 GtkWidget *create_hbox(GtkWidget *);
 GtkWidget *create_vbox(GtkWidget *);
@@ -121,12 +123,14 @@ GtkWidget *create_hbox_browser(GtkWidget* Wins,GtkWidget* vbox,gchar *tlabel,gch
 GtkWidget*  create_table_browser(GtkWidget *Wins,GtkWidget *vbox);
 void add_widget_table(GtkWidget *Table,GtkWidget *wid,gushort line,gushort colonne);
 GtkWidget *add_label_at_table(GtkWidget *Table,gchar *label,gushort line,gushort colonne,GtkJustification just);
-GtkWidget *add_label_table(GtkWidget *Table, G_CONST_RETURN gchar *label,gushort line,gushort colonne);
+/* GTK3 Migration: G_CONST_RETURN deprecated, use const instead */
+GtkWidget *add_label_table(GtkWidget *Table, const gchar *label,gushort line,gushort colonne);
 void set_default_styles();
 GtkWidget *create_label_pixmap(GtkWidget *widget, gchar **data,gchar *string);
 GtkWidget* create_text_widget(GtkWidget* box,gchar *title,GtkWidget **frame);
 void draw_density_orbitals_gamess_or_gauss_or_molcas_or_molpro(GtkWidget *wid,gpointer data);
-void set_last_directory(G_CONST_RETURN gchar* FileName);
+/* GTK3 Migration: G_CONST_RETURN deprecated, use const instead */
+void set_last_directory(const gchar* FileName);
 GtkWidget* set_dipole_dialog ();
 gchar* get_last_directory();
 void fit_windows_position(GtkWidget* parent, GtkWidget* child);
