@@ -359,10 +359,10 @@ GtkWidget *create_radio_button_pixmap(GtkWidget *widget, gchar **data,gchar *str
 	image = gtk_image_new_from_pixbuf(pixbuf);
 	
 	g_object_unref(pixbuf);
- 
-  g_assert(gtk_pixmap != NULL);
-/*  gtk_widget_show(gtk_pixmap);*/
- 
+
+	g_assert(image != NULL);
+	/*  gtk_widget_show(image);*/
+	
 	/*
 	if(oldbutton)
 	Button = gtk_radio_button_new(gtk_radio_button_group (GTK_RADIO_BUTTON (oldbutton)));
