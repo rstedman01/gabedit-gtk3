@@ -1,0 +1,33 @@
+From 05933bb82257ae21e54ce20b0637b2ec52d583d2 Mon Sep 17 00:00:00 2001
+From: "copilot-swe-agent[bot]" <198982749+Copilot@users.noreply.github.com>
+Date: Wed, 22 Oct 2025 14:10:38 +0000
+Subject: [PATCH 3/4] Fix typo: replace gtk_pixmap reference with image
+ variable
+
+Co-authored-by: rstedman01 <22778697+rstedman01@users.noreply.github.com>
+---
+ src/Utils/UtilsInterface.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/Utils/UtilsInterface.c b/src/Utils/UtilsInterface.c
+index eddf984..67851f1 100644
+--- a/src/Utils/UtilsInterface.c
++++ b/src/Utils/UtilsInterface.c
+@@ -359,10 +359,10 @@ GtkWidget *create_radio_button_pixmap(GtkWidget *widget, gchar **data,gchar *str
+ 	image = gtk_image_new_from_pixbuf(pixbuf);
+ 	
+ 	g_object_unref(pixbuf);
+- 
+-  g_assert(gtk_pixmap != NULL);
+-/*  gtk_widget_show(gtk_pixmap);*/
+- 
++
++	g_assert(image != NULL);
++	/*  gtk_widget_show(image);*/
++	
+ 	/*
+ 	if(oldbutton)
+ 	Button = gtk_radio_button_new(gtk_radio_button_group (GTK_RADIO_BUTTON (oldbutton)));
+-- 
+2.51.0
+

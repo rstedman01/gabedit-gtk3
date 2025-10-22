@@ -1,9 +1,9 @@
 CC ?= gcc
 CFLAGS ?= -std=c17 -O2 -pipe -Wall -Wextra -Wno-deprecated-declarations
-INCDIR ?= $(pkg-config --cflags gtk+-3.0)
-GTK_CFLAGS := $(pkg-config --cflags gtk+-3.0)
-GTK_LIBS   := $(pkg-config --libs gtk+-3.0)
-EPOXY_LIBS := $(pkg-config --libs epoxy)
+INCDIR ?= $(shell pkg-config --cflags gtk+-3.0)
+GTK_CFLAGS := $(shell pkg-config --cflags gtk+-3.0)
+GTK_LIBS   := $(shell pkg-config --libs gtk+-3.0)
+EPOXY_LIBS := $(shell pkg-config --libs epoxy)
 
 SRC := $(shell find src -name '*.c')
 OBJ := $(SRC:.c=.o)

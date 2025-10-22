@@ -1,0 +1,31 @@
+From 314d3dadfc04d133ca1781025cd59a758446479e Mon Sep 17 00:00:00 2001
+From: "copilot-swe-agent[bot]" <198982749+Copilot@users.noreply.github.com>
+Date: Wed, 22 Oct 2025 14:00:15 +0000
+Subject: [PATCH 1/4] Initial analysis and Makefile fix for pkg-config
+
+Co-authored-by: rstedman01 <22778697+rstedman01@users.noreply.github.com>
+---
+ Makefile | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 0524582..2e2b3f0 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,9 +1,9 @@
+ CC ?= gcc
+ CFLAGS ?= -std=c17 -O2 -pipe -Wall -Wextra -Wno-deprecated-declarations
+-INCDIR ?= $(pkg-config --cflags gtk+-3.0)
+-GTK_CFLAGS := $(pkg-config --cflags gtk+-3.0)
+-GTK_LIBS   := $(pkg-config --libs gtk+-3.0)
+-EPOXY_LIBS := $(pkg-config --libs epoxy)
++INCDIR ?= $(shell pkg-config --cflags gtk+-3.0)
++GTK_CFLAGS := $(shell pkg-config --cflags gtk+-3.0)
++GTK_LIBS   := $(shell pkg-config --libs gtk+-3.0)
++EPOXY_LIBS := $(shell pkg-config --libs epoxy)
+ 
+ SRC := $(shell find src -name '*.c')
+ OBJ := $(SRC:.c=.o)
+-- 
+2.51.0
+
