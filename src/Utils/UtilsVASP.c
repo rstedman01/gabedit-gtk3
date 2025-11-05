@@ -368,10 +368,11 @@ static void add_new_data_bands(GabeditXYPlot* xyplot, GList* X, GList** lists, g
 		GdkColor c = get_fore_color(GABEDIT_XYPLOT(xyplot));
 		if(color) {
 			GdkRGBA rgba;
-			gdk_rgba_parse(&rgba, color);
-			c.red = (guint16)(rgba.red * 65535);
-			c.green = (guint16)(rgba.green * 65535);
-			c.blue = (guint16)(rgba.blue * 65535);
+			if(gdk_rgba_parse(&rgba, color)) {
+				c.red = (guint16)(rgba.red * 65535);
+				c.green = (guint16)(rgba.green * 65535);
+				c.blue = (guint16)(rgba.blue * 65535);
+			}
 		}
 
 		data->size=numberOfPoints;
@@ -441,10 +442,11 @@ static void add_new_data_dos(GabeditXYPlot* xyplot, GList* X, GList* I, gchar* c
 		GdkColor c = get_fore_color(GABEDIT_XYPLOT(xyplot));
 		if(color) {
 			GdkRGBA rgba;
-			gdk_rgba_parse(&rgba, color);
-			c.red = (guint16)(rgba.red * 65535);
-			c.green = (guint16)(rgba.green * 65535);
-			c.blue = (guint16)(rgba.blue * 65535);
+			if(gdk_rgba_parse(&rgba, color)) {
+				c.red = (guint16)(rgba.red * 65535);
+				c.green = (guint16)(rgba.green * 65535);
+				c.blue = (guint16)(rgba.blue * 65535);
+			}
 		}
 
 		data->size=numberOfPoints;
