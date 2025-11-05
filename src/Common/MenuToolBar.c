@@ -177,7 +177,7 @@ static void activate_action (GtkAction *action)
 	else if(!strcmp(name,"Find")) find_text_win();
 	else if(!strcmp(name,"SelectAll")) select_all();
 	else if(!strcmp(name,"InsertGaussianGeometry")) { iprogram = PROG_IS_GAUSS; insert_gaussian(2); }
-	else if(!strcmp(name,"InsertGaussianMultiStep")) { iprogram = PROG_IS_GAUSS; insert_doc_gauss();}
+	//else if(!strcmp(name,"InsertGaussianMultiStep")) { iprogram = PROG_IS_GAUSS; insert_doc_gauss();}
 	else if(!strcmp(name,"InsertMolcasAddToFile")) { iprogram = PROG_IS_MOLCAS; insertMolcas();}
 	else if(!strcmp(name,"InsertMolproGeneral")) {iprogram = PROG_IS_MOLPRO; insert_molpro(1);  }
 	else if(!strcmp(name,"InsertMolproGeometry")) {iprogram = PROG_IS_MOLPRO; insert_molpro(2);  }

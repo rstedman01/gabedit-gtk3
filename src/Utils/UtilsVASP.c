@@ -297,7 +297,7 @@ static GList* read_pdos_vasp_xml_file(GtkWidget* window, gchar* fileName, G_CONS
 		{
 			progress(progressBar, scal , FALSE);
 			while( gtk_events_pending() ) gtk_main_iteration();
-			if(!GTK_WIDGET_IS_SENSITIVE(cancelButton)) break;
+			if(!gtk_widget_is_sensitive(cancelButton)) break;
 		 	read_pdos_one_center_vasp_xml_file(fd, &I, i+1, spin, typesOrbs, nTypesOrbs);
 		}
 	}
@@ -309,7 +309,7 @@ static GList* read_pdos_vasp_xml_file(GtkWidget* window, gchar* fileName, G_CONS
 		{
 			progress(progressBar, scal , FALSE);
 			while( gtk_events_pending() ) gtk_main_iteration();
-			if(!GTK_WIDGET_IS_SENSITIVE(cancelButton)) break;
+			if(!gtk_widget_is_sensitive(cancelButton)) break;
 		 	read_pdos_one_center_vasp_xml_file(fd, &I, i+1, spin, typesOrbs, nTypesOrbs);
 		}
 		if(goToStr(fd,"spin 2"))
@@ -323,7 +323,7 @@ static GList* read_pdos_vasp_xml_file(GtkWidget* window, gchar* fileName, G_CONS
 			{
 				progress(progressBar, scal , FALSE);
 				while( gtk_events_pending() ) gtk_main_iteration();
-				if(!GTK_WIDGET_IS_SENSITIVE(cancelButton)) break;
+				if(!gtk_widget_is_sensitive(cancelButton)) break;
 		 		read_pdos_one_center_vasp_xml_file(fd, &I, i+1, spin, typesOrbs, nTypesOrbs);
 			}
 		}
@@ -340,9 +340,10 @@ static GdkColor get_fore_color(GabeditXYPlot *xyplot)
         GdkGCValues values;
         GdkColormap *colormap;
         GdkColor color;
+		GdkWindow *win = gtk_widget_get_window(xyplot->widget);
 
         gdk_gc_get_values(xyplot->fore_gc, &values);
-        colormap  = gdk_window_get_colormap(GTK_WIDGET(xyplot)->window);
+        colormap  = gdk_window_get_colormap(win);
         gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
         return color;
 }
@@ -849,12 +850,13 @@ static gboolean xyplot_motion_notify_event(GtkWidget *xyplot, GdkEventMotion *ev
         char str[50];
         int context_id;
         GtkWidget* statusbar = g_object_get_data(G_OBJECT (xyplot), "StatusBar");
+		GdkWindow *win = gtk_widget_get_window(xyplot);
 
         x=event->x;
         y=event->y;
 
-        if (event->is_hint || (event->window != xyplot->window))
-                gdk_window_get_pointer (xyplot->window, &x, &y, NULL);
+        if (event->is_hint || (event->window != win))
+                gdk_window_get_pointer (win, &x, &y, NULL);
 
         if(gabedit_xyplot_get_point(GABEDIT_XYPLOT(xyplot), x, y, &xv, &yv))
         snprintf(str, 50, _("Mouse position: %lf, %lf"), xv, yv);
