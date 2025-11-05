@@ -17,6 +17,37 @@ CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFT
 DEALINGS IN THE SOFTWARE.
 ************************************************************************************************************/
 
+/*
+ * GTK2→GTK3 Migration Status: COMPLETED (compiles cleanly)
+ * 
+ * Changes made:
+ * - Replaced GtkObjectClass with GObjectClass
+ * - Replaced object_class->destroy with object_class->dispose
+ * - Replaced widget_class->expose_event with widget_class->draw
+ * - Replaced widget_class->size_request with get_preferred_width/height
+ * - Replaced all widget->window with gtk_widget_get_window(widget)
+ * - Replaced all widget->allocation with gtk_widget_get_allocated_width/height
+ * - Replaced widget->style->font_desc with get_widget_font_desc helper
+ * - Replaced GdkImage API with GdkPixbuf (gdk_pixbuf_get_from_window)
+ * - Replaced gtk_paint_layout with pango_cairo_show_layout
+ * - Replaced gtk_paint_flat_box with gtk_render_background
+ * - Fixed all GDK key constants to use GDK_KEY_* variants
+ * - Uses GdkGC compatibility layer from gabedit_gdk_compat.h
+ *
+ * TODO for GTK4 migration:
+ * - Replace GdkGC compatibility layer with pure Cairo drawing
+ * - Migrate gtk_widget_modify_bg/fg to CSS providers
+ * - Replace GtkTable usage with GtkGrid (currently using compatibility layer)
+ * - Replace deprecated gdk_window_* functions with GdkSurface equivalents
+ * - Replace gdk_drawable_get_size with gdk_surface_get_width/height
+ * - Consider migrating to GtkDrawingArea for custom widget
+ * - Replace gtk_style_context_get with gtk_style_context_lookup_color
+ * - Update event handling to use GtkEventController
+ * - Consider using GtkSnapshot instead of cairo_t for rendering
+ * - Migrate any remaining GTK_STATE_* flags to GTK_STATE_FLAGS_*
+ * - Review and update color handling for GdkRGBA consistency
+ */
+
 #define GETTEXT_PACKAGE "gabedit"
 #include <stdlib.h>
 #include <ctype.h>
