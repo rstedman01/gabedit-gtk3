@@ -157,7 +157,9 @@ struct _GabeditContoursPlot
   
   ContoursColorMap colorsMap;
   GdkPixmap *plotting_area; 
-  GdkPixmap *old_area; 
+  GdkPixmap *old_area;
+  /* TODO: GTK3 Migration - Replace GdkPixmap with GdkPixbuf for GTK3 */
+  GdkPixbuf *old_area_pixbuf;
   cairo_t *cairo_widget; 
   cairo_t *cairo_area; 
   cairo_t *cairo_export; 
