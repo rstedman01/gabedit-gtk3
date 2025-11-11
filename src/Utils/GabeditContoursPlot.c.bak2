@@ -458,7 +458,7 @@ static void gabedit_contoursplot_cairo_line(cairo_t *cr,  GtkWidget* widget, Gdk
 		case GDK_LINE_DOUBLE_DASH : break;
 		default  : ndash = 0;
 	}
-    GdkWindow *window = gtk_widget_get_window(widget);
+	GdkWindow *window = gtk_widget_get_window(widget);
    	colormap  = gdk_window_get_colormap(window);
         gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
 
@@ -535,7 +535,7 @@ static void gabedit_contoursplot_cairo_rectangle(cairo_t *cr,  GtkWidget* widget
 		case GDK_LINE_DOUBLE_DASH : break;
 		default  : ndash = 0;
 	}
-    GdkWindow *window = gtk_widget_get_window(widget);
+	GdkWindow *window = gtk_widget_get_window(widget);
    	colormap  = gdk_window_get_colormap(window);
         gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
 
@@ -596,6 +596,7 @@ static void gabedit_contoursplot_cairo_cercle(cairo_t *cr,  GtkWidget* widget, G
 		default:
 			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
 	}
+	GdkWindow *window = gtk_widget_get_window(widget);
    	colormap  = gdk_window_get_colormap(window);
         gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
 	r = SCALE(color.red);
@@ -1879,8 +1880,7 @@ static PangoLayout* get_pango_str(GabeditContoursPlot *contoursplot, G_CONST_RET
 	pango_layout_set_alignment(pango,PANGO_ALIGN_LEFT);
 
 	gdk_gc_get_values(contoursplot->fore_gc, &values);
-    GdkWindow *window = gtk_widget_get_window(GTK_WIDGET(contoursplot));
-   	colormap  = gdk_window_get_colormap(window);
+   	colormap  = gdk_window_get_colormap(GTK_WIDGET(contoursplot)->window);
         gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
 	rgb = g_strdup_printf("#%02x%02x%02x", color.red >> 8, color.green >> 8, color.blue >> 8);
 	str = g_strconcat("<span foreground='", rgb, "'>",txt, "</span>", NULL);
@@ -2228,8 +2228,7 @@ static void add_object_line(GabeditContoursPlot *contoursplot,
 		GdkGCValues values;
 		GdkColormap *colormap;
 		gdk_gc_get_values(contoursplot->lines_gc, &values);
-     GdkWindow *window = gtk_widget_get_window(GTK_WIDGET(contoursplot));
-   		colormap  = gdk_window_get_colormap(window);
+   		colormap  = gdk_window_get_colormap(GTK_WIDGET(contoursplot)->window);
         	gdk_colormap_query_color(colormap, values.foreground.pixel,&color);
 		style = values.line_style;
 		width = values.line_width;
@@ -2560,10 +2559,10 @@ static void set_object_line_dialog(GabeditContoursPlot* contoursplot, gint i)
 /**************************************************************************************************/
 static void set_object_image_relative(GabeditContoursPlot *contoursplotplot, ContoursPlotObjectImage* objectImage)
 {
-	gdouble f = (gdouble)gtk_widget_get_allocated_width(GTK_WIDGET(contoursplotplot));
+	gdouble f = (gdouble)GTK_WIDGET(contoursplotplot)->allocation.width;
   	gint xi=objectImage->xi-contoursplotplot->plotting_rect.x;
   	gint yi=contoursplotplot->plotting_rect.y+contoursplotplot->plotting_rect.height-objectImage->yi; 
-	if(f>(gdouble)gtk_widget_get_allocated_height(GTK_WIDGET(contoursplotplot))) f = (gdouble)gtk_widget_get_allocated_height(GTK_WIDGET(contoursplotplot));
+	if(f>(gdouble)GTK_WIDGET(contoursplotplot)->allocation.height) f = (gdouble)GTK_WIDGET(contoursplotplot)->allocation.height;
 	objectImage->width = (gdouble)objectImage->widthi/f;
 	objectImage->height = (gdouble)objectImage->heighti/f;
 	/*
@@ -2577,8 +2576,8 @@ static void set_object_image_relative(GabeditContoursPlot *contoursplotplot, Con
 static void set_object_image_pixels(GabeditContoursPlot *contoursplotplot, ContoursPlotObjectImage* objectImage)
 {
 	gint xi,yi;
-	gdouble f = (gdouble)gtk_widget_get_allocated_width(GTK_WIDGET(contoursplotplot));
-	if(f>(gdouble)gtk_widget_get_allocated_height(GTK_WIDGET(contoursplotplot))) f = (gdouble)gtk_widget_get_allocated_height(GTK_WIDGET(contoursplotplot));
+	gdouble f = (gdouble)GTK_WIDGET(contoursplotplot)->allocation.width;
+	if(f>(gdouble)GTK_WIDGET(contoursplotplot)->allocation.height) f = (gdouble)GTK_WIDGET(contoursplotplot)->allocation.height;
 	objectImage->widthi = (gint)(objectImage->width*f);
 	objectImage->heighti = (gint)(objectImage->height*f);
 	/*
@@ -4297,8 +4296,7 @@ static void gabedit_contoursplot_save_gabedit_parameters(GabeditContoursPlot *co
 	GdkGCValues gc_values;
 	GdkColormap *colormap;
 
- GdkWindow *window = gtk_widget_get_window(GTK_WIDGET(contoursplot));
-	colormap  = gdk_window_get_colormap(window);
+	colormap  = gdk_window_get_colormap(GTK_WIDGET(contoursplot)->window);
 	gdk_gc_get_values(contoursplot->back_gc, &gc_values);
        	gdk_colormap_query_color(colormap, gc_values.foreground.pixel,&backColor);
 	gdk_gc_get_values(contoursplot->fore_gc, &gc_values);
@@ -6764,8 +6762,7 @@ static void gabedit_contoursplot_class_init (GabeditContoursPlotClass *class)
 
   parent_class = g_type_class_peek_parent (class);
 
-  /* TODO GTK3: GObject doesn't have 'destroy', use dispose/finalize instead */
-  /* object_class->dispose = gabedit_contoursplot_dispose; */
+  object_class->destroy = gabedit_contoursplot_destroy;
 
   widget_class->realize = gabedit_contoursplot_realize;
   widget_class->draw = gabedit_contoursplot_expose; /* TODO: Rename to _draw and update signature */
@@ -6979,13 +6976,10 @@ static void gabedit_contoursplot_destroy (GtkObject *object)
     contoursplot->vminor_grid_gc = NULL;
   }
 
-  /* TODO GTK3: GObject dispose/finalize chain */
-  /*
-  if (G_OBJECT_CLASS (parent_class)->dispose)
-    (* G_OBJECT_CLASS (parent_class)->dispose) (object);
-  */
+  if (GTK_OBJECT_CLASS (parent_class)->destroy)
+    (* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
   
-  gtk_widget_destroy (GTK_WIDGET(object));
+  gtk_object_destroy (object);
 }
 /****************************************************************************************/
 static gint contoursplot_get_font_size (GtkWidget* widget, PangoFontDescription* font_desc)
@@ -7110,13 +7104,11 @@ static void gabedit_contoursplot_realize (GtkWidget *widget)
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GABEDIT_IS_ContoursPLOT (widget));
 
-  gtk_widget_set_realized(widget, TRUE);
+  GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
   contoursplot = GABEDIT_ContoursPLOT (widget);
 
-  GtkAllocation allocation;
-  gtk_widget_get_allocation(widget, &allocation);
-  attributes.x = allocation.x;
-  attributes.y = allocation.y;
+  attributes.x = /* TODO: Fix allocation.x */ widget->allocation.x;
+  attributes.y = /* TODO: Fix allocation.y */ widget->allocation.y;
   attributes.width = gtk_widget_get_allocated_width(widget);
   attributes.height = gtk_widget_get_allocated_height(widget);
   attributes.wclass = GDK_INPUT_OUTPUT;
@@ -7133,26 +7125,18 @@ static void gabedit_contoursplot_realize (GtkWidget *widget)
 	GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
 
   attributes.visual = gtk_widget_get_visual (widget);
-  /* TODO GTK3: colormap attribute removed in GTK3 */
-  /* attributes.colormap = gtk_widget_get_colormap (widget); */
+  attributes.colormap = gtk_widget_get_colormap (widget);
 
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL /* | GDK_WA_COLORMAP */;
-/* TODO GTK3: widget->window assignment needs major refactoring - use gtk_widget_register_window */
-  GtkWidget *parent = gtk_widget_get_parent(widget);
-  GdkWindow *parent_window = parent ? gtk_widget_get_window(parent) : NULL;
-  GdkWindow *window = gdk_window_new (parent_window, &attributes, attributes_mask);
-  gtk_widget_set_window(widget, window);
-  gtk_widget_register_window(widget, window);
+  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+  widget->window = gdk_window_new (widget->parent->window, &attributes, attributes_mask);
 
-/* TODO GTK3: widget->style assignment needs refactoring - use GtkStyleContext */
-  /* widget->style = gtk_style_attach (widget->style, window); */
+  widget->style = gtk_style_attach (widget->style, widget->window);
 
-  gdk_window_set_user_data (window, widget);
+  gdk_window_set_user_data (widget->window, widget);
 
-  /* TODO GTK3: Replace gtk_style_set_background with CSS or GtkStyleContext */
-  /* gtk_style_set_background (widget->style, window, GTK_STATE_ACTIVE); */
+  gtk_style_set_background (widget->style, widget->window, GTK_STATE_ACTIVE);
        
-  colormap=gdk_drawable_get_colormap(window); 
+  colormap=gdk_drawable_get_colormap(widget->window); 
 
   black.red = 0;
   black.green = 0;
@@ -7165,48 +7149,41 @@ static void gabedit_contoursplot_realize (GtkWidget *widget)
   gdk_colormap_alloc_color (colormap, &white, FALSE, TRUE);
 
 
-  /* TODO GTK3: Replace gtk_widget_modify_bg/fg with gtk_widget_override_background/foreground_color and GdkRGBA */
-  GdkRGBA white_rgba, black_rgba;
-  gdk_rgba_parse(&white_rgba, "white");
-  gdk_rgba_parse(&black_rgba, "black");
-  gtk_widget_override_background_color(widget, GTK_STATE_FLAG_NORMAL, &white_rgba);
-  gtk_widget_override_color(widget, GTK_STATE_FLAG_NORMAL, &black_rgba);
+  gtk_widget_modify_bg (widget, GTK_STATE_NORMAL, &white);
+  gtk_widget_modify_fg (widget, GTK_STATE_NORMAL, &black);
     
   gc_values.foreground=white;
   gc_values.line_style=GDK_LINE_SOLID;
   gc_values.line_width=1;
   gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-  contoursplot->back_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+  contoursplot->back_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
   
   gc_values.foreground=black;
   gc_values.line_style=GDK_LINE_SOLID;
   gc_values.line_width=2;
   gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-  contoursplot->fore_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+  contoursplot->fore_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
   
   gc_values.foreground=black;
-  contoursplot->hmajor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
-  contoursplot->vmajor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+  contoursplot->hmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+  contoursplot->vmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
   
   gc_values.foreground=black;
   gc_values.line_style=GDK_LINE_ON_OFF_DASH;
   gc_values.line_width=1;
   gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-  contoursplot->hminor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
-  contoursplot->vminor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+  contoursplot->hminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+  contoursplot->vminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
 
-  contoursplot->data_gc=gdk_gc_new (window);
+  contoursplot->data_gc=gdk_gc_new (widget->window);
 
   gc_values.foreground=black;
   gc_values.line_style=GDK_LINE_SOLID;
   gc_values.line_width=2;
   gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-  contoursplot->lines_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+  contoursplot->lines_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
 
-  /* TODO GTK3: Replace widget->style->font_desc with gtk_style_context_get_font */
-  GtkStyleContext *context = gtk_widget_get_style_context(widget);
-  const PangoFontDescription *font_desc = gtk_style_context_get_font(context, GTK_STATE_FLAG_NORMAL);
-  contoursplot->font_size =  contoursplot_get_font_size (widget, (PangoFontDescription*)font_desc);
+  contoursplot->font_size =  contoursplot_get_font_size (widget, widget->style->font_desc);
 
   /* Create the initial legends*/
   contoursplot->v_legends_str = NULL;
@@ -7234,24 +7211,13 @@ static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor,
 
 	contoursplot = GABEDIT_ContoursPLOT (widget);
 
-	GdkWindow *window = gtk_widget_get_window(widget);
-	colormap=gdk_drawable_get_colormap(window); 
+	colormap=gdk_drawable_get_colormap(widget->window); 
 
 	gdk_colormap_alloc_color (colormap, backColor, FALSE, TRUE);
 	gdk_colormap_alloc_color (colormap, foreColor, FALSE, TRUE);
 
-	/* TODO GTK3: Replace gtk_widget_modify_bg/fg with gtk_widget_override_background/foreground_color and GdkRGBA */
-	GdkRGBA back_rgba, fore_rgba;
-	back_rgba.red = backColor->red / 65535.0;
-	back_rgba.green = backColor->green / 65535.0;
-	back_rgba.blue = backColor->blue / 65535.0;
-	back_rgba.alpha = 1.0;
-	fore_rgba.red = foreColor->red / 65535.0;
-	fore_rgba.green = foreColor->green / 65535.0;
-	fore_rgba.blue = foreColor->blue / 65535.0;
-	fore_rgba.alpha = 1.0;
-	gtk_widget_override_background_color(widget, GTK_STATE_FLAG_NORMAL, &back_rgba);
-	gtk_widget_override_color(widget, GTK_STATE_FLAG_NORMAL, &fore_rgba);
+	gtk_widget_modify_bg (widget, GTK_STATE_NORMAL, backColor);
+	gtk_widget_modify_fg (widget, GTK_STATE_NORMAL, foreColor);
 
 	if (contoursplot->back_gc && G_IS_OBJECT(contoursplot->back_gc))
 	{
@@ -7299,27 +7265,27 @@ static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor,
 	gc_values.line_style=GDK_LINE_SOLID;
 	gc_values.line_width=line_width;
 	gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-	contoursplot->back_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+	contoursplot->back_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
 
 	gc_values.foreground=*foreColor;
 	gc_values.line_style=GDK_LINE_SOLID;
 	gc_values.line_width=line_width;
 	gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-	contoursplot->fore_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+	contoursplot->fore_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
 	
 	gc_values.foreground=*foreColor;
-	contoursplot->hmajor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
-	contoursplot->vmajor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+	contoursplot->hmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+	contoursplot->vmajor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
 	
 	gc_values.foreground=*foreColor;
 	gc_values.line_style=GDK_LINE_ON_OFF_DASH;
 	if(line_width/2>0) gc_values.line_width=line_width/2;
 	else gc_values.line_width=line_width;
 	gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-	contoursplot->hminor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
-	contoursplot->vminor_grid_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+	contoursplot->hminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
+	contoursplot->vminor_grid_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
 
-	contoursplot->data_gc=gdk_gc_new (window);
+	contoursplot->data_gc=gdk_gc_new (widget->window);
 
 	if (contoursplot->nObjectsLine<1)
 	{
@@ -7332,7 +7298,7 @@ static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor,
 		gc_values.line_style=GDK_LINE_SOLID;
 		gc_values.line_width=line_width;
 		gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-		contoursplot->lines_gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+		contoursplot->lines_gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
 	}
 
 	contoursplot_build_legends(contoursplot);
@@ -7385,8 +7351,7 @@ static void theme_line_width_changed_value(GtkSpinButton *spinbutton, gpointer u
 
   		g_return_if_fail (GABEDIT_IS_ContoursPLOT (widget));
 		contoursplot = GABEDIT_ContoursPLOT(widget);
-     GdkWindow *window = gtk_widget_get_window(widget);
-   		colormap  = gdk_window_get_colormap(window);
+   		colormap  = gdk_window_get_colormap(widget->window);
 
 		gdk_gc_get_values(contoursplot->back_gc, &gc_values);
         	gdk_colormap_query_color(colormap, gc_values.foreground.pixel,&backColor);
@@ -7412,8 +7377,7 @@ static void theme_back_color_changed_value(GtkColorButton  *colorbutton, gpointe
 
   		g_return_if_fail (GABEDIT_IS_ContoursPLOT (widget));
 		contoursplot = GABEDIT_ContoursPLOT(widget);
-     GdkWindow *window = gtk_widget_get_window(widget);
-   		colormap  = gdk_window_get_colormap(window);
+   		colormap  = gdk_window_get_colormap(widget->window);
 		gtk_color_button_get_color (colorbutton, &backColor);
 		gdk_gc_get_values(contoursplot->fore_gc, &gc_values);
         	gdk_colormap_query_color(colormap, gc_values.foreground.pixel,&foreColor);
@@ -7437,8 +7401,7 @@ static void theme_fore_color_changed_value(GtkColorButton  *colorbutton, gpointe
 
   		g_return_if_fail (GABEDIT_IS_ContoursPLOT (widget));
 		contoursplot = GABEDIT_ContoursPLOT(widget);
-     GdkWindow *window = gtk_widget_get_window(widget);
-   		colormap  = gdk_window_get_colormap(window);
+   		colormap  = gdk_window_get_colormap(widget->window);
 		gtk_color_button_get_color (colorbutton, &foreColor);
 		gdk_gc_get_values(contoursplot->back_gc, &gc_values);
         	gdk_colormap_query_color(colormap, gc_values.foreground.pixel,&backColor);
@@ -7469,8 +7432,7 @@ static void set_theme_dialog(GtkWidget* widget)
 
   	g_return_if_fail (GABEDIT_IS_ContoursPLOT (widget));
 	contoursplot = GABEDIT_ContoursPLOT(widget);
-    GdkWindow *window = gtk_widget_get_window(widget);
-   	colormap  = gdk_window_get_colormap(window);
+   	colormap  = gdk_window_get_colormap(widget->window);
 
 	gdk_gc_get_values(contoursplot->back_gc, &gc_values);
         gdk_colormap_query_color(colormap, gc_values.foreground.pixel,&backColor);
@@ -7559,18 +7521,15 @@ static void gabedit_contoursplot_size_allocate (GtkWidget *widget, GtkAllocation
   g_return_if_fail (GABEDIT_IS_ContoursPLOT (widget));
   g_return_if_fail (allocation != NULL);
 
-  gtk_widget_set_allocation(widget, allocation);
+  widget->allocation = *allocation;
   contoursplot=GABEDIT_ContoursPLOT(widget);  
 
-  if (gtk_widget_get_realized(widget))
-  {
-    GdkWindow *window = gtk_widget_get_window(widget);
-    gdk_window_move_resize (window,
+  if (GTK_WIDGET_REALIZED (widget))
+    gdk_window_move_resize (widget->window,
 			allocation->x, 
 			allocation->y,
 			allocation->width, 
 			allocation->height);
-  }
     
   contoursplot_calculate_sizes(contoursplot);
 }
@@ -7741,8 +7700,7 @@ static void draw_lines(GtkWidget *widget, GabeditContoursPlot *contoursplot, Con
 static void draw_zoom_rectangle(GtkWidget *widget, GabeditContoursPlot *contoursplot)
 {
 	if (!contoursplot->mouse_zoom_enabled || contoursplot->mouse_button != contoursplot->mouse_zoom_button) return;
- GdkWindow *window = gtk_widget_get_window(widget);
-	gdk_draw_rectangle(window,
+	gdk_draw_rectangle(widget->window,
 			contoursplot->fore_gc,
 			FALSE,
 			contoursplot->zoom_rect.x,
@@ -7771,8 +7729,7 @@ static void draw_object_line_gdk(GtkWidget *widget, GabeditContoursPlot *contour
 			GDK_JOIN_MITER);
 		arrow_size = contoursplot->objectsLine[i].arrow_size;
 	}
- GdkWindow *window = gtk_widget_get_window(widget);
-	gdk_draw_line(window, contoursplot->lines_gc,
+	gdk_draw_line(widget->window, contoursplot->lines_gc,
 			contoursplot->object_begin_point.x,
 			contoursplot->object_begin_point.y,
 			contoursplot->object_end_point.x,
@@ -7789,13 +7746,13 @@ static void draw_object_line_gdk(GtkWidget *widget, GabeditContoursPlot *contour
 		&x1, &y1, 
 		&x2, &y2
 		);
-		gdk_draw_line(window, contoursplot->lines_gc,
+		gdk_draw_line(widget->window, contoursplot->lines_gc,
 			(gint)x1,
 			(gint)y1,
 			contoursplot->object_end_point.x,
 			contoursplot->object_end_point.y
 		     );
-		gdk_draw_line(window, contoursplot->lines_gc,
+		gdk_draw_line(widget->window, contoursplot->lines_gc,
 			(gint)x2,
 			(gint)y2,
 			contoursplot->object_end_point.x,
@@ -7830,7 +7787,7 @@ static void draw_rotated_rectangle(GtkWidget *widget, GabeditContoursPlot* conto
 		&points[1].x, &points[1].y,
 		&points[2].x, &points[2].y,
 		&points[3].x, &points[3].y);
-	gdk_draw_polygon(window, contoursplot->fore_gc, FALSE, points, 4);
+	gdk_draw_polygon(widget->window, contoursplot->fore_gc, FALSE, points, 4);
 }
 /****************************************************************************************/
 static void draw_selected_objects_text_rectangle(GtkWidget *widget, GabeditContoursPlot *contoursplot)
@@ -7840,8 +7797,7 @@ static void draw_selected_objects_text_rectangle(GtkWidget *widget, GabeditConto
 	if(i<0 || i>=contoursplot->nObjectsText) return;
 	if (contoursplot->mouse_zoom_enabled && contoursplot->mouse_button == contoursplot->mouse_zoom_button) return;
 	/*
- GdkWindow *window = gtk_widget_get_window(widget);
-	gdk_draw_rectangle(window,
+	gdk_draw_rectangle(widget->window,
 			contoursplot->fore_gc,
 			FALSE,
 			contoursplot->objectsText[i].xi,
@@ -7950,8 +7906,7 @@ static void draw_selected_objects_image_rectangle(GtkWidget *widget, GabeditCont
 	gint i = contoursplot->selected_objects_image_num;
 	if(i<0 || i>=contoursplot->nObjectsImage) return;
 	if (contoursplot->mouse_zoom_enabled && contoursplot->mouse_button == contoursplot->mouse_zoom_button) return;
- GdkWindow *window = gtk_widget_get_window(widget);
-	gdk_draw_rectangle(window,
+	gdk_draw_rectangle(widget->window,
 			contoursplot->fore_gc,
 			FALSE,
 			contoursplot->objectsImage[i].xi,
@@ -7986,27 +7941,27 @@ static void draw_distance_line(GtkWidget *widget, GabeditContoursPlot *contoursp
 	rect.height=gtk_widget_get_allocated_height(widget);
 	playout=gtk_widget_create_pango_layout (widget, begin);
 	if(!playout) return;
-	GdkWindow *window = gtk_widget_get_window(widget);
-	/* TODO GTK3: Replace gtk_paint_layout with pango_cairo_show_layout */
-	cairo_t *cr = gdk_cairo_create(window);
-	cairo_move_to(cr, contoursplot->distance_rect.x, contoursplot->distance_rect.y);
-	pango_cairo_show_layout(cr, playout);
+	gtk_paint_layout (widget->style, widget->window, 
+			GTK_STATE_NORMAL, FALSE, 
+			&rect, widget, NULL, 
+			contoursplot->distance_rect.x,
+			contoursplot->distance_rect.y,
+			playout);
 	if (playout) g_object_unref(G_OBJECT(playout));
 	playout=gtk_widget_create_pango_layout (widget, end);
-	/* TODO GTK3: Replace gtk_paint_layout with pango_cairo_show_layout */
-	cairo_move_to(cr, contoursplot->distance_rect.x, contoursplot->distance_rect.y + rect.height/2);
-	pango_cairo_show_layout(cr, playout);
+	gtk_paint_layout (widget->style, widget->window, 
+			GTK_STATE_NORMAL, FALSE, 
+			&rect, widget, NULL, 
+			contoursplot->distance_rect.x+contoursplot->distance_rect.width,
+			contoursplot->distance_rect.y+contoursplot->distance_rect.height,
+			playout);
 	if (playout) g_object_unref(G_OBJECT(playout));
-	cairo_destroy(cr);
-	/* TODO GTK3: Replace gdk_draw_line with cairo */
-	cr = gdk_cairo_create(window);
-	cairo_set_source_rgb(cr, 0, 0, 0);
-	cairo_move_to(cr, contoursplot->distance_rect.x, contoursplot->distance_rect.y);
-	cairo_line_to(cr,
+	gdk_draw_line(widget->window,
+			contoursplot->fore_gc,
+			contoursplot->distance_rect.x,
+			contoursplot->distance_rect.y,
 			contoursplot->distance_rect.x+contoursplot->distance_rect.width,
 			contoursplot->distance_rect.y+contoursplot->distance_rect.height);
-	cairo_stroke(cr);
-	cairo_destroy(cr);
 
 }
 /****************************************************************************************/
@@ -8414,10 +8369,8 @@ static void draw_background(GtkWidget *widget, GabeditContoursPlot *contoursplot
 	rect.width=gtk_widget_get_allocated_width(widget);
 	rect.height=gtk_widget_get_allocated_height(widget);
 
- /* TODO GTK3: Replace widget->style with GtkStyleContext */
 	gtk_paint_flat_box (widget->style,
-   GdkWindow *window = gtk_widget_get_window(widget);
-			window,
+			widget->window,
 			GTK_STATE_NORMAL,
 			GTK_SHADOW_NONE,
 			&rect,
@@ -8600,17 +8553,15 @@ static void set_old_area(GtkWidget *widget, GabeditContoursPlot *contoursplot)
 	if (contoursplot->old_area!=NULL) g_object_unref(G_OBJECT(contoursplot->old_area));
 	contoursplot->old_area=NULL;
 
- GdkWindow *window = gtk_widget_get_window(widget);
-	if (gtk_widget_get_realized(widget) &&  window) 
+	if (GTK_WIDGET_REALIZED(widget) &&  widget->window) 
 	{
-		contoursplot->old_area=gdk_pixmap_copy(window);
+		contoursplot->old_area=gdk_pixmap_copy(widget->window);
 	}
 }
 /****************************************************************************************/
 static void draw_plotting_area(GtkWidget *widget, GabeditContoursPlot *contoursplot)
 {
- GdkWindow *window = gtk_widget_get_window(widget);
-	gdk_draw_drawable (window, 
+	gdk_draw_drawable (widget->window, 
 			contoursplot->back_gc, 
 			contoursplot->plotting_area, 
 			0, 
@@ -8628,9 +8579,8 @@ static gint gabedit_contoursplot_draw (GtkWidget *widget)
 
 	g_return_val_if_fail (widget != NULL, FALSE);
 	g_return_val_if_fail (GTK_IS_WIDGET(widget), FALSE);
- GdkWindow *window = gtk_widget_get_window(widget);
-	if(!window) return FALSE;
-	if(!window != NULL) return FALSE;
+	if(!widget->window) return FALSE;
+	if(!GDK_IS_DRAWABLE (widget->window)) return FALSE;
 	g_return_val_if_fail (GABEDIT_IS_ContoursPLOT (widget), FALSE);
 
 	contoursplot=GABEDIT_ContoursPLOT(widget);
@@ -8639,7 +8589,7 @@ static gint gabedit_contoursplot_draw (GtkWidget *widget)
 	if (contoursplot->cairo_widget)
 	{
     		cairo_destroy (contoursplot->cairo_widget);
-    		contoursplot->cairo_widget = gdk_cairo_create (window);
+    		contoursplot->cairo_widget = gdk_cairo_create (widget->window);
 	}
 	if (contoursplot->cairo_area)
 	{
@@ -8690,8 +8640,7 @@ static gint gabedit_contoursplot_expose (GtkWidget *widget, GdkEventExpose *even
 		gint width;
 		gint height;
 		gdk_drawable_get_size(contoursplot->old_area, &width, &height);
-  GdkWindow *window = gtk_widget_get_window(widget);
-		gdk_draw_drawable (window, 
+		gdk_draw_drawable (widget->window, 
 		contoursplot->back_gc, 
 		contoursplot->old_area, 
 		0, 
@@ -8709,8 +8658,7 @@ static gint gabedit_contoursplot_expose (GtkWidget *widget, GdkEventExpose *even
 		gint width;
 		gint height;
 		gdk_drawable_get_size(contoursplot->old_area, &width, &height);
-  GdkWindow *window = gtk_widget_get_window(widget);
-		gdk_draw_drawable (window, 
+		gdk_draw_drawable (widget->window, 
 		contoursplot->back_gc, 
 		contoursplot->old_area, 
 		0, 
@@ -8728,7 +8676,7 @@ static gint gabedit_contoursplot_expose (GtkWidget *widget, GdkEventExpose *even
 		gint width;
 		gint height;
 		gdk_drawable_get_size(contoursplot->old_area, &width, &height);
-		gdk_draw_drawable (window, 
+		gdk_draw_drawable (widget->window, 
 		contoursplot->back_gc, 
 		contoursplot->old_area, 
 		0, 
@@ -8746,7 +8694,7 @@ static gint gabedit_contoursplot_expose (GtkWidget *widget, GdkEventExpose *even
 		gint width;
 		gint height;
 		gdk_drawable_get_size(contoursplot->old_area, &width, &height);
-		gdk_draw_drawable (window, 
+		gdk_draw_drawable (widget->window, 
 		contoursplot->back_gc, 
 		contoursplot->old_area, 
 		0, 
@@ -8764,7 +8712,7 @@ static gint gabedit_contoursplot_expose (GtkWidget *widget, GdkEventExpose *even
 		gint width;
 		gint height;
 		gdk_drawable_get_size(contoursplot->old_area, &width, &height);
-		gdk_draw_drawable (window, 
+		gdk_draw_drawable (widget->window, 
 		contoursplot->back_gc, 
 		contoursplot->old_area, 
 		0, 
@@ -9116,8 +9064,7 @@ static gint gabedit_contoursplot_button_press (GtkWidget *widget, GdkEventButton
 				evals[1], evecs[1][0], evecs[1][1]
 				);
 		if(evals[0]>=0)
-  GdkWindow *window = gtk_widget_get_window(widget);
-		gdk_draw_line(window,
+		gdk_draw_line(widget->window,
 			contoursplot->fore_gc,
 			event->x-(gint)(evecs[0][0]*contoursplot->plotting_rect.width/10),
 			event->y-(gint)(evecs[0][1]*contoursplot->plotting_rect.height/10),
@@ -9125,7 +9072,7 @@ static gint gabedit_contoursplot_button_press (GtkWidget *widget, GdkEventButton
 			event->y+(gint)(evecs[0][1]*contoursplot->plotting_rect.height/10));
 
 		if(evals[1]>=0)
-		gdk_draw_line(window,
+		gdk_draw_line(widget->window,
 			contoursplot->fore_gc,
 			event->x-(gint)(evecs[1][0]*contoursplot->plotting_rect.width/10),
 			event->y-(gint)(evecs[1][1]*contoursplot->plotting_rect.height/10),
@@ -9147,12 +9094,11 @@ static gint gabedit_contoursplot_button_press (GtkWidget *widget, GdkEventButton
 			gc_values.line_style=GDK_LINE_SOLID;
 			gc_values.line_width=2;
 			gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-      GdkWindow *window = gtk_widget_get_window(widget);
-   			colormap  = gdk_window_get_colormap(window);
+   			colormap  = gdk_window_get_colormap(widget->window);
 			gdk_colormap_alloc_color (colormap, &col, FALSE, TRUE);
-			gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+			gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
 			 gdk_gc_set_foreground(gc,&col);
-			gdk_draw_line(window,gc,
+			gdk_draw_line(widget->window,gc,
 			event->x-(gint)(evecs[0][0]*contoursplot->plotting_rect.width/10),
 			event->y-(gint)(evecs[0][1]*contoursplot->plotting_rect.height/10),
 			event->x+(gint)(evecs[0][0]*contoursplot->plotting_rect.width/10),
@@ -9175,12 +9121,11 @@ static gint gabedit_contoursplot_button_press (GtkWidget *widget, GdkEventButton
 			gc_values.line_style=GDK_LINE_SOLID;
 			gc_values.line_width=2;
 			gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-      GdkWindow *window = gtk_widget_get_window(widget);
-   			colormap  = gdk_window_get_colormap(window);
+   			colormap  = gdk_window_get_colormap(widget->window);
 			gdk_colormap_alloc_color (colormap, &col, FALSE, TRUE);
-			gc=gdk_gc_new_with_values (window, &gc_values, gc_values_mask);
+			gc=gdk_gc_new_with_values (widget->window, &gc_values, gc_values_mask);
 			 gdk_gc_set_foreground(gc,&col);
-			gdk_draw_line(window,gc,
+			gdk_draw_line(widget->window,gc,
 			event->x-(gint)(evecs[1][0]*contoursplot->plotting_rect.width/10),
 			event->y-(gint)(evecs[1][1]*contoursplot->plotting_rect.height/10),
 			event->x+(gint)(evecs[1][0]*contoursplot->plotting_rect.width/10),
@@ -9197,9 +9142,7 @@ static gint gabedit_contoursplot_button_press (GtkWidget *widget, GdkEventButton
 		rect.y=0; 
 		rect.width=gtk_widget_get_allocated_width(widget);
 		rect.height=gtk_widget_get_allocated_height(widget);
-  GdkWindow *window = gtk_widget_get_window(widget);
-  /* TODO GTK3: Replace widget->style with GtkStyleContext */
-		gtk_paint_layout (widget->style, window, 
+		gtk_paint_layout (widget->style, widget->window, 
 			GTK_STATE_NORMAL, FALSE, 
 			&rect, widget, NULL, 
 			event->x,
@@ -9472,9 +9415,8 @@ static gint gabedit_contoursplot_motion_notify (GtkWidget *widget, GdkEventMotio
   x = event->x;
   y = event->y;
   
-  GdkWindow *window = gtk_widget_get_window(widget);
-  if (event->is_hint || (event->window != window))
-      gdk_window_get_pointer (window, (gint *)&x, (gint *)&y, NULL);
+  if (event->is_hint || (event->window != widget->window))
+      gdk_window_get_pointer (widget->window, (gint *)&x, (gint *)&y, NULL);
 
   if (contoursplot->selected_objects_text_num>-1) 
   {
@@ -10484,8 +10426,7 @@ static void writeTransparentPNG(GabeditContoursPlot *contoursplot, gchar *fileNa
 	GdkPixbuf  *pixbuf = NULL;
 	width =  gtk_widget_get_allocated_width(widget);
 	height = gtk_widget_get_allocated_height(widget);
- GdkWindow *window = gtk_widget_get_window(widget);
-	pixbuf = gdk_pixbuf_get_from_window(window, NULL, 0, 0, 0, 0, width, height);
+	pixbuf = gdk_pixbuf_get_from_drawable(NULL, widget->window, NULL, 0, 0, 0, 0, width, height);
 	if(pixbuf)
 	{
 		GdkPixbuf  *pixbufNew = NULL;
@@ -10494,7 +10435,7 @@ static void writeTransparentPNG(GabeditContoursPlot *contoursplot, gchar *fileNa
 		GdkGCValues gc_values;
 
 		GdkColormap *colormap;
-   		colormap  = gdk_window_get_colormap(window);
+   		colormap  = gdk_window_get_colormap(widget->window);
 		gdk_gc_get_values(contoursplot->back_gc, &gc_values);
         	gdk_colormap_query_color(colormap, gc_values.foreground.pixel,&c);
 
@@ -10532,8 +10473,7 @@ void gabedit_contoursplot_save_image(GabeditContoursPlot *contoursplot, gchar *f
 
 	width =  gtk_widget_get_allocated_width(widget);
 	height = gtk_widget_get_allocated_height(widget);
- GdkWindow *window = gtk_widget_get_window(widget);
-	pixbuf = gdk_pixbuf_get_from_window(window, NULL, 0, 0, 0, 0, width, height);
+	pixbuf = gdk_pixbuf_get_from_drawable(NULL, widget->window, NULL, 0, 0, 0, 0, width, height);
 	if(pixbuf)
 	{
 		if(!fileName)
@@ -10613,12 +10553,11 @@ static void contoursplot_calculate_sizes (GabeditContoursPlot *contoursplot)
   if (contoursplot->cairo_widget!=NULL) cairo_destroy (contoursplot->cairo_widget);
   if (contoursplot->cairo_area!=NULL) cairo_destroy (contoursplot->cairo_area);
 
-  if (gtk_widget_get_realized(widget)) 
+  if (GTK_WIDGET_REALIZED(widget)) 
   {
-    GdkWindow *window = gtk_widget_get_window(widget);
-    contoursplot->plotting_area=gdk_pixmap_new(window, contoursplot->plotting_rect.width, contoursplot->plotting_rect.height, -1);
+    contoursplot->plotting_area=gdk_pixmap_new(widget->window, contoursplot->plotting_rect.width, contoursplot->plotting_rect.height, -1);
     contoursplot->cairo_area = gdk_cairo_create (contoursplot->plotting_area);
-    contoursplot->cairo_widget = gdk_cairo_create (window);
+    contoursplot->cairo_widget = gdk_cairo_create (widget->window);
   }
   contoursplot->colormap_height = contoursplot->plotting_rect.height;
   reset_object_text_pixels(contoursplot);
@@ -10661,7 +10600,6 @@ static void contoursplot_calculate_colormap_sizes(GabeditContoursPlot *contoursp
 
   if (contoursplot->colormap_legends)
   {
-     /* TODO GTK3: Replace widget->style with GtkStyleContext */
     	pango_layout_set_font_description (contoursplot->colormap_legends[0], widget->style->font_desc);  
     	pango_layout_get_size(contoursplot->colormap_legends[0], &(contoursplot->colormap_width), &(contoursplot->colormap_height));
 	contoursplot->colormap_width /=PANGO_SCALE;
@@ -10728,20 +10666,17 @@ static void contoursplot_calculate_legends_sizes(GabeditContoursPlot *contourspl
 
   if (contoursplot->h_legends)
   {
-    /* TODO GTK3: Replace widget->style with GtkStyleContext */
     pango_layout_set_font_description (contoursplot->h_legends[0], widget->style->font_desc);  
     pango_layout_get_size(contoursplot->h_legends[0], &(contoursplot->x_legends_width), &(contoursplot->x_legends_height));
   }
   if (contoursplot->v_legends)
   {
 	gint i;
-     /* TODO GTK3: Replace widget->style with GtkStyleContext */
     	pango_layout_set_font_description (contoursplot->v_legends[0], widget->style->font_desc);  
     	pango_layout_get_size(contoursplot->v_legends[0], &(contoursplot->y_legends_width), &(contoursplot->y_legends_height));
     	for (i=1; i<contoursplot->vmajor_ticks; i++)
     	{
 		gint w,h;
-      /* TODO GTK3: Replace widget->style with GtkStyleContext */
     		pango_layout_set_font_description (contoursplot->v_legends[i], widget->style->font_desc);  
     		pango_layout_get_size(contoursplot->v_legends[i], &w,&h); 
 		if(w>contoursplot->y_legends_width) contoursplot->y_legends_width=w;
@@ -10758,7 +10693,6 @@ static void contoursplot_calculate_legends_sizes(GabeditContoursPlot *contourspl
   contoursplot->h_label_height =0;
   if (contoursplot->h_label)
   {
-     /* TODO GTK3: Replace widget->style with GtkStyleContext */
     	pango_layout_set_font_description (contoursplot->h_label, widget->style->font_desc);  
     	pango_layout_get_size(contoursplot->h_label, &(contoursplot->h_label_width), &(contoursplot->h_label_height));
 	contoursplot->h_label_width /=PANGO_SCALE;
@@ -10768,7 +10702,6 @@ static void contoursplot_calculate_legends_sizes(GabeditContoursPlot *contourspl
   contoursplot->v_label_height =0;
   if (contoursplot->v_label)
   {
-     /* TODO GTK3: Replace widget->style with GtkStyleContext */
     	pango_layout_set_font_description (contoursplot->v_label, widget->style->font_desc);  
     	pango_layout_get_size(contoursplot->v_label, &(contoursplot->v_label_width), &(contoursplot->v_label_height));
 	contoursplot->v_label_width /=PANGO_SCALE;
