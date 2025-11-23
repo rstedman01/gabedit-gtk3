@@ -155,13 +155,12 @@ struct _GabeditContoursPlot
 
   gboolean show_label_contours;
   
-  ContoursColorMap colorsMap; 
+  ContoursColorMap colorsMap;
+  cairo_surface_t *plotting_area_surface; 
   GdkPixbuf *old_area_pixbuf;
   cairo_t *cairo_widget; 
   cairo_t *cairo_area; 
-  cairo_surface_t *plotting_area_surface;
   cairo_t *cairo_export; 
-  GdkPixbuf *old_area_pixbuf;
   GdkRectangle plotting_rect;
   gint x_legends_digits; 
   gint y_legends_digits; 

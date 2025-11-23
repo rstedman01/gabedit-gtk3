@@ -8987,6 +8987,21 @@ static gboolean popuo_menu(GtkWidget* widget, guint button, guint32 time)
 	return FALSE;
 }
 /****************************************************************************************/
+/* Helper function for drawing line onto a widget's GdkWindow using GdkRGBA and Cairo.
+Maintains gdk_draw_line + GdkGC behavior while using GTK3 APIs */
+static void contoursplot_draw_line_rgba(GtkWidget *widget, const GdkRGBA *rgba, double line_width, gint x1, gint y1, gint x2, gint y2)
+{
+	GdkWindow *win = gtk_widget_get_window(widget);
+	if (!win) return;
+	cairo_t *cr = gdk_cairo_create(win);
+	cairo_set_source_rgba(cr, rgba->red, rgba->green, rgba->blue, rgba->alpha);
+	cairo_set_line_width(cr, line_width);
+	cairo_move_to(cr, (double)x1, (double)y1);
+	cairo_line_to(cr, (double)x2, (double)y2);
+	cairo_stroke(cr);
+	cairo_destroy(cr);
+}
+/****************************************************************************************/
 static gint gabedit_contoursplot_button_press (GtkWidget *widget, GdkEventButton *event)
 {
   GabeditContoursPlot *contoursplot;
@@ -9152,57 +9167,23 @@ static gint gabedit_contoursplot_button_press (GtkWidget *widget, GdkEventButton
 			event->y+(gint)(evecs[1][1]*contoursplot->plotting_rect.height/10));
 		if(evals[0]<0)
 		{
-  			GdkGC* gc;
-  			GdkGCValues gc_values;
-  			GdkGCValuesMask gc_values_mask;
-  			GdkColor col;
-			GdkColormap *colormap;
+    		gint x1 = event->x - (gint)(evecs[0][0] * contoursplot->plotting_rect.width / 10);
+    		gint y1 = event->y - (gint)(evecs[0][1] * contoursplot->plotting_rect.height / 10);
+    		gint x2 = event->x + (gint)(evecs[0][0] * contoursplot->plotting_rect.width / 10);
+    		gint y2 = event->y + (gint)(evecs[0][1] * contoursplot->plotting_rect.height / 10);
 
-			col.red = 65000;
-  			col.green = 0;
-			col.blue = 0;
-
-			gc_values.foreground=col;
-			gc_values.line_style=GDK_LINE_SOLID;
-			gc_values.line_width=2;
-			gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-   			colormap  = gdk_window_get_colormap(gtk_widget_get_window(widget));
-			gdk_colormap_alloc_color (colormap, &col, FALSE, TRUE);
-			gc=gdk_gc_new_with_values (gtk_widget_get_window(widget), &gc_values, gc_values_mask);
-			 gdk_gc_set_foreground(gc,&col);
-			gdk_draw_line(gtk_widget_get_window(widget),gc,
-			event->x-(gint)(evecs[0][0]*contoursplot->plotting_rect.width/10),
-			event->y-(gint)(evecs[0][1]*contoursplot->plotting_rect.height/10),
-			event->x+(gint)(evecs[0][0]*contoursplot->plotting_rect.width/10),
-			event->y+(gint)(evecs[0][1]*contoursplot->plotting_rect.height/10));
-			g_object_unref(gc);
+    		GdkRGBA red = { 65000.0/65535.0, 0.0, 0.0, 1.0 };
+    		contoursplot_draw_line_rgba(widget, &red, 2.0, x1, y1, x2, y2);
 		}
 		if(evals[1]<0)
 		{
-  			GdkGC* gc;
-  			GdkGCValues gc_values;
-  			GdkGCValuesMask gc_values_mask;
-  			GdkColor col;
-			GdkColormap *colormap;
-
-			col.red = 65000;
-  			col.green = 0;
-			col.blue = 0;
-
-			gc_values.foreground=col;
-			gc_values.line_style=GDK_LINE_SOLID;
-			gc_values.line_width=2;
-			gc_values_mask=GDK_GC_FOREGROUND | GDK_GC_LINE_STYLE | GDK_GC_LINE_WIDTH;
-   			colormap  = gdk_window_get_colormap(gtk_widget_get_window(widget));
-			gdk_colormap_alloc_color (colormap, &col, FALSE, TRUE);
-			gc=gdk_gc_new_with_values (gtk_widget_get_window(widget), &gc_values, gc_values_mask);
-			 gdk_gc_set_foreground(gc,&col);
-			gdk_draw_line(gtk_widget_get_window(widget),gc,
-			event->x-(gint)(evecs[1][0]*contoursplot->plotting_rect.width/10),
-			event->y-(gint)(evecs[1][1]*contoursplot->plotting_rect.height/10),
-			event->x+(gint)(evecs[1][0]*contoursplot->plotting_rect.width/10),
-			event->y+(gint)(evecs[1][1]*contoursplot->plotting_rect.height/10));
-			g_object_unref(gc);
+    		gint x1 = event->x - (gint)(evecs[1][0] * contoursplot->plotting_rect.width / 10);
+    		gint y1 = event->y - (gint)(evecs[1][1] * contoursplot->plotting_rect.height / 10);
+    		gint x2 = event->x + (gint)(evecs[1][0] * contoursplot->plotting_rect.width / 10);
+    		gint y2 = event->y + (gint)(evecs[1][1] * contoursplot->plotting_rect.height / 10);
+				
+    		GdkRGBA red = { 65000.0/65535.0, 0.0, 0.0, 1.0 };
+    		contoursplot_draw_line_rgba(widget, &red, 2.0, x1, y1, x2, y2);
 		}
 			
 	}
