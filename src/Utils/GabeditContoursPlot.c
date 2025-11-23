@@ -7211,7 +7211,7 @@ static void gabedit_contoursplot_realize (GtkWidget *widget)
   gtk_widget_override_background_color(widget, GTK_STATE_FLAG_NORMAL, &rgba_white);
   gtk_widget_override_color(widget, GTK_STATE_FLAG_NORMAL, &rgba_black);
 
-  /* Initialize GdkColor for any legacy code that may still reference them */
+  /* GTK3: Initialize GdkColor for legacy GC creation below (GdkGC deprecated but still used) */
   black.red = 0;
   black.green = 0;
   black.blue = 0;
