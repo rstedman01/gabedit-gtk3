@@ -158,9 +158,12 @@ struct _GabeditContoursPlot
   ContoursColorMap colorsMap;
   GdkPixmap *plotting_area; 
   GdkPixmap *old_area; 
+  GdkPixbuf *old_area_pixbuf;
   cairo_t *cairo_widget; 
   cairo_t *cairo_area; 
+  cairo_surface_t *plotting_area_surface;
   cairo_t *cairo_export; 
+  GdkPixbuf *old_area_pixbuf;
   GdkRectangle plotting_rect;
   gint x_legends_digits; 
   gint y_legends_digits; 
@@ -175,8 +178,8 @@ struct _GabeditContoursPlot
   
   gdouble d_hlegend, d_vlegend; 
   
-  GdkGC *back_gc; 
-  GdkGC *fore_gc; 
+  GdkGC *back_gc G_GNUC_UNUSED; 
+  GdkGC *fore_gc G_GNUC_UNUSED; 
   
   PangoLayout **h_legends;
   PangoLayout **v_legends;

@@ -340,7 +340,7 @@ static GdkColor get_fore_color(GabeditXYPlot *xyplot)
         GdkGCValues values;
         GdkColormap *colormap;
         GdkColor color;
-		GdkWindow *win = gtk_widget_get_window(xyplot->widget);
+		GdkWindow *win = gtk_widget_get_window(GTK_WIDGET(xyplot));
 
         gdk_gc_get_values(xyplot->fore_gc, &values);
         colormap  = gdk_window_get_colormap(win);
@@ -365,7 +365,15 @@ static void add_new_data_bands(GabeditXYPlot* xyplot, GList* X, GList** lists, g
 		gint loop;
 		XYPlotData *data = g_malloc(sizeof(XYPlotData));
 		GdkColor c = get_fore_color(GABEDIT_XYPLOT(xyplot));
-		if(color) gdk_color_parse (color, &c);
+		if(color) 
+		{
+			GdkRGBA rgba;
+
+			gdk_rgba_parse(&rgba, color);
+			c.red = (guint16)(rgba.red * 65535);
+			c.green = (guint16)(rgba.green * 65535);
+			c.blue = (guint16)(rgba.blue * 65535);
+		}
 
 		data->size=numberOfPoints;
 		data->x = g_malloc(numberOfPoints*sizeof(gdouble)); 
@@ -432,7 +440,15 @@ static void add_new_data_dos(GabeditXYPlot* xyplot, GList* X, GList* I, gchar* c
 		gint loop;
 		XYPlotData *data = g_malloc(sizeof(XYPlotData));
 		GdkColor c = get_fore_color(GABEDIT_XYPLOT(xyplot));
-		if(color) gdk_color_parse (color, &c);
+		if(color) 
+		{
+			GdkRGBA rgba;
+
+			gdk_rgba_parse(&rgba, color);
+			c.red = (guint16)(rgba.red * 65535);
+			c.green = (guint16)(rgba.green * 65535);
+			c.blue = (guint16)(rgba.blue * 65535);
+		}
 
 		data->size=numberOfPoints;
 		data->x = g_malloc(numberOfPoints*sizeof(gdouble)); 
