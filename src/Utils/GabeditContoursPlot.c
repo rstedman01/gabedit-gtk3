@@ -28,6 +28,7 @@ DEALINGS IN THE SOFTWARE.
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <cairo.h>
 #include <cairo-pdf.h>
 #include <cairo-ps.h>
 #include <cairo-svg.h>
@@ -6736,7 +6737,7 @@ static void add_widget (GtkUIManager *merge, GtkWidget   *widget, GtkContainer *
 		toolbar = GTK_TOOLBAR (widget);
 		gtk_toolbar_set_show_arrow (toolbar, TRUE);
 		gtk_toolbar_set_style(toolbar, GTK_TOOLBAR_ICONS);
-		gtk_toolbar_set_orientation(toolbar,  GTK_ORIENTATION_VERTICAL);
+		gtk_orientable_set_orientation(GTK_ORIENTABLE(toolbar),  GTK_ORIENTATION_VERTICAL);
 	}
 	gtk_widget_show (widget);
 	gtk_container_add (GTK_CONTAINER (handlebox), widget);
@@ -6950,15 +6951,15 @@ static void gabedit_contoursplot_destroy (GObject *object)
 
   contoursplot = GABEDIT_ContoursPLOT (object);
 
-  if (contoursplot->plotting_area && G_IS_OBJECT(contoursplot->plotting_area))
+  if (contoursplot->plotting_area_surface)
   {
-    g_object_unref(G_OBJECT(contoursplot->plotting_area));
-    contoursplot->plotting_area = NULL;
+    cairo_surface_destroy(contoursplot->plotting_area_surface);
+    contoursplot->plotting_area_surface = NULL;
   }
-  if (contoursplot->old_area && G_IS_OBJECT(contoursplot->old_area))
+  if (contoursplot->old_area_pixbuf && G_IS_OBJECT(contoursplot->old_area_pixbuf))
   {
-    g_object_unref(G_OBJECT(contoursplot->old_area));
-    contoursplot->old_area = NULL;
+    g_object_unref(G_OBJECT(contoursplot->old_area_pixbuf));
+    contoursplot->old_area_pixbuf = NULL;
   }
   if (contoursplot->cairo_area)
   {
@@ -7196,22 +7197,20 @@ static void gabedit_contoursplot_realize (GtkWidget *widget)
   gtk_widget_set_window(widget, window);
   gtk_widget_register_window(widget, window);
 
-  /* TODO: GTK3 Migration - Replace gdk_colormap/gtk_widget_modify with CSS or GdkRGBA */
+  GdkRGBA rgba_black, rgba_white;
+  gdk_rgba_parse(&rgba_black, "black");
+  gdk_rgba_parse(&rgba_white, "white");
+  gtk_widget_override_background_color(widget, GTK_STATE_FLAG_NORMAL, &rgba_white);
+  gtk_widget_override_color(widget, GTK_STATE_FLAG_NORMAL, &rgba_black);
   colormap=gdk_window_get_colormap(window); 
 
   black.red = 0;
   black.green = 0;
   black.blue = 0;
-  gdk_colormap_alloc_color (colormap, &black, FALSE, TRUE);
 
   white.red = 65535;
   white.green = 65535;
   white.blue = 65535;
-  gdk_colormap_alloc_color (colormap, &white, FALSE, TRUE);
-
-
-  gtk_widget_modify_bg (widget, GTK_STATE_NORMAL, &white);
-  gtk_widget_modify_fg (widget, GTK_STATE_NORMAL, &black);
     
   gc_values.foreground=white;
   gc_values.line_style=GDK_LINE_SOLID;
@@ -7278,14 +7277,22 @@ static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor,
 	window = gtk_widget_get_window(widget);
 	if (!window) return;
 
-	/* TODO: GTK3 Migration - Replace gdk_drawable_get_colormap with GdkRGBA */
+	GdkRGBA rgba_back, rgba_fore;
+	
+	rgba_back.red = backColor->red / 65535.0;
+	rgba_back.green = backColor->green / 65535.0;
+	rgba_back.blue = backColor->blue / 65535.0;
+	rgba_back.alpha = 1.0;
+	
+	rgba_fore.red = foreColor->red / 65535.0;
+	rgba_fore.green = foreColor->green / 65535.0;
+	rgba_fore.blue = foreColor->blue / 65535.0;
+	rgba_fore.alpha = 1.0;
+	
+	gtk_widget_override_background_color(widget, GTK_STATE_FLAG_NORMAL, &rgba_back);
+	gtk_widget_override_color(widget, GTK_STATE_FLAG_NORMAL, &rgba_fore);
+	
 	colormap=gdk_window_get_colormap(window); 
-
-	gdk_colormap_alloc_color (colormap, backColor, FALSE, TRUE);
-	gdk_colormap_alloc_color (colormap, foreColor, FALSE, TRUE);
-
-	gtk_widget_modify_bg (widget, GTK_STATE_NORMAL, backColor);
-	gtk_widget_modify_fg (widget, GTK_STATE_NORMAL, foreColor);
 
 	if (contoursplot->back_gc && G_IS_OBJECT(contoursplot->back_gc))
 	{
@@ -8612,7 +8619,7 @@ static void draw_data(GtkWidget *widget, GabeditContoursPlot *contoursplot)
   	}
   
 }
-/****************************************************************************************/
+/****************************************************************************************
 static GdkPixmap* gdk_pixmap_copy(GdkPixmap *pixmap)
 {
 	GdkPixmap *pixmap_out;
@@ -8629,30 +8636,43 @@ static GdkPixmap* gdk_pixmap_copy(GdkPixmap *pixmap)
 	g_object_unref(gc);
 	return pixmap_out;
 }
+****************************************************************************************/
+static GdkPixbuf* gdk_pixbuf_copy_from_window(GdkWindow *win)
+{
+    if (!win) return NULL;
+    gint x, y, width, height, depth;
+    gdk_window_get_geometry(win, &x, &y, &width, &height);
+    return gdk_pixbuf_get_from_window(win, 0, 0, width, height);
+}
 /****************************************************************************************/
 static void set_old_area(GtkWidget *widget, GabeditContoursPlot *contoursplot)
 {
-	if (contoursplot->old_area!=NULL) g_object_unref(G_OBJECT(contoursplot->old_area));
-	contoursplot->old_area=NULL;
+	if (contoursplot->old_area_pixbuf!=NULL) g_object_unref(G_OBJECT(contoursplot->old_area_pixbuf));
+	contoursplot->old_area_pixbuf=NULL;
 
-	if (GTK_WIDGET_REALIZED(widget) &&  gtk_widget_get_window(widget)) 
+	if (gtk_widget_get_realized(widget) &&  gtk_widget_get_window(widget)) 
 	{
-		contoursplot->old_area=gdk_pixmap_copy(gtk_widget_get_window(widget));
+		GdkWindow *win = gtk_widget_get_window(widget);
+		if (win) 
+		{
+			if (contoursplot->old_area_pixbuf) g_object_unref(contoursplot->old_area_pixbuf);
+			contoursplot->old_area_pixbuf = gdk_pixbuf_copy_from_window(win);
+		}
 	}
 }
 /****************************************************************************************/
 static void draw_plotting_area(GtkWidget *widget, GabeditContoursPlot *contoursplot)
 {
-	gdk_draw_drawable (gtk_widget_get_window(widget), 
-			contoursplot->back_gc, 
-			contoursplot->plotting_area, 
-			0, 
-			0, 
-			contoursplot->plotting_rect.x, 
-			contoursplot->plotting_rect.y, 
-			contoursplot->plotting_rect.width, 
-			contoursplot->plotting_rect.height);
-
+	GdkWindow *dest_win = gtk_widget_get_window(widget);
+	if (dest_win && contoursplot->plotting_area_surface)
+	{
+		cairo_t *cr = gdk_cairo_create(dest_win);
+		cairo_set_source_surface(cr, contoursplot->plotting_area_surface,
+		  						 contoursplot->plotting_rect.x,
+		  						 contoursplot->plotting_rect.y);
+		cairo_paint(cr);
+		cairo_destroy(cr);
+	}
 }
 /****************************************************************************************/
 static gint gabedit_contoursplot_draw (GtkWidget *widget)
@@ -8661,8 +8681,10 @@ static gint gabedit_contoursplot_draw (GtkWidget *widget)
 
 	g_return_val_if_fail (widget != NULL, FALSE);
 	g_return_val_if_fail (GTK_IS_WIDGET(widget), FALSE);
-	if(!gtk_widget_get_window(widget)) return FALSE;
-	if(!GDK_IS_DRAWABLE (gtk_widget_get_window(widget))) return FALSE;
+
+	GdkWindow *win = gtk_widget_get_window(widget);
+	if (!win) return FALSE;
+
 	g_return_val_if_fail (GABEDIT_IS_ContoursPLOT (widget), FALSE);
 
 	contoursplot=GABEDIT_ContoursPLOT(widget);
@@ -8675,8 +8697,8 @@ static gint gabedit_contoursplot_draw (GtkWidget *widget)
 	}
 	if (contoursplot->cairo_area)
 	{
-    		cairo_destroy (contoursplot->cairo_area);
-    		contoursplot->cairo_area = gdk_cairo_create (contoursplot->plotting_area);
+    	cairo_destroy (contoursplot->cairo_area);
+    	if (contoursplot->plotting_area_surface) contoursplot->cairo_area = cairo_create(contoursplot->plotting_area_surface);	
 	}
 
 	draw_background(widget, contoursplot);
@@ -8761,39 +8783,19 @@ static gboolean gabedit_contoursplot_expose (GtkWidget *widget, cairo_t *cr)
 	}
 	if (contoursplot->selected_objects_image_num>-1)
 	{
-		gint width;
-		gint height;
-		gdk_drawable_get_size(contoursplot->old_area, &width, &height);
-		gdk_draw_drawable (gtk_widget_get_window(widget), 
-		contoursplot->back_gc, 
-		contoursplot->old_area, 
-		0, 
-		0, 
-		0, 
-		0, 
-		width, 
-		height
-		);
-		draw_selected_objects_image_rectangle(widget, contoursplot);
-		return TRUE;
+		if (contoursplot->old_area_pixbuf)
+		{
+			gdk_cairo_set_source_pixbuf(cr, contoursplot->old_area_pixbuf, 0, 0);
+			cairo_paint(cr);
+		}	
 	}
 	if (contoursplot->object_begin_point.x>-1)
 	{
-		gint width;
-		gint height;
-		gdk_drawable_get_size(contoursplot->old_area, &width, &height);
-		gdk_draw_drawable (gtk_widget_get_window(widget), 
-		contoursplot->back_gc, 
-		contoursplot->old_area, 
-		0, 
-		0, 
-		0, 
-		0, 
-		width, 
-		height
-		);
-		draw_object_line_gdk(widget, contoursplot);
-		return TRUE;
+		if (contoursplot->old_area_pixbuf)
+		{
+			gdk_cairo_set_source_pixbuf(cr, contoursplot->old_area_pixbuf, 0, 0);
+			cairo_paint(cr);
+		}
 	}
 	gabedit_contoursplot_draw (widget);
 	return 0;
@@ -10451,9 +10453,10 @@ static void writeTransparentPNG(GabeditContoursPlot *contoursplot, gchar *fileNa
 	int height;
 	GError *error = NULL;
 	GdkPixbuf  *pixbuf = NULL;
+	GdkWindow *win = gtk_widget_get_window(widget);
 	width =  gtk_widget_get_allocated_width(widget);
 	height = gtk_widget_get_allocated_height(widget);
-	pixbuf = gdk_pixbuf_get_from_drawable(NULL, gtk_widget_get_window(widget), NULL, 0, 0, 0, 0, width, height);
+	if (win) pixbuf = gdk_pixbuf_get_from_window(win, 0, 0, width, height);
 	if(pixbuf)
 	{
 		GdkPixbuf  *pixbufNew = NULL;
@@ -10498,10 +10501,10 @@ void gabedit_contoursplot_save_image(GabeditContoursPlot *contoursplot, gchar *f
 		return;
 	}
 
+	GdkWindow *win = gtk_widget_get_window(widget);
 	width =  gtk_widget_get_allocated_width(widget);
 	height = gtk_widget_get_allocated_height(widget);
-	pixbuf = gdk_pixbuf_get_from_drawable(NULL, gtk_widget_get_window(widget), NULL, 0, 0, 0, 0, width, height);
-	if(pixbuf)
+	if (win) pixbuf = gdk_pixbuf_get_from_window(win, 0, 0, width, height);
 	{
 		if(!fileName)
 		{
@@ -10576,15 +10579,16 @@ static void contoursplot_calculate_sizes (GabeditContoursPlot *contoursplot)
 
   /* Creating the plotting area (everytime the plotting area's size is changed, the size of the pismap
      must be changed too, so, a new one, with the right size is created*/
-  if (contoursplot->plotting_area!=NULL) g_object_unref(G_OBJECT(contoursplot->plotting_area));
+  if (contoursplot->plotting_area_surface!=NULL) g_object_unref(G_OBJECT(contoursplot->plotting_area_surface));
   if (contoursplot->cairo_widget!=NULL) cairo_destroy (contoursplot->cairo_widget);
   if (contoursplot->cairo_area!=NULL) cairo_destroy (contoursplot->cairo_area);
 
-  if (GTK_WIDGET_REALIZED(widget)) 
+  if (gtk_widget_get_realized(widget)) 
   {
-    contoursplot->plotting_area=gdk_pixmap_new(gtk_widget_get_window(widget), contoursplot->plotting_rect.width, contoursplot->plotting_rect.height, -1);
-    contoursplot->cairo_area = gdk_cairo_create (contoursplot->plotting_area);
-    contoursplot->cairo_widget = gdk_cairo_create (gtk_widget_get_window(widget));
+	if (contoursplot->plotting_area_surface != NULL) cairo_surface_destroy(contoursplot->plotting_area_surface);
+	contoursplot->plotting_area_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, contoursplot->plotting_rect.width, contoursplot->plotting_rect.height);
+	contoursplot->cairo_area = cairo_create(contoursplot->plotting_area_surface);
+	contoursplot->cairo_widget = gdk_cairo_create(gtk_widget_get_window(widget));
   }
   contoursplot->colormap_height = contoursplot->plotting_rect.height;
   reset_object_text_pixels(contoursplot);

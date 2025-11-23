@@ -16,3 +16,8 @@ Makefile.bak
 CONFIG.bak
 quick-replace.sh
 Agents.md
+obj.txt
+incompat1.txt
+incompat2.txt
+srclst.txt
+MigrationPatterns.md
