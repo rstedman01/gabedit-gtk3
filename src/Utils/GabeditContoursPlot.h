@@ -156,14 +156,13 @@ struct _GabeditContoursPlot
   gboolean show_label_contours;
   
   ContoursColorMap colorsMap;
-  GdkPixmap *plotting_area; 
-  GdkPixmap *old_area; 
+  /* GTK3: Replaced GdkPixmap with cairo_surface_t for plotting_area */
+  cairo_surface_t *plotting_area_surface;
+  /* GTK3: Replaced GdkPixmap with GdkPixbuf for old_area */
   GdkPixbuf *old_area_pixbuf;
   cairo_t *cairo_widget; 
   cairo_t *cairo_area; 
-  cairo_surface_t *plotting_area_surface;
-  cairo_t *cairo_export; 
-  GdkPixbuf *old_area_pixbuf;
+  cairo_t *cairo_export;
   GdkRectangle plotting_rect;
   gint x_legends_digits; 
   gint y_legends_digits; 
@@ -178,6 +177,7 @@ struct _GabeditContoursPlot
   
   gdouble d_hlegend, d_vlegend; 
   
+  /* GTK3: GdkGC deprecated, Cairo is used instead. Marked unused to preserve ABI. */
   GdkGC *back_gc G_GNUC_UNUSED; 
   GdkGC *fore_gc G_GNUC_UNUSED; 
   
