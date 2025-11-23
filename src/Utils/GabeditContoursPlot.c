@@ -7208,9 +7208,7 @@ static void gabedit_contoursplot_realize (GtkWidget *widget)
   gtk_widget_override_background_color(widget, GTK_STATE_FLAG_NORMAL, &rgba_white);
   gtk_widget_override_color(widget, GTK_STATE_FLAG_NORMAL, &rgba_black);
 
-  /* Keep GdkColor for legacy GC usage (marked unused) */
-  colormap=gdk_window_get_colormap(window); 
-
+  /* Initialize GdkColor for any legacy code that may still reference them */
   black.red = 0;
   black.green = 0;
   black.blue = 0;
@@ -7298,9 +7296,7 @@ static void reset_theme(GtkWidget *widget, gint line_width, GdkColor* foreColor,
 	gtk_widget_override_background_color(widget, GTK_STATE_FLAG_NORMAL, &rgba_back);
 	gtk_widget_override_color(widget, GTK_STATE_FLAG_NORMAL, &rgba_fore);
 
-	/* Keep GdkColor for legacy GC usage (marked unused) */
-	colormap=gdk_window_get_colormap(window);
-
+	/* GTK3: GC cleanup - GCs are deprecated, marked G_GNUC_UNUSED */
 	if (contoursplot->back_gc && G_IS_OBJECT(contoursplot->back_gc))
 	{
 		g_object_unref(contoursplot->back_gc);
@@ -8635,24 +8631,7 @@ static GdkPixbuf* gdk_pixbuf_copy_from_window(GdkWindow *win)
 	gdk_window_get_geometry(win, &x, &y, &w, &h);
 	return gdk_pixbuf_get_from_window(win, 0, 0, w, h);
 }
-/****************************************************************************************/
-/* Deprecated: GTK3 no longer uses GdkPixmap */
-static GdkPixmap* gdk_pixmap_copy(GdkPixmap *pixmap)
-{
-	GdkPixmap *pixmap_out;
-	GdkGC *gc;
-	gint width, height, depth;
 
-	g_return_val_if_fail(pixmap != NULL, NULL);
-
-	gdk_drawable_get_size(pixmap, &width, &height);
-	depth = gdk_drawable_get_depth(pixmap);
-	pixmap_out = gdk_pixmap_new(NULL, width, height, depth);
-	gc = gdk_gc_new(pixmap);
-	gdk_draw_drawable(pixmap_out, gc, pixmap, 0, 0, 0, 0, width, height);
-	g_object_unref(gc);
-	return pixmap_out;
-}
 /****************************************************************************************/
 static void set_old_area(GtkWidget *widget, GabeditContoursPlot *contoursplot)
 {
@@ -10594,17 +10573,24 @@ static void contoursplot_calculate_sizes (GabeditContoursPlot *contoursplot)
 
   /* Creating the plotting area (everytime the plotting area's size is changed, the size of the surface
      must be changed too, so, a new one, with the right size is created*/
-  /* GTK3: Clean up old surface if it exists */
-  if (contoursplot->plotting_area_surface!=NULL) cairo_surface_destroy(contoursplot->plotting_area_surface);
-  if (contoursplot->cairo_widget!=NULL) cairo_destroy (contoursplot->cairo_widget);
-  if (contoursplot->cairo_area!=NULL) cairo_destroy (contoursplot->cairo_area);
+  /* GTK3: Clean up old resources */
+  if (contoursplot->plotting_area_surface!=NULL) {
+    cairo_surface_destroy(contoursplot->plotting_area_surface);
+    contoursplot->plotting_area_surface = NULL;
+  }
+  if (contoursplot->cairo_widget!=NULL) {
+    cairo_destroy (contoursplot->cairo_widget);
+    contoursplot->cairo_widget = NULL;
+  }
+  if (contoursplot->cairo_area!=NULL) {
+    cairo_destroy (contoursplot->cairo_area);
+    contoursplot->cairo_area = NULL;
+  }
 
   /* GTK3: Replace GTK_WIDGET_REALIZED with gtk_widget_get_realized */
   if (gtk_widget_get_realized(widget)) 
   {
     /* GTK3: Replace GdkPixmap with cairo_surface_t */
-    if (contoursplot->plotting_area_surface != NULL)
-      cairo_surface_destroy(contoursplot->plotting_area_surface);
     contoursplot->plotting_area_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
                                                                       contoursplot->plotting_rect.width, 
                                                                       contoursplot->plotting_rect.height);
