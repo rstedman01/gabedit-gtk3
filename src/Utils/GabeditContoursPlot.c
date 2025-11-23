@@ -6900,6 +6900,9 @@ static void gabedit_contoursplot_init (GabeditContoursPlot *contoursplot)
   contoursplot->v_label_width = 0;
   contoursplot->v_label_height = 0;
   contoursplot->font_size = 12;
+  /* GTK3: Initialize new surface/pixbuf fields */
+  contoursplot->plotting_area_surface = NULL;
+  contoursplot->old_area_pixbuf = NULL;
   contoursplot->cairo_widget = NULL;
   contoursplot->cairo_area = NULL;
   contoursplot->cairo_export = NULL;
@@ -8683,10 +8686,11 @@ static gint gabedit_contoursplot_draw (GtkWidget *widget)
 	if (contoursplot->cairo_area)
 	{
     		cairo_destroy (contoursplot->cairo_area);
-    		/* GTK3: Create cairo context from surface, not GdkPixmap */
-    		if (contoursplot->plotting_area_surface)
-    			contoursplot->cairo_area = cairo_create(contoursplot->plotting_area_surface);
+    		contoursplot->cairo_area = NULL;
 	}
+	/* GTK3: Create cairo context from surface, not GdkPixmap */
+	if (contoursplot->plotting_area_surface)
+		contoursplot->cairo_area = cairo_create(contoursplot->plotting_area_surface);
 
 	draw_background(widget, contoursplot);
 	draw_hminor_grid(widget, contoursplot);
