@@ -469,8 +469,8 @@ static void  get_camera_values(gdouble* zn, gdouble* zf, gdouble* angle, gdouble
 
 	if(GeomDrawingArea)
 	{
-		width =  GeomDrawingArea->allocation.width;
-		height = GeomDrawingArea->allocation.height;
+		width =  gtk_widget_get_allocated_width(GeomDrawingArea);
+		height = gtk_widget_get_allocated_height(GeomDrawingArea);
 
 	}
 	*aspect = width/height;
@@ -3157,7 +3157,7 @@ void get_standard_orientation_with_symmetrization(GtkWidget*w, gpointer data)
 /********************************************************************************/
 static gint set_key_press(GtkWidget* wid, GdkEventKey *event, gpointer data)
 {
-	if((event->keyval == GDK_Shift_L || event->keyval == GDK_Shift_R) )
+	if((event->keyval == GDK_KEY_Shift_L || event->keyval == GDK_KEY_Shift_R) )
 		ShiftKeyPressed = TRUE;
 	else if((event->keyval == GDK_Control_L || event->keyval == GDK_Control_R) )
 	{
@@ -3220,7 +3220,7 @@ static gint set_key_press(GtkWidget* wid, GdkEventKey *event, gpointer data)
 /********************************************************************************/
 static gint set_key_release(GtkWidget* wid, GdkEventKey *event, gpointer data)
 {
-	if((event->keyval == GDK_Shift_L || event->keyval == GDK_Shift_R) )
+	if((event->keyval == GDK_KEY_Shift_L || event->keyval == GDK_KEY_Shift_R) )
 		ShiftKeyPressed = FALSE;
 	else if((event->keyval == GDK_Control_L || event->keyval == GDK_Control_R) )
 		ControlKeyPressed = FALSE;
@@ -3335,8 +3335,8 @@ void set_statubar_operation_str(gchar* str)
 void draw_text(gchar* str)
 {
 	V4d color  = {1.0,1.0,1.0,1.0 };
-	gdouble x  = GeomDrawingArea->allocation.width/20.0;
-	gdouble y  = GeomDrawingArea->allocation.height-GeomDrawingArea->allocation.height/10.0;
+	gdouble x  = gtk_widget_get_allocated_width(GeomDrawingArea)/20.0;
+	gdouble y  = gtk_widget_get_allocated_height(GeomDrawingArea)-gtk_widget_get_allocated_height(GeomDrawingArea)/10.0;
 	gdouble w[3];
         
 	//glInitFontsUsingOld(FontsStyleLabel.fontname);
@@ -5326,7 +5326,7 @@ cairo_t *get_drawing_cairo()
 /********************************************************************************/  
 GdkColormap* get_drawing_colormap()
 {
-  GdkColormap *colormap = gdk_drawable_get_colormap(GeomDrawingArea->window);
+  GdkColormap *colormap = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 
   return colormap;
 }
@@ -5583,7 +5583,7 @@ gboolean getRebuildConnectionsDuringEditionYesNo()
 static gint ScaleByMouse(gpointer data)
 {
 	GdkEventButton *bevent=(GdkEventButton *)data;
-	gdouble height = GeomDrawingArea->allocation.height;
+	gdouble height = gtk_widget_get_allocated_height(GeomDrawingArea);
 
         switch(OperationType)
         {
@@ -5594,7 +5594,7 @@ static gint ScaleByMouse(gpointer data)
 			drawGeom();
 		break;
 	case SCALESTICK :
-			factorstick +=((bevent->y - BeginY) / GeomDrawingArea->allocation.height) * 5;
+			factorstick +=((bevent->y - BeginY) / gtk_widget_get_allocated_height(GeomDrawingArea)) * 5;
 			if(factorstick <0.1) factorstick  = 0.1;
 			if(factorstick >10) factorstick = 10;
 			RebuildGeom=TRUE;
@@ -5602,14 +5602,14 @@ static gint ScaleByMouse(gpointer data)
 
 		break;
 	case SCALEBALL :
-			factorball +=((bevent->y - BeginY) / GeomDrawingArea->allocation.height) * 5;
+			factorball +=((bevent->y - BeginY) / gtk_widget_get_allocated_height(GeomDrawingArea)) * 5;
 			if(factorball <0.1) factorball  = 0.1;
 			if(factorball >10) factorball = 10;
 			RebuildGeom=TRUE;
 			drawGeom();
 		break;
 	case SCALEDIPOLE :
-			factordipole +=((bevent->y - BeginY) / GeomDrawingArea->allocation.height) * 5;
+			factordipole +=((bevent->y - BeginY) / gtk_widget_get_allocated_height(GeomDrawingArea)) * 5;
 			if(factordipole <0.1) factordipole  = 0.1;
 			if(factordipole >100) factordipole = 100;
 			RebuildGeom=TRUE;
@@ -5634,7 +5634,7 @@ static gint TranslationByMouse(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5648,8 +5648,8 @@ static gint TranslationByMouse(GtkWidget *widget, GdkEventMotion *event)
 		state = event->state;
 	}
   
-	width  = widget->allocation.width;
-	height = widget->allocation.height;
+	width  = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
 
 	Trans[0] += ((x - BeginX) / width) * 40;
 	Trans[1] += ((BeginY - y) / height) * 40;
@@ -5671,7 +5671,7 @@ static gint RotationByMouse(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5687,8 +5687,8 @@ static gint RotationByMouse(GtkWidget *widget, GdkEventMotion *event)
   
 	area.x = 0;
 	area.y = 0;
-	area.width  = widget->allocation.width;
-	area.height = widget->allocation.height;
+	area.width  = gtk_widget_get_allocated_width(widget);
+	area.height = gtk_widget_get_allocated_height(widget);
 
 	
 	trackball(spin_quat,
@@ -5718,7 +5718,7 @@ static gint RotationZByMouse(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5732,8 +5732,8 @@ static gint RotationZByMouse(GtkWidget *widget, GdkEventMotion *event)
 		state = event->state;
 	}
   
-	width  = widget->allocation.width;
-	height = widget->allocation.height;
+	width  = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
 
 	Xi = width/2 + Trans[0];
 	Yi = height/2 + Trans[1];
@@ -5909,12 +5909,12 @@ static gint local_zrotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
 		state = event->state;
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #endif
 	}
 	else
@@ -5924,8 +5924,8 @@ static gint local_zrotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 		state = event->state;
 	}
   
-	width  = widget->allocation.width;
-	height = widget->allocation.height;
+	width  = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
 
 	if(abs(BeginX-x)>abs(BeginY-y))
 	 {
@@ -6013,7 +6013,7 @@ static gint local_rotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -6027,8 +6027,8 @@ static gint local_rotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 		state = event->state;
 	}
   
-	width  = widget->allocation.width;
-	height = widget->allocation.height;
+	width  = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
 
 	
 	trackball(spin_quat,
@@ -6087,7 +6087,7 @@ static gint move_one_atom(GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -6137,7 +6137,7 @@ static gint move_all_selected_atoms(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -7073,7 +7073,7 @@ gint motion_notify(GtkWidget *widget, GdkEventMotion *event)
 	{
 #if !defined(G_OS_WIN32)
 		int x, y;
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		state = event->state;
 #endif
@@ -7333,8 +7333,8 @@ static void redrawLabels()
 /*
 static void getOriginAxes(gdouble* w)
 {
-	gint x  = GeomDrawingArea->allocation.width/20;
-	gint y  = GeomDrawingArea->allocation.height-GeomDrawingArea->allocation.height/10;
+	gint x  = gtk_widget_get_allocated_width(GeomDrawingArea)/20;
+	gint y  = gtk_widget_get_allocated_height(GeomDrawingArea)-gtk_widget_get_allocated_height(GeomDrawingArea)/10;
 	if(Natoms>0)
 	{
 		gint i = 0;
@@ -7410,7 +7410,7 @@ static gint redraw(GtkWidget *widget)
 	glClearDepth(1.0);
 	set_background_color();
 
-	mYPerspective(45,(GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height,1,100);
+	mYPerspective(45,(GLdouble)gtk_widget_get_allocated_width(widget)/(GLdouble)gtk_widget_get_allocated_height(widget),1,100);
     	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	if(optcol==-1) drawChecker();
@@ -7418,10 +7418,10 @@ static gint redraw(GtkWidget *widget)
     	glMatrixMode(GL_PROJECTION);
     	glLoadIdentity();
 	if(PersMode)
-		mYPerspective(Zoom,(GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height,zNear,zFar);
+		mYPerspective(Zoom,(GLdouble)gtk_widget_get_allocated_width(widget)/(GLdouble)gtk_widget_get_allocated_height(widget),zNear,zFar);
 	else
 	{
-	  	gdouble fw = (GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height;
+	  	gdouble fw = (GLdouble)gtk_widget_get_allocated_width(widget)/(GLdouble)gtk_widget_get_allocated_height(widget);
 	  	gdouble fh = 1.0;
 		glOrtho(-fw,fw,-fh,fh,-1,1);
 	}
@@ -7481,7 +7481,7 @@ void redrawGeomGL2PS()
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	set_background_color();
 
-	mYPerspective(45,(GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height,1,100);
+	mYPerspective(45,(GLdouble)gtk_widget_get_allocated_width(widget)/(GLdouble)gtk_widget_get_allocated_height(widget),1,100);
     	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	if(optcol==-1) drawChecker();
@@ -7489,10 +7489,10 @@ void redrawGeomGL2PS()
     	glMatrixMode(GL_PROJECTION);
     	glLoadIdentity();
 	if(PersMode)
-		mYPerspective(Zoom,(GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height,zNear,zFar);
+		mYPerspective(Zoom,(GLdouble)gtk_widget_get_allocated_width(widget)/(GLdouble)gtk_widget_get_allocated_height(widget),zNear,zFar);
 	else
 	{
-	  	gdouble fw = (GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height;
+	  	gdouble fw = (GLdouble)gtk_widget_get_allocated_width(widget)/(GLdouble)gtk_widget_get_allocated_height(widget);
 	  	gdouble fh = 1.0;
 		glOrtho(-fw,fw,-fh,fh,-1,1);
 	}
@@ -10948,7 +10948,7 @@ void rafresh_drawing()
 	vboxmeasure =AddNoteBookPage(NoteBookDraw,_("Measure"));
 	AddMeasure(GeomDlg,vboxmeasure);
 
-	gtk_widget_hide_all(NoteBookDraw);
+	gtk_container_foreach(GTK_CONTAINER(NoteBookDraw), (GtkCallback)gtk_widget_hide, NULL);
 	gtk_widget_show_all(NoteBookDraw);
 	gtk_notebook_set_current_page((GtkNotebook*)NoteBookDraw,i);
 
@@ -11081,9 +11081,9 @@ void set_back_color_default()
 void open_color_dlg(GtkWidget *win,gpointer *DrawingArea)
 {
 
-	GtkColorSelectionDialog *ColorDlg;
+	GtkColorChooserDialog *ColorDlg;
 	ColorDlg = 
-		(GtkColorSelectionDialog *)gtk_color_selection_dialog_new(
+		(GtkColorChooserDialog *)gtk_color_selection_dialog_new(
 		_("Set Background Color"));
 	gtk_window_set_modal (GTK_WINDOW (ColorDlg), TRUE);
 	gtk_window_set_transient_for(GTK_WINDOW(ColorDlg),GTK_WINDOW(Fenetre));
@@ -11240,7 +11240,7 @@ void export_geometry(gchar* fileName, gchar* fileType)
 	{
 		
 		cairo_surface_t *surface;
-		surface = cairo_pdf_surface_create(fileName, GeomDrawingArea->allocation.width, GeomDrawingArea->allocation.height);
+		surface = cairo_pdf_surface_create(fileName, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
 		crExport = cairo_create(surface);
 		drawGeom();
 		cairo_show_page(crExport);
@@ -11254,7 +11254,7 @@ void export_geometry(gchar* fileName, gchar* fileType)
 	{
 		
 		cairo_surface_t *surface;
-		surface = cairo_ps_surface_create(fileName, GeomDrawingArea->allocation.width, GeomDrawingArea->allocation.height);
+		surface = cairo_ps_surface_create(fileName, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
 		crExport = cairo_create(surface);
 		drawGeom();
 		cairo_show_page(crExport);
@@ -11268,7 +11268,7 @@ void export_geometry(gchar* fileName, gchar* fileType)
 	{
 		
 		cairo_surface_t *surface;
-		surface = cairo_ps_surface_create(fileName, GeomDrawingArea->allocation.width, GeomDrawingArea->allocation.height);
+		surface = cairo_ps_surface_create(fileName, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
 		cairo_ps_surface_set_eps(surface, TRUE);
 		crExport = cairo_create(surface);
 		drawGeom();
@@ -11283,7 +11283,7 @@ void export_geometry(gchar* fileName, gchar* fileType)
 	{
 		
 		cairo_surface_t *surface;
-		surface = cairo_svg_surface_create(fileName, GeomDrawingArea->allocation.width, GeomDrawingArea->allocation.height);
+		surface = cairo_svg_surface_create(fileName, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
 		crExport = cairo_create(surface);
 		drawGeom();
 		cairo_show_page(crExport);
@@ -11387,16 +11387,16 @@ static gint reshape(GtkWidget *widget, GdkEventConfigure *event)
 	if (gdk_gl_drawable_gl_begin (gldrawable, glcontext))
 	{
 		/* pthread_mutex_lock (&theRender_mutex);*/
-		glViewport(0,0, widget->allocation.width, widget->allocation.height);
+		glViewport(0,0, gtk_widget_get_allocated_width(widget), gtk_widget_get_allocated_height(widget));
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		if(PersMode)
 		{
-			mYPerspective(Zoom,(GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height,zNear,zFar);
+			mYPerspective(Zoom,(GLdouble)gtk_widget_get_allocated_width(widget)/(GLdouble)gtk_widget_get_allocated_height(widget),zNear,zFar);
 		}
 		else
 		{
-			gdouble fw = (GLdouble)widget->allocation.width/(GLdouble)widget->allocation.height;
+			gdouble fw = (GLdouble)gtk_widget_get_allocated_width(widget)/(GLdouble)gtk_widget_get_allocated_height(widget);
 			gdouble fh = 1.0;
 			glOrtho(-fw,fw,-fh,fh,-1,1);
 		}
@@ -11444,7 +11444,7 @@ static gint init(GtkWidget *widget)
 
 	if (gdk_gl_drawable_gl_begin (gldrawable, glcontext))
 	{
-		glViewport(0,0, widget->allocation.width, widget->allocation.height);
+		glViewport(0,0, gtk_widget_get_allocated_width(widget), gtk_widget_get_allocated_height(widget));
 		initGL();
 		gdk_window_invalidate_rect (gtk_widget_get_parent_window (widget), &widget->allocation, TRUE);
 		/* gdk_window_process_updates (gtk_widget_get_parent_window (widget), TRUE);*/

@@ -29,6 +29,11 @@ DEALINGS IN THE SOFTWARE.
 #ifdef DRAWGEOMGL
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
+
+#include <gdk-pixbuf/gdk-pixbuf.h>
+
+#ifdef DRAWGEOMGL
 /**************************************************************************/
 static void snapshot_pixbuf_free (guchar   *pixels, gpointer  data)
 {
@@ -109,13 +114,13 @@ static void gabedit_save_image_gl(GtkWidget* widget, gchar *fileName, gchar* typ
 		else 
 		{
 			if(type && strstr(type,"j") && strstr(type,"g") )
-			gdk_pixbuf_save(pixbuf, fileName, type, &error, "quality", "100", NULL);
+				gdk_pixbuf_save(pixbuf, fileName, type, &error, "quality", "100", NULL);
 			else if(type && strstr(type,"png"))
-			gdk_pixbuf_save(pixbuf, fileName, type, &error, "compression", "5", NULL);
+				gdk_pixbuf_save(pixbuf, fileName, type, &error, "compression", "5", NULL);
 			else if(type && (strstr(type,"tif") || strstr(type,"tiff")))
-			gdk_pixbuf_save(pixbuf, fileName, "tiff", &error, "compression", "1", NULL);
+				gdk_pixbuf_save(pixbuf, fileName, "tiff", &error, "compression", "1", NULL);
 			else
-			gdk_pixbuf_save(pixbuf, fileName, type, &error, NULL);
+				gdk_pixbuf_save(pixbuf, fileName, type, &error, NULL);
 		}
 	 	g_object_unref (pixbuf);
 	}
@@ -160,101 +165,87 @@ guchar *get_rgb_image()
 {
 	GdkPixbuf*  tmp = get_pixbuf_gl(NULL);
 	guchar *data = NULL;
-	if(tmp) data =gdk_pixbuf_get_pixels(tmp);
-	return data;
+	guchar *copy = NULL;
+	gint width, height, rowstride, n_channels;
+	if(!tmp) return NULL;
+	width = gdk_pixbuf_get_width(tmp);
+	height = gdk_pixbuf_get_height(tmp);
+	rowstride = gdk_pixbuf_get_rowstride(tmp);
+	n_channels = gdk_pixbuf_get_n_channels(tmp);
+	guchar *pixels = gdk_pixbuf_get_pixels(tmp);
+	/* Allocate contiguous RGB buffer */
+	copy = g_malloc0(3 * width * height * sizeof(guchar));
+	if(!copy) {
+		g_object_unref(tmp);
+		return NULL;
+	}
+	/* gdk_pixbuf_get_pixels rowstride may include padding; copy row by row */
+	for(gint y = 0; y < height; y++) {
+		guchar *src = pixels + y * rowstride;
+		guchar *dst = copy + y * (3 * width);
+		for(gint x = 0; x < width; x++) {
+			dst[3*x + 0] = src[n_channels*x + 0];
+			dst[3*x + 1] = src[n_channels*x + 1];
+			dst[3*x + 2] = src[n_channels*x + 2];
+		}
+	}
+	g_object_unref(tmp);
+	return copy;
 }
-
 #endif
+
   {
-	gdouble fac=255.0/65535.0;
-  	GdkPixmap* pixmap = get_drawing_pixmap();
-  	GdkColormap *colormap = get_drawing_colormap();
-  	guint height = GeomDrawingArea->allocation.height;
-  	guint width = GeomDrawingArea->allocation.width;
-	guint32 pixel;
-  	GdkImage* image = NULL;
-	GdkVisual *v;
-	guint8 component;
-	guint k=0;
-	gint x;
-	gint y;
-	gint i;
-	guchar* rgbbuf=(guchar *) g_malloc(3*width*height*sizeof(guchar));
+	guint height = gtk_widget_get_allocated_height(GeomDrawingArea);
+	guint width = gtk_widget_get_allocated_width(GeomDrawingArea);
+	guchar *rgbbuf = NULL;
+	GdkPixbuf *pixbuf = NULL;
 
-  	if(!pixmap || !colormap)
-		 return NULL;
-	if(!rgbbuf)
+	if(width == 0 || height == 0) return NULL;
+
+	/* Try to get pixels of the drawing area using GDK3 API:
+	 * Use gdk_pixbuf_get_from_window to snapshot the widget's GdkWindow.
+	 */
+	GdkWindow *win = gtk_widget_get_window(GeomDrawingArea);
+	if(!win) return NULL;
+
+	/* gdk_pixbuf_get_from_window reads the pixels and returns a GdkPixbuf we must unref */
+	pixbuf = gdk_pixbuf_get_from_window(win, 0, 0, width, height);
+	if(!pixbuf) return NULL;
+
 	{
-            Message(_("Sorry: couldn't allocate memory\n"),_("Error"),TRUE);
-	    return NULL;
-	}
-	/* Debug("End get colormap\n");*/
-	image = gdk_drawable_get_image(GeomDrawingArea->window,0,0,width,height);
-	/* Debug("End get Image\n");*/
-	v = gdk_colormap_get_visual(colormap);
-	/* Debug("End get visual\n");*/
-	switch(v->type)
-	{
-		case GDK_VISUAL_STATIC_GRAY:
-		case GDK_VISUAL_GRAYSCALE:
-		case GDK_VISUAL_STATIC_COLOR:
-		case GDK_VISUAL_PSEUDO_COLOR:
-			for(y=height-1;y>=0;y--)
-				for(x=0;x<(gint)width;x++)
-			{
-				pixel = gdk_image_get_pixel(image, x, y);
-				rgbbuf[k] = (guchar)(colormap->colors[pixel].red*fac);
-				rgbbuf[k+1] =(guchar) (colormap->colors[pixel].green*fac);
-				rgbbuf[k+2] =(guchar) (colormap->colors[pixel].blue*fac);
-				k+=3;
-			}
-			break;
+		guchar *pixels = gdk_pixbuf_get_pixels(pixbuf);
+		int rowstride = gdk_pixbuf_get_rowstride(pixbuf);
+		int n_channels = gdk_pixbuf_get_n_channels(pixbuf);
 
-	    case GDK_VISUAL_TRUE_COLOR:
-		/* Debug("True color\n");*/
-			for(y=height-1;y>=0;y--)
-				for(x=0;x<(gint)width;x++)
-			{
-				pixel = gdk_image_get_pixel(image, x, y);
-	      			component = 0;
-	      			for (i = 24; i < 32; i += v->red_prec)
-					component |= ((pixel & v->red_mask) << (32 - v->red_shift - v->red_prec)) >> i;
-	      			rgbbuf[k] = (guchar)(component);
-	      			
-				component = 0;
-	      			for (i = 24; i < 32; i += v->green_prec)
-					component |= ((pixel & v->green_mask) << (32 - v->green_shift - v->green_prec)) >> i;
-	      			rgbbuf[k+1] = (guchar)(component);
-	      			component = 0;
-	      			for (i = 24; i < 32; i += v->blue_prec)
-					component |= ((pixel & v->blue_mask) << (32 - v->blue_shift - v->blue_prec)) >> i;
-	      			rgbbuf[k+2] = (guchar)(component);
-	      			k += 3;
-			}
-	      break;
-	    case GDK_VISUAL_DIRECT_COLOR:
-			for(y=height-1;y>=0;y--)
-				for(x=0;x<(gint)width;x++)
-			{
-				pixel = gdk_image_get_pixel(image, x, y);
-	      			component = colormap->colors[((pixel & v->red_mask) << (32 - v->red_shift - v->red_prec)) >> 24].red;
-	      			rgbbuf[k] = (guchar)(component*fac);
+		/* Allocate contiguous RGB buffer (3 bytes per pixel) */
+		rgbbuf = (guchar *) g_malloc(3 * width * height * sizeof(guchar));
+		if(!rgbbuf) {
+			g_object_unref(pixbuf);
+			Message(_("Sorry: couldn't allocate memory\n"),_("Error"),TRUE);
+			return NULL;
+		}
 
-	      			component = colormap->colors[((pixel & v->green_mask) << (32 - v->green_shift - v->green_prec)) >> 24].green;
-	      			rgbbuf[k+1] = (guchar)(component*fac);
-	      			component = colormap->colors[((pixel & v->blue_mask) << (32 - v->blue_shift - v->blue_prec)) >> 24].blue;
-	      			rgbbuf[k+2] = (guchar)(component*fac);
-	      			k += 3;
+		/* Copy rows. gdk_pixbuf pixel origin is top-left; original code iterated from bottom to top.
+		   To preserve existing save routines that iterate bottom-to-top, produce buffer such that
+		   buffer[0] is top-left row 0 (same orientation as gdk_pixbuf). The save_ppm/save_bmp code
+		   iterate rows from height-1 down to 0, so behavior remains identical. */
+		for(gint y = 0; y < (gint)height; y++) {
+			guchar *src = pixels + y * rowstride;
+			guchar *dst = rgbbuf + y * (3 * width);
+			for(gint x = 0; x < (gint)width; x++) {
+				/* n_channels is usually 3 (RGB) or 4 (RGBA) */
+				dst[3*x + 0] = src[n_channels*x + 0];
+				dst[3*x + 1] = src[n_channels*x + 1];
+				dst[3*x + 2] = src[n_channels*x + 2];
 			}
-	      break;
-	    default : Message(_("Unknown visual\n"),_("Error"),TRUE);
-		      g_free(rgbbuf);
-		      return NULL;
+		}
 	}
+
+	g_object_unref(pixbuf);
 	return rgbbuf;
   }
+  /* unreachable */
   return NULL;
-
 }
 /**************************************************************************
 *       Save the Frame Buffer in a jpeg format file
@@ -295,8 +286,8 @@ static gchar* save_ppm(gchar* fileName)
 		return message;
 	}
   
-  	height = GeomDrawingArea->allocation.height;
-  	width = GeomDrawingArea->allocation.width;
+  	height = gtk_widget_get_allocated_height(GeomDrawingArea);
+  	width = gtk_widget_get_allocated_width(GeomDrawingArea);
 
 	glPixelStorei(GL_PACK_ROW_LENGTH,width);
 	glPixelStorei(GL_PACK_ALIGNMENT,1);
@@ -358,8 +349,8 @@ static gchar* save_ppm(gchar* FileName)
 	    	fclose(file);
 		return message;
 	}
-	width =  GeomDrawingArea->allocation.width;
-	height = GeomDrawingArea->allocation.height;
+	width =  gtk_widget_get_allocated_width(GeomDrawingArea);
+	height = gtk_widget_get_allocated_height(GeomDrawingArea);
 
         fprintf(file,"P6\n");
         fprintf(file,"#Image rendered with gabedit\n");
@@ -447,8 +438,8 @@ static gchar* save_bmp(gchar* fileName)
 		return message;
 	}
   
-  	height = GeomDrawingArea->allocation.height;
-  	width = GeomDrawingArea->allocation.width;
+  	height = gtk_widget_get_allocated_height(GeomDrawingArea);
+  	width = gtk_widget_get_allocated_width(GeomDrawingArea);
 
 	glPixelStorei(GL_PACK_ROW_LENGTH,width);
 	glPixelStorei(GL_PACK_ALIGNMENT,1);
@@ -529,8 +520,8 @@ static gchar* save_bmp(gchar* fileName)
 		return message;
 	}
   
-  	height = GeomDrawingArea->allocation.height;
-  	width = GeomDrawingArea->allocation.width;
+  	height = gtk_widget_get_allocated_height(GeomDrawingArea);
+  	width = gtk_widget_get_allocated_width(GeomDrawingArea);
 
   	rgbbuf = get_rgb_image();
   	if (!rgbbuf)
@@ -695,8 +686,8 @@ void save_geometry_ps_file(GabeditFileChooser *SelecFile, gint response_id)
 	while( gtk_events_pending() )
 		gtk_main_iteration();
   
-  	height = GeomDrawingArea->allocation.height;
-  	width = GeomDrawingArea->allocation.width;
+  	height = gtk_widget_get_allocated_height(GeomDrawingArea);
+  	width = gtk_widget_get_allocated_width(GeomDrawingArea);
 
 
 #ifdef DRAWGEOMGL
@@ -758,7 +749,11 @@ void save_geometry_ps_file(GabeditFileChooser *SelecFile, gint response_id)
         fprintf(file,"\nshowpage\n");   
         fprintf(file,"%%%%Trailer\n");
         fclose(file);
-        g_free(rgbbuf);
+#ifdef DRAWGEOMGL
+	free(rgbbuf);
+#else
+	g_free(rgbbuf);
+#endif
 }
 /**********************************************************************************************************************************/
 void save_geometry_png_file(GabeditFileChooser *SelecFile, gint response_id)

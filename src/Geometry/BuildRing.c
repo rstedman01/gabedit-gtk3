@@ -75,7 +75,7 @@ static void build_ring_molecule(GtkWidget *w,gpointer data)
  	if(GeomXYZ)
    		freeGeomXYZ();
  	if(VariablesXYZ)
-		freeVariablesXYZ(VariablesXYZ);
+		freeVariablesXYZ();
 
 
 	NcentersXYZ = Nc;

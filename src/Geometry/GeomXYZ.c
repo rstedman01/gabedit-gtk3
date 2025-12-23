@@ -331,7 +331,7 @@ static void activate_action_xyz_geom (GtkAction *action)
 	const gchar *name = gtk_action_get_name (action);
 
 	if(!strcmp(name, "Edit")) DialogueEdit();
-	else if(!strcmp(name, "New")) DialogueAdd();
+	else if(!strcmp(name, "New")) DialogueAddV();
 	else if(!strcmp(name, "Delete")) DialogueDelete();
 	else if(!strcmp(name, "Draw")) draw_geometry(NULL, NULL);
 	else if(!strcmp(name, "Save")) create_window_save_xyzmol2tinkerpdbhin(); 
@@ -588,7 +588,7 @@ static void event_dispatcher(GtkWidget *widget, GdkEventButton *event, gpointer 
 	gchar* menuName = NULL;
 
 	if (!event) return;
-	if (event->window == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
+	if (gtk_widget_get_window(event) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
 	    && !gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget),
 					       event->x, event->y, NULL, NULL, NULL, NULL)) {
 		gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW (widget)));
@@ -1600,7 +1600,7 @@ void compute_volume_molecule()
 		"Volume by Crystallographers (18 ang^3 by # of a non H atom) = %0.6lf Angstrom^3\n\n"
 		" 18 ang^3 * # of atoms = %0.6lf Angstrom^3\n"
 		),
-		rmax,4*M_PI*rmax*rmax*rmax/3.0,
+		rmax,4*G_PI*rmax*rmax*rmax/3.0,
 		volNonH*nAtomsNonH,
 		volNonH*nAtoms
 		);

@@ -871,7 +871,7 @@ static gboolean xyplot_motion_notify_event(GtkWidget *xyplot, GdkEventMotion *ev
         x=event->x;
         y=event->y;
 
-        if (event->is_hint || (event->window != win))
+        if (event->is_hint || (gtk_widget_get_window(event) != win))
                 gdk_window_get_pointer (win, &x, &y, NULL);
 
         if(gabedit_xyplot_get_point(GABEDIT_XYPLOT(xyplot), x, y, &xv, &yv))

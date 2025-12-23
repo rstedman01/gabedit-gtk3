@@ -214,13 +214,13 @@ static void set_axes_button_color(GtkObject *button,gpointer *data)
 static void open_color_dlg_axes(GtkWidget *button,gpointer data)
 {
 
-	GtkColorSelectionDialog *colorDlg;
+	GtkColorChooserDialog *colorDlg;
   	GtkStyle* style = g_object_get_data(G_OBJECT (button), "Style");
   	GtkWidget *win = g_object_get_data(G_OBJECT (button), "Win");
 	gdouble* v = g_object_get_data(G_OBJECT (button), "Color");;
 	GdkColor color;
 
-	colorDlg = (GtkColorSelectionDialog *)gtk_color_selection_dialog_new("Set Axes Color");
+	colorDlg = (GtkColorChooserDialog *)gtk_color_selection_dialog_new("Set Axes Color");
 	color.red = (gushort)(v[0]*65535);
 	color.green = (gushort)(v[1]*65535);
 	color.blue = (gushort)(v[2]*65535);

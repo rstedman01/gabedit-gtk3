@@ -1308,10 +1308,10 @@ static void exportPOVRay(GtkWidget* Win, gboolean runPovray)
 				{
 					gint width = 500;
 					gint height = 500;
-					if(GeomDrawingArea->allocation.width)
+					if(gtk_widget_get_allocated_width(GeomDrawingArea))
 					{
-						width =  GeomDrawingArea->allocation.width;
-						height = GeomDrawingArea->allocation.height;
+						width =  gtk_widget_get_allocated_width(GeomDrawingArea);
+						height = gtk_widget_get_allocated_height(GeomDrawingArea);
 					}
 					gtk_widget_hide(Win);
 					while( gtk_events_pending() ) gtk_main_iteration();
@@ -1424,8 +1424,8 @@ static void AddPOVRayRunDlg(GtkWidget *box, GtkWidget *Win)
 
 	if(GeomDrawingArea)
 	{
-		width =  GeomDrawingArea->allocation.width;
-		height = GeomDrawingArea->allocation.height;
+		width =  gtk_widget_get_allocated_width(GeomDrawingArea);
+		height = gtk_widget_get_allocated_height(GeomDrawingArea);
 	}
 
 	table = gtk_table_new(2,3,FALSE);

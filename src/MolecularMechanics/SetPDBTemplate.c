@@ -843,7 +843,7 @@ static void eventDispatcher(GtkWidget *widget, GdkEventButton *event, gpointer u
 	GtkTreeModel *model;
 
 	if (!event) return;
-	if (event->window == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
+	if (gtk_widget_get_window(event) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
 	    && !gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget), event->x, event->y, NULL, NULL, NULL, NULL)) {
 		gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW (widget)));
 	}

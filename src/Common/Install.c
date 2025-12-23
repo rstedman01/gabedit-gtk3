@@ -256,7 +256,7 @@ static void user_install_notebook_set_current_page(GtkNotebook *notebook,
 
 /*  if (index == EEK_PAGE)
   {
-    gtk_widget_set_size_request(title_pixmap, title_pixmap->allocation.width, title_pixmap->allocation.height);
+    gtk_widget_set_size_request(title_pixmap, gtk_widget_get_allocated_width(title_pixmap), gtk_widget_get_allocated_height(title_pixmap));
   }
 */
   gtk_notebook_set_current_page(notebook, index);

@@ -178,7 +178,7 @@ void GAjoutePageGeom(GtkWidget *NoteBook)
   for(i=0;i<6;i++)
 	EntryCS[i]=NULL;
 
-  Frame = geominter->window;
+  Frame = gtk_widget_get_window(geominter);
   gtk_container_set_border_width(GTK_CONTAINER(Frame), 10);
 
   LabelOnglet = gtk_label_new(_("Molecular Specifications"));

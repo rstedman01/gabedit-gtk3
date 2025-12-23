@@ -173,7 +173,7 @@ static inline void gb_table_set_col_spacings(GtkWidget* table, guint spacing)
     gtk_grid_set_column_spacing(GTK_GRID(table), spacing);
 }
 
-// Return widget allocation width; replaces widget->allocation.width
+// Return widget allocation width; replaces gtk_widget_get_allocated_width(widget)
 static inline gint gabedit_widget_allocated_width(GtkWidget *w)
 {
     GtkAllocation alloc;
@@ -187,7 +187,7 @@ static inline gint gabedit_widget_allocated_width(GtkWidget *w)
     #endif
 }
 
-// Return widget allocation height; replaces widget->allocation.height
+// Return widget allocation height; replaces gtk_widget_get_allocated_height(widget)
 static inline gint gabedit_widget_allocated_height(GtkWidget *w)
 {
     GtkAllocation alloc;

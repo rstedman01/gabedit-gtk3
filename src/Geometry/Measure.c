@@ -581,7 +581,7 @@ static void activate_distance_entry(GtkWidget* entry, gchar* data)
 	
 	G_CONST_RETURN gchar *entry_txt;
 	gdouble newD = 1.0;
-	if(!GTK_IS_OBJECT(entry)) return;
+	if(!G_IS_OBJECT(entry)) return;
 	if(!GTK_IS_ENTRY(entry)) return;
 	p = g_object_get_data(G_OBJECT(entry), "N1");
 	if(p) N1 = GPOINTER_TO_INT(p);
@@ -626,7 +626,7 @@ static void activate_angle_entry(GtkWidget* entry, gchar* data)
 	gint* listGroupAtoms = NULL;
 	gint nGroupAtoms = 0;
 
-	if(!GTK_IS_OBJECT(entry)) return;
+	if(!G_IS_OBJECT(entry)) return;
 	if(!GTK_IS_ENTRY(entry)) return;
 	p = g_object_get_data(G_OBJECT(entry), "N1");
 	if(p) N1 = GPOINTER_TO_INT(p);
@@ -676,7 +676,7 @@ static void activate_dihedral_entry(GtkWidget* entry, gchar* data)
 	gint nGroupAtoms = 0;
 
 
-	if(!GTK_IS_OBJECT(entry)) return;
+	if(!G_IS_OBJECT(entry)) return;
 	if(!GTK_IS_ENTRY(entry)) return;
 	p = g_object_get_data(G_OBJECT(entry), "N1");
 	if(p) N1 = GPOINTER_TO_INT(p);

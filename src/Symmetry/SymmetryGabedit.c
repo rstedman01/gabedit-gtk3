@@ -1087,7 +1087,7 @@ static gchar* findSinglePointGroup(Symmetry* symmetry)
 		if(symmetry->principalMoments[1] == minMoment) index = 1;
 		else if(symmetry->principalMoments[2] == minMoment) index = 2;
 
-		refAxis = newPoint3D(tempPrincipalAxes[index].x, tempPrincipalAxes[index].y, tempPrincipalAxes[index].z);
+		refAxis = newPoint3Dxyz(tempPrincipalAxes[index].x, tempPrincipalAxes[index].y, tempPrincipalAxes[index].z);
 		ref = newElementReflection(&symmetry->centerOfMass, &refAxis);
 		testSymmetryElement(symmetry, &ref);
 		sprintf(pointGroupGuess,"Cinfv");

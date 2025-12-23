@@ -286,7 +286,7 @@ static SMolecule createSymmetrizedMolecule(PointGroup* pointGroup, gdouble toler
 {
 	gint i;
 	SMolecule* mol = &pointGroup->molecule;
-	SMolecule newMolecule = newSMolecule(mol->size(mol));
+	SMolecule newMolecule = newSMoleculeSize(mol->size(mol));
 	SMolecule* umol = &pointGroup->uniqueMolecule;
 	Elements* els = &pointGroup->elements;
 	GList* listOfElements = els->getElements(els);
@@ -357,10 +357,10 @@ static Elements symmetrizeIcosahedralElements(PointGroup* pointGroup, Element* p
 	Point3D* paxis =  primaryRotation->getAxis(primaryRotation);
 	Point3D rotAxis = t.crossProd(&t,paxis);
 		
-	gdouble overallAngle = M_PI / 10;
-	gdouble vertexAngle = (63.4349488 / 180) * M_PI;
-	gdouble faceAngle = (M_PI - vertexAngle) / 2;
-	gdouble c3Angle = (20.905157439 / 180) * M_PI;
+	gdouble overallAngle = G_PI / 10;
+	gdouble vertexAngle = (63.4349488 / 180) * G_PI;
+	gdouble faceAngle = (G_PI - vertexAngle) / 2;
+	gdouble c3Angle = (20.905157439 / 180) * G_PI;
 
 	Elements* els = &pointGroup->elements;
 	GList* listOfElements = els->getElements(els);
@@ -437,7 +437,7 @@ static Elements symmetrizeIcosahedralElements(PointGroup* pointGroup, Element* p
 		}
 		else
 		{
-			Point3D newAxis = paxis->rotate(paxis, &O , &rotAxis, M_PI / 2);					
+			Point3D newAxis = paxis->rotate(paxis, &O , &rotAxis, G_PI / 2);					
 			symmetrizedElements.addElementRotation(&symmetrizedElements, center, &newAxis, 2);
 			if(isIh) symmetrizedElements.addElementReflection(&symmetrizedElements,center, &newAxis);
 		}
@@ -457,7 +457,7 @@ static Elements symmetrizeOctahedralElements(PointGroup* pointGroup, Element* pr
 	Point3D* paxis =  primaryRotation->getAxis(primaryRotation);
 	Point3D rotAxis = t.crossProd(&t,paxis);
 		
-	gdouble overallAngle = M_PI / 4;
+	gdouble overallAngle = G_PI / 4;
 
 	Elements* els = &pointGroup->elements;
 	GList* listOfElements = els->getElements(els);
@@ -487,8 +487,8 @@ static Elements symmetrizeOctahedralElements(PointGroup* pointGroup, Element* pr
 	{
 		if(i % 2 == 0)
 		{
-			gdouble rotAngle = M_PI / 4;
-			Point3D newAxis = paxis->rotate(paxis, &O , &rotAxis, M_PI / 2);					
+			gdouble rotAngle = G_PI / 4;
+			Point3D newAxis = paxis->rotate(paxis, &O , &rotAxis, G_PI / 2);					
 			symmetrizedElements.addElementRotation(&symmetrizedElements, center, &newAxis, 2);
 			if(isOh) symmetrizedElements.addElementReflection(&symmetrizedElements, center, &newAxis);
 
@@ -506,9 +506,9 @@ static Elements symmetrizeOctahedralElements(PointGroup* pointGroup, Element* pr
 		}
 		else
 		{
-			gdouble rotAngleC3 = (109.47122064 / 180) * M_PI / 2;
-			gdouble rotAngleC2 = M_PI / 2;
-			gdouble rotAngle2C3 = ((90 + (90 - 109.47122064 / 2) )/ 180) * M_PI;
+			gdouble rotAngleC3 = (109.47122064 / 180) * G_PI / 2;
+			gdouble rotAngleC2 = G_PI / 2;
+			gdouble rotAngle2C3 = ((90 + (90 - 109.47122064 / 2) )/ 180) * G_PI;
 
 			Point3D newAxis = paxis->rotate(paxis, &O , &rotAxis, rotAngleC3);
 			symmetrizedElements.addElementRotation(&symmetrizedElements, center, &newAxis, 3);
@@ -544,7 +544,7 @@ static Elements symmetrizeTetrahedralElements(PointGroup* pointGroup, Element* p
 	GList* c3si;
 	GList* c3sj;
 		
-	gdouble overallAngle = M_PI / 4;
+	gdouble overallAngle = G_PI / 4;
 		
 	Elements* els = &pointGroup->elements;
 	GList* listOfElements = els->getElements(els);
@@ -584,7 +584,7 @@ static Elements symmetrizeTetrahedralElements(PointGroup* pointGroup, Element* p
 	{
 		if(i % 2 == 0)
 		{
-			gdouble rotAngle = M_PI / 2;
+			gdouble rotAngle = G_PI / 2;
 			Point3D newAxis = paxis->rotate(paxis, &O , &rotAxis, rotAngle);					
 			symmetrizedElements.addElementRotation(&symmetrizedElements, center, &newAxis, 2);
 			if(numRefs == 3) symmetrizedElements.addElementReflection(&symmetrizedElements, center, &newAxis);
@@ -592,8 +592,8 @@ static Elements symmetrizeTetrahedralElements(PointGroup* pointGroup, Element* p
 		}
 		else
 		{
-			gdouble rotC3Angle2 = (125.2643896827 / 180) * M_PI;
-			gdouble rotC3Angle1 = M_PI / 2 - (rotC3Angle2 - M_PI / 2);
+			gdouble rotC3Angle2 = (125.2643896827 / 180) * G_PI;
+			gdouble rotC3Angle1 = G_PI / 2 - (rotC3Angle2 - G_PI / 2);
 			Point3D newAxis = paxis->rotate(paxis, &O , &rotAxis, rotC3Angle1);
 			symmetrizedElements.addElementRotation(&symmetrizedElements, center, &newAxis, 3);
 			if(numRefs == 3) symmetrizedElements.addElementImproperRotation(&symmetrizedElements, center, &newAxis, 6);
@@ -692,7 +692,7 @@ static SMolecule symmetrizeMolecule(PointGroup* pointGroup, gdouble tolerance)
 			Point3D* refAxis = NULL;		
 			Element* primaryRotation = &startElement;
 			Point3D* center = primaryRotation->getPoint(primaryRotation);
-			gdouble maxAngle = (2 * M_PI / primaryRotation->getDegree(primaryRotation));
+			gdouble maxAngle = (2 * G_PI / primaryRotation->getDegree(primaryRotation));
 			if(primaryRotation->type==ROTATION) maxAngle /= 2;
 			for(i=0;i< oldElements.size(&oldElements); i++)
 			{
@@ -742,7 +742,7 @@ static SMolecule symmetrizeMolecule(PointGroup* pointGroup, gdouble tolerance)
 							currentAxis = newAxis->copy(newAxis);
 							Point3D* paxis = primaryRotation->getAxis(primaryRotation);
 							Point3D rotPoint = center->add(center,currentAxis);
-							gdouble angle = M_PI / 2 - currentAxis->angleBetween(currentAxis, paxis);
+							gdouble angle = G_PI / 2 - currentAxis->angleBetween(currentAxis, paxis);
 							Point3D cp = currentAxis->crossProd(currentAxis, paxis);
 							
 							rotPoint = rotPoint.rotate(&rotPoint, center, &cp, -angle);

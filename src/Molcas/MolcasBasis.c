@@ -72,9 +72,9 @@ static void selectRow(GtkWidget* list, gint row)
 	gtk_tree_path_free(path);
 }
 /************************************************************************************************************/
-static void detroyBasisWindow()
+static void detroyBasisWindow(GtkWidget *Wins)
 {
-	destroy(Wins,NULL);
+	gtk_widget_destroy(Wins);
 	Wins = NULL;
 	labelInfo = NULL;
 	listOfAtoms = NULL;

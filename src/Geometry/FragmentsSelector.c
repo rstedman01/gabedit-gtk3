@@ -124,7 +124,7 @@ void create_window_fragments_selector(gchar* nodeNameToExpand, gchar* fragmentTo
 	gchar tmp[BSIZE];
 
 	FragmentsSelectorDlg = g_object_get_data(G_OBJECT(GeomDlg), "FragmentsSelectorDlg");
-	if(!FragmentsSelectorDlg || !GTK_IS_OBJECT(FragmentsSelectorDlg))
+	if(!FragmentsSelectorDlg || !G_IS_OBJECT(FragmentsSelectorDlg))
 	{
 		FragmentsSelectorDlg = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 		g_object_set_data(G_OBJECT(GeomDlg), "FragmentsSelectorDlg", FragmentsSelectorDlg);

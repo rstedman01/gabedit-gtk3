@@ -1220,8 +1220,8 @@ void gauss(gint ioption)
 	}
 	else
 	{
-  		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(CheckButtons[7]))=TRUE;
-  		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(CheckButtons[8]))=TRUE;
+  		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(CheckButtons[7]), TRUE);
+  		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(CheckButtons[8]), TRUE);
 	}
 	GeomFromCheck = FALSE;
 }

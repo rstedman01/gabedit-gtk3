@@ -65,6 +65,15 @@ DEALINGS IN THE SOFTWARE.
 #include "../Geometry/AxesGeomGL.h"
 #include "../Geometry/SelectionDlg.h"
 
+#ifdef DRAWGEOMGL
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif
+
+/* Dummy prototypes*/
+static void set_xyz_to_standard_orientation_all(void);
+static void set_xyz_to_standard_orientation_selected_and_not_selected_atoms(void);
+static void setSymbolOfselectedAtomsDlg(void);
 
 /* #define EXPERIMENTAL 1*/
 /*********************************************************************************************************************/
@@ -1936,7 +1945,7 @@ static void add_widget (GtkUIManager *merge, GtkWidget   *widget, GtkContainer *
 		toolbar = GTK_TOOLBAR (widget);
 		gtk_toolbar_set_show_arrow (toolbar, TRUE);
 		gtk_toolbar_set_style(toolbar, GTK_TOOLBAR_ICONS);
-		gtk_toolbar_set_orientation(toolbar,  GTK_ORIENTATION_VERTICAL);
+		gtk_orientable_set_orientation(GTK_ORIENTABLE(toolbar),  GTK_ORIENTATION_VERTICAL);
 		toolBar = toolbar;
 		handleBoxToolBar = handlebox;
 	}

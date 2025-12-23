@@ -215,13 +215,17 @@ static void setDeMonBasis(GtkWidget* comboBasis)
 	
 	if (comboBasis && GTK_IS_COMBO_BOX(comboBasis))
 	{
-		GtkTreeModel * model = NULL;
-		model = gtk_combo_box_get_model(GTK_COMBO_BOX(comboBasis));
-		gtk_list_store_clear(GTK_LIST_STORE(model));
+		GtkTreeModel *model = gtk_combo_box_get_model(GTK_COMBO_BOX(comboBasis));
+		GtkTreeStore *store = GTK_TREE_STORE(model);
+		gtk_tree_store_clear(store);
 
-		for(i=0;i<numberOfBasis;i++)
-  			gtk_combo_box_append_text (GTK_COMBO_BOX (comboBasis), listBasisView[i]);
-  		gtk_combo_box_set_active(GTK_COMBO_BOX (comboBasis), 0);
+		for(i=0; i<numberOfBasis; ++i)
+		{
+			GtkTreeIter iter;
+			gtk_tree_store_append(store, &iter, NULL);
+			gtk_tree_store_set(store, &iter, 0, listBasisView[i], -1);
+		}
+	  	if (numberOfBasis > 0) gtk_combo_box_set_active(GTK_COMBO_BOX (comboBasis), 0);
 	}
 
 }

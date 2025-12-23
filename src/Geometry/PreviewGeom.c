@@ -22,6 +22,8 @@ DEALINGS IN THE SOFTWARE.
 #include <stdlib.h>
 #include <math.h>
 
+#include <gtk/gtk.h>
+
 #include "../Common/Global.h"
 #include "../Utils/Constants.h"
 #include "../Utils/UtilsInterface.h"
@@ -79,8 +81,7 @@ typedef struct _PrevData
 	gdouble beginX;
 	gdouble beginY;
 	Camera camera;
-	GdkGC* gc;
-	GdkPixmap* pixmap;
+	cairo_surface_t *pixmap_surface;
 	gdouble zoom;
  	gint atomToDelete;
  	gint atomToBondTo;
@@ -137,8 +138,7 @@ static void init_prevData(PrevData* prevData)
 	prevData->beginY = 0;
 	prevData->camera.position = 10;
 	prevData->camera.f = 5;
-	prevData->gc = NULL;
-	prevData->pixmap = NULL;
+	prevData->pixmap_surface = NULL;
 	prevData->zoom = 1;
 	prevData->atomToDelete = -1;
 	prevData->atomToBondTo = -1;
@@ -170,8 +170,11 @@ static void free_prevData(PrevData* prevData)
 	}
 	if(prevData->geom) g_free(prevData->geom);
 	if(prevData->geom0) g_free(prevData->geom0);
-	if(prevData->pixmap) g_object_unref(prevData->pixmap);
-	if(prevData->gc) g_object_unref(prevData->gc);
+	if(prevData->pixmap_surface)
+	{
+		cairo_surface_destroy(prevData->pixmap_surface);
+		prevData->pixmap_surface = NULL;
+	} 
 	free_connections(prevData->connections,prevData->nAtoms);
 	init_prevData(prevData);
 	/* do not delete frag */
@@ -404,8 +407,8 @@ static void define_good_factor(GtkWidget* drawingArea)
 	camera = prevData->camera;
 	factor = prevData->zoom;
 
-	Xmax=drawingArea->allocation.width;
-	Ymax=drawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(drawingArea);
+	Ymax=gtk_widget_get_allocated_height(drawingArea);
 	X1 = Xmax;
 	X2 = Xmax;
 	Y1 = Ymax;
@@ -477,8 +480,8 @@ static void getXiYi(GtkWidget* drawingArea, gint* pXi, gint* pYi, gdouble C[])
 
 	factor =1;
 
-	Xmax=drawingArea->allocation.width;
-	Ymax=drawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(drawingArea);
+	Ymax=gtk_widget_get_allocated_height(drawingArea);
 	Rmax = Xmax;
 	if(Rmax<Ymax) Rmax = Ymax;
 
@@ -526,8 +529,8 @@ static void define_coord_ecran(GtkWidget* drawingArea)
 	camera = prevData->camera;
 	factor = prevData->zoom;
 
-	Xmax=drawingArea->allocation.width;
-	Ymax=drawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(drawingArea);
+	Ymax=gtk_widget_get_allocated_height(drawingArea);
 	Rmax = Xmax;
 	if(Rmax<Ymax) Rmax = Ymax;
 	/* Cmax = get_cmax(nAtoms, geom);*/ /* already in factor */
@@ -557,48 +560,59 @@ static void define_coord_ecran(GtkWidget* drawingArea)
 	}
 }
 /*****************************************************************************/
+static void pixmap_init(GtkWidget *drawingArea)
+{
+	PrevData *prevData = (PrevData*)g_object_get_data(G_OBJECT(drawingArea), "PrevData");
+	if(!prevData) return;
+	
+	int width = gtk_widget_get_allocated_width(drawingArea);
+	int height = gtk_widget_get_allocated_height(drawingArea);
+	if (width <= 0 || height <= 0) return;
+
+	if (prevData->pixmap_surface)
+	{
+		int sw = cairo_image_surface_get_width(prevData->pixmap_surface);
+		int sh = cairo_image_surface_get_height(prevData->pixmap_surface);
+		if(sw != width || sh != height) {
+			cairo_surface_destroy(prevData->pixmap_surface);
+			prevData->pixmap_surface = NULL;
+		}
+	}
+	if (!prevData->pixmap_surface)
+	{
+		prevData->pixmap_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+	}
+	cairo_t *cr = cairo_create(prevData->pixmap_surface);
+	cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+	cairo_paint(cr);
+	cairo_destroy(cr);
+}
+
+static void redraw(GtkWidget *drawingArea)
+{
+	if(gtk_widget_get_visible(drawingArea)) gtk_widget_queue_draw(drawingArea);
+}
+/*****************************************************************************/
 static void draw_line(GtkWidget* drawingArea, gint x1,gint y1,gint x2,gint y2,GdkColor colori,gint epaisseuri,
 		gdouble *vxp,gdouble *vyp,gint* epaisseurip,gboolean newbond)
 {
-	GdkColormap *colormap;
-        gint epaisseur=epaisseuri;
-        GdkVisual* vis;
 	PrevData* prevData = (PrevData*)g_object_get_data(G_OBJECT (drawingArea), "PrevData");
-	GdkGC* gc = NULL;
-	GdkPixmap* pixmap;
+	if(!prevData || !prevData->pixmap_surface) return;
 
-	if(!prevData)return;
+	cairo_t* cr = cairo_create(prevData->pixmap_surface);
 
-	gc = prevData->gc;
-	pixmap = prevData->pixmap;
+	double r = (double)colori.red / 65535.0;
+	double g = (double)colori.green / 65535.0;
+	double b = (double)colori.blue / 65535.0;
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+	cairo_set_source_rgb(cr, r, g, b);
+	cairo_set_line_width(cr, (double)epaisseuri);
+	/* draw the line */
+	cairo_move_to(cr, x1 + 0.5, y1 + 0.5);
+	cairo_line_to(cr, x2 + 0.5, y2 + 0.5);
+	cairo_stroke(cr);
 
-         vis = gdk_colormap_get_visual(colormap);
-        {
-	    	gdouble vx = (y2 - y1);
-	    	gdouble vy = (x1 - x2);
-	    	gdouble v2 = sqrt(vx*vx + vy*vy);
-        	GdkColor colorgray;
-
-        	if(vis->depth >15)
-		{
-          	colorgray.red = (gushort)(colori.red*0.6); 
-          	colorgray.green = (gushort)(colori.green*0.6); 
-          	colorgray.blue = (gushort)(colori.blue*0.6); 
-		}
-		else
-		{
-          	colorgray.red = (gushort)(35000); 
-          	colorgray.green = (gushort)(35000); 
-          	colorgray.blue = (gushort)(35000); 
-		}
-
-            gdk_colormap_alloc_color(colormap,&colori,FALSE,TRUE);
-	    gdk_gc_set_foreground(gc,&colori);
-	    gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
-	    if(v2>=0) gdk_draw_line(pixmap,gc,x1,y1,x2,y2);
-        }
+	cairo_destroy(cr);
 }
 /*****************************************************************************/
 static void draw_line2(GtkWidget* drawingArea, gint epaisseur,guint i,guint j,gint x1,gint y1,gint x2,gint y2,
@@ -652,69 +666,63 @@ static void draw_line2(GtkWidget* drawingArea, gint epaisseur,guint i,guint j,gi
 /*****************************************************************************/
 static void draw_anneau(GtkWidget* drawingArea, gint x,gint y,gint rayon,GdkColor colori)
 {
-	GdkColormap *colormap;
 	PrevData* prevData = (PrevData*)g_object_get_data(G_OBJECT (drawingArea), "PrevData");
-	GdkGC* gc = NULL;
-	GdkPixmap* pixmap;
+	if(!prevData || !prevData->pixmap_surface) return;
 
-	if(!prevData)return;
+	cairo_t* cr = cairo_create(prevData->pixmap_surface);
 
-	gc = prevData->gc;
-	pixmap = prevData->pixmap;
+	double r = (double)colori.red / 65535.0;
+	double g = (double)colori.green / 65535.0;
+	double b = (double)colori.blue / 65535.0;
 
-        colormap  = gdk_drawable_get_colormap(drawingArea->window);
+	/* Set stroke properties */
+	cairo_set_source_rgb(cr, r, g, b);
+	cairo_set_line_width(cr, 2.0);
+	/* stippled -> emulate with dashed line */
+	double dashes[] = {4.0, 4.0};
+	cairo_set_dash(cr, dashes, 2, 0.0);
 
-        gdk_colormap_alloc_color(colormap,&colori,FALSE,TRUE);
-	gdk_gc_set_foreground(gc,&colori);
-	gdk_gc_set_line_attributes(gc,2,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gdk_gc_set_fill(gc,GDK_STIPPLED);
-	gdk_draw_arc(pixmap,gc,FALSE,x-rayon,y-rayon,2*rayon,2*rayon,0,380*64);
+	cairo_arc(cr, x, y, rayon, 0, 2.0*G_PI);
+	cairo_stroke(cr);
+
+	/* reset dashes */
+	cairo_set_dash(cr, NULL, 0, 0.0);
+
+	cairo_destroy(cr);
 }
 /*****************************************************************************/
 static void draw_cercle(GtkWidget* drawingArea, gint xi,gint yi,gint rayoni,GdkColor colori)
 {
-	GdkColormap *colormap;
-        gint x=xi,y=yi,rayon=rayoni;
-        GdkVisual* vis;
-        GdkColor colorgray;
 	PrevData* prevData = (PrevData*)g_object_get_data(G_OBJECT (drawingArea), "PrevData");
-	GdkGC* gc = NULL;
-	GdkPixmap* pixmap;
+	if(!prevData || !prevData->pixmap_surface) return;
 
-	if(!prevData)return;
+	cairo_t* cr = cairo_create(prevData->pixmap_surface);
 
-	gc = prevData->gc;
-	pixmap = prevData->pixmap;
+	double r = (double)colori.red / 65535.0;
+	double g = (double)colori.green / 65535.0;
+	double b = (double)colori.blue / 65535.0;
 
-        colorgray.red = (gushort)(colori.red*0.6); 
-        colorgray.green = (gushort)(colori.green*0.6); 
-        colorgray.blue = (gushort)(colori.blue*0.6); 
+	/* Fill main circle */
+	cairo_set_source_rgb(cr, r, g, b);
+	cairo_arc(cr, xi, yi, rayoni, 0, 2.0*G_PI);
+	cairo_fill_preserve(cr);
 
-        colormap  = gdk_drawable_get_colormap(drawingArea->window);
-        vis = gdk_colormap_get_visual(colormap);
-       	if(vis->depth >15)
-	{
-          	colorgray.red = (gushort)(colori.red*0.6); 
-          	colorgray.green = (gushort)(colori.green*0.6); 
-          	colorgray.blue = (gushort)(colori.blue*0.6); 
-	}
-	else
-	{
-         	colorgray.red = (gushort)(35000); 
-         	colorgray.green = (gushort)(35000); 
-          	colorgray.blue = (gushort)(35000); 
-	}
+	/* Border: slightly darker */
+	cairo_set_source_rgb(cr, r*0.6, g*0.6, b*0.6);
+	cairo_set_line_width(cr, 2.0);
+	cairo_stroke(cr);
 
-        gdk_colormap_alloc_color(colormap,&colori,FALSE,TRUE);
-	gdk_gc_set_foreground(gc,&colori);
-	gdk_gc_set_line_attributes(gc,2,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gdk_gc_set_fill(gc,GDK_SOLID);
-	gdk_draw_arc(pixmap,gc,TRUE,x-rayon,y-rayon,2*rayon,2*rayon,0,380*64);
-        gdk_colormap_alloc_color(colormap,&colorgray,FALSE,TRUE);
-	gdk_gc_set_foreground(gc,&colorgray);
-	gdk_draw_arc(pixmap,gc,TRUE,x-rayon,y-rayon,2*rayon,2*rayon,90*64,180*64);
-	gdk_gc_set_foreground(gc,&colori);
-	gdk_draw_arc(pixmap,gc,TRUE,x-rayon/2,y-rayon,rayon,2*rayon,0,380*64);
+	/* decorative arcs like original: draw overlay arcs with different angles */
+	cairo_set_source_rgb(cr, r*0.6, g*0.6, b*0.6);
+	cairo_arc(cr, xi, yi, rayoni, G_PI/2.0, G_PI); /* 90° arc */
+	cairo_stroke(cr);
+
+	/* small inner arc */
+	cairo_set_source_rgb(cr, r, g, b);
+	cairo_arc(cr, xi - rayoni/2, yi, rayoni/2, 0, 2.0*G_PI);
+	cairo_fill(cr);
+
+	cairo_destroy(cr);
 }
 /*****************************************************************************/
 static guint get_num_min_rayon(PrevGeom* geom, guint i,guint j)
@@ -761,32 +769,6 @@ static void rotation_geometry_quat(PrevGeom* geom, gint nAtoms, gdouble m[4][4])
 		g_free(A[j]);
 
 	sort_with_zaxis(geom, nAtoms);
-}
-/*****************************************************************************/
-static void pixmap_init(GtkWidget *drawingArea)
-{
-
-	PrevData* prevData = (PrevData*)g_object_get_data(G_OBJECT (drawingArea), "PrevData");
-	if(!prevData)return;
-	gdk_draw_rectangle (prevData->pixmap,
-                      	drawingArea->style->black_gc,
-                      	TRUE,
-                      	0, 0,
-                  	drawingArea->allocation.width,
-                  	drawingArea->allocation.height);    
-}
-/*****************************************************************************/
-static void redraw(GtkWidget *drawingArea)
-{
-	PrevData* prevData = (PrevData*)g_object_get_data(G_OBJECT (drawingArea), "PrevData");
-	if(!prevData)return;
-	gdk_draw_drawable(drawingArea->window,
-                  drawingArea->style->fg_gc[GTK_WIDGET_STATE (drawingArea)],
-                  prevData->pixmap,
-                  0,0,
-                  0,0,
-                  drawingArea->allocation.width,
-                  drawingArea->allocation.height);    
 }
 /*****************************************************************************/
 static gboolean draw_molecule( GtkWidget *drawingArea)
@@ -837,6 +819,7 @@ static gboolean draw_molecule( GtkWidget *drawingArea)
 	colorBlue.blue = 65535;
 	colorBlue.pixel = 0;
 
+	/* ensure offscreen surface exists & cleared */
 	pixmap_init(drawingArea);
 
 	for(i=0;i<prevData->nAtoms;i++)
@@ -855,14 +838,14 @@ static gboolean draw_molecule( GtkWidget *drawingArea)
 			gdouble ab[] = {0,0};
 			if(prevData->connections[i][j]!=1)
 			{
-				gdouble m = 0;
+				gdouble mm = 0;
 				ab[0] = geom[j].Yi-geom[i].Yi;
 				ab[1] = -geom[j].Xi+geom[i].Xi;
-				m = sqrt(ab[0]*ab[0]+ab[1]*ab[1]);
-				if(m !=0)
+				mm = sqrt(ab[0]*ab[0]+ab[1]*ab[1]);
+				if(mm !=0)
 				{
-					ab[0] /= m;
-					ab[1] /= m;
+					ab[0] /= mm;
+					ab[1] /= mm;
 
 				}
 			}
@@ -946,8 +929,8 @@ static gboolean draw_molecule( GtkWidget *drawingArea)
 	}
 	if(nTv>0)
 	{
-			gint Xmax=drawingArea->allocation.width;
-			gint Ymax=drawingArea->allocation.height;
+			gint Xmax = gtk_widget_get_allocated_width(drawingArea);
+			gint Ymax = gtk_widget_get_allocated_height(drawingArea);
 			gdouble C[3] = {0,0,0};
 			gint X0 = 0;
 			gint Y0 = 0;
@@ -984,10 +967,10 @@ static gboolean draw_molecule( GtkWidget *drawingArea)
 				draw_line(drawingArea, X1,Y1,X0,Y0,color1,epaisseur,&vx,&vy,&ep,TRUE);
 				if(nTv>2) draw_line(drawingArea, X2,Y2,X0,Y0,color1,epaisseur,&vx,&vy,&ep,TRUE);
 			}
-			// HERE
-			//continue;
+			// continue
 	}
 
+	/* Instead of immediate blit, request redraw; draw handler will paint the surface */
 	redraw(drawingArea);
 	
 	return TRUE;
@@ -996,30 +979,41 @@ static gboolean draw_molecule( GtkWidget *drawingArea)
 static gboolean configure_event( GtkWidget *drawingArea, GdkEventConfigure *event )
 {
 	PrevData* prevData = (PrevData*)g_object_get_data(G_OBJECT (drawingArea), "PrevData");
-	if(!prevData)return FALSE;
-	if(!prevData->gc) prevData->gc = gdk_gc_new(drawingArea->window);
-	if (prevData->pixmap) g_object_unref(prevData->pixmap);
-	prevData->pixmap = gdk_pixmap_new(drawingArea->window, 
-			drawingArea->allocation.width, drawingArea->allocation.height, -1);
+	if(!prevData) return FALSE;
+
+	/* create or resize offscreen surface */
+	int w = gtk_widget_get_allocated_width(drawingArea);
+	int h = gtk_widget_get_allocated_height(drawingArea);
+	if(w<=0 || h<=0) return FALSE;
+
+	if(prevData->pixmap_surface) {
+		int sw = cairo_image_surface_get_width(prevData->pixmap_surface);
+		int sh = cairo_image_surface_get_height(prevData->pixmap_surface);
+		if(sw != w || sh != h) {
+			cairo_surface_destroy(prevData->pixmap_surface);
+			prevData->pixmap_surface = NULL;
+		}
+	}
+	if(!prevData->pixmap_surface) {
+		prevData->pixmap_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, w, h);
+	}
+
+	/* draw initial content */
 	draw_molecule(drawingArea);
 
 	return TRUE;
 }
 /********************************************************************************/   
-static gboolean expose_event( GtkWidget *widget, GdkEventExpose *event )
+static gboolean draw_handler( GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
 	PrevData* prevData = (PrevData*)g_object_get_data(G_OBJECT (widget), "PrevData");
-	if(event->count >0) return FALSE;
-	if(!prevData)return FALSE;
-	gdk_draw_drawable(widget->window,
-                  widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
-                  prevData->pixmap,
-                  event->area.x, event->area.y,
-                  event->area.x, event->area.y,
-                  event->area.width, event->area.height);
- 
+	if(!prevData) return FALSE;
+	if(prevData->pixmap_surface) {
+		cairo_set_source_surface(cr, prevData->pixmap_surface, 0, 0);
+		cairo_paint(cr);
+	}
 	return FALSE;
-}                                                                               
+}                                                                                
 /*****************************************************************************/
 static gint atom_conneted_to(GtkWidget* drawingArea, gint i)
 {
@@ -1120,9 +1114,11 @@ static gboolean button_press(GtkWidget *drawingArea, GdkEvent *event, gpointer M
 				prevData->atomToDelete = -1;
 				prevData->atomToBondTo = -1;
 				prevData->angleAtom = -1;
-				prevData->frag->atomToDelete = -1;
-				prevData->frag->atomToBondTo = -1;
-				prevData->frag->angleAtom=-1;
+				if(prevData->frag) {
+					prevData->frag->atomToDelete = -1;
+					prevData->frag->atomToBondTo = -1;
+					prevData->frag->angleAtom = -1;
+				}
 				draw_molecule(drawingArea);
 			}
 			else if(i>=0)
@@ -1212,8 +1208,8 @@ static gboolean RotationByMouse(GtkWidget *widget, GdkEventMotion *event)
   
 	area.x = 0;
 	area.y = 0;
-	area.width  = widget->allocation.width;
-	area.height = widget->allocation.height;
+	area.width  = gtk_widget_get_allocated_width(widget);
+	area.height = gtk_widget_get_allocated_height(widget);
 
 	
 	trackball(spin_quat,
@@ -1238,7 +1234,7 @@ static gboolean ScaleByMouse(GtkWidget *drawingArea, gpointer data)
 	if(!prevData) return FALSE;
 	factor = prevData->zoom;
 
-	factor +=((bevent->y - prevData->beginY) / drawingArea->allocation.height) * 5;
+	factor +=((bevent->y - prevData->beginY) / gtk_widget_get_allocated_height(drawingArea)) * 5;
 	if(factor<0.1) factor = 0.01;
 	if(factor>10) factor = 10;
 	prevData->zoom = factor;
@@ -1262,7 +1258,7 @@ static gboolean motion_notify(GtkWidget *drawingArea, GdkEventMotion *event)
 	{
 #if !defined(G_OS_WIN32)
 		gint x,y;
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		state = event->state;
 #endif
@@ -1354,8 +1350,10 @@ GtkWidget* add_preview_geom(GtkWidget* box)
 	gtk_widget_show(drawingArea);
 	g_object_set_data(G_OBJECT (drawingArea), "PrevData", prevData);
 
-	g_signal_connect(G_OBJECT(drawingArea),"configure_event", (GCallback)configure_event,NULL);
+	/* Connect configure and draw handlers */
+	g_signal_connect(G_OBJECT(drawingArea),"configure-event", (GCallback)configure_event,NULL);
 
+	/* set events: keep old mask set but use gtk_widget_add_events on modern GTK3 */
 	gtk_widget_set_events (drawingArea, GDK_EXPOSURE_MASK
 					| GDK_LEAVE_NOTIFY_MASK
 					| GDK_BUTTON_PRESS_MASK
@@ -1364,8 +1362,9 @@ GtkWidget* add_preview_geom(GtkWidget* box)
 					| GDK_POINTER_MOTION_HINT_MASK);
 	gtk_widget_set_size_request (GTK_WIDGET(drawingArea), 100, 100);
 
-	/* Evenments */
-	g_signal_connect(G_OBJECT(drawingArea), "expose_event", (GCallback)expose_event,NULL);
+	/* Events: draw replaces expose_event */
+	/* old expose_event -> new draw handler */
+	g_signal_connect(G_OBJECT(drawingArea), "draw", G_CALLBACK(draw_handler), NULL);
 	g_signal_connect(G_OBJECT(drawingArea), "button_press_event", G_CALLBACK(button_press), NULL);
 	g_signal_connect(G_OBJECT(drawingArea), "motion_notify_event",G_CALLBACK(motion_notify), NULL);
 	g_signal_connect(G_OBJECT(drawingArea), "button_release_event",G_CALLBACK(release_button), NULL);
@@ -1407,7 +1406,8 @@ void add_frag_to_preview_geom(GtkWidget* drawingArea, Fragment* frag)
 	prevData->frag = frag;
 	define_coord_ecran(drawingArea);
 	configure_event(drawingArea, NULL);
-	gtk_widget_hide_all(drawingArea);
+	/* For a single widget, hide_all/show_all are unusual; keep but it's not necessary */
+	gtk_widget_hide(drawingArea);
 	gtk_widget_show_all(drawingArea);
 	define_good_factor(drawingArea);
 	draw_molecule(drawingArea);

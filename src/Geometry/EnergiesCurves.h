@@ -22,4 +22,47 @@ DEALINGS IN THE SOFTWARE.
 extern gboolean GeomConvIsOpen;
 void create_energies_curves(DataGeomConv*,gint );
 
-#endif /* __GABEDIT_ENERGIESCURVES_H__ */
+typedef struct _EnergiesCurvesData 
+{
+  // Raw data points
+  double *x; 
+  double *y;
+  int n;
+
+  // Data ranges
+  double xmin, xmax;
+  double ymin, ymax;
+
+  // Title/Labels
+  gchar *title;
+  gchar *xlabel;
+  gchar *ylabel;
+
+  // Interaction
+  int hover_index;
+  int selected_index;
+  gboolean show_grid;
+  gboolean show_points;
+  gboolean show_curve;
+  gboolean show_title;
+
+  GdkRGBA bg_color;  
+  GdkRGBA grid_color;
+  GdkRGBA curve_color;
+  GdkRGBA point_fill;
+  GdkRGBA point_border;
+  GdkRGBA hover_color;
+  GdkRGBA select_color;
+  GdkRGBA text_color;
+
+  // Cache previous allocation for coordinate mapping
+  int last_width;
+  int last_height;
+
+  // To-do: offscreen surface caching
+  cairo_surface_t *cache_surface;
+  gboolean cache_dirty;
+
+} EnergiesCurvesData;
+
+#endif

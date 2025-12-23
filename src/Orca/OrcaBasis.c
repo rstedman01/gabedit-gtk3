@@ -982,7 +982,7 @@ static void setOrcaBasis(GtkWidget* comboBasis)
 		gtk_list_store_clear(GTK_LIST_STORE(model));
 
 		for(i=0;i<numberOfBasis;i++)
-  			gtk_combo_box_append_text (GTK_COMBO_BOX (comboBasis), listBasisView[i]);
+  			gtk_combo_box_text_append_text (GTK_COMBO_BOX (comboBasis), listBasisView[i]);
   		gtk_combo_box_set_active(GTK_COMBO_BOX (comboBasis), 0);
 	}
 

@@ -311,8 +311,8 @@ void  get_orgin_molecule_drawgeom(gdouble orig[])
 	orig[1] = 0;
 	orig[2] = 0.0;
 
-	Rmax = GeomDrawingArea->allocation.width;
-	if(Rmax<GeomDrawingArea->allocation.height) Rmax = GeomDrawingArea->allocation.height;
+	Rmax = gtk_widget_get_allocated_width(GeomDrawingArea);
+	if(Rmax<gtk_widget_get_allocated_height(GeomDrawingArea)) Rmax = gtk_widget_get_allocated_height(GeomDrawingArea);
 
 	if(PersMode) Cmax  = coordmaxmin.Cmax*camera.f/(camera.position);
 	else Cmax = coordmaxmin.Cmax;
@@ -327,8 +327,8 @@ void  get_camera_values_drawgeom(gdouble* zn, gdouble* zf, gdouble* angle, gdoub
 
 	if(GeomDrawingArea)
 	{
-		width =  GeomDrawingArea->allocation.width;
-		height = GeomDrawingArea->allocation.height;
+		width =  gtk_widget_get_allocated_width(GeomDrawingArea);
+		height = gtk_widget_get_allocated_height(GeomDrawingArea);
 	}
 	*aspect = width/height;
 	if(PersMode)
@@ -341,9 +341,9 @@ void  get_camera_values_drawgeom(gdouble* zn, gdouble* zf, gdouble* angle, gdoub
 	else
 	{
 		gdouble Cmax = coordmaxmin.Cmax;
-		gdouble Rmax = GeomDrawingArea->allocation.width;
+		gdouble Rmax = gtk_widget_get_allocated_width(GeomDrawingArea);
 
-		if(Rmax<GeomDrawingArea->allocation.height) Rmax = GeomDrawingArea->allocation.height;
+		if(Rmax<gtk_widget_get_allocated_height(GeomDrawingArea)) Rmax = gtk_widget_get_allocated_height(GeomDrawingArea);
 		*zf = Cmax*Rmax;
 		*zn = 10;
 		*angle = *aspect/factor*45*36*(Cmax/Rmax);
@@ -533,7 +533,7 @@ static gint get_indice(gint n)
 static gushort get_epaisseur()
 {
         gushort e;
-	if(Natoms>0) e = (gushort)(7.0/1200*GeomDrawingArea->allocation.width*factorstick);
+	if(Natoms>0) e = (gushort)(7.0/1200*gtk_widget_get_allocated_width(GeomDrawingArea)*factorstick);
 	else e = 3;
 	if(e<3) e = 3;
 	return e;
@@ -2507,29 +2507,29 @@ void get_standard_orientation_with_symmetrization(GtkWidget*w, gpointer data)
 /********************************************************************************/
 static gint set_key_press(GtkWidget* wid, GdkEventKey *event, gpointer data)
 {
-	if((event->keyval == GDK_Shift_L || event->keyval == GDK_Shift_R) )
+	if((event->keyval == GDK_KEY_Shift_L || event->keyval == GDK_KEY_Shift_R) )
 		ShiftKeyPressed = TRUE;
-	else if((event->keyval == GDK_Control_L || event->keyval == GDK_Control_R) )
+	else if((event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R) )
 	{
 		ControlKeyPressed = TRUE;
 	}
-	else if((event->keyval == GDK_Alt_L || event->keyval == GDK_Alt_R) )
+	else if((event->keyval == GDK_KEY_Alt_L || event->keyval == GDK_KEY_Alt_R) )
 	{
 		ControlKeyPressed = TRUE;
 	}
-	else if((event->keyval == GDK_F || event->keyval == GDK_f) )
+	else if((event->keyval == GDK_KEY_F || event->keyval == GDK_KEY_f) )
 	{
 		FKeyPressed = TRUE;
 	}
-	else if((event->keyval == GDK_G || event->keyval == GDK_g) )
+	else if((event->keyval == GDK_KEY_G || event->keyval == GDK_KEY_g) )
 	{
 		GKeyPressed = TRUE;
 	}
-	else if((event->keyval == GDK_A || event->keyval == GDK_a)  && ControlKeyPressed)
+	else if((event->keyval == GDK_KEY_A || event->keyval == GDK_KEY_a)  && ControlKeyPressed)
 	{
 		SelectAllAtoms();
 	}
-	else if((event->keyval == GDK_u || event->keyval == GDK_U))
+	else if((event->keyval == GDK_KEY_u || event->keyval == GDK_KEY_U))
 	{
         	switch(OperationType)
         	{
@@ -2540,13 +2540,13 @@ static gint set_key_press(GtkWidget* wid, GdkEventKey *event, gpointer data)
 			case ADDFRAGMENT : 
 			case ROTLOCFRAG : 
 			case ROTZLOCFRAG : 
-				get_geometry_from_fifo( event->keyval == GDK_U);
+				get_geometry_from_fifo( event->keyval == GDK_KEY_U);
 				drawGeom();
 				break;
 			default:break;
 		}
 	}
-	else if((event->keyval == GDK_z || event->keyval == GDK_y) && ControlKeyPressed)
+	else if((event->keyval == GDK_KEY_z || event->keyval == GDK_KEY_y) && ControlKeyPressed)
 	{
         	switch(OperationType)
         	{
@@ -2557,7 +2557,7 @@ static gint set_key_press(GtkWidget* wid, GdkEventKey *event, gpointer data)
 			case ADDFRAGMENT : 
 			case ROTLOCFRAG : 
 			case ROTZLOCFRAG : 
-				get_geometry_from_fifo(event->keyval == GDK_y);
+				get_geometry_from_fifo(event->keyval == GDK_KEY_y);
 				drawGeom();
 				break;
 			default:break;
@@ -2570,15 +2570,15 @@ static gint set_key_press(GtkWidget* wid, GdkEventKey *event, gpointer data)
 /********************************************************************************/
 static gint set_key_release(GtkWidget* wid, GdkEventKey *event, gpointer data)
 {
-	if((event->keyval == GDK_Shift_L || event->keyval == GDK_Shift_R) )
+	if((event->keyval == GDK_KEY_Shift_L || event->keyval == GDK_KEY_Shift_R) )
 		ShiftKeyPressed = FALSE;
-	else if((event->keyval == GDK_Control_L || event->keyval == GDK_Control_R) )
+	else if((event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R) )
 		ControlKeyPressed = FALSE;
-	else if((event->keyval == GDK_Alt_L || event->keyval == GDK_Alt_R) )
+	else if((event->keyval == GDK_KEY_Alt_L || event->keyval == GDK_KEY_Alt_R) )
 		ControlKeyPressed = FALSE;
-	else if((event->keyval == GDK_F || event->keyval == GDK_f) )
+	else if((event->keyval == GDK_KEY_F || event->keyval == GDK_KEY_f) )
 		FKeyPressed = FALSE;
-	else if((event->keyval == GDK_G || event->keyval == GDK_g) )
+	else if((event->keyval == GDK_KEY_G || event->keyval == GDK_KEY_g) )
 		GKeyPressed = FALSE;
 	return TRUE;
 }
@@ -2688,14 +2688,14 @@ void draw_text(gchar* str)
 	GdkColor color;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
 
-	gint x0  = GeomDrawingArea->allocation.width/20;
-	gint y0  = GeomDrawingArea->allocation.height-GeomDrawingArea->allocation.height/10;
+	gint x0  = gtk_widget_get_allocated_width(GeomDrawingArea)/20;
+	gint y0  = gtk_widget_get_allocated_height(GeomDrawingArea)-gtk_widget_get_allocated_height(GeomDrawingArea)/10;
 
 	color.red = FontsStyleLabel.TextColor.red;
 	color.green = FontsStyleLabel.TextColor.green;
 	color.blue = FontsStyleLabel.TextColor.blue;
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 	gdk_gc_set_foreground(gc,&color);
 	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, x0, y0, str, FALSE,TRUE);
@@ -2897,7 +2897,7 @@ void draw_selection_rectangle(gdouble x,gdouble y)
         GdkColor color;
 	GdkColormap *colormap;
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	color.red = 65535;
 	color.green = 65535;
 	color.blue = 65535;
@@ -2927,9 +2927,9 @@ void draw_selection_rectangle(gdouble x,gdouble y)
 	}
 	gdk_gc_set_line_attributes(gc,1,GDK_LINE_DOUBLE_DASH,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
 #if !defined(G_OS_WIN32)
-  	gdk_draw_rectangle (GeomDrawingArea->window,gc,FALSE,xi, yi, xf, yf);
+  	gdk_draw_rectangle (gtk_widget_get_window(GeomDrawingArea),gc,FALSE,xi, yi, xf, yf);
 #else
-  	gdk_draw_rectangle (GeomDrawingArea->window,GeomDrawingArea->style->white_gc,FALSE,xi, yi, xf, yf);
+  	gdk_draw_rectangle (gtk_widget_get_window(GeomDrawingArea),GeomDrawingArea->style->white_gc,FALSE,xi, yi, xf, yf);
 #endif
 }
 /********************************************************************************/
@@ -2942,7 +2942,7 @@ void draw_selection_circle(gdouble x,gdouble y)
         GdkColor color;
 	GdkColormap *colormap;
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	color.red = 65535;
 	color.green = 65535;
 	color.blue = 65535;
@@ -2972,7 +2972,7 @@ void draw_selection_circle(gdouble x,gdouble y)
 		yf = BeginY-y;
 	}
 	gdk_gc_set_line_attributes(gc,1,GDK_LINE_DOUBLE_DASH,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
-	gdk_draw_arc(GeomDrawingArea->window,gc,FALSE,xi,yi,xf,yf,0,380*64);
+	gdk_draw_arc(gtk_widget_get_window(GeomDrawingArea),gc,FALSE,xi,yi,xf,yf,0,380*64);
 }
 /********************************************************************************/
 static void delete_molecule()
@@ -4648,7 +4648,7 @@ cairo_t *get_drawing_cairo()
 /********************************************************************************/  
 GdkColormap* get_drawing_colormap()
 {
-  GdkColormap *colormap = gdk_drawable_get_colormap(GeomDrawingArea->window);
+  GdkColormap *colormap = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 
   return colormap;
 }
@@ -4904,26 +4904,26 @@ static gint ScaleByMouse(gpointer data)
         switch(OperationType)
         {
 	case SCALEGEOM :
-			factor +=((bevent->y - BeginY) / GeomDrawingArea->allocation.height) * 5;
+			factor +=((bevent->y - BeginY) / gtk_widget_get_allocated_height(GeomDrawingArea)) * 5;
 			if(factor<0.1) factor = 0.1;
 			if(factor>10) factor = 10;
 			drawGeom();
 		break;
 	case SCALESTICK :
-			factorstick +=((bevent->y - BeginY) / GeomDrawingArea->allocation.height) * 5;
+			factorstick +=((bevent->y - BeginY) / gtk_widget_get_allocated_height(GeomDrawingArea)) * 5;
 			if(factorstick <0.1) factorstick  = 0.1;
 			if(factorstick >10) factorstick = 10;
 			drawGeom();
 
 		break;
 	case SCALEBALL :
-			factorball +=((bevent->y - BeginY) / GeomDrawingArea->allocation.height) * 5;
+			factorball +=((bevent->y - BeginY) / gtk_widget_get_allocated_height(GeomDrawingArea)) * 5;
 			if(factorball <0.1) factorball  = 0.1;
 			if(factorball >10) factorball = 10;
 			drawGeom();
 		break;
 	case SCALEDIPOLE :
-			factordipole +=((bevent->y - BeginY) / GeomDrawingArea->allocation.height) * 5;
+			factordipole +=((bevent->y - BeginY) / gtk_widget_get_allocated_height(GeomDrawingArea)) * 5;
 			if(factordipole <0.1) factordipole  = 0.1;
 			if(factordipole >100) factordipole = 100;
 			redefine_dipole();
@@ -4948,7 +4948,7 @@ static gint TranslationByMouse(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -4964,8 +4964,8 @@ static gint TranslationByMouse(GtkWidget *widget, GdkEventMotion *event)
   
 	area.x = 0;
 	area.y = 0;
-	area.width  = widget->allocation.width;
-	area.height = widget->allocation.height;
+	area.width  = gtk_widget_get_allocated_width(widget);
+	area.height = gtk_widget_get_allocated_height(widget);
 
     TransX =(gint)(TransX+(x - BeginX)); 
     TransY =(gint)(TransY+(y - BeginY)); 
@@ -4986,7 +4986,7 @@ static gint RotationByMouse(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5002,8 +5002,8 @@ static gint RotationByMouse(GtkWidget *widget, GdkEventMotion *event)
   
 	area.x = 0;
 	area.y = 0;
-	area.width  = widget->allocation.width;
-	area.height = widget->allocation.height;
+	area.width  = gtk_widget_get_allocated_width(widget);
+	area.height = gtk_widget_get_allocated_height(widget);
 
 	
 	trackball(spin_quat,
@@ -5033,7 +5033,7 @@ static gint RotationZByMouse(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5047,8 +5047,8 @@ static gint RotationZByMouse(GtkWidget *widget, GdkEventMotion *event)
 		state = event->state;
 	}
   
-	width  = widget->allocation.width;
-	height = widget->allocation.height;
+	width  = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
 
 	Xi = width/2 + TransX;
 	Yi = height/2 + TransY;
@@ -5177,8 +5177,8 @@ static gint local_zrotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 	else
 		return FALSE;
 
-	Xmax=GeomDrawingArea->allocation.width;
-	Ymax=GeomDrawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(GeomDrawingArea);
+	Ymax=gtk_widget_get_allocated_height(GeomDrawingArea);
 	Rmax = Xmax;
 	if(Rmax<Ymax)
 		Rmax = Ymax;
@@ -5210,7 +5210,7 @@ static gint local_zrotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5224,8 +5224,8 @@ static gint local_zrotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 		state = event->state;
 	}
   
-	width  = widget->allocation.width;
-	height = widget->allocation.height;
+	width  = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
 
 	if(abs(BeginX-x)>abs(BeginY-y))
 	 {
@@ -5290,8 +5290,8 @@ static gint local_rotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 	else
 		return FALSE;
 
-	Xmax=GeomDrawingArea->allocation.width;
-	Ymax=GeomDrawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(GeomDrawingArea);
+	Ymax=gtk_widget_get_allocated_height(GeomDrawingArea);
 	Rmax = Xmax;
 	if(Rmax<Ymax)
 		Rmax = Ymax;
@@ -5323,7 +5323,7 @@ static gint local_rotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5337,8 +5337,8 @@ static gint local_rotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 		state = event->state;
 	}
   
-	width  = widget->allocation.width;
-	height = widget->allocation.height;
+	width  = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
 
 	
 	trackball(spin_quat,
@@ -5398,15 +5398,15 @@ static gint move_one_atom(GdkEventMotion *event)
 	gushort Rmax;
 
 	if(NumSelectedAtom<0) return -1;
-	Xmax=GeomDrawingArea->allocation.width;
-	Ymax=GeomDrawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(GeomDrawingArea);
+	Ymax=gtk_widget_get_allocated_height(GeomDrawingArea);
 	Rmax = Xmax;
 	if(Rmax<Ymax) Rmax = Ymax;
 
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5505,8 +5505,8 @@ static gint move_all_selected_atoms(GtkWidget *widget, GdkEventMotion *event)
 	gushort Rmax;
 
 	if(NumSelectedAtom<0) return -1;
-	Xmax=GeomDrawingArea->allocation.width;
-	Ymax=GeomDrawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(GeomDrawingArea);
+	Ymax=gtk_widget_get_allocated_height(GeomDrawingArea);
 	Rmax = Xmax;
 	if(Rmax<Ymax) Rmax = Ymax;
 	
@@ -5514,7 +5514,7 @@ static gint move_all_selected_atoms(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -6378,7 +6378,7 @@ gint motion_notify(GtkWidget *widget, GdkEventMotion *event)
 	{
 #if !defined(G_OS_WIN32)
 		int x, y;
-		gdk_window_get_pointer(event->window, &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
 #else
 		state = event->state;
 #endif
@@ -6480,13 +6480,13 @@ gint motion_notify(GtkWidget *widget, GdkEventMotion *event)
 /********************************************************************************/
 static void redraw()
 {
-  gdk_draw_drawable(GeomDrawingArea->window,
+  gdk_draw_drawable(gtk_widget_get_window(GeomDrawingArea),
                   GeomDrawingArea->style->fg_gc[GTK_WIDGET_STATE (GeomDrawingArea)],
                   pixmap,
                   0,0,
                   0,0,
-                  GeomDrawingArea->allocation.width,
-                  GeomDrawingArea->allocation.height);    
+                  gtk_widget_get_allocated_width(GeomDrawingArea),
+                  gtk_widget_get_allocated_height(GeomDrawingArea));    
 }
 /********************************************************************************/
 static void pixmap_init(GtkWidget *widget)
@@ -6498,11 +6498,11 @@ static void pixmap_init(GtkWidget *widget)
                       widget->style->black_gc,
                       TRUE,
                       0, 0,
-                      widget->allocation.width,
-                      widget->allocation.height);    
+                      gtk_widget_get_allocated_width(widget),
+                      gtk_widget_get_allocated_height(widget));    
   else
   {
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap,BackColor,FALSE,TRUE);
 	gdk_gc_set_foreground(gc,BackColor);
 
@@ -6510,16 +6510,16 @@ static void pixmap_init(GtkWidget *widget)
                       gc,
                       TRUE,
                       0, 0,
-                      widget->allocation.width,
-                      widget->allocation.height);    
+                      gtk_widget_get_allocated_width(widget),
+                      gtk_widget_get_allocated_height(widget));    
   }
 }
 /*****************************************************************************/
 static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 {
-	if(!gc) gc = gdk_gc_new(GeomDrawingArea->window);
+	if(!gc) gc = gdk_gc_new(gtk_widget_get_window(GeomDrawingArea));
 	if (pixmap) g_object_unref(pixmap);
-	pixmap = gdk_pixmap_new(widget->window, widget->allocation.width, widget->allocation.height, -1);
+	pixmap = gdk_pixmap_new(gtk_widget_get_window(widget), gtk_widget_get_allocated_width(widget), gtk_widget_get_allocated_height(widget), -1);
 	cr = gdk_cairo_create (pixmap);
 	drawGeom();
 
@@ -6529,7 +6529,7 @@ static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 static gint expose_event( GtkWidget *widget, GdkEventExpose *event )
 {
 	if(event->count >0) return FALSE;
-	gdk_draw_drawable(widget->window,
+	gdk_draw_drawable(gtk_widget_get_window(widget),
                   widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
                   pixmap,
                   event->area.x, event->area.y,
@@ -7570,8 +7570,8 @@ void set_optimal_geom_view()
 	gint X1,X2;
 	gint Y1,Y2;
 
-	Xmax=GeomDrawingArea->allocation.width;
-	Ymax=GeomDrawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(GeomDrawingArea);
+	Ymax=gtk_widget_get_allocated_height(GeomDrawingArea);
 	X1 = Xmax;
 	X2 = Xmax;
 	Y1 = Ymax;
@@ -7644,8 +7644,8 @@ static void define_good_trans()
 	}
 	else return;
 
-	Xmax=GeomDrawingArea->allocation.width;
-	Ymax=GeomDrawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(GeomDrawingArea);
+	Ymax=gtk_widget_get_allocated_height(GeomDrawingArea);
 	Rmax = Xmax;
 	if(Rmax<Ymax) Rmax = Ymax;
 
@@ -7673,8 +7673,8 @@ void define_coord_ecran()
 	gdouble Y;
 	gdouble Cmax;
 
-	Xmax=GeomDrawingArea->allocation.width;
-	Ymax=GeomDrawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(GeomDrawingArea);
+	Ymax=gtk_widget_get_allocated_height(GeomDrawingArea);
 	Rmax = Xmax;
 	if(Rmax<Ymax)
 		Rmax = Ymax;
@@ -7874,8 +7874,8 @@ static gint insert_atom(GdkEventButton *bevent)
 
 	Ddef = FALSE;
 
-	Xmax=GeomDrawingArea->allocation.width;
-	Ymax=GeomDrawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(GeomDrawingArea);
+	Ymax=gtk_widget_get_allocated_height(GeomDrawingArea);
 	Rmax = Xmax;
 	if(Rmax<Ymax)
 		Rmax = Ymax;
@@ -8097,8 +8097,8 @@ static gint insert_fragment_without_delete_an_atom(GtkWidget *widget,GdkEvent *e
 
 	Ddef = FALSE;
 
-	Xmax=GeomDrawingArea->allocation.width;
-	Ymax=GeomDrawingArea->allocation.height;
+	Xmax=gtk_widget_get_allocated_width(GeomDrawingArea);
+	Ymax=gtk_widget_get_allocated_height(GeomDrawingArea);
 	Rmax = Xmax;
 	if(Rmax<Ymax)
 		Rmax = Ymax;
@@ -9371,7 +9371,7 @@ void draw_triangle(gint x1,gint y1,gint x2,gint y2,gint x3,gint y3, GdkColor col
 {
 	GdkColormap *colormap;
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap,&colori,FALSE,TRUE);
 	gdk_gc_set_foreground(gc,&colori);
 	gdk_gc_set_line_attributes(gc,1,GDK_LINE_SOLID,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
@@ -9418,7 +9418,7 @@ void draw_distance(gint i,gint j,gint x0,gint y0)
 
         color = get_color_string(i);
 	
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 
 	gdk_gc_set_foreground(gc,&color);
@@ -9435,7 +9435,7 @@ void draw_line(gdouble x1,gdouble y1,gdouble x2,gdouble y2,GdkColor colori,gint 
 	GdkColormap *colormap;
         gint epaisseur=epaisseuri;
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 
 	gdk_colormap_alloc_color(colormap,&colori,FALSE,TRUE);
 	gdk_gc_set_foreground(gc,&colori);
@@ -9451,7 +9451,7 @@ static void draw_line_hbond(gint x1,gint y1,gint x2,gint y2,GdkColor color,gint 
 {
 	GdkColormap *colormap;
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap,&color,FALSE,TRUE);
 	gdk_gc_set_foreground(gc,&color);
 	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_ON_OFF_DASH,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
@@ -9530,7 +9530,7 @@ void draw_anneau(gint xi,gint yi,gint rayoni,GdkColor colori)
 {
 	GdkColormap *colormap;
 
-        colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+        colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap,&colori,FALSE,TRUE);
 	gdk_gc_set_foreground(gc,&colori);
 	gdk_gc_set_line_attributes(gc,4,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
@@ -9568,7 +9568,7 @@ void draw_symb(guint epaisseur,guint i)
         
 
 	color = get_color_string(i);
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 
 	gdk_gc_set_foreground(gc,&color);
@@ -9594,7 +9594,7 @@ void draw_numb(guint epaisseur,guint i)
 
         color = get_color_string(i);
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
@@ -9620,7 +9620,7 @@ void draw_layer(guint epaisseur,guint i)
 	else t= g_strdup_printf(" ");
 
 	color = get_color_string(i);
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 
 	gdk_gc_set_foreground(gc,&color);
@@ -9644,7 +9644,7 @@ void draw_mmtyp(guint epaisseur,guint i)
         
 
 	color = get_color_string(i);
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 
 	gdk_gc_set_foreground(gc,&color);
@@ -9668,7 +9668,7 @@ void draw_pdbtyp(guint epaisseur,guint i)
         
 
 	color = get_color_string(i);
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 
 	gdk_gc_set_foreground(gc,&color);
@@ -9693,7 +9693,7 @@ void draw_numb_symb(guint epaisseur,guint i)
 
         color = get_color_string(i);
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
@@ -9715,7 +9715,7 @@ void draw_charge(guint epaisseur,guint i)
         temp = g_strdup_printf("%0.3f",geometry[i].Charge);
 
         color = get_color_string(i);
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
@@ -9739,7 +9739,7 @@ void draw_symb_charge(guint epaisseur,guint i)
 
         color = get_color_string(i);
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
@@ -9763,7 +9763,7 @@ void draw_numb_charge(guint epaisseur,guint i)
 
         color = get_color_string(i);
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
@@ -9787,7 +9787,7 @@ void draw_residues(guint epaisseur,guint i)
 
         color = get_color_string(i);
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
@@ -9815,7 +9815,7 @@ void draw_coordinates(guint epaisseur,guint i)
 
         color = get_color_string(i);
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
@@ -9914,7 +9914,7 @@ void draw_line2(gint epaisseur,guint i,guint j,gint x1,gint y1,gint x2,gint y2,
 			else
 			{
 			GdkColormap *colormap;
-   			colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   			colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 			gdk_colormap_alloc_color(colormap,&color1,FALSE,TRUE);
 			gdk_gc_set_foreground(gc,&color1);
 			gdk_colormap_alloc_color(colormap,&color2,FALSE,TRUE);
@@ -9941,7 +9941,7 @@ void draw_line2(gint epaisseur,guint i,guint j,gint x1,gint y1,gint x2,gint y2,
 			else
 			{
 			GdkColormap *colormap;
-   			colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   			colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 			gdk_colormap_alloc_color(colormap,&color1,FALSE,TRUE);
 			gdk_gc_set_foreground(gc,&color1);
 			gdk_colormap_alloc_color(colormap,&color2,FALSE,TRUE);
@@ -9973,7 +9973,7 @@ void draw_cercle(gint xi,gint yi,gint rayoni,GdkColor colori, gboolean fill, gbo
         gint x=xi,y=yi,rayon=rayoni;
         GdkColor colorblack;
 
-        colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+        colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	if(cartoon)
 	{
        		colorblack.red = 0;
@@ -10018,7 +10018,7 @@ void draw_arc(gint xi,gint yi,gint rayoni,gdouble angle1, gdouble angle2, gdoubl
         gint x=xi,y=yi,rayon=rayoni;
         GdkColor colorblack;
 
-        colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+        colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	if(CartoonMode)
 	{
 		gint lw = 2;
@@ -10787,7 +10787,7 @@ void draw_dipole(gint x0,gint y0)
 
         color = get_color_string(0);
 
-   	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 
         gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 	gdk_gc_set_foreground(gc,&color);
@@ -10888,7 +10888,7 @@ void rafresh_drawing()
 	vboxmeasure =AddNoteBookPage(NoteBookDraw,_("Measure"));
 	AddMeasure(GeomDlg,vboxmeasure);
 
-	gtk_widget_hide_all(NoteBookDraw);
+	gtk_container_foreach(GTK_CONTAINER(NoteBookDraw), (GtkCallback)gtk_widget_hide, NULL);
 	gtk_widget_show_all(NoteBookDraw);
 	gtk_notebook_set_current_page((GtkNotebook*)NoteBookDraw,i);
 
@@ -10995,8 +10995,8 @@ void set_back_color_black()
                       GeomDrawingArea->style->black_gc,
                       TRUE,
                       0, 0,
-                      GeomDrawingArea->allocation.width,
-                      GeomDrawingArea->allocation.height);    
+                      gtk_widget_get_allocated_width(GeomDrawingArea),
+                      gtk_widget_get_allocated_height(GeomDrawingArea));    
         drawGeom();
 }
 /*****************************************************************************/
@@ -11006,7 +11006,7 @@ void set_back_color(GtkColorSelection *Sel,gpointer *d)
 	GdkColormap *colormap;
 
 	gtk_color_selection_get_current_color(Sel, &color);
-	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	
         BackColor = gdk_color_copy(&color);
         gdk_colormap_alloc_color(colormap,&color,FALSE,TRUE);
@@ -11017,8 +11017,8 @@ void set_back_color(GtkColorSelection *Sel,gpointer *d)
                       gc,
                       TRUE,
                       0, 0,
-                      GeomDrawingArea->allocation.width,
-                      GeomDrawingArea->allocation.height);    
+                      gtk_widget_get_allocated_width(GeomDrawingArea),
+                      gtk_widget_get_allocated_height(GeomDrawingArea));    
         drawGeom();
 
 }
@@ -11031,7 +11031,7 @@ void set_back_color_grey()
 	color.red = 80*257;
 	color.green = 80*257;
 	color.blue = 80*257;
-	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	
         BackColor = gdk_color_copy(&color);
         gdk_colormap_alloc_color(colormap,&color,FALSE,TRUE);
@@ -11042,8 +11042,8 @@ void set_back_color_grey()
                       gc,
                       TRUE,
                       0, 0,
-                      GeomDrawingArea->allocation.width,
-                      GeomDrawingArea->allocation.height);    
+                      gtk_widget_get_allocated_width(GeomDrawingArea),
+                      gtk_widget_get_allocated_height(GeomDrawingArea));    
         drawGeom();
 }
 /*****************************************************************************/
@@ -11061,7 +11061,7 @@ void set_back_color_default()
 	color.red = BackColor->red;
 	color.green = BackColor->green;
 	color.blue = BackColor->blue;
-	colormap  = gdk_drawable_get_colormap(GeomDrawingArea->window);
+	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	
 	if(first==0)
 	{
@@ -11077,17 +11077,17 @@ void set_back_color_default()
                       gc,
                       TRUE,
                       0, 0,
-                      GeomDrawingArea->allocation.width,
-                      GeomDrawingArea->allocation.height);    
+                      gtk_widget_get_allocated_width(GeomDrawingArea),
+                      gtk_widget_get_allocated_height(GeomDrawingArea));    
         drawGeom();
 }
 /*****************************************************************************/
 void open_color_dlg(GtkWidget *win,gpointer *DrawingArea)
 {
 
-	GtkColorSelectionDialog *ColorDlg;
+	GtkColorChooserDialog *ColorDlg;
 	ColorDlg = 
-		(GtkColorSelectionDialog *)gtk_color_selection_dialog_new(
+		(GtkColorChooserDialog *)gtk_color_selection_dialog_new(
 		_("Set Background Color"));
 	gtk_window_set_modal (GTK_WINDOW (ColorDlg), TRUE);
 	gtk_window_set_transient_for(GTK_WINDOW(ColorDlg),GTK_WINDOW(Fenetre));
@@ -11529,7 +11529,7 @@ void export_geometry(gchar* fileName, gchar* fileType)
 	{
 		
 		cairo_surface_t *surface;
-		surface = cairo_pdf_surface_create(fileName, GeomDrawingArea->allocation.width, GeomDrawingArea->allocation.height);
+		surface = cairo_pdf_surface_create(fileName, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
 		crExport = cairo_create(surface);
 		drawGeom();
 		cairo_show_page(crExport);
@@ -11543,7 +11543,7 @@ void export_geometry(gchar* fileName, gchar* fileType)
 	{
 		
 		cairo_surface_t *surface;
-		surface = cairo_ps_surface_create(fileName, GeomDrawingArea->allocation.width, GeomDrawingArea->allocation.height);
+		surface = cairo_ps_surface_create(fileName, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
 		crExport = cairo_create(surface);
 		drawGeom();
 		cairo_show_page(crExport);
@@ -11557,7 +11557,7 @@ void export_geometry(gchar* fileName, gchar* fileType)
 	{
 		
 		cairo_surface_t *surface;
-		surface = cairo_ps_surface_create(fileName, GeomDrawingArea->allocation.width, GeomDrawingArea->allocation.height);
+		surface = cairo_ps_surface_create(fileName, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
 		cairo_ps_surface_set_eps(surface, TRUE);
 		crExport = cairo_create(surface);
 		drawGeom();
@@ -11572,7 +11572,7 @@ void export_geometry(gchar* fileName, gchar* fileType)
 	{
 		
 		cairo_surface_t *surface;
-		surface = cairo_svg_surface_create(fileName, GeomDrawingArea->allocation.width, GeomDrawingArea->allocation.height);
+		surface = cairo_svg_surface_create(fileName, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
 		crExport = cairo_create(surface);
 		drawGeom();
 		cairo_show_page(crExport);

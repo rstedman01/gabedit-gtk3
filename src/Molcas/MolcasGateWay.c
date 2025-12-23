@@ -593,7 +593,7 @@ static gboolean setGeomXYZFromSXYZ(gint numberOfAtoms, gchar** symbols, gdouble*
 	if(numberOfAtoms<1) return FALSE;
 
  	if(GeomXYZ) freeGeomXYZ();
- 	if(VariablesXYZ) freeVariablesXYZ(VariablesXYZ);
+ 	if(VariablesXYZ) freeVariablesXYZ();
 
 	init_dipole();
 	GeomXYZ=g_malloc(numberOfAtoms*sizeof(GeomXYZAtomDef));
@@ -644,7 +644,7 @@ static gboolean setGeomXYZFromMolcasMolecule()
 	if(molcasMolecule.numberOfMolcasGenerators != 0) return FALSE;
 
  	if(GeomXYZ) freeGeomXYZ();
- 	if(VariablesXYZ) freeVariablesXYZ(VariablesXYZ);
+ 	if(VariablesXYZ) freeVariablesXYZ();
 	init_dipole();
 	GeomXYZ=g_malloc(molcasMolecule.numberOfAtoms*sizeof(GeomXYZAtomDef));
 	for(i=0;i<molcasMolecule.numberOfAtoms;i++)

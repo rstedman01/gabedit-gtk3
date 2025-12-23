@@ -17,8 +17,16 @@ DEALINGS IN THE SOFTWARE.
 ************************************************************************************************************/
 
 #include "../../Config.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <gtk/gtk.h>
-#include "GabeditFolderChooser.h"
+#include "../Common/Global.h"
+#include "../Utils/UtilsInterface.h"
+#include "../Utils/Utils.h"
+#include "../Common/Windows.h"
+#include "../Common/Exit.h"
+#include "../Display/UtilsOrb.h"
+#include "../Files/GabeditFolderChooser.h"
 
 /********************************************************************************/
 GtkWidget* gabedit_folder_chooser_new(gchar* title)

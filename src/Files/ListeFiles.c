@@ -1382,35 +1382,18 @@ static void AddNotebookPage(GtkWidget* NoteBook,char *label,GtkWidget **TextP)
   gtk_widget_show(LabelOnglet);
   if(strstr(label,_("Output")))
   {
-	  GtkStyle* style = gtk_style_copy( gtk_widget_get_default_style ()); 
-	  /*
-	  PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
-	  */
+	  GdkRGBA blue = {0.0, 0.0, 1.0, 1.0};
+	  gtk_widget_override_color(LabelOnglet, GTK_STATE_FLAG_NORMAL, &blue);
 
-          style->fg[0].red=0;
-          style->fg[0].green=0;
-          style->fg[0].blue=65535;
-	  /*
-	  if(font_desc) style->font_desc = font_desc;
-	  */
-	  gtk_widget_set_style(LabelOnglet, style );
   	  vboxframe = create_vbox(Frame);
   	  g_object_set_data(G_OBJECT (Fenetre), "LabelOngletOutput", LabelOnglet);
   }
   else
   if(strstr(label,_("Error")))
   {
-	  /*
-	  PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
-	  */
-	  GtkStyle* style = gtk_style_copy(LabelOnglet->style); 
-          style->fg[0].red=65535;
-          style->fg[0].green=0;
-          style->fg[0].blue=0;
-	  /*
-	  if(font_desc) style->font_desc = font_desc;
-	  */
-	  gtk_widget_set_style(LabelOnglet, style );
+	  GdkRGBA red = {1.0, 0.0, 0.0, 1.0};
+	  gtk_widget_override_color(LabelOnglet, GTK_STATE_FLAG_NORMAL, &red);
+
   	  g_object_set_data(G_OBJECT (Fenetre), "LabelOngletError", LabelOnglet);
   }
   LabelMenu = gtk_label_new(label);
@@ -1425,8 +1408,8 @@ static void AddNotebookPage(GtkWidget* NoteBook,char *label,GtkWidget **TextP)
   	  gtk_box_pack_start (GTK_BOX(vboxframe),scrolledwindow, TRUE, TRUE, 1);
   	  create_status_progress_connection_bar(vboxframe);
   }
-  else
-  gtk_container_add (GTK_CONTAINER (Frame), scrolledwindow);
+  else gtk_container_add (GTK_CONTAINER (Frame), scrolledwindow);
+  
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
   *TextP = gabedit_text_new ();
@@ -1909,7 +1892,7 @@ static void event_dispatcher(GtkWidget *widget, GdkEventButton *event, gpointer 
 
 	if (!event) return;
  	if(popupshow) return;
-	if (event->window == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
+	if (gtk_widget_get_window(event) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
 	    && !gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget), event->x, event->y, NULL, NULL, NULL, NULL)) {
 		gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW (widget)));
 	}

@@ -6999,7 +6999,7 @@ static gint gabedit_xyplot_key_press(GtkWidget* widget, GdkEventKey* event)
 
 	xyplot = GABEDIT_XYPLOT(widget);
 
-	if ((event->keyval == GDK_Shift_L || event->keyval == GDK_Shift_R))
+	if ((event->keyval == GDK_KEY_Shift_L || event->keyval == GDK_KEY_Shift_R))
 		xyplot->shift_key_pressed = TRUE;
 	if ((event->keyval == GDK_Control_L || event->keyval == GDK_Control_R))
 		xyplot->control_key_pressed = TRUE;
@@ -7041,7 +7041,7 @@ static gint gabedit_xyplot_key_release(GtkWidget* widget, GdkEventKey* event)
 
 	xyplot = GABEDIT_XYPLOT(widget);
 
-	if ((event->keyval == GDK_Shift_L || event->keyval == GDK_Shift_R))
+	if ((event->keyval == GDK_KEY_Shift_L || event->keyval == GDK_KEY_Shift_R))
 		xyplot->shift_key_pressed = FALSE;
 	if ((event->keyval == GDK_Control_L || event->keyval == GDK_Control_R))
 		xyplot->control_key_pressed = FALSE;
@@ -7688,7 +7688,7 @@ static void draw_selected_objects_text_rectangle(GtkWidget* widget, GabeditXYPlo
 	if (i < 0 || i >= xyplot->nObjectsText) return;
 	if (xyplot->mouse_zoom_enabled && xyplot->mouse_button == xyplot->mouse_zoom_button) return;
 	/*
-	gdk_draw_rectangle(widget->window,
+	gdk_draw_rectangle(gtk_widget_get_window(widget),
 			xyplot->fore_gc,
 			FALSE,
 			xyplot->objectsText[i].xi,
@@ -8955,7 +8955,7 @@ static gint gabedit_xyplot_motion_notify (GtkWidget *widget, GdkEventMotion *eve
   x = event->x;
   y = event->y;
   
-  if (event->is_hint || (event->window != gtk_widget_get_window(widget)))
+  if (event->is_hint || (gtk_widget_get_window(event) != gtk_widget_get_window(widget)))
       gdk_window_get_pointer(gtk_widget_get_window(widget), (gint *)&x, (gint *)&y, NULL);
 
   if (xyplot->selected_objects_text_num>-1) 
@@ -10542,7 +10542,7 @@ static gboolean xyplot_motion_notify_event(GtkWidget *xyplot, GdkEventMotion *ev
 	x=event->x;
 	y=event->y;
 
-	if (event->is_hint || (event->window != window))
+	if (event->is_hint || (gtk_widget_get_window(event) != window))
 		gdk_window_get_pointer (window, &x, &y, NULL);
 
 	if(gabedit_xyplot_get_point(GABEDIT_XYPLOT(xyplot), x, y, &xv, &yv))

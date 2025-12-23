@@ -538,7 +538,7 @@ static void eventDispatcherType(GtkWidget *widget, GdkEventButton *event, gpoint
 	GtkTreeModel *model;
 
 	if (!event) return;
-	if (event->window == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
+	if (gtk_widget_get_window(event) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
 	    && !gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget), event->x, event->y, NULL, NULL, NULL, NULL)) {
 		gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW (widget)));
 	}
@@ -567,7 +567,7 @@ static void eventDispatcherCenter(GtkWidget *widget, GdkEventButton *event, gpoi
 	GtkTreeModel *model;
 
 	if (!event) return;
-	if (event->window == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
+	if (gtk_widget_get_window(event) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
 	    && !gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget), event->x, event->y, NULL, NULL, NULL, NULL)) {
 		gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW (widget)));
 	}
