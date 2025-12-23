@@ -977,6 +977,14 @@ static gchar *get_pov_dipole()
 	return t;
 }
 /*****************************************************************************/
+// Provide implementation for testShowBoxGeom 
+extern gboolean ShowBoxGeom;
+
+gboolean testShowBoxGeom(void)
+{
+	return ShowBoxGeom;
+}
+/*****************************************************************************/
 static gchar* get_pov_box()
 {	
 	guint i;
