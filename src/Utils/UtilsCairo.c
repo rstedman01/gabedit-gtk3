@@ -39,7 +39,7 @@ DEALINGS IN THE SOFTWARE.
 /**********************************************************************************/
 #define SCALE(i) (i / 65535.)
 /**********************************************************************************/
-void gabedit_cairo_string(cairo_t* cr, GtkWidget* parent, PangoFontDescription *font_desc, GdkGC* gc , gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY)
+void gabedit_cairo_string(cairo_t* cr, GtkWidget* parent, PangoFontDescription *font_desc, GdkColor* color, gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY)
 {
 	int width  = 0;
 	int height = 0;
@@ -49,13 +49,9 @@ void gabedit_cairo_string(cairo_t* cr, GtkWidget* parent, PangoFontDescription *
 	PangoWeight weight = pango_font_description_get_weight(font_desc);
 	cairo_font_weight_t cairoWeight = PANGO_WEIGHT_NORMAL;
 	gint fontSize = pango_font_description_get_size (font_desc)/PANGO_SCALE;
-	GdkGCValues values;
-	GdkColormap *colormap;
-	GdkColor color;
 
+	if(!cr || !color) return;
 	cairo_save (cr); /* stack-pen-size */
-	gdk_gc_get_values(gc, &values);
-   	color = values.foreground;
 
 	switch(style)
 	{
@@ -86,7 +82,7 @@ void gabedit_cairo_string(cairo_t* cr, GtkWidget* parent, PangoFontDescription *
 	if(centerX) x -= width/4;
 	if(centerY) y += height/4;
 	cairo_select_font_face (cr, name, cairoStyle, cairoWeight);
-	gdk_cairo_set_source_color (cr, &color);
+	cairo_set_source_rgb(cr, SCALE(color->red), SCALE(color->green), SCALE(color->blue));
         cairo_set_font_size (cr, fontSize);
 	cairo_move_to (cr, x, y);
 	cairo_show_text (cr, str);
@@ -94,71 +90,23 @@ void gabedit_cairo_string(cairo_t* cr, GtkWidget* parent, PangoFontDescription *
 	cairo_restore (cr); /* stack-pen-size */
 }
 /*****************************************************************************/
-void gabedit_cairo_triangle(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
+void gabedit_cairo_triangle(cairo_t *cr,  GtkWidget* parent, GdkColor* color, gint line_width,
 		gdouble x1,gdouble y1,gdouble x2,gdouble y2, gdouble x3,gdouble y3)
 {
-	GdkGCValues values;
-	GdkColor color;
-	double r,g,b;
-	double dashes[] = {5.0,  /* ink */
-		           5.0,  /* skip */
-			   10.0,  /* ink */
-			   5.0   /* skip*/
-	};
-	int    ndash  = sizeof (dashes)/sizeof(dashes[0]);
-	double offset = -5.0;
-
-
-	if(!cr) return;
-	if(!gc) return;
+	if(!cr || !color) return;
 	cairo_save (cr); /* stack-pen-size */
-	gdk_gc_get_values(gc, &values);
 
-	switch(values.cap_style)
-	{
-		case GDK_CAP_NOT_LAST:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_BUTT:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_ROUND:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND); break;
-		case GDK_CAP_PROJECTING:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE); break;
-		default:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-	}
-	switch(values.join_style)
-	{
-		case GDK_JOIN_MITER:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-		case GDK_JOIN_ROUND :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);break;
-		case GDK_JOIN_BEVEL :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_BEVEL);break;
-		default:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-	}
-	switch(values.line_style)
-	{
-		case GDK_LINE_SOLID : ndash = 0; break;
-		case GDK_LINE_ON_OFF_DASH : ndash = 2; break;
-		case GDK_LINE_DOUBLE_DASH : break;
-		default  : ndash = 0;
-	}
-   	color = values.foreground;
-	if( ndash != 0) cairo_set_dash (cr, dashes, ndash, offset);
+	cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
+	cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);
 
-	r = SCALE(color.red);
-	g = SCALE(color.green);
-	b = SCALE(color.blue);
-	cairo_set_line_width (cr, values.line_width);
+	cairo_set_line_width (cr, line_width);
 
 	cairo_move_to (cr, x1, y1);
 	cairo_line_to (cr, x2, y2);
 	cairo_rel_line_to (cr, x3,y3);
 	cairo_rel_line_to (cr, x1,y1);
 	cairo_close_path (cr);
-	cairo_set_source_rgb (cr, r, g, b);
+	cairo_set_source_rgb (cr, SCALE(color->red), SCALE(color->green), SCALE(color->blue));
 	cairo_fill_preserve (cr);
 	cairo_set_source_rgb (cr, 0, 0, 0);
 
@@ -166,11 +114,8 @@ void gabedit_cairo_triangle(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
 	cairo_restore (cr); /* stack-pen-size */
 }
 /*****************************************************************************/
-void gabedit_cairo_line(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+void gabedit_cairo_line(cairo_t *cr,  GtkWidget* parent, GdkColor* color, gint line_width, gint line_style, gboolean round, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
 {
-	GdkGCValues values;
-	GdkColor color;
-	double r,g,b;
 	double dashes[] = {5.0,  /* ink */
 		           5.0,  /* skip */
 			   10.0,  /* ink */
@@ -179,195 +124,84 @@ void gabedit_cairo_line(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, gdouble x1,g
 	int    ndash  = sizeof (dashes)/sizeof(dashes[0]);
 	double offset = -5.0;
 
+	if(!cr || !color) return;
+	cairo_save (cr);
 
-	if(!cr) return;
-	if(!gc) return;
-	cairo_save (cr); /* stack-pen-size */
-	gdk_gc_get_values(gc, &values);
+	if(round)
+		cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+	else
+		cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
+	cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
 
-	switch(values.cap_style)
+	switch(line_style)
 	{
-		case GDK_CAP_NOT_LAST:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_BUTT:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_ROUND:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND); break;
-		case GDK_CAP_PROJECTING:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE); break;
-		default:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-	}
-	switch(values.join_style)
-	{
-		case GDK_JOIN_MITER:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-		case GDK_JOIN_ROUND :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);break;
-		case GDK_JOIN_BEVEL :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_BEVEL);break;
-		default:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-	}
-	switch(values.line_style)
-	{
-		case GDK_LINE_SOLID : ndash = 0; break;
-		case GDK_LINE_ON_OFF_DASH : ndash = 2; break;
-		case GDK_LINE_DOUBLE_DASH : break;
+		case 0: ndash = 0; break;  /* GDK_LINE_SOLID */
+		case 1: ndash = 2; break;  /* GDK_LINE_ON_OFF_DASH */
+		case 2: break;             /* GDK_LINE_DOUBLE_DASH */
 		default  : ndash = 0;
 	}
-   	color = values.foreground;
+
 	if( ndash != 0) cairo_set_dash (cr, dashes, ndash, offset);
 
-	r = SCALE(color.red);
-	g = SCALE(color.green);
-	b = SCALE(color.blue);
-	cairo_set_source_rgba (cr, r, g, b, 1.0);
+	cairo_set_source_rgb (cr, SCALE(color->red), SCALE(color->green), SCALE(color->blue));
 
-	cairo_set_line_width (cr, values.line_width);
+	cairo_set_line_width (cr, line_width);
 	cairo_move_to (cr, x1, y1);
 	cairo_line_to (cr, x2, y2);
 	cairo_stroke (cr);
-	cairo_restore (cr); /* stack-pen-size */
+	cairo_restore (cr);
 }
 /*****************************************************************************/
-void gabedit_cairo_arc(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
+void gabedit_cairo_arc(cairo_t *cr,  GtkWidget* parent, GdkColor* color, gint line_width,
 		gint xc,gint yc,gint rayon, gdouble angle1, gdouble angle2, gdouble scale1, gdouble scale2)
 {
-	GdkGCValues values;
-	GdkColor color;
-	double r,g,b;
-	if(!cr) return;
-	if(!gc) return;
-	cairo_save (cr); /* stack-pen-size */
+	if(!cr || !color) return;
+	cairo_save (cr);
 	cairo_translate(cr,xc,yc);
 	cairo_scale(cr,scale1,scale2);
-	gdk_gc_get_values(gc, &values);
 
-	switch(values.cap_style)
-	{
-		case GDK_CAP_NOT_LAST:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_BUTT:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_ROUND:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND); break;
-		case GDK_CAP_PROJECTING:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE); break;
-		default:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
+	cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
+	cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);
 
-	}
-	switch(values.join_style)
-	{
-		case GDK_JOIN_MITER:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-		case GDK_JOIN_ROUND :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);break;
-		case GDK_JOIN_BEVEL :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_BEVEL);break;
-		default:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-	}
-   	color = values.foreground;
-	r = SCALE(color.red);
-	g = SCALE(color.green);
-	b = SCALE(color.blue);
-	cairo_set_source_rgba (cr, r, g, b, 1.0);
-	cairo_set_line_width (cr, values.line_width);
+	cairo_set_source_rgb (cr, SCALE(color->red), SCALE(color->green), SCALE(color->blue));
+	cairo_set_line_width (cr, line_width);
 	cairo_arc (cr, 0, 0, rayon, angle1, angle2);
-	/*if(values.fill==GDK_SOLID) cairo_fill (cr);*/
 	cairo_stroke (cr);
-	cairo_restore (cr); /* stack-pen-size */
+	cairo_restore (cr);
 }
 /*****************************************************************************/
-void gabedit_cairo_cercle(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
+void gabedit_cairo_cercle(cairo_t *cr,  GtkWidget* parent, GdkColor* color, gint line_width,
 		gint xc,gint yc,gint rayon)
 {
-	GdkGCValues values;
-	GdkColor color;
-	double r,g,b;
-	GdkColormap *colormap;
-	if(!cr) return;
-	if(!gc) return;
-	cairo_save (cr); /* stack-pen-size */
-	gdk_gc_get_values(gc, &values);
+	if(!cr || !color) return;
+	cairo_save (cr);
 
-	switch(values.cap_style)
-	{
-		case GDK_CAP_NOT_LAST:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_BUTT:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_ROUND:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND); break;
-		case GDK_CAP_PROJECTING:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE); break;
-		default:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
+	cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
+	cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);
 
-	}
-	switch(values.join_style)
-	{
-		case GDK_JOIN_MITER:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-		case GDK_JOIN_ROUND :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);break;
-		case GDK_JOIN_BEVEL :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_BEVEL);break;
-		default:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-	}
-   	color = values.foreground;
-	r = SCALE(color.red);
-	g = SCALE(color.green);
-	b = SCALE(color.blue);
-	cairo_set_source_rgba (cr, r, g, b, 1.0);
+	cairo_set_source_rgb (cr, SCALE(color->red), SCALE(color->green), SCALE(color->blue));
 
-	cairo_set_line_width (cr, values.line_width);
+	cairo_set_line_width (cr, line_width);
 	cairo_arc (cr, xc, yc, rayon, 0, 2 * M_PI);
 	cairo_fill (cr);
 	cairo_stroke (cr);
-	cairo_restore (cr); /* stack-pen-size */
+	cairo_restore (cr);
 }
 /*****************************************************************************/
-void gabedit_cairo_line_gradient(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, GdkColor color1,  GdkColor color2, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
+void gabedit_cairo_line_gradient(cairo_t *cr,  GtkWidget* parent, GdkColor color1,  GdkColor color2, gint line_width, gboolean round, gdouble x1,gdouble y1,gdouble x2,gdouble y2)
 {
-	GdkGCValues values;
 	double r1,g1,b1;
 	double r2,g2,b2;
 	cairo_pattern_t *pat;
 
 	if(!cr) return;
-	if(!gc) return;
-	cairo_save (cr); /* stack-pen-size */
-	gdk_gc_get_values(gc, &values);
+	cairo_save (cr);
 
-	switch(values.cap_style)
-	{
-		case GDK_CAP_NOT_LAST:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_BUTT:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_ROUND:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND); break;
-		case GDK_CAP_PROJECTING:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE); break;
-		default:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-	}
-	switch(values.join_style)
-	{
-		case GDK_JOIN_MITER:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-		case GDK_JOIN_ROUND :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);break;
-		case GDK_JOIN_BEVEL :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_BEVEL);break;
-		default:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-	}
-
+	if(round)
+		cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+	else
+		cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
+	cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
 
 	r1 = SCALE(color1.red);
 	g1 = SCALE(color1.green);
@@ -382,64 +216,36 @@ void gabedit_cairo_line_gradient(cairo_t *cr,  GtkWidget* parent, GdkGC* gc, Gdk
 	cairo_pattern_add_color_stop_rgba (pat, 0.5, r2, g2, b2, 1);
 	cairo_set_source (cr, pat);
 
-	cairo_set_line_width (cr, values.line_width);
+	cairo_set_line_width (cr, line_width);
 	cairo_move_to (cr, x1, y1);
 	cairo_line_to (cr, x2, y2);
 	cairo_stroke (cr);
-	cairo_restore (cr); /* stack-pen-size */
+	cairo_restore (cr);
 	cairo_pattern_destroy (pat);
 }
 /*****************************************************************************/
-void gabedit_cairo_cercle_gradient(cairo_t *cr,  GtkWidget* parent, GdkGC* gc,
+void gabedit_cairo_cercle_gradient(cairo_t *cr,  GtkWidget* parent, GdkColor* color, gint line_width,
 		gint xc,gint yc,gint rayon)
 {
-	GdkGCValues values;
-	GdkColor color;
 	double r,g,b;
-	GdkColormap *colormap;
 	cairo_pattern_t *pat;
-	if(!cr) return;
-	if(!gc) return;
-	cairo_save (cr); /* stack-pen-size */
-	gdk_gc_get_values(gc, &values);
+	if(!cr || !color) return;
+	cairo_save (cr);
 
-	switch(values.cap_style)
-	{
-		case GDK_CAP_NOT_LAST:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_BUTT:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
-		case GDK_CAP_ROUND:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND); break;
-		case GDK_CAP_PROJECTING:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_SQUARE); break;
-		default:
-			cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
+	cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT);
+	cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);
 
-	}
-	switch(values.join_style)
-	{
-		case GDK_JOIN_MITER:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-		case GDK_JOIN_ROUND :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);break;
-		case GDK_JOIN_BEVEL :
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_BEVEL);break;
-		default:
-			cairo_set_line_join (cr, CAIRO_LINE_JOIN_MITER);break;
-	}
-   	color = values.foreground;
-	r = SCALE(color.red);
-	g = SCALE(color.green);
-	b = SCALE(color.blue);
+	r = SCALE(color->red);
+	g = SCALE(color->green);
+	b = SCALE(color->blue);
 	pat = cairo_pattern_create_radial (xc+rayon/2, yc, rayon/4, xc,  yc, rayon);
 	cairo_pattern_add_color_stop_rgba (pat, 0, 1, 1, 1, 1);
 	cairo_pattern_add_color_stop_rgba (pat, 1, r, g, b, 1);
 	cairo_set_source (cr, pat);
-	cairo_set_line_width (cr, values.line_width);
+	cairo_set_line_width (cr, line_width);
 	cairo_arc (cr, xc, yc, rayon, 0, 2 * M_PI);
 	cairo_fill (cr);
 	cairo_stroke (cr);
-	cairo_restore (cr); /* stack-pen-size */
+	cairo_restore (cr);
 	cairo_pattern_destroy (pat);
 }
