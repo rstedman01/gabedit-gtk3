@@ -111,6 +111,14 @@ gboolean Ddef;
 #define MAT 30
 #define SCALE(i) (i / 65535.)
 /********************************************************************************/
+/* Helper function to set Cairo color from GdkColor */
+static void set_cairo_color(cairo_t *cr, GdkColor *color)
+{
+    if(cr && color) {
+        cairo_set_source_rgb(cr, SCALE(color->red), SCALE(color->green), SCALE(color->blue));
+    }
+}
+/********************************************************************************/
 
 static gdouble Quat[4] = {0.0,0.0,0.0,1.0};
 static gdouble QuatFrag[4] = {0.0,0.0,0.0,1.0};
@@ -187,7 +195,6 @@ void deleteHydrogensConnectedTo(gint n, gint nH);
 void delete_one_atom(gint NumDel);
 static gint replace_atom();
 /********************************************************************************/
-static  GdkGC* gc=NULL;
 static	GdkColor* BackColor=NULL;
 static GdkPixmap *pixmap = NULL;
 static cairo_t *cr = NULL;
@@ -2684,7 +2691,6 @@ void set_statubar_operation_str(gchar* str)
 /*****************************************************************************/
 void draw_text(gchar* str)
 {
-	GdkColormap *colormap;
 	GdkColor color;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
 
@@ -2696,11 +2702,10 @@ void draw_text(gchar* str)
 	color.blue = FontsStyleLabel.TextColor.blue;
 
    	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
-	gdk_gc_set_foreground(gc,&color);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, x0, y0, str, FALSE,TRUE);
+
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, x0, y0, str, FALSE,TRUE);
 	if(crExport)
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, x0, y0, str, FALSE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, x0, y0, str, FALSE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 
@@ -2894,17 +2899,11 @@ void draw_selection_rectangle(gdouble x,gdouble y)
 	gdouble yi=0;
 	gdouble xf=0;
 	gdouble yf=0;
-        GdkColor color;
-	GdkColormap *colormap;
-
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-	color.red = 65535;
-	color.green = 65535;
-	color.blue = 65535;
+	cairo_t *crWin;
+	double dashes[] = {5.0, 5.0};
 	
 	drawGeom();
-        gdk_colormap_alloc_color(colormap,&color,FALSE,TRUE);
-    	gdk_gc_set_foreground(gc,&color);
+	
 	if(x>BeginX)
 	{
 		xi = BeginX;
@@ -2925,12 +2924,14 @@ void draw_selection_rectangle(gdouble x,gdouble y)
 		yi = y;
 		yf = BeginY-y;
 	}
-	gdk_gc_set_line_attributes(gc,1,GDK_LINE_DOUBLE_DASH,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
-#if !defined(G_OS_WIN32)
-  	gdk_draw_rectangle (gtk_widget_get_window(GeomDrawingArea),gc,FALSE,xi, yi, xf, yf);
-#else
-  	gdk_draw_rectangle (gtk_widget_get_window(GeomDrawingArea),GeomDrawingArea->style->white_gc,FALSE,xi, yi, xf, yf);
-#endif
+	
+	crWin = gdk_cairo_create(gtk_widget_get_window(GeomDrawingArea));
+	cairo_set_source_rgb(crWin, 1.0, 1.0, 1.0);
+	cairo_set_line_width(crWin, 1);
+	cairo_set_dash(crWin, dashes, 2, 0);
+	cairo_rectangle(crWin, xi, yi, xf, yf);
+	cairo_stroke(crWin);
+	cairo_destroy(crWin);
 }
 /********************************************************************************/
 void draw_selection_circle(gdouble x,gdouble y)
@@ -2939,18 +2940,12 @@ void draw_selection_circle(gdouble x,gdouble y)
 	gdouble yi=0;
 	gdouble xf=0;
 	gdouble yf=0;
-        GdkColor color;
-	GdkColormap *colormap;
-
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-	color.red = 65535;
-	color.green = 65535;
-	color.blue = 65535;
+	cairo_t *crWin;
+	double dashes[] = {5.0, 5.0};
+	gdouble rayon, xc, yc;
 	
 	drawGeom();
-        gdk_colormap_alloc_color(colormap,&color,FALSE,TRUE);
-    	gdk_gc_set_foreground(gc,&color);
-/*	GDK_LINE_ON_OFF_DASH, GDK_LINE_DOUBLE_DASH*/
+
 	if(x>BeginX)
 	{
 		xi = BeginX;
@@ -2971,8 +2966,18 @@ void draw_selection_circle(gdouble x,gdouble y)
 		yi = y;
 		yf = BeginY-y;
 	}
-	gdk_gc_set_line_attributes(gc,1,GDK_LINE_DOUBLE_DASH,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
-	gdk_draw_arc(gtk_widget_get_window(GeomDrawingArea),gc,FALSE,xi,yi,xf,yf,0,380*64);
+	
+	rayon = sqrt(xf*xf + yf*yf);
+	xc = BeginX;
+	yc = BeginY;
+	
+	crWin = gdk_cairo_create(gtk_widget_get_window(GeomDrawingArea));
+	cairo_set_source_rgb(crWin, 1.0, 1.0, 1.0);
+	cairo_set_line_width(crWin, 1);
+	cairo_set_dash(crWin, dashes, 2, 0);
+	cairo_arc(crWin, xc, yc, rayon, 0, 2 * M_PI);
+	cairo_stroke(crWin);
+	cairo_destroy(crWin);
 }
 /********************************************************************************/
 static void delete_molecule()
@@ -6480,44 +6485,30 @@ gint motion_notify(GtkWidget *widget, GdkEventMotion *event)
 /********************************************************************************/
 static void redraw()
 {
-  gdk_draw_drawable(gtk_widget_get_window(GeomDrawingArea),
-                  GeomDrawingArea->style->fg_gc[GTK_WIDGET_STATE (GeomDrawingArea)],
-                  pixmap,
-                  0,0,
-                  0,0,
-                  gtk_widget_get_allocated_width(GeomDrawingArea),
-                  gtk_widget_get_allocated_height(GeomDrawingArea));    
+  cairo_t *cairo_context = gdk_cairo_create(gtk_widget_get_window(GeomDrawingArea));
+  gdk_cairo_set_source_pixmap(cairo_context, pixmap, 0, 0);
+  cairo_paint(cairo_context);
+  cairo_destroy(cairo_context);
 }
 /********************************************************************************/
 static void pixmap_init(GtkWidget *widget)
 {
-  GdkColormap *colormap;
-
   if(!BackColor)
-  gdk_draw_rectangle (pixmap,
-                      widget->style->black_gc,
-                      TRUE,
-                      0, 0,
-                      gtk_widget_get_allocated_width(widget),
-                      gtk_widget_get_allocated_height(widget));    
+  {
+	cairo_set_source_rgb(cr, 0, 0, 0);
+	cairo_rectangle(cr, 0, 0, gtk_widget_get_allocated_width(widget), gtk_widget_get_allocated_height(widget));
+	cairo_fill(cr);
+  }
   else
   {
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap,BackColor,FALSE,TRUE);
-	gdk_gc_set_foreground(gc,BackColor);
-
-        gdk_draw_rectangle (pixmap,
-                      gc,
-                      TRUE,
-                      0, 0,
-                      gtk_widget_get_allocated_width(widget),
-                      gtk_widget_get_allocated_height(widget));    
+	cairo_set_source_rgb(cr, SCALE(BackColor->red), SCALE(BackColor->green), SCALE(BackColor->blue));
+	cairo_rectangle(cr, 0, 0, gtk_widget_get_allocated_width(widget), gtk_widget_get_allocated_height(widget));
+	cairo_fill(cr);
   }
 }
 /*****************************************************************************/
 static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 {
-	if(!gc) gc = gdk_gc_new(gtk_widget_get_window(GeomDrawingArea));
 	if (pixmap) g_object_unref(pixmap);
 	pixmap = gdk_pixmap_new(gtk_widget_get_window(widget), gtk_widget_get_allocated_width(widget), gtk_widget_get_allocated_height(widget), -1);
 	cr = gdk_cairo_create (pixmap);
@@ -6529,12 +6520,11 @@ static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 static gint expose_event( GtkWidget *widget, GdkEventExpose *event )
 {
 	if(event->count >0) return FALSE;
-	gdk_draw_drawable(gtk_widget_get_window(widget),
-                  widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
-                  pixmap,
-                  event->area.x, event->area.y,
-                  event->area.x, event->area.y,
-                  event->area.width, event->area.height);
+	cairo_t *cairo_context = gdk_cairo_create(gtk_widget_get_window(widget));
+	gdk_cairo_set_source_pixmap(cairo_context, pixmap, 0, 0);
+	cairo_rectangle(cairo_context, event->area.x, event->area.y, event->area.width, event->area.height);
+	cairo_fill(cairo_context);
+	cairo_destroy(cairo_context);
  
 	return FALSE;
 }                                                                               
@@ -9369,15 +9359,9 @@ guint get_num_min_rayonIJ(guint i,guint j)
 /*****************************************************************************/
 void draw_triangle(gint x1,gint y1,gint x2,gint y2,gint x3,gint y3, GdkColor colori)
 {
-	GdkColormap *colormap;
-
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap,&colori,FALSE,TRUE);
-	gdk_gc_set_foreground(gc,&colori);
-	gdk_gc_set_line_attributes(gc,1,GDK_LINE_SOLID,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
-	gabedit_cairo_triangle(cr, GeomDrawingArea, gc, x1, y1, x2, y2,  x3, y3);
+	gabedit_cairo_triangle(cr, GeomDrawingArea, &colori, 1, x1, y1, x2, y2,  x3, y3);
 	if(crExport)  
-	gabedit_cairo_triangle(crExport, GeomDrawingArea, gc, x1, y1, x2, y2,  x3, y3);
+	gabedit_cairo_triangle(crExport, GeomDrawingArea, &colori, 1, x1, y1, x2, y2,  x3, y3);
 }
 /*****************************************************************************/
 GdkColor get_color_string(guint i)
@@ -9401,7 +9385,6 @@ GdkColor get_color_string(guint i)
 /*****************************************************************************/
 void draw_distance(gint i,gint j,gint x0,gint y0)
 {
-	GdkColormap *colormap;
         GdkColor color;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
 
@@ -9417,14 +9400,10 @@ void draw_distance(gint i,gint j,gint x0,gint y0)
 	B.C[2]=geometry[j].Z;
 
         color = get_color_string(i);
-	
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 
-	gdk_gc_set_foreground(gc,&color);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, x0,y0,get_distance_points(A,B,TRUE),TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, x0,y0,get_distance_points(A,B,TRUE),TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, x0,y0,get_distance_points(A,B,TRUE),TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, x0,y0,get_distance_points(A,B,TRUE),TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 
@@ -9432,32 +9411,19 @@ void draw_distance(gint i,gint j,gint x0,gint y0)
 /*****************************************************************************/
 void draw_line(gdouble x1,gdouble y1,gdouble x2,gdouble y2,GdkColor colori,gint epaisseuri, gboolean round)
 {
-	GdkColormap *colormap;
         gint epaisseur=epaisseuri;
+	gint line_style = 0; /* GDK_LINE_SOLID */
 
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-
-	gdk_colormap_alloc_color(colormap,&colori,FALSE,TRUE);
-	gdk_gc_set_foreground(gc,&colori);
-	if(round)
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	else
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_NOT_LAST,GDK_JOIN_ROUND);
-	gabedit_cairo_line(cr, GeomDrawingArea, gc, x1,y1,x2,y2);
-	if(crExport) gabedit_cairo_line(crExport, GeomDrawingArea, gc, x1,y1,x2,y2);
+	gabedit_cairo_line(cr, GeomDrawingArea, &colori, epaisseur, line_style, round, x1,y1,x2,y2);
+	if(crExport) gabedit_cairo_line(crExport, GeomDrawingArea, &colori, epaisseur, line_style, round, x1,y1,x2,y2);
 }
 /*****************************************************************************/
 static void draw_line_hbond(gint x1,gint y1,gint x2,gint y2,GdkColor color,gint epaisseur)
 {
-	GdkColormap *colormap;
+	gint line_style = 1; /* GDK_LINE_ON_OFF_DASH */
 
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap,&color,FALSE,TRUE);
-	gdk_gc_set_foreground(gc,&color);
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_ON_OFF_DASH,GDK_CAP_NOT_LAST,GDK_JOIN_MITER);
-
-	gabedit_cairo_line(cr, GeomDrawingArea, gc, x1,y1,x2,y2);
-	if(crExport) gabedit_cairo_line(crExport, GeomDrawingArea, gc, x1,y1,x2,y2);
+	gabedit_cairo_line(cr, GeomDrawingArea, &color, epaisseur, line_style, FALSE, x1,y1,x2,y2);
+	if(crExport) gabedit_cairo_line(crExport, GeomDrawingArea, &color, epaisseur, line_style, FALSE, x1,y1,x2,y2);
 }
 /*****************************************************************************/
 static void draw_line2_hbond(gint x1,gint y1,gint x2,gint y2, gint i, gint j, GdkColor color1,GdkColor color2, gint epaisseur)
@@ -9528,17 +9494,8 @@ static void draw_line2_hbond(gint x1,gint y1,gint x2,gint y2, gint i, gint j, Gd
 /*****************************************************************************/
 void draw_anneau(gint xi,gint yi,gint rayoni,GdkColor colori)
 {
-	GdkColormap *colormap;
-
-        colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap,&colori,FALSE,TRUE);
-	gdk_gc_set_foreground(gc,&colori);
-	gdk_gc_set_line_attributes(gc,4,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gdk_gc_set_fill(gc,GDK_STIPPLED);
-
-	gabedit_cairo_cercle(cr, GeomDrawingArea, gc, xi, yi,rayoni);
-	if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, gc, xi, yi,rayoni);
-	gdk_gc_set_fill(gc,GDK_SOLID);
+	gabedit_cairo_cercle(cr, GeomDrawingArea, &colori, 4, xi, yi,rayoni);
+	if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, &colori, 4, xi, yi,rayoni);
 }
 /*****************************************************************************/
 gboolean draw_lines_yes_no(guint i,guint j)
@@ -9561,23 +9518,15 @@ gboolean draw_lines_yes_no(guint i,guint j)
 /*****************************************************************************/
 void draw_symb(guint epaisseur,guint i)
 {
-	GdkColormap *colormap;
 	GdkColor color;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
 	gchar* t= g_strdup_printf("%s", geometry[i].Prop.symbol);
-        
 
 	color = get_color_string(i);
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
-
-	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
-
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 	g_free(t);
@@ -9586,7 +9535,6 @@ void draw_symb(guint epaisseur,guint i)
 /*****************************************************************************/
 void draw_numb(guint epaisseur,guint i)
 {
-	GdkColormap *colormap;
         GdkColor color;
         gchar *temp;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
@@ -9594,14 +9542,10 @@ void draw_numb(guint epaisseur,guint i)
 
         color = get_color_string(i);
 
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
-	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 
@@ -9610,7 +9554,6 @@ void draw_numb(guint epaisseur,guint i)
 /*****************************************************************************/
 void draw_layer(guint epaisseur,guint i)
 {
-	GdkColormap *colormap;
 	GdkColor color;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
 	gchar* t= NULL;
@@ -9620,15 +9563,11 @@ void draw_layer(guint epaisseur,guint i)
 	else t= g_strdup_printf(" ");
 
 	color = get_color_string(i);
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 
-	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 	g_free(t);
@@ -9637,22 +9576,16 @@ void draw_layer(guint epaisseur,guint i)
 /*****************************************************************************/
 void draw_mmtyp(guint epaisseur,guint i)
 {
-	GdkColormap *colormap;
 	GdkColor color;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
 	gchar* t= g_strdup_printf("%s", geometry[i].mmType);
-        
 
 	color = get_color_string(i);
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 
-	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 	g_free(t);
@@ -9661,22 +9594,16 @@ void draw_mmtyp(guint epaisseur,guint i)
 /*****************************************************************************/
 void draw_pdbtyp(guint epaisseur,guint i)
 {
-	GdkColormap *colormap;
 	GdkColor color;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
 	gchar* t= g_strdup_printf("%s", geometry[i].pdbType);
-        
 
 	color = get_color_string(i);
-   	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
 
-	gdk_gc_set_foreground(gc,&color);
         if(epaisseur == 0)epaisseur =1;
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,t,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 	g_free(t);
@@ -9685,7 +9612,6 @@ void draw_pdbtyp(guint epaisseur,guint i)
 /*****************************************************************************/
 void draw_numb_symb(guint epaisseur,guint i)
 {
-	GdkColormap *colormap;
         GdkColor color;
         gchar *temp;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
@@ -9694,13 +9620,11 @@ void draw_numb_symb(guint epaisseur,guint i)
         color = get_color_string(i);
 
    	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
-	gdk_gc_set_foreground(gc,&color);
+
         if(epaisseur == 0)epaisseur =1;
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
         g_free(temp);
@@ -9708,7 +9632,6 @@ void draw_numb_symb(guint epaisseur,guint i)
 /*****************************************************************************/
 void draw_charge(guint epaisseur,guint i)
 {
-	GdkColormap *colormap;
         GdkColor color;
         gchar *temp;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
@@ -9716,13 +9639,11 @@ void draw_charge(guint epaisseur,guint i)
 
         color = get_color_string(i);
    	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
-	gdk_gc_set_foreground(gc,&color);
+
         if(epaisseur == 0)epaisseur =1;
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 
@@ -9731,7 +9652,6 @@ void draw_charge(guint epaisseur,guint i)
 /*****************************************************************************/
 void draw_symb_charge(guint epaisseur,guint i)
 {
-	GdkColormap *colormap;
         GdkColor color;
         gchar *temp;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
@@ -9740,13 +9660,11 @@ void draw_symb_charge(guint epaisseur,guint i)
         color = get_color_string(i);
 
    	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
-	gdk_gc_set_foreground(gc,&color);
+
         if(epaisseur == 0)epaisseur =1;
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 
@@ -9755,7 +9673,6 @@ void draw_symb_charge(guint epaisseur,guint i)
 /*****************************************************************************/
 void draw_numb_charge(guint epaisseur,guint i)
 {
-	GdkColormap *colormap;
         GdkColor color;
         gchar *temp;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
@@ -9764,13 +9681,11 @@ void draw_numb_charge(guint epaisseur,guint i)
         color = get_color_string(i);
 
    	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
-	gdk_gc_set_foreground(gc,&color);
+
         if(epaisseur == 0)epaisseur =1;
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 
@@ -9779,7 +9694,6 @@ void draw_numb_charge(guint epaisseur,guint i)
 /*****************************************************************************/
 void draw_residues(guint epaisseur,guint i)
 {
-	GdkColormap *colormap;
         GdkColor color;
         gchar *temp;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
@@ -9788,13 +9702,11 @@ void draw_residues(guint epaisseur,guint i)
         color = get_color_string(i);
 
    	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
-	gdk_gc_set_foreground(gc,&color);
+
         if(epaisseur == 0)epaisseur =1;
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 
@@ -9803,7 +9715,6 @@ void draw_residues(guint epaisseur,guint i)
 /*****************************************************************************/
 void draw_coordinates(guint epaisseur,guint i)
 {
-	GdkColormap *colormap;
         GdkColor color;
         gchar *temp;
  	PangoFontDescription *font_desc = pango_font_description_from_string (FontsStyleLabel.fontname);
@@ -9816,13 +9727,11 @@ void draw_coordinates(guint epaisseur,guint i)
         color = get_color_string(i);
 
    	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
-	gdk_gc_set_foreground(gc,&color);
+
         if(epaisseur == 0)epaisseur =1;
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, geometry[i].Xi,geometry[i].Yi,temp,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 
@@ -9893,7 +9802,6 @@ void draw_line2(gint epaisseur,guint i,guint j,gint x1,gint y1,gint x2,gint y2,
 	      xp = x1;
               yp = y1;
         }
-	gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
 	if(CartoonMode && !(buttonpress&&Natoms>MAT)) draw_line(xp,yp,x2,y2,colorblack,epaisseur+2,TRUE);
 
         poid1 = geometry[i].Prop.covalentRadii+geometry[i].Prop.radii;
@@ -9913,17 +9821,9 @@ void draw_line2(gint epaisseur,guint i,guint j,gint x1,gint y1,gint x2,gint y2,
 			}
 			else
 			{
-			GdkColormap *colormap;
-   			colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-			gdk_colormap_alloc_color(colormap,&color1,FALSE,TRUE);
-			gdk_gc_set_foreground(gc,&color1);
-			gdk_colormap_alloc_color(colormap,&color2,FALSE,TRUE);
-			if(!stick_mode())
-			gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_NOT_LAST,GDK_JOIN_ROUND);
-			else gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-
-			gabedit_cairo_line_gradient(cr, GeomDrawingArea, gc, color1,  color2,  xp, yp, x2, y2);
-			if(crExport) gabedit_cairo_line_gradient(crExport, GeomDrawingArea, gc, color1,  color2,  xp, yp, x2, y2);
+			gboolean round = !stick_mode();
+			gabedit_cairo_line_gradient(cr, GeomDrawingArea, color1,  color2,  epaisseur, round, xp, yp, x2, y2);
+			if(crExport) gabedit_cairo_line_gradient(crExport, GeomDrawingArea, color1,  color2,  epaisseur, round, xp, yp, x2, y2);
 			}
 		}
 		else
@@ -9940,19 +9840,10 @@ void draw_line2(gint epaisseur,guint i,guint j,gint x1,gint y1,gint x2,gint y2,
 			}
 			else
 			{
-			GdkColormap *colormap;
-   			colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
-			gdk_colormap_alloc_color(colormap,&color1,FALSE,TRUE);
-			gdk_gc_set_foreground(gc,&color1);
-			gdk_colormap_alloc_color(colormap,&color2,FALSE,TRUE);
-        		if (!stick_mode())
-			gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_NOT_LAST,GDK_JOIN_ROUND);
-			else
-			gdk_gc_set_line_attributes(gc,epaisseur,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-
-			gabedit_cairo_line_gradient(cr, GeomDrawingArea, gc, color1,  color2,  xp, yp, x2, y2);
+			gboolean round = !stick_mode();
+			gabedit_cairo_line_gradient(cr, GeomDrawingArea, color1,  color2,  epaisseur, round, xp, yp, x2, y2);
 			if(crExport)
-			gabedit_cairo_line_gradient(crExport, GeomDrawingArea, gc, color1,  color2,  xp, yp, x2, y2);
+			gabedit_cairo_line_gradient(crExport, GeomDrawingArea, color1,  color2,  epaisseur, round, xp, yp, x2, y2);
 			}
 		}
 		else
@@ -9969,56 +9860,42 @@ void draw_line2(gint epaisseur,guint i,guint j,gint x1,gint y1,gint x2,gint y2,
 /*****************************************************************************/
 void draw_cercle(gint xi,gint yi,gint rayoni,GdkColor colori, gboolean fill, gboolean cartoon, gboolean lighting)
 {
-	GdkColormap *colormap;
         gint x=xi,y=yi,rayon=rayoni;
         GdkColor colorblack;
 
-        colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	if(cartoon)
 	{
        		colorblack.red = 0;
        		colorblack.green = 0;
        		colorblack.blue = 0;
 
-
-        	gdk_colormap_alloc_color(colormap,&colorblack,FALSE,TRUE);
-		gdk_gc_set_line_attributes(gc,1,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-
 		rayon = rayoni+1;
-		gdk_gc_set_foreground(gc,&colorblack);
-		gdk_gc_set_fill(gc,GDK_STIPPLED);
-		gabedit_cairo_cercle(cr, GeomDrawingArea, gc, x, y,rayon);
-		if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, gc, x, y,rayon);
-		gdk_gc_set_fill(gc,GDK_SOLID);
+		gabedit_cairo_cercle(cr, GeomDrawingArea, &colorblack, 1, x, y,rayon);
+		if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, &colorblack, 1, x, y,rayon);
 	}
 
 	if(fill)
 	{
 		rayon = rayoni;
-        	gdk_colormap_alloc_color(colormap,&colori,FALSE,TRUE);
-		gdk_gc_set_foreground(gc,&colori);
-		gdk_gc_set_fill(gc,GDK_SOLID);
 
     		if (lighting) 
 		{
-			gabedit_cairo_cercle_gradient(cr, GeomDrawingArea, gc, x, y,rayon);
-			if(crExport) gabedit_cairo_cercle_gradient(crExport, GeomDrawingArea, gc, x, y,rayon);
+			gabedit_cairo_cercle_gradient(cr, GeomDrawingArea, &colori, 1, x, y,rayon);
+			if(crExport) gabedit_cairo_cercle_gradient(crExport, GeomDrawingArea, &colori, 1, x, y,rayon);
 		}
 		else 
 		{
-			gabedit_cairo_cercle(cr, GeomDrawingArea, gc, x, y,rayon);
-			if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, gc, x, y,rayon);
+			gabedit_cairo_cercle(cr, GeomDrawingArea, &colori, 1, x, y,rayon);
+			if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, &colori, 1, x, y,rayon);
 		}
 	}
 }
 /*****************************************************************************/
 void draw_arc(gint xi,gint yi,gint rayoni,gdouble angle1, gdouble angle2, gdouble scale1, gdouble scale2, GdkColor colori)
 {
-	GdkColormap *colormap;
         gint x=xi,y=yi,rayon=rayoni;
         GdkColor colorblack;
 
-        colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	if(CartoonMode)
 	{
 		gint lw = 2;
@@ -10026,34 +9903,10 @@ void draw_arc(gint xi,gint yi,gint rayoni,gdouble angle1, gdouble angle2, gdoubl
        		colorblack.green = 0;
        		colorblack.blue = 0;
 
-
-        	gdk_colormap_alloc_color(colormap,&colorblack,FALSE,TRUE);
-		gdk_gc_set_line_attributes(gc,lw,GDK_LINE_SOLID,GDK_CAP_ROUND,GDK_JOIN_ROUND);
-
-		/* rayon = rayoni+1;*/
 		rayon = rayoni;
-		gdk_gc_set_foreground(gc,&colorblack);
-		gabedit_cairo_arc(cr, GeomDrawingArea, gc, x, y,rayon, angle1, angle2, scale1, scale2);
-		if(crExport) gabedit_cairo_arc(crExport, GeomDrawingArea, gc, x, y,rayon, angle1, angle2,scale1, scale2);
+		gabedit_cairo_arc(cr, GeomDrawingArea, &colorblack, lw, x, y,rayon, angle1, angle2, scale1, scale2);
+		if(crExport) gabedit_cairo_arc(crExport, GeomDrawingArea, &colorblack, lw, x, y,rayon, angle1, angle2,scale1, scale2);
 	}
-	/*
-
-	rayon = rayoni;
-        gdk_colormap_alloc_color(colormap,&colori,FALSE,TRUE);
-	gdk_gc_set_foreground(gc,&colori);
-	gdk_gc_set_fill(gc,GDK_SOLID);
-
-    	if (LightMode) 
-	{
-		gabedit_cairo_arc(cr, GeomDrawingArea, gc, x, y,rayon,angle1, angle2, scale1, scale2);
-		if(crExport) gabedit_cairo_arc(crExport, GeomDrawingArea, gc, x, y,rayon,angle1, angle2, scale1, scale2);
-	}
-	else 
-	{
-		gabedit_cairo_arc(cr, GeomDrawingArea, gc, x, y,rayon,angle1, angle2, scale1, scale2);
-		if(crExport) gabedit_cairo_arc(crExport, GeomDrawingArea, gc, x, y,rayon,angle1, angle2,scale1, scale2);
-	}
-	*/
 }
 /************************************************************************/
 void getOptimalCiCj(gint i, gint j, gdouble* Ci, gdouble* Cj, gdouble* C0)
@@ -10773,7 +10626,6 @@ void drawGeom_stick()
 /*****************************************************************************/
 void draw_dipole(gint x0,gint y0)
 {
-	GdkColormap *colormap;
         GdkColor color;
 	gchar* t;
 	gdouble d = 0.0;
@@ -10789,11 +10641,10 @@ void draw_dipole(gint x0,gint y0)
 
    	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 
-        gdk_colormap_alloc_color(colormap, &color, FALSE, TRUE);
-	gdk_gc_set_foreground(gc,&color);
-	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, gc, x0,y0,t,TRUE,TRUE);
+        
+	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, x0,y0,t,TRUE,TRUE);
 	if(crExport)  
-	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, gc, x0,y0,t,TRUE,TRUE);
+	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, x0,y0,t,TRUE,TRUE);
 
 	if(font_desc) pango_font_description_free (font_desc);
 
@@ -10991,34 +10842,23 @@ void set_back_color_black()
 		gdk_color_free(BackColor);
 		BackColor=NULL;
         }
-        gdk_draw_rectangle (pixmap,
-                      GeomDrawingArea->style->black_gc,
-                      TRUE,
-                      0, 0,
-                      gtk_widget_get_allocated_width(GeomDrawingArea),
-                      gtk_widget_get_allocated_height(GeomDrawingArea));    
+	cairo_set_source_rgb(cr, 0, 0, 0);
+	cairo_rectangle(cr, 0, 0, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
+	cairo_fill(cr);
         drawGeom();
 }
 /*****************************************************************************/
 void set_back_color(GtkColorSelection *Sel,gpointer *d)
 {
 	GdkColor color;
-	GdkColormap *colormap;
 
 	gtk_color_selection_get_current_color(Sel, &color);
-	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	
         BackColor = gdk_color_copy(&color);
-        gdk_colormap_alloc_color(colormap,&color,FALSE,TRUE);
 
-	gdk_gc_set_foreground(gc,&color);
-
-        gdk_draw_rectangle (pixmap,
-                      gc,
-                      TRUE,
-                      0, 0,
-                      gtk_widget_get_allocated_width(GeomDrawingArea),
-                      gtk_widget_get_allocated_height(GeomDrawingArea));    
+	cairo_set_source_rgb(cr, SCALE(color.red), SCALE(color.green), SCALE(color.blue));
+	cairo_rectangle(cr, 0, 0, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
+	cairo_fill(cr);
         drawGeom();
 
 }
@@ -11026,24 +10866,16 @@ void set_back_color(GtkColorSelection *Sel,gpointer *d)
 void set_back_color_grey()
 {
 	GdkColor color;
-	GdkColormap *colormap;
 
 	color.red = 80*257;
 	color.green = 80*257;
 	color.blue = 80*257;
-	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	
         BackColor = gdk_color_copy(&color);
-        gdk_colormap_alloc_color(colormap,&color,FALSE,TRUE);
 
-	gdk_gc_set_foreground(gc,&color);
-
-        gdk_draw_rectangle (pixmap,
-                      gc,
-                      TRUE,
-                      0, 0,
-                      gtk_widget_get_allocated_width(GeomDrawingArea),
-                      gtk_widget_get_allocated_height(GeomDrawingArea));    
+	cairo_set_source_rgb(cr, SCALE(color.red), SCALE(color.green), SCALE(color.blue));
+	cairo_rectangle(cr, 0, 0, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
+	cairo_fill(cr);
         drawGeom();
 }
 /*****************************************************************************/
@@ -11051,7 +10883,6 @@ void set_back_color_default()
 {
 	static gint first = 0;
 	GdkColor color;
-	GdkColormap *colormap;
 
 	if(!BackColor) 
 	{
@@ -11061,7 +10892,6 @@ void set_back_color_default()
 	color.red = BackColor->red;
 	color.green = BackColor->green;
 	color.blue = BackColor->blue;
-	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 	
 	if(first==0)
 	{
@@ -11069,16 +10899,10 @@ void set_back_color_default()
 		first = 1;
 	}
         BackColor = gdk_color_copy(&color);
-        gdk_colormap_alloc_color(colormap,&color,FALSE,TRUE);
 
-	gdk_gc_set_foreground(gc,&color);
-
-        gdk_draw_rectangle (pixmap,
-                      gc,
-                      TRUE,
-                      0, 0,
-                      gtk_widget_get_allocated_width(GeomDrawingArea),
-                      gtk_widget_get_allocated_height(GeomDrawingArea));    
+	cairo_set_source_rgb(cr, SCALE(color.red), SCALE(color.green), SCALE(color.blue));
+	cairo_rectangle(cr, 0, 0, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
+	cairo_fill(cr);
         drawGeom();
 }
 /*****************************************************************************/
@@ -11198,9 +11022,6 @@ void destroy_all_drawing(GtkWidget *win)
 
  if (cr) cairo_destroy (cr);
  cr = NULL;
-
- if (gc) g_object_unref(gc);
- gc = NULL;
 
  Orig[0] = Orig[1] = Orig[2] = 0.0;
 }
