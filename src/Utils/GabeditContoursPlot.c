@@ -9469,7 +9469,7 @@ static gint gabedit_contoursplot_motion_notify (GtkWidget *widget, GdkEventMotio
   x = event->x;
   y = event->y;
   
-  if (event->is_hint || (gtk_widget_get_window(event) != gtk_widget_get_window(widget)))
+  if (event->is_hint || (gtk_widget_get_window(widget) != gtk_widget_get_window(widget)))
       gdk_window_get_pointer (gtk_widget_get_window(widget), (gint *)&x, (gint *)&y, NULL);
 
   if (contoursplot->selected_objects_text_num>-1) 
@@ -11047,7 +11047,7 @@ static gboolean contoursplot_motion_notify_event(GtkWidget *contoursplot, GdkEve
 
 	/* TODO: GTK3 Migration - gtk_widget_get_window(event) and gdk_window_get_pointer replaced */
 	GdkWindow *widget_window = gtk_widget_get_window(contoursplot);
-	if (event->is_hint || (gtk_widget_get_window(event) != widget_window))
+	if (event->is_hint || (gtk_widget_get_window(contoursplot) != widget_window))
 		gdk_window_get_device_position(widget_window, event->device, &x, &y, NULL);
 
 	if(gabedit_contoursplot_get_point(GABEDIT_ContoursPLOT(contoursplot), x, y, &xv, &yv))

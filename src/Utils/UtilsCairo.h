@@ -27,6 +27,14 @@ void gabedit_cairo_arc(cairo_t *cr,  GtkWidget* parent, GdkColor* color, gint li
 void gabedit_cairo_cercle(cairo_t *cr,  GtkWidget* parent, GdkColor* color, gint line_width, gint xc,gint yc,gint rayon);
 void gabedit_cairo_line_gradient(cairo_t *cr,  GtkWidget* parent, GdkColor color1,  GdkColor color2, gint line_width, gboolean round, gdouble x1,gdouble y1,gdouble x2,gdouble y2);
 void gabedit_cairo_cercle_gradient(cairo_t *cr,  GtkWidget* parent, GdkColor* color, gint line_width, gint xc,gint yc,gint rayon);
+void gabedit_cairo_string(cairo_t* cr, GtkWidget* parent, PangoFontDescription *font_desc, GdkColor *color , gint x, gint y, G_CONST_RETURN gchar* str, gboolean centerX, gboolean centerY);
+void gabedit_cairo_triangle(cairo_t *cr,  GtkWidget* parent, GdkColor *color,
+		gdouble x1,gdouble y1,gdouble x2,gdouble y2, gdouble x3,gdouble y3);
+void gabedit_cairo_line(cairo_t *cr,  GtkWidget* parent, GdkColor *color, gdouble x1,gdouble y1,gdouble x2,gdouble y2);
+void gabedit_cairo_arc(cairo_t *cr,  GtkWidget* parent, GdkColor *color, gint xc,gint yc,gint rayon, gdouble angle1, gdouble angle2 , gdouble scale1, gdouble scale2);
+void gabedit_cairo_cercle(cairo_t *cr,  GtkWidget* parent, GdkColor *color, gint xc,gint yc,gint rayon);
+void gabedit_cairo_line_gradient(cairo_t *cr,  GtkWidget* parent, GdkColor *color, GdkColor color1,  GdkColor color2, gdouble x1,gdouble y1,gdouble x2,gdouble y2);
+void gabedit_cairo_cercle_gradient(cairo_t *cr,  GtkWidget* parent, GdkColor *color, gint xc,gint yc,gint rayon);
 
 #endif /* __GABEDIT_UTILSCAIRO_H__ */
 

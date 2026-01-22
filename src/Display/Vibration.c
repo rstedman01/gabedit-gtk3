@@ -6114,7 +6114,7 @@ static void event_dispatcher(GtkWidget *widget, GdkEventButton *event, gpointer 
 
 	GtkTreePath *path;
 	gint row = -1;
-	if (gtk_widget_get_window(event) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
+	if (gtk_widget_get_window(widget) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
 	    && !gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget),
 					       event->x, event->y, NULL, NULL, NULL, NULL)) {
 		gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW (widget)));
@@ -7461,7 +7461,7 @@ static void computeEntropies(gdouble S[], gdouble T, gdouble TRot[], gdouble m, 
 
         //printf("TRot= %f %f %f\n",TRot[0],TRot[1],TRot[2]);
         // 0 = translation
-        S[0] = k*(1.5*log(2*M_PI*m*kT/h/h)+log(kT/p)+2.5);
+        S[0] = k*(1.5*log(2*G_PI*m*kT/h/h)+log(kT/p)+2.5);
 
         //printf("T= %f S0=%f\n",T, 1000*S[0]*627.50944796);
 
@@ -7473,8 +7473,8 @@ static void computeEntropies(gdouble S[], gdouble T, gdouble TRot[], gdouble m, 
         gdouble n=0;
         for(i=0;i<3;i++) if(TRot[i]>1e-12)  n+=0.5;
         S[2] = 1.0;
-        for(i=0;i<3;i++) if(TRot[i]>1e-12)  S[2] *= sqrt((M_PI*T/TRot[i]));
-        S[2] /= M_PI;
+        for(i=0;i<3;i++) if(TRot[i]>1e-12)  S[2] *= sqrt((G_PI*T/TRot[i]));
+        S[2] /= G_PI;
 	if ((int)(n+0.6)==1) S[2] /= 2;// linear
 
         S[2] = k*(log(S[2])+n);

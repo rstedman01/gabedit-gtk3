@@ -260,7 +260,7 @@ void AddFragment(GtkWidget *widget, guint data);
 void add_a_fragment(GtkWidget*win, gchar* fragName);
 void addAFragment(gchar* fragName);
 void set_back_color_black();
-void open_color_dlg(GtkWidget *win,gpointer *DrawingArea);
+void open_color_dlg(GtkWidget *widget,gpointer data);
 void set_HBonds_dialog_geom(GtkWidget *win, guint data);
 void set_povray_options_geom(GtkWidget *win, guint data);
 void destroy_drawing_and_children(GtkWidget *win,gpointer data);

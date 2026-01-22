@@ -2976,6 +2976,7 @@ void draw_selection_circle(gdouble x,gdouble y)
 	cairo_set_line_width(crWin, 1);
 	cairo_set_dash(crWin, dashes, 2, 0);
 	cairo_arc(crWin, xc, yc, rayon, 0, 2 * M_PI);
+	cairo_arc(crWin, xc, yc, rayon, 0, 2 * G_PI);
 	cairo_stroke(crWin);
 	cairo_destroy(crWin);
 }
@@ -6511,9 +6512,9 @@ static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
 {
 	if (pixmap) g_object_unref(pixmap);
 	pixmap = gdk_pixmap_new(gtk_widget_get_window(widget), gtk_widget_get_allocated_width(widget), gtk_widget_get_allocated_height(widget), -1);
-	cr = gdk_cairo_create (pixmap);
+	cr = gdk_cairo_create (gtk_widget_get_window(widget));
 	drawGeom();
-
+	cairo_destroy(cr);
 	return TRUE;
 }
 /********************************************************************************/   
@@ -9362,6 +9363,9 @@ void draw_triangle(gint x1,gint y1,gint x2,gint y2,gint x3,gint y3, GdkColor col
 	gabedit_cairo_triangle(cr, GeomDrawingArea, &colori, 1, x1, y1, x2, y2,  x3, y3);
 	if(crExport)  
 	gabedit_cairo_triangle(crExport, GeomDrawingArea, &colori, 1, x1, y1, x2, y2,  x3, y3);
+	gabedit_cairo_triangle(cr, GeomDrawingArea, &colori, x1, y1, x2, y2, x3, y3);
+	if(crExport)  
+	gabedit_cairo_triangle(crExport, GeomDrawingArea, &colori, x1, y1, x2, y2,  x3, y3);
 }
 /*****************************************************************************/
 GdkColor get_color_string(guint i)
@@ -9416,6 +9420,8 @@ void draw_line(gdouble x1,gdouble y1,gdouble x2,gdouble y2,GdkColor colori,gint 
 
 	gabedit_cairo_line(cr, GeomDrawingArea, &colori, epaisseur, line_style, round, x1,y1,x2,y2);
 	if(crExport) gabedit_cairo_line(crExport, GeomDrawingArea, &colori, epaisseur, line_style, round, x1,y1,x2,y2);
+	gabedit_cairo_line(cr, GeomDrawingArea, &colori, x1,y1,x2,y2);
+	if(crExport) gabedit_cairo_line(crExport, GeomDrawingArea, &colori, x1,y1,x2,y2);
 }
 /*****************************************************************************/
 static void draw_line_hbond(gint x1,gint y1,gint x2,gint y2,GdkColor color,gint epaisseur)
@@ -9424,6 +9430,8 @@ static void draw_line_hbond(gint x1,gint y1,gint x2,gint y2,GdkColor color,gint 
 
 	gabedit_cairo_line(cr, GeomDrawingArea, &color, epaisseur, line_style, FALSE, x1,y1,x2,y2);
 	if(crExport) gabedit_cairo_line(crExport, GeomDrawingArea, &color, epaisseur, line_style, FALSE, x1,y1,x2,y2);
+	gabedit_cairo_line(cr, GeomDrawingArea, &color, x1,y1,x2,y2);
+	if(crExport) gabedit_cairo_line(crExport, GeomDrawingArea, &color, x1,y1,x2,y2);
 }
 /*****************************************************************************/
 static void draw_line2_hbond(gint x1,gint y1,gint x2,gint y2, gint i, gint j, GdkColor color1,GdkColor color2, gint epaisseur)
@@ -9496,6 +9504,8 @@ void draw_anneau(gint xi,gint yi,gint rayoni,GdkColor colori)
 {
 	gabedit_cairo_cercle(cr, GeomDrawingArea, &colori, 4, xi, yi,rayoni);
 	if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, &colori, 4, xi, yi,rayoni);
+	gabedit_cairo_cercle(cr, GeomDrawingArea, &colori, xi, yi,rayoni);
+	if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, &colori, xi, yi,rayoni);
 }
 /*****************************************************************************/
 gboolean draw_lines_yes_no(guint i,guint j)
@@ -9824,6 +9834,8 @@ void draw_line2(gint epaisseur,guint i,guint j,gint x1,gint y1,gint x2,gint y2,
 			gboolean round = !stick_mode();
 			gabedit_cairo_line_gradient(cr, GeomDrawingArea, color1,  color2,  epaisseur, round, xp, yp, x2, y2);
 			if(crExport) gabedit_cairo_line_gradient(crExport, GeomDrawingArea, color1,  color2,  epaisseur, round, xp, yp, x2, y2);
+			gabedit_cairo_line_gradient(cr, GeomDrawingArea, &color1, color1, color2, xp, yp, x2, y2);
+			if(crExport) gabedit_cairo_line_gradient(crExport, GeomDrawingArea, &color1, color1,  color2, xp, yp, x2, y2);
 			}
 		}
 		else
@@ -9844,6 +9856,9 @@ void draw_line2(gint epaisseur,guint i,guint j,gint x1,gint y1,gint x2,gint y2,
 			gabedit_cairo_line_gradient(cr, GeomDrawingArea, color1,  color2,  epaisseur, round, xp, yp, x2, y2);
 			if(crExport)
 			gabedit_cairo_line_gradient(crExport, GeomDrawingArea, color1,  color2,  epaisseur, round, xp, yp, x2, y2);
+			gabedit_cairo_line_gradient(cr, GeomDrawingArea, &color1, color1,  color2, xp, yp, x2, y2);
+			if(crExport)
+			gabedit_cairo_line_gradient(crExport, GeomDrawingArea, &color1, color1,  color2, xp, yp, x2, y2);
 			}
 		}
 		else
@@ -9872,6 +9887,8 @@ void draw_cercle(gint xi,gint yi,gint rayoni,GdkColor colori, gboolean fill, gbo
 		rayon = rayoni+1;
 		gabedit_cairo_cercle(cr, GeomDrawingArea, &colorblack, 1, x, y,rayon);
 		if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, &colorblack, 1, x, y,rayon);
+		gabedit_cairo_cercle(cr, GeomDrawingArea, &colorblack, x, y,rayon);
+		if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, &colorblack, x, y,rayon);
 	}
 
 	if(fill)
@@ -9887,6 +9904,13 @@ void draw_cercle(gint xi,gint yi,gint rayoni,GdkColor colori, gboolean fill, gbo
 		{
 			gabedit_cairo_cercle(cr, GeomDrawingArea, &colori, 1, x, y,rayon);
 			if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, &colori, 1, x, y,rayon);
+			gabedit_cairo_cercle_gradient(cr, GeomDrawingArea, &colori, x, y,rayon);
+			if(crExport) gabedit_cairo_cercle_gradient(crExport, GeomDrawingArea, &colori, x, y,rayon);
+		}
+		else 
+		{
+			gabedit_cairo_cercle(cr, GeomDrawingArea, &colori, x, y,rayon);
+			if(crExport) gabedit_cairo_cercle(crExport, GeomDrawingArea, &colori, x, y,rayon);
 		}
 	}
 }
@@ -9906,6 +9930,8 @@ void draw_arc(gint xi,gint yi,gint rayoni,gdouble angle1, gdouble angle2, gdoubl
 		rayon = rayoni;
 		gabedit_cairo_arc(cr, GeomDrawingArea, &colorblack, lw, x, y,rayon, angle1, angle2, scale1, scale2);
 		if(crExport) gabedit_cairo_arc(crExport, GeomDrawingArea, &colorblack, lw, x, y,rayon, angle1, angle2,scale1, scale2);
+		gabedit_cairo_arc(cr, GeomDrawingArea, &colorblack, x, y,rayon, angle1, angle2, scale1, scale2);
+		if(crExport) gabedit_cairo_arc(crExport, GeomDrawingArea, &colorblack, x, y,rayon, angle1, angle2,scale1, scale2);
 	}
 }
 /************************************************************************/
@@ -9989,8 +10015,8 @@ void draw_ball(gint xi,gint yi,gint rayoni,GdkColor colori)
 
 	if(OrtepMode && !(buttonpress&&Natoms>MAT))
 	{
-    		draw_arc(xi,yi,rayoni,0, M_PI, 1.0, 0.5, colori);
-    		draw_arc(xi,yi,rayoni,M_PI/2,3*M_PI/2,0.5,1.0, colori);
+    		draw_arc(xi,yi,rayoni,0, G_PI, 1.0, 0.5, colori);
+    		draw_arc(xi,yi,rayoni,G_PI/2,3*G_PI/2,0.5,1.0, colori);
 	}
 }
 /*****************************************************************************/
@@ -10642,6 +10668,7 @@ void draw_dipole(gint x0,gint y0)
    	colormap  = gdk_drawable_get_colormap(gtk_widget_get_window(GeomDrawingArea));
 
         
+   
 	gabedit_cairo_string(cr, GeomDrawingArea, font_desc, &color, x0,y0,t,TRUE,TRUE);
 	if(crExport)  
 	gabedit_cairo_string(crExport, GeomDrawingArea, font_desc, &color, x0,y0,t,TRUE,TRUE);
@@ -10906,29 +10933,25 @@ void set_back_color_default()
         drawGeom();
 }
 /*****************************************************************************/
-void open_color_dlg(GtkWidget *win,gpointer *DrawingArea)
+void open_color_dlg(GtkWidget *widget, gpointer data)  /* not gpointer* */
 {
-
-	GtkColorChooserDialog *ColorDlg;
-	ColorDlg = 
-		(GtkColorChooserDialog *)gtk_color_selection_dialog_new(
-		_("Set Background Color"));
-	gtk_window_set_modal (GTK_WINDOW (ColorDlg), TRUE);
-	gtk_window_set_transient_for(GTK_WINDOW(ColorDlg),GTK_WINDOW(Fenetre));
+    GtkWidget* dlg = gtk_color_chooser_dialog_new(_("Background Color"), 
+                                                   GTK_WINDOW(Fenetre));
+    
+    if (gtk_dialog_run(GTK_DIALOG(dlg)) == GTK_RESPONSE_OK)
+    {
+        GdkRGBA rgba;
+        gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(dlg), &rgba);
         
-	gtk_widget_hide(ColorDlg->help_button);
-	
-	g_signal_connect_swapped(G_OBJECT(ColorDlg->ok_button),"clicked",
-		(GCallback)set_back_color,GTK_OBJECT(ColorDlg->colorsel));
-
-	g_signal_connect_swapped(G_OBJECT(ColorDlg->ok_button),"clicked",
-		(GCallback)gtk_widget_destroy,GTK_OBJECT(ColorDlg));
-
-	g_signal_connect_swapped(G_OBJECT(ColorDlg->cancel_button),"clicked",
-		(GCallback)gtk_widget_destroy,GTK_OBJECT(ColorDlg));
-
-	gtk_widget_show(GTK_WIDGET(ColorDlg));
-
+        /* Convert to GdkColor if needed */
+        if (! BackColor) BackColor = g_malloc(sizeof(GdkColor));
+        BackColor->red = (guint16)(rgba.red * 65535);
+        BackColor->green = (guint16)(rgba.green * 65535);
+        BackColor->blue = (guint16)(rgba.blue * 65535);
+        
+        set_back_color(dlg, data);
+    }
+    gtk_widget_destroy(dlg);
 }
 /*****************************************************************************/
 GtkWidget *create_drawing_in_box(GtkWidget *box)

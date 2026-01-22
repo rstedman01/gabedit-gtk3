@@ -33,7 +33,7 @@ static inline void get_pointer_xy_for_event(GtkWidget* widget, GdkEventMotion* e
 	GdkWindow* win = gtk_widget_get_window(widget);
     if (!win) { *out_x = 0; *out_y = 0; return; }
 
-    if (event && !event->is_hint && gtk_widget_get_window(event) == win) {
+    if (event && !event->is_hint && gtk_widget_get_window(widget) == win) {
         *out_x = (gint)event->x;
         *out_y = (gint)event->y;
         return;
