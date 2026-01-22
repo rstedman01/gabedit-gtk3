@@ -272,7 +272,7 @@ void  set_file_open(gchar* remotehost,gchar* remoteuser,gchar* remotedir, GabEdi
 #ifdef G_OS_WIN32
 	winsockCheck(stderr);
 #endif
-  gethostname(localhost,100);
+  g_get_host_name();
 
   if(!fileopen.localhost)
   	fileopen.localhost = g_strdup(localhost);
@@ -1690,20 +1690,20 @@ void read_fonts_file()
  	fclose(fd);
 
   	set_font (text,FontsStyleData.fontname);
-  	set_base_style(text,FontsStyleData.BaseColor.red ,FontsStyleData.BaseColor.green ,FontsStyleData.BaseColor.blue);
-  	set_text_style(text,FontsStyleData.TextColor.red ,FontsStyleData.TextColor.green ,FontsStyleData.TextColor.blue);
+  	set_base_color(text,FontsStyleData.BaseColor.red ,FontsStyleData.BaseColor.green ,FontsStyleData.BaseColor.blue);
+  	set_text_color(text,FontsStyleData.TextColor.red ,FontsStyleData.TextColor.green ,FontsStyleData.TextColor.blue);
 
   	set_font (textresult,FontsStyleResult.fontname);
-  	set_base_style(textresult,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-  	set_text_style(textresult,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
+  	set_base_color(textresult,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+  	set_text_color(textresult,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
 
   	set_font (TextOutput,FontsStyleResult.fontname);
-  	set_base_style(TextOutput,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-  	set_text_style(TextOutput,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
+  	set_base_color(TextOutput,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+  	set_text_color(TextOutput,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
 
   	set_font (TextError,FontsStyleResult.fontname);
-  	set_base_style(TextError,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-  	set_text_style(TextError,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
+  	set_base_color(TextError,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+  	set_text_color(TextError,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
 
  }
  set_font_other (FontsStyleOther.fontname);
@@ -2012,7 +2012,7 @@ static gboolean debug1flag()
 #ifdef G_OS_WIN32
    winsockCheck(stderr);
 #endif
-   gethostname(localhost,100);
+   g_get_host_name();
    if(strlen(localhost)>=5)
    {
 	   uppercase(localhost);
@@ -2035,26 +2035,26 @@ guint get_number_electrons(guint type)
 */
    guint i;
    guint Ne=0;
-   SAtomsProp Atom;
+   SAtomsProp GabeditAtom;
    if(MethodeGeom == GEOM_IS_XYZ)
    {
    	for(i=0;i<NcentersXYZ;i++)
    	{
-	       Atom = prop_atom_get(GeomXYZ[i].Symb);
+	       GabeditAtom = prop_atom_get(GeomXYZ[i].Symb);
                switch (type)
                {
         	case 1 : if(this_is_a_backspace (GeomXYZ[i].Layer) || 
 			    !strcmp(GeomXYZ[i].Layer,"High") ||
 			    !strcmp(GeomXYZ[i].Layer,"Medium") )
-				Ne += Atom.atomicNumber;
+				Ne += GabeditAtom.atomicNumber;
 			 break;
         	case 2 : if(this_is_a_backspace (GeomXYZ[i].Layer) || 
 			    !strcmp(GeomXYZ[i].Layer,"High") )
 				 {
-				Ne += Atom.atomicNumber;
+				Ne += GabeditAtom.atomicNumber;
 				 }
 			 break;
-        	default : Ne += Atom.atomicNumber;
+        	default : Ne += GabeditAtom.atomicNumber;
                }
    	}
    }
@@ -2062,19 +2062,19 @@ guint get_number_electrons(guint type)
    {
    	for(i=0;i<NcentersZmat;i++)
    	{
-		Atom = prop_atom_get(Geom[i].Symb);
+		GabeditAtom = prop_atom_get(Geom[i].Symb);
                switch (type)
                {
         	case 1 : if(this_is_a_backspace (Geom[i].Layer) || 
 			    !strcmp(Geom[i].Layer,"High") ||
 			    !strcmp(Geom[i].Layer,"Medium") )
-				Ne += Atom.atomicNumber;
+				Ne += GabeditAtom.atomicNumber;
 			 break;
         	case 2 : if(this_is_a_backspace (Geom[i].Layer) || 
 			    !strcmp(Geom[i].Layer,"High") )
-		        	 Ne += Atom.atomicNumber;
+		        	 Ne += GabeditAtom.atomicNumber;
 			 break;
-        	default : Ne += Atom.atomicNumber;
+        	default : Ne += GabeditAtom.atomicNumber;
                }
    	}
    }
@@ -2767,7 +2767,7 @@ void set_font (GtkWidget *view, gchar *fontname)
         GtkStyle *style;
   	PangoFontDescription *font_desc;
  
-	if(!GTK_IS_WIDGET(view)) return;
+	//if(!GTK_IS_WIDGET(view)) return;
         style = gtk_style_copy (gtk_widget_get_style (view));
   	font_desc = pango_font_description_from_string (fontname);
 
@@ -2790,48 +2790,95 @@ void set_tab_size (GtkWidget *view, gint tab_size)
 	gtk_text_view_set_tabs          ((GtkTextView *)view, tabs);
 }
 /*************************************************************************************/
-GtkStyle *set_text_style(GtkWidget *text,gushort red,gushort green,gushort blue)
+GtkStyle *set_text_color(GtkWidget *text,gushort red,gushort green,gushort blue)
 {
-	  GtkStyle *style;
-          style =  gtk_style_copy(style); 
-          style->text[0].red=red;
-          style->text[0].green=green;
-          style->text[0].blue=blue;
-	  gtk_widget_set_style(text, style);
-          return style;
+	GtkCssProvider *prov;
+	gchar *css;
+	GtkStyleContext *ctx;
+
+	css = g_strdup_printf("* { color: rgb(%d, %d, %d); }",
+						  red/257, green/257, blue/257);
+	prov = gtk_css_provider_new();
+	gtk_css_provider_load_from_data(prov, css, -1, NULL);
+
+	ctx = gtk_widget_get_style_context(text);
+	gtk_style_context_add_provider(ctx, GTK_STYLE_PROVIDER(prov), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+	g_object_unref(prov);
+	g_free(css);
 }
 /********************************************************************************/
-GtkStyle *set_base_style(GtkWidget *text,gushort red,gushort green,gushort blue)
+GtkStyle *set_base_color(GtkWidget *widget, gushort red, gushort green, gushort blue)
 {
-	  GtkStyle *style;
-          style =  gtk_style_copy(style); 
-          style->base[0].red=red;
-          style->base[0].green=green;
-          style->base[0].blue=blue;
-	  gtk_widget_set_style(text, style );
-          return style;
+    gchar *css;
+    GtkCssProvider *provider;
+    GtkStyleContext *context;
+    
+    css = g_strdup_printf("* { background-color: rgb(%d,%d,%d); }", 
+                          red/257, green/257, blue/257);
+    
+    provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(provider, css, -1, NULL);
+    
+    context = gtk_widget_get_style_context(widget);
+    gtk_style_context_add_provider(context,
+                                    GTK_STYLE_PROVIDER(provider),
+                                    GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    
+    g_object_unref(provider);
+    g_free(css);
 }
 /********************************************************************************/
-GtkStyle *set_fg_style(GtkWidget *wid,gushort red,gushort green,gushort blue)
+GtkStyle *set_fg_color(GtkWidget *wid,gushort red,gushort green,gushort blue)
 {
-	  GtkStyle *style;
-          style =  gtk_style_copy(style); 
-          style->fg[0].red=red;
-          style->fg[0].green=green;
-          style->fg[0].blue=blue;
-	  gtk_widget_set_style(wid, style );
-          return style;
+	GtkCssProvider *prov;
+	gchar *css;
+	GdkRGBA color;
+	
+	color.red = red / 65535.0;
+	color.green = green / 65535.0;
+	color. blue = blue / 65535.0;
+	color.alpha = 1.0;
+	
+	prov = gtk_css_provider_new();
+	css = g_strdup_printf("* { color: rgb(%d,%d,%d); }",
+	                      (int)(color.red * 255),
+	                      (int)(color.green * 255),
+	                      (int)(color.blue * 255));
+	gtk_css_provider_load_from_data(prov, css, -1, NULL);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(wid),
+	                                GTK_STYLE_PROVIDER(prov),
+	                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	g_object_unref(prov);
+	g_free(css);
+	
+	return NULL;
 }
 /********************************************************************************/
-GtkStyle *set_bg_style(GtkWidget *wid,gushort red,gushort green,gushort blue)
+GtkStyle *set_bg_color(GtkWidget *wid,gushort red,gushort green,gushort blue)
 {
-	  GtkStyle *style;
-          style =  gtk_style_copy(style); 
-          style->bg[0].red=red;
-          style->bg[0].green=green;
-          style->bg[0].blue=blue;
-	  gtk_widget_set_style(wid, style );
-          return style;
+	GtkCssProvider *prov;
+	gchar *css;
+	GdkRGBA color;
+	
+	color.red = red / 65535.0;
+	color.green = green / 65535.0;
+	color.blue = blue / 65535.0;
+	color.alpha = 1.0;
+	
+	prov = gtk_css_provider_new();
+	css = g_strdup_printf("* { background-color: rgb(%d,%d,%d); }",
+	                      (int)(color.red * 255),
+	                      (int)(color.green * 255),
+	                      (int)(color.blue * 255));
+	gtk_css_provider_load_from_data(prov, css, -1, NULL);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(wid),
+	                                GTK_STYLE_PROVIDER(prov),
+	                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	g_object_unref(prov);
+	g_free(css);
+	
+	return NULL;
 }
 /********************************************************************************/
 gint numb_of_string_by_row(gchar *str)
@@ -5349,7 +5396,7 @@ gboolean readOneReal(FILE* file, gchar* tag, double*value)
 	if(!value) return FALSE;
 	if(t==NULL) t = g_malloc(BSIZE*sizeof(gchar));
 
-	TAG = strdup(tag);
+	TAG = g_strdup(tag);
 	uppercase(TAG);
 	rewind(file);
 
@@ -5396,7 +5443,7 @@ gboolean readOneInt(FILE* file, gchar* tag, gint*value)
 	if(!value) return FALSE;
 	if(t==NULL) t = g_malloc(BSIZE*sizeof(gchar));
 
-	TAG = strdup(tag);
+	TAG = g_strdup(tag);
 	uppercase(TAG);
 	rewind(file);
 
@@ -5444,7 +5491,7 @@ gboolean readOneBoolean(FILE* file, gchar* tag, gboolean*value)
 	if(!value) return FALSE;
 	if(t==NULL) t = g_malloc(BSIZE*sizeof(gchar));
 
-	TAG = strdup(tag);
+	TAG = g_strdup(tag);
 	uppercase(TAG);
 	rewind(file);
 
@@ -5512,7 +5559,7 @@ gboolean readOneString(FILE* file, gchar* tag, gchar**value)
 	if(t==NULL) t = g_malloc(BSIZE*sizeof(gchar));
 	if(t2==NULL) t2 = g_malloc((BSIZE+2)*sizeof(gchar));
 
-	TAG = strdup(tag);
+	TAG = g_strdup(tag);
 	uppercase(TAG);
 	rewind(file);
 
@@ -5535,7 +5582,7 @@ gboolean readOneString(FILE* file, gchar* tag, gchar**value)
 		{
 			gchar* p = t+(gint)(pos-t2);
 			if(*value) g_free(*value);
-			*value = strdup(p);
+			*value = g_strdup(p);
 			strDeleten(*value);
 			deleteFirstSpaces(*value);
 			deleteLastSpaces(*value);
@@ -5628,7 +5675,7 @@ gboolean goToStr(FILE* file, gchar* tag)
         if(!tag) return FALSE;
         if(t==NULL) t = g_malloc(BSIZE*sizeof(gchar));
 
-        TAG = strdup(tag);
+        TAG = g_strdup(tag);
         uppercase(TAG);
         rewind(file);
 
@@ -5679,7 +5726,7 @@ gchar** get_one_block_from_wfx_file(FILE* file, gchar* blockName,  gint* n)
 			gint k;
 			if(!fgets(t,BBSIZE,file))break;
 			for(k=0;k<strlen(t);k++) if(t[k]=='\n') t[k]='\0';
-			elements[i] = strdup(t);
+			elements[i] = g_strdup(t);
 	}
 	*n = nElements;
 	return elements;

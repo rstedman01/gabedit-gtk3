@@ -49,7 +49,7 @@ typedef enum
 }ListColumnsTypes;
 /************************************************************************************************************/
 
-static gchar *listTitles[]={ "Atom", "Basis Name", "Author","Primitive", "Contraction","ECP Type" };
+static gchar *listTitles[]={ "GabeditAtom", "Basis Name", "Author","Primitive", "Contraction","ECP Type" };
 
 static	MolcasBasis molcasBasis={0,NULL};
 
@@ -778,7 +778,7 @@ static void newAtomDlg()
 	atomNumber = data->atomNumber;
 	basisNumber = data->basisNumber;
 
-	sprintf(title,"New Atom");
+	sprintf(title,"New GabeditAtom");
 
 	WinDlg = gtk_dialog_new();
 	gtk_window_set_title(GTK_WINDOW(WinDlg),title);
@@ -797,7 +797,7 @@ static void newAtomDlg()
 	vboxframe = create_vbox(frame);
 	hbox=create_hbox_false(vboxframe);
 
-	Entry = create_label_entry(hbox," Atom Symbol : ",-1,-1); 
+	Entry = create_label_entry(hbox," GabeditAtom Symbol : ",-1,-1); 
 	gtk_entry_set_text(GTK_ENTRY(Entry),"H");
 	gtk_editable_set_editable((GtkEditable*) Entry,FALSE);
   	Button = gtk_button_new_with_label(" Set ");
@@ -1338,7 +1338,7 @@ static void addTreeView(GtkWidget *win, GtkWidget *vbox)
 	}
 
 	/*
-	set_base_style(treeView,30000,50000,60000);
+	set_base_color(treeView,30000,50000,60000);
 	*/
 	gtk_container_add(GTK_CONTAINER(scr), treeView);
 }
@@ -1356,7 +1356,7 @@ void saveMolcasBasis()
 	fprintf(file,"Natoms =  %d\n",molcasBasis.numberOfAtoms);
 	for(i=0;i<molcasBasis.numberOfAtoms;i++)
 	{
-		fprintf(file,"Atom  %s\n",molcasBasis.atoms[i].symbol);
+		fprintf(file,"GabeditAtom  %s\n",molcasBasis.atoms[i].symbol);
 		fprintf(file,"%d\n",molcasBasis.atoms[i].numberOfBasis);
 		for(j=0;j<molcasBasis.atoms[i].numberOfBasis;j++)
 		{

@@ -20,11 +20,10 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __GABEDIT_TEXTEDIT_H__
 #define __GABEDIT_TEXTEDIT_H__
 
-GtkStyle *set_text_style(GtkWidget *text,gushort red,gushort green,gushort blue);
-GtkStyle *set_base_style(GtkWidget *text,gushort red,gushort green,gushort blue);
+GtkStyle *set_text_color(GtkWidget *text,gushort red,gushort green,gushort blue);
+GtkStyle *set_base_color(GtkWidget *text,gushort red,gushort green,gushort blue);
 void set_font (GtkWidget *view, gchar *fontname);
 void find_text_win();
 void cree_text_notebook();
 
 #endif /* __GABEDIT_TEXTEDIT_H__ */
-

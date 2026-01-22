@@ -62,7 +62,7 @@ static void SetMMTypes(Fragment* Frag)
 
 }
 /********************************************************************************/
-static void SetAtom(Atom* A,gchar* symb,gdouble x,gdouble y,gdouble z)
+static void SetAtom(GabeditAtom* A,gchar* symb,gdouble x,gdouble y,gdouble z)
 {
 	A->mmType = g_strdup(symb);
 	A->pdbType = g_strdup(symb);
@@ -90,7 +90,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	if ( !strcmp(Name,"Allose" ) )
 	{
 		F.NAtoms =  24 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C5", -0.167f, 2.160f, 1.365f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -0.667f, 1.350f, 2.458f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -0.160f, -0.012f, 2.547f );
@@ -128,7 +128,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	else if ( !strcmp(Name,"Altrose" ) )
 	{
 		F.NAtoms =  24 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C5", -0.167f, 2.160f, 1.365f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -0.667f, 1.350f, 2.458f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -0.160f, -0.012f, 2.547f );
@@ -163,7 +163,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	}
 	else if ( !strcmp(Name,"Arabinose" ) ){
 		F.NAtoms =  20 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C4", -0.577f, 1.416f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -1.854f, 1.324f, 0.641f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -1.966f, 0.072f, 1.327f );
@@ -195,7 +195,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	else if ( !strcmp(Name,"Fructose" ) )
 	{
 		F.NAtoms =  24 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		if ( alpha ){
 			SetAtom(&F.Atoms[ 0 ] , "O", -0.449f, 0.577f, -2.248f );
 			SetAtom(&F.Atoms[ 1 ] , "C5", -0.532f, 1.817f, -1.517f );
@@ -251,7 +251,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	}
 	else if ( !strcmp(Name,"Galactose" ) ){
 		F.NAtoms =  24 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C5", -2.070f, 1.496f, -0.189f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -2.450f, 0.707f, -1.345f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -2.061f, -0.696f, -1.335f );
@@ -286,7 +286,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	}
 	else if ( !strcmp(Name,"Glucose" ) ){
 		F.NAtoms =  24 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C5", -2.070f, 1.496f, -0.189f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -2.450f, 0.707f, -1.345f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -2.061f, -0.696f, -1.335f );
@@ -321,7 +321,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	}
 	else if ( !strcmp(Name,"Gulose" ) ){
 		F.NAtoms =  24 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C5", -0.167f, 2.160f, 1.365f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -0.667f, 1.350f, 2.458f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -0.160f, -0.012f, 2.547f );
@@ -356,7 +356,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	}
 	else if ( !strcmp(Name,"Idose" ) ){
 		F.NAtoms =  24 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C5", -0.167f, 2.160f, 1.365f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -0.667f, 1.350f, 2.458f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -0.160f, -0.012f, 2.547f );
@@ -391,7 +391,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	}
 	else if ( !strcmp(Name,"Lyxose" ) ){
 		F.NAtoms =  20 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C4", -0.508f, 1.442f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -0.510f, 1.862f, -1.369f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -0.379f, 0.724f, -2.228f );
@@ -422,7 +422,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	}
 	else if ( !strcmp(Name,"Mannose" ) ){
 		F.NAtoms =  24 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C5", -2.070f, 1.496f, -0.189f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -2.450f, 0.707f, -1.345f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -2.061f, -0.696f, -1.335f );
@@ -457,7 +457,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	}
 	else if ( !strcmp(Name,"Ribose" ) ){
 		F.NAtoms =  20 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C4", -0.577f, 1.416f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -1.854f, 1.324f, 0.641f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -1.966f, 0.072f, 1.327f );
@@ -488,7 +488,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	}
 	else if ( !strcmp(Name,"Talose" ) ){
 		F.NAtoms =  24 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C5", -2.070f, 1.496f, -0.189f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -2.450f, 0.707f, -1.345f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -2.061f, -0.696f, -1.335f );
@@ -523,7 +523,7 @@ Fragment GetFragmentPSC(gchar* Name,gboolean alpha)
 	}
 	else if ( !strcmp(Name,"Xylose" ) ){
 		F.NAtoms =  20 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C4", -0.508f, 1.442f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] , "O", -0.510f, 1.862f, -1.369f );
 		SetAtom(&F.Atoms[ 2 ] , "C1", -0.379f, 0.724f, -2.228f );

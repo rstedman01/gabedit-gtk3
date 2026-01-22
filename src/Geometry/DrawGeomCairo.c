@@ -167,11 +167,19 @@ static gboolean buttonpress = FALSE;
 
 static GabEditTypeGeom TypeGeom = GABEDIT_TYPEGEOM_STICK;
 
+static void delete_molecule_cb(GtkWidget *widget, gpointer data)
+{
+	DeleteMolecule();
+}
+
+static void delete_hydrogen_atoms_cb(GtkWidget *w, gpointer data) { 
+    deleteHydrogenAtoms(); 
+}
 /********************************************************************************/
 void set_statubar_pop_sel_atom();
 void calcul_ndipole();
 void redefine_dipole();
-void drawGeom_dipole();
+void drawGeom_dipole(gint i);
 GtkWidget *AddNoteBookPage(GtkWidget *NoteBook,char *label);
 void drawGeom();
 void destroy_all_drawing(GtkWidget *win);
@@ -193,7 +201,7 @@ void define_geometry();
 void buildRotation();
 void deleteHydrogensConnectedTo(gint n, gint nH);
 void delete_one_atom(gint NumDel);
-static gint replace_atom();
+static gint replace_atom(gint i);
 /********************************************************************************/
 static	GdkColor* BackColor=NULL;
 static GdkPixmap *pixmap = NULL;
@@ -225,7 +233,7 @@ void delete_all_selected_atoms();
 static void reset_connections_between_selected_atoms();
 static void reset_connections_between_selected_and_notselected_atoms();
 /*********************************************************************************************/
-gboolean testShowBoxGeom()
+static gboolean testShowBoxGeom()
 {
         return FALSE;
 }
@@ -842,9 +850,9 @@ void messageAmberTypesDefine()
     		GtkWidget* m;
 		m = Message(_("The type of One (or several) of atoms is not a Amber type.\n"
 		        "You can set the types of atoms by : \n"
-		        "                  \"Set/Atom Type&Charge using PDB Template\" \n"
+		        "                  \"Set/GabeditAtom Type&Charge using PDB Template\" \n"
 		        "                  \"Or\" \n"
-		        "                  \"Set/Atom Types using connections types\" \n"
+		        "                  \"Set/GabeditAtom Types using connections types\" \n"
 			)
 			,_("Warning"),TRUE);
 		gtk_window_set_modal (GTK_WINDOW (m), TRUE);
@@ -854,7 +862,7 @@ void messageAmberTypesDefine()
     		GtkWidget* m;
 		m = Message(_("The types of the atoms are identical to the symbols of these atoms.\n"
 		        "You can set the types of atoms by \n"
-		        "\"Set/Atom Types using connections types\" \n"
+		        "\"Set/GabeditAtom Types using connections types\" \n"
 			)
 			,_("Warning"),TRUE);
 		gtk_window_set_modal (GTK_WINDOW (m), TRUE);
@@ -1522,17 +1530,17 @@ static guint get_number_of_electrons(guint type)
 */
    guint i;
    guint Ne=0;
-   SAtomsProp Atom;
+   SAtomsProp GabeditAtom;
    for(i=0;i<Natoms;i++)
    {
-       Atom = geometry[i].Prop;
+       GabeditAtom = geometry[i].Prop;
        switch (type)
        {
-      	case 1 : if( geometry[i].Layer==HIGH_LAYER ||  geometry[i].Layer==MEDIUM_LAYER) Ne += Atom.atomicNumber;
+      	case 1 : if( geometry[i].Layer==HIGH_LAYER ||  geometry[i].Layer==MEDIUM_LAYER) Ne += GabeditAtom.atomicNumber;
 		 break;
-       	case 2 : if( geometry[i].Layer==HIGH_LAYER) Ne += Atom.atomicNumber;
+       	case 2 : if( geometry[i].Layer==HIGH_LAYER) Ne += GabeditAtom.atomicNumber;
 		 break;
-       	default : Ne += Atom.atomicNumber;
+       	default : Ne += GabeditAtom.atomicNumber;
         }
    }
    return Ne;
@@ -3011,7 +3019,7 @@ void copySelectedAtoms()
 	Frag.Atoms = NULL;
 	if(NFatoms<1) return;
 	F.NAtoms = NFatoms;
-	F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+	F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 
 	for (k=0;k<(gint)NFatoms;k++)
 	{
@@ -4576,7 +4584,7 @@ void DeleteMolecule()
 {
 	gchar *t =N_("Do you want to really destroy this molecule?");
 	if(Natoms>0)
-		Continue_YesNo(delete_molecule, NULL,t);
+		Continue_YesNo(delete_molecule_cb, NULL,t);
 	else
 		Message(_("No molecule to delete\n"),_("Warning"),TRUE);
 }
@@ -4637,11 +4645,6 @@ void TraitementGeom(gpointer data, guint Operation,GtkWidget* wid)
 	default:
 		printf("Operation = %d\n",Operation);
   }
-}
-/********************************************************************************/  
-GdkPixmap *get_drawing_pixmap()
-{
-  return pixmap;
 }
 /********************************************************************************/  
 cairo_t *get_drawing_cairo()
@@ -4951,7 +4954,7 @@ static gint TranslationByMouse(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
+		gdk_window_get_pointer(event->window, &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -4989,7 +4992,7 @@ static gint RotationByMouse(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
+		gdk_window_get_pointer(event->window, &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5036,7 +5039,7 @@ static gint RotationZByMouse(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
+		gdk_window_get_pointer(event->window, &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5213,7 +5216,7 @@ static gint local_zrotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
+		gdk_window_get_pointer(event->window, &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5326,7 +5329,7 @@ static gint local_rotate_fragment(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
+		gdk_window_get_pointer(event->window, &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5409,7 +5412,7 @@ static gint move_one_atom(GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
+		gdk_window_get_pointer(event->window, &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -5517,7 +5520,7 @@ static gint move_all_selected_atoms(GtkWidget *widget, GdkEventMotion *event)
 	if (event->is_hint)
 	{
 #if !defined(G_OS_WIN32)
-		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
+		gdk_window_get_pointer(event->window, &x, &y, &state);
 #else
 		x = event->x;
 		y = event->y;
@@ -6381,7 +6384,7 @@ gint motion_notify(GtkWidget *widget, GdkEventMotion *event)
 	{
 #if !defined(G_OS_WIN32)
 		int x, y;
-		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
+		gdk_window_get_pointer(event->window, &x, &y, &state);
 #else
 		state = event->state;
 #endif
@@ -6481,12 +6484,13 @@ gint motion_notify(GtkWidget *widget, GdkEventMotion *event)
 	return TRUE;
 }
 /********************************************************************************/
-static void redraw()
+static void redraw(GtkWidget *widget)
 {
-  cairo_t *cairo_context = gdk_cairo_create(gtk_widget_get_window(GeomDrawingArea));
-  gdk_cairo_set_source_pixmap(cairo_context, pixmap, 0, 0);
-  cairo_paint(cairo_context);
-  cairo_destroy(cairo_context);
+    if (! pixmap || !widget) return;
+    cairo_t* cairo_context = gdk_cairo_create(gtk_widget_get_window(widget));
+    gdk_cairo_set_source_pixbuf(cairo_context, pixmap, 0, 0);  /* Use pixbuf, not pixmap */
+    cairo_paint(cairo_context);
+    cairo_destroy(cairo_context);
 }
 /********************************************************************************/
 static void pixmap_init(GtkWidget *widget)
@@ -6505,21 +6509,23 @@ static void pixmap_init(GtkWidget *widget)
   }
 }
 /*****************************************************************************/
-static gint configure_event( GtkWidget *widget, GdkEventConfigure *event )
+static gint configure_event(GtkWidget *widget, GdkEventConfigure *event, gint width, gint height)
 {
-	if (pixmap) g_object_unref(pixmap);
-	pixmap = gdk_pixmap_new(gtk_widget_get_window(widget), gtk_widget_get_allocated_width(widget), gtk_widget_get_allocated_height(widget), -1);
-	cr = gdk_cairo_create (gtk_widget_get_window(widget));
-	drawGeom();
-	cairo_destroy(cr);
-	return TRUE;
+	GdkWindow *win = gtk_widget_get_window(widget);
+	width = gtk_widget_get_allocated_width(widget);
+	height = gtk_widget_get_allocated_height(widget);
+	cairo_surface_t *surface = cairo_image_surface_create(
+			CAIRO_FORMAT_ARGB32, width, height
+	);
+	cairo_t *cr = cairo_create(surface);
+
 }
 /********************************************************************************/   
 static gint expose_event( GtkWidget *widget, GdkEventExpose *event )
 {
 	if(event->count >0) return FALSE;
 	cairo_t *cairo_context = gdk_cairo_create(gtk_widget_get_window(widget));
-	gdk_cairo_set_source_pixmap(cairo_context, pixmap, 0, 0);
+	gdk_cairo_set_source_pixbuf(cairo_context, pixmap, 0, 0);
 	cairo_rectangle(cairo_context, event->area.x, event->area.y, event->area.width, event->area.height);
 	cairo_fill(cairo_context);
 	cairo_destroy(cairo_context);
@@ -6614,7 +6620,7 @@ void setPersonalFragment(Fragment F)
 {
 	gint i;
 	Frag.NAtoms = F.NAtoms;
-	Frag.Atoms = g_malloc(Frag.NAtoms*sizeof(Atom));
+	Frag.Atoms = g_malloc(Frag.NAtoms*sizeof(GabeditAtom));
 	for(i=0;i<F.NAtoms;i++)
 	{
 		Frag.Atoms[i].Residue = g_strdup(F.Atoms[i].Residue);
@@ -6928,8 +6934,8 @@ static GtkWidget* create_text_win(gchar* title)
 	gtk_widget_show (frame);
 	text = create_text(Win,frame,TRUE);
 	set_font (text,FontsStyleResult.fontname);
-	set_base_style(text,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-	set_text_style(text,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
+	set_base_color(text,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+	set_text_color(text,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
 	g_object_set_data(G_OBJECT (Win), "Text", text);
 	return Win;
 }
@@ -7326,7 +7332,7 @@ gboolean define_geometry_from_zmat()
 
   if (Natoms == 0)
     return( FALSE );
-  /* Atom #1 */
+  /* GabeditAtom #1 */
   geometry[0].X = 0.0;
   geometry[0].Y = 0.0;
   geometry[0].Z = 0.0;
@@ -7347,7 +7353,7 @@ gboolean define_geometry_from_zmat()
     return( TRUE );
   }
   
-  /* Atom #2 */
+  /* GabeditAtom #2 */
   if(!test(Geom[1].R))
     geometry[1].X = get_value_variableZmat(Geom[1].R);
   else
@@ -7380,7 +7386,7 @@ gboolean define_geometry_from_zmat()
     return( TRUE );
   }
   
-  /* Atom #3 */
+  /* GabeditAtom #3 */
   if(!test(Geom[2].R))
     dist = get_value_variableZmat(Geom[2].R);
   else
@@ -8850,7 +8856,7 @@ void delete_hydrogen_atoms()
 void deleteHydrogenAtoms()
 {
 	gchar *t =N_("Do you want to really remove all hydrogen atoms?");
-	if(Natoms>0) Continue_YesNo(delete_hydrogen_atoms, NULL,t);
+	if(Natoms>0) Continue_YesNo(delete_hydrogen_atoms_cb, NULL,t);
 	else Message(_("No hydrogen atoms to remove\n"),_("Warning"),TRUE);
 }
 /*****************************************************************************/
@@ -10694,7 +10700,7 @@ void drawGeom()
 
      	if(Natoms<1)
 	{
-		redraw();
+		redraw(GeomDrawingArea);
 		return;
 	}
 
@@ -10709,7 +10715,7 @@ void drawGeom()
 	else 
    		drawGeom_stick();
 
-	redraw();
+	redraw(GeomDrawingArea);
 }
 /*****************************************************************************/
 void rafresh_drawing()
@@ -10832,19 +10838,23 @@ void set_back_color_black()
         drawGeom();
 }
 /*****************************************************************************/
-void set_back_color(GtkColorSelection *Sel,gpointer *d)
+void set_back_color(void)
 {
-	GdkColor color;
-
-	gtk_color_selection_get_current_color(Sel, &color);
-	
-        BackColor = gdk_color_copy(&color);
-
-	cairo_set_source_rgb(cr, SCALE(color.red), SCALE(color.green), SCALE(color.blue));
-	cairo_rectangle(cr, 0, 0, gtk_widget_get_allocated_width(GeomDrawingArea), gtk_widget_get_allocated_height(GeomDrawingArea));
-	cairo_fill(cr);
-        drawGeom();
-
+    if (! GeomDrawingArea || !BackColor) return;
+    
+    cairo_t* cr = gdk_cairo_create(gtk_widget_get_window(GeomDrawingArea));
+    double r = BackColor->red / 65535.0;
+    double g = BackColor->green / 65535.0;
+    double b = BackColor->blue / 65535.0;
+    
+    cairo_set_source_rgb(cr, r, g, b);
+    cairo_rectangle(cr, 0, 0,
+        gtk_widget_get_allocated_width(GeomDrawingArea),
+        gtk_widget_get_allocated_height(GeomDrawingArea));
+    cairo_fill(cr);
+    cairo_destroy(cr);
+    
+    gtk_widget_queue_draw(GeomDrawingArea);
 }
 /*****************************************************************************/
 void set_back_color_grey()
@@ -10890,7 +10900,7 @@ void set_back_color_default()
         drawGeom();
 }
 /*****************************************************************************/
-void open_color_dlg(GtkWidget *widget, gpointer data)  /* not gpointer* */
+void open_color_dlg(GtkWidget *widget, gpointer data)
 {
     GtkWidget* dlg = gtk_color_chooser_dialog_new(_("Background Color"), 
                                                    GTK_WINDOW(Fenetre));
@@ -10899,14 +10909,13 @@ void open_color_dlg(GtkWidget *widget, gpointer data)  /* not gpointer* */
     {
         GdkRGBA rgba;
         gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(dlg), &rgba);
-        
-        /* Convert to GdkColor if needed */
+
         if (! BackColor) BackColor = g_malloc(sizeof(GdkColor));
         BackColor->red = (guint16)(rgba.red * 65535);
         BackColor->green = (guint16)(rgba.green * 65535);
         BackColor->blue = (guint16)(rgba.blue * 65535);
         
-        set_back_color(dlg, data);
+        set_back_color();
     }
     gtk_widget_destroy(dlg);
 }
@@ -11077,7 +11086,7 @@ void create_window_drawing()
 	GtkWidget *NoteBook;
 	GtkWidget *Table;
 	GtkWidget *handelbox;
-	GtkWidget *Status;
+	GtkWidget *status;
 	GtkWidget *VboxWin;
 	GtkWidget *hboxtoolbar;
   	GtkWidget* handlebox;
@@ -11227,41 +11236,41 @@ void create_window_drawing()
 	gtk_container_add (GTK_CONTAINER (handlebox), table);
 	gtk_widget_show(table);
 	/* Rotation Status */
-	Status = gtk_statusbar_new();
-	gtk_table_attach(GTK_TABLE(table),Status,0,1,0,1,
+	status = gtk_statusbar_new();
+	gtk_table_attach(GTK_TABLE(table),status,0,1,0,1,
 					(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 					(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 					1,1);
-	idStatusRotation = gtk_statusbar_get_context_id(GTK_STATUSBAR(Status),_("Rotation"));
-	StatusRotation = Status;
+	idStatusRotation = gtk_statusbar_get_context_id(GTK_STATUSBAR(status),_("Rotation"));
+	StatusRotation = status;
 	gtk_statusbar_pop(GTK_STATUSBAR(StatusRotation),idStatusRotation);
 	gtk_statusbar_push(GTK_STATUSBAR(StatusRotation),idStatusRotation,
 		_(" Press the Middle mouse button and move your mouse for a \"Rotation\". "));
 
 
 	/* Mode Status */
-	Status = gtk_statusbar_new();
-	gtk_table_attach(GTK_TABLE(table),Status,1,2,0,1,
+	status = gtk_statusbar_new();
+	gtk_table_attach(GTK_TABLE(table),status,1,2,0,1,
 					(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 					(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 					1,1);
-	idStatusPopup= gtk_statusbar_get_context_id(GTK_STATUSBAR(Status),"Ball&Stick");
-	StatusPopup = Status;
+	idStatusPopup= gtk_statusbar_get_context_id(GTK_STATUSBAR(status),"Ball&Stick");
+	StatusPopup = status;
 	gtk_statusbar_pop(GTK_STATUSBAR(StatusPopup),idStatusPopup);
 	gtk_statusbar_push(GTK_STATUSBAR(StatusPopup),idStatusPopup,
 		_(" Press the Right mouse button for display the popup menu. "));
 
 	/* Operation Status */
-	Status = gtk_statusbar_new();
+	status = gtk_statusbar_new();
 	hboxoperation = gtk_hbox_new (FALSE, 0);
 	gtk_table_attach(GTK_TABLE(table), hboxoperation,0,2,1,2,
 					(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 					(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 					1,1);
-	gtk_box_pack_start (GTK_BOX(hboxoperation),Status, TRUE, TRUE, 1);
+	gtk_box_pack_start (GTK_BOX(hboxoperation),status, TRUE, TRUE, 1);
 
-	idStatusOperation = gtk_statusbar_get_context_id(GTK_STATUSBAR(Status),_("Rotation"));
-	StatusOperation = Status;
+	idStatusOperation = gtk_statusbar_get_context_id(GTK_STATUSBAR(status),_("Rotation"));
+	StatusOperation = status;
 	gtk_statusbar_pop(GTK_STATUSBAR(StatusOperation),idStatusOperation);
 	gtk_statusbar_push(GTK_STATUSBAR(StatusOperation),idStatusOperation,
 		_(" Press the Left mouse button and move your mouse for a \"Rotation\". "));

@@ -181,7 +181,7 @@ static void loadOneFragment(PersonalFragments* personalFragments, FILE* file,
 	f.NAtoms = atoi(list[0]);
 	if(f.NAtoms<1)
 		return;
-	f.Atoms = g_malloc(f.NAtoms*sizeof(Atom));
+	f.Atoms = g_malloc(f.NAtoms*sizeof(GabeditAtom));
 	for(i=0;i<f.NAtoms;i++)
 	{
 		f.Atoms[i].Coord[0] = 0;

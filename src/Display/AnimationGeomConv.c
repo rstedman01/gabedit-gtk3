@@ -1330,7 +1330,7 @@ static gboolean read_molden_gabedit_file_geomi(gchar* fileName, gint geometryNum
 	gint numgeom;
 	gchar* pdest;
 	gint nn;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 
 	file = FOpen(fileName, "rb");
 
@@ -1376,7 +1376,7 @@ static gboolean read_molden_gabedit_file_geomi(gchar* fileName, gint geometryNum
 				{
 					nn = atoi(t);
 					if (nn < 1)break;
-					listOfAtoms = g_malloc(nn * sizeof(Atom));
+					listOfAtoms = g_malloc(nn * sizeof(GabeditAtom));
 					if (!fgets(t, BSIZE, file))break; /* title */
 					for (j = 0; j < nn; j++)
 					{
@@ -1437,7 +1437,7 @@ static gboolean read_dalton_file_geomi(gchar* FileName, gint num, Geometry* geom
 	gint j = 0;
 	gint l;
 	guint numgeom;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 	gchar dum[100];
 	gint kk;
 
@@ -1493,8 +1493,8 @@ static gboolean read_dalton_file_geomi(gchar* FileName, gint num, Geometry* geom
 				break;
 			}
 			j++;
-			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(Atom));
-			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(Atom));
+			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(GabeditAtom));
+			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(GabeditAtom));
 
 			kk = sscanf(t, "%s %s %s %s %s", AtomCoord[0], AtomCoord[1], AtomCoord[2], AtomCoord[3], dum);
 			if (kk == 5) sscanf(t, "%s %s %s %s %s", AtomCoord[0], dum, AtomCoord[1], AtomCoord[2], AtomCoord[3]);
@@ -1543,7 +1543,7 @@ static gboolean read_gamess_file_geomi(gchar* FileName, gint num, Geometry* geom
 	gint j = 0;
 	gint l;
 	guint numgeom;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 	gchar dum[100];
 
 
@@ -1596,8 +1596,8 @@ static gboolean read_gamess_file_geomi(gchar* FileName, gint num, Geometry* geom
 				break;
 			}
 			j++;
-			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(Atom));
-			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(Atom));
+			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(GabeditAtom));
+			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(GabeditAtom));
 
 			/* printf("t=%s\n",t);*/
 			sscanf(t, "%s %s %s %s %s", AtomCoord[0], dum, AtomCoord[1], AtomCoord[2], AtomCoord[3]);
@@ -1800,7 +1800,7 @@ static gboolean read_gamess_irc_file_geomi(gchar* FileName, gint num, Geometry* 
 	gint j = 0;
 	gint l;
 	guint numgeom;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 	gchar dum[100];
 
 
@@ -1852,8 +1852,8 @@ static gboolean read_gamess_irc_file_geomi(gchar* FileName, gint num, Geometry* 
 			if (!strcmp(t, "GRADIENT")) break;
 			if (2 != sscanf(t, "%s %lf", AtomCoord[0], &rdum)) break;
 			j++;
-			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(Atom));
-			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(Atom));
+			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(GabeditAtom));
+			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(GabeditAtom));
 
 			sscanf(t, "%s %s %s %s %s", AtomCoord[0], dum, AtomCoord[1], AtomCoord[2], AtomCoord[3]);
 
@@ -2005,7 +2005,7 @@ static gboolean read_gaussian_file_geomi_str(gchar* FileName, gint num, gchar* s
 	gchar* pdest;
 	gint result;
 	guint itype = 0;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 
 
 	file = FOpen(FileName, "rb");
@@ -2052,8 +2052,8 @@ static gboolean read_gaussian_file_geomi_str(gchar* FileName, gint num, gchar* s
 				break;
 			}
 			j++;
-			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(Atom));
-			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(Atom));
+			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(GabeditAtom));
+			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(GabeditAtom));
 
 			if (itype == 0) sscanf(t, "%d %s %s %s %s", &idummy, AtomCoord[0], AtomCoord[1], AtomCoord[2], AtomCoord[3]);
 			else sscanf(t, "%d %s %d %s %s %s", &idummy, AtomCoord[0], &idummy, AtomCoord[1], AtomCoord[2], AtomCoord[3]);
@@ -2130,7 +2130,7 @@ static gboolean read_molpro_file_geomi(gchar* FileName, gint num, Geometry* geom
 	gint j = 0;
 	gint l;
 	guint numgeom;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 
 
 	if ((!FileName) || (strcmp(FileName, "") == 0))
@@ -2196,8 +2196,8 @@ static gboolean read_molpro_file_geomi(gchar* FileName, gint num, Geometry* geom
 				break;
 			}
 			j++;
-			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(Atom));
-			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(Atom));
+			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(GabeditAtom));
+			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(GabeditAtom));
 
 			sscanf(t, "%d %s %s %s %s %s", &idummy, AtomCoord[0], AtomCoord[1], AtomCoord[1], AtomCoord[2], AtomCoord[3]);
 
@@ -2250,7 +2250,7 @@ static gboolean read_mpqc_file_geomi(gchar* fileName, gint numGeometry, Geometry
 	gint l;
 	guint numGeom;
 	gdouble tmpReal;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 
 
 	file = FOpen(fileName, "rb");
@@ -2334,8 +2334,8 @@ static gboolean read_mpqc_file_geomi(gchar* fileName, gint numGeometry, Geometry
 			if (strstr(t, "}"))break;
 			j++;
 
-			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(Atom));
-			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(Atom));
+			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(GabeditAtom));
+			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(GabeditAtom));
 
 			for (i = 0;i < strlen(t);i++) if (t[i] == '[' || t[i] == ']') t[i] = ' ';
 			sscanf(t, "%d %s %s %s %s", &idummy, AtomCoord[0], AtomCoord[1], AtomCoord[2], AtomCoord[3]);
@@ -2395,7 +2395,7 @@ static gboolean read_mopac_aux_file_geomi(gchar* FileName, gint numgeometry, Geo
 	gint j = 0;
 	gint l;
 	guint numgeom = 0;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 	gchar* pdest = NULL;
 	gint nElements = 0;
 	gchar** elements = NULL;
@@ -2474,8 +2474,8 @@ static gboolean read_mopac_aux_file_geomi(gchar* FileName, gint numgeometry, Geo
 		}
 		if (j + 1 > nElements)break;
 		j++;
-		if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(Atom));
-		else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(Atom));
+		if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(GabeditAtom));
+		else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(GabeditAtom));
 
 		sscanf(t, "%s %s %s", AtomCoord[1], AtomCoord[2], AtomCoord[3]);
 		if (j < nElements) sprintf(AtomCoord[0], "%s", elements[j]);
@@ -2528,7 +2528,7 @@ static gboolean read_qchem_file_geomi(gchar* FileName, gint num, Geometry* geome
 	gint j = 0;
 	gint l;
 	guint numgeom;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 	gchar* pdest = NULL;
 
 
@@ -2554,7 +2554,7 @@ static gboolean read_qchem_file_geomi(gchar* FileName, gint num, Geometry* geome
 		while (!feof(file))
 		{
 			if (!fgets(t, BSIZE, file))break;
-			pdest = strstr(t, "Atom         X            Y            Z");
+			pdest = strstr(t, "GabeditAtom         X            Y            Z");
 			if (pdest)
 			{
 				if (!fgets(t, BSIZE, file))break;
@@ -2586,8 +2586,8 @@ static gboolean read_qchem_file_geomi(gchar* FileName, gint num, Geometry* geome
 				break;
 			}
 			j++;
-			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(Atom));
-			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(Atom));
+			if (listOfAtoms == NULL) listOfAtoms = g_malloc(sizeof(GabeditAtom));
+			else listOfAtoms = g_realloc(listOfAtoms, (j + 1) * sizeof(GabeditAtom));
 
 			sscanf(t, "%d %s %s %s %s", &idummy, AtomCoord[0], AtomCoord[1], AtomCoord[2], AtomCoord[3]);
 			AtomCoord[0][0] = toupper(AtomCoord[0][0]);
@@ -2635,7 +2635,7 @@ static gboolean read_xyz_file_geomi(gchar* fileName, gint geometryNumber, Geomet
 	gint l;
 	gint numgeom = 0;
 	gint nn = 0;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 
 	file = FOpen(fileName, "rb");
 
@@ -2664,7 +2664,7 @@ static gboolean read_xyz_file_geomi(gchar* fileName, gint geometryNumber, Geomet
 		{
 			nn = atoi(t);
 			if (nn < 1)break;
-			listOfAtoms = g_malloc(nn * sizeof(Atom));
+			listOfAtoms = g_malloc(nn * sizeof(GabeditAtom));
 			if (!fgets(t, BSIZE, file))break; /* title */
 			for (j = 0; j < nn; j++)
 			{
@@ -2771,7 +2771,7 @@ static gboolean save_geometry_convergence_gabedit_format(gchar* FileName)
 	{
 		gint i;
 		gint nAtoms = geometryConvergence.geometries[j].numberOfAtoms;
-		Atom* listOfAtoms = geometryConvergence.geometries[j].listOfAtoms;
+		GabeditAtom* listOfAtoms = geometryConvergence.geometries[j].listOfAtoms;
 		if (nAtoms < 1 || !listOfAtoms) { OK = FALSE; break; }
 		fprintf(file, " %d\n", nAtoms);
 		fprintf(file, " All coordinates are in Angshtrom\n");
@@ -3090,7 +3090,7 @@ static gint read_gabedit_geoms_file(gchar* fileName)
 	GabEditTypeFile type = GABEDIT_TYPEFILE_GABEDIT;
 	gchar* tmp = NULL;
 	gchar* t = NULL;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 	gint residueNumber = 0;
 	gint ienergy = -1;
 
@@ -3164,7 +3164,7 @@ static gint read_gabedit_geoms_file(gchar* fileName)
 		sscanf(t, "%d %d %d", &nAtoms, &TotalCharges[0], &SpinMultiplicities[0]);
 		if (nAtoms < 1) { OK = TRUE;break; }
 
-		listOfAtoms = g_malloc(nAtoms * sizeof(Atom));
+		listOfAtoms = g_malloc(nAtoms * sizeof(GabeditAtom));
 		for (i = 0; i < nAtoms; i++)
 		{
 			gint variable = 0;
@@ -4352,10 +4352,10 @@ static gboolean read_atom_hin_file(FILE* file, gchar* listFields[])
 	}
 	else
 	{
-		/* 0 -> Atom Type PDB Style*/
-		/* 1 -> Atom Symbol*/
-		/* 2 -> Atom Type Amber*/
-		/* 3 -> Atom Charge*/
+		/* 0 -> GabeditAtom Type PDB Style*/
+		/* 1 -> GabeditAtom Symbol*/
+		/* 2 -> GabeditAtom Type Amber*/
+		/* 3 -> GabeditAtom Charge*/
 		/* 4 -> x*/
 		/* 5 -> y*/
 		/* 6 -> z*/
@@ -4382,7 +4382,7 @@ gboolean read_one_hin_file(gchar* FileName, Geometry* geometry)
 	gchar* listFields[8];
 	int natoms = 0;
 	int nresidues = 0;
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 
 	if ((!FileName) || (strcmp(FileName, "") == 0)) return FALSE;
 
@@ -4404,7 +4404,7 @@ gboolean read_one_hin_file(gchar* FileName, Geometry* geometry)
 
 	j = 0;
 
-	listOfAtoms = g_malloc(natoms * sizeof(Atom));
+	listOfAtoms = g_malloc(natoms * sizeof(GabeditAtom));
 
 	fseek(fd, 0L, SEEK_SET);
 	j = 0;
@@ -4417,10 +4417,10 @@ gboolean read_one_hin_file(gchar* FileName, Geometry* geometry)
 			i++;
 			continue;
 		}
-		/* 0 -> Atom Type PDB Style*/
-		/* 1 -> Atom Symbol*/
-		/* 2 -> Atom Type Amber*/
-		/* 3 -> Atom Charge*/
+		/* 0 -> GabeditAtom Type PDB Style*/
+		/* 1 -> GabeditAtom Symbol*/
+		/* 2 -> GabeditAtom Type Amber*/
+		/* 3 -> GabeditAtom Charge*/
 		/* 4 -> x*/
 		/* 5 -> y*/
 		/* 6 -> z*/
@@ -4675,7 +4675,7 @@ static void save_mobcal_file(GabeditFileChooser* SelecFile, gint response_id)
 /********************************************************************************/
 static gboolean set_geometry(gint k)
 {
-	Atom* listOfAtoms = NULL;
+	GabeditAtom* listOfAtoms = NULL;
 	gint nAtoms = 0;
 	gint j;
 
@@ -5187,7 +5187,7 @@ static GtkTreeView* addList(GtkWidget* vbox, GtkUIManager* manager)
 	}
 
 	gtk_tree_view_set_reorderable(treeView, TRUE);
-	set_base_style(GTK_WIDGET(treeView), 55000, 55000, 55000);
+	set_base_color(GTK_WIDGET(treeView), 55000, 55000, 55000);
 	gtk_widget_show(GTK_WIDGET(treeView));
 	g_signal_connect(G_OBJECT(treeView), "button_press_event", G_CALLBACK(event_dispatcher), manager);
 	return treeView;

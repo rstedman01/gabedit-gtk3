@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 #include "../Utils/UtilsInterface.h"
 
 static GtkWidget *ProgressBar = NULL;
-static	GtkWidget* Status[2][4]; 
+static	GtkWidget* StatusWidgets[2][4]; 
 static	GtkWidget *StatusProgress = NULL;
 static	GtkWidget *button = NULL;
 static  GtkWidget *handleboxStatus = NULL;
@@ -262,9 +262,9 @@ void set_status_label_info(gchar* type,gchar* txt)
 		if(strcmp(type,tlabels[i][j])==0)
 		{
 			gchar*t = g_strdup_printf(" %s : %s ",tlabels[i][j],txt);
-			idStatus= gtk_statusbar_get_context_id(GTK_STATUSBAR(Status[i][j]),"Testing");
-			gtk_statusbar_pop(GTK_STATUSBAR(Status[i][j]),idStatus);
-			gtk_statusbar_push(GTK_STATUSBAR(Status[i][j]),idStatus, t);
+			idStatus= gtk_statusbar_get_context_id(GTK_STATUSBAR(StatusWidgets[i][j]),"Testing");
+			gtk_statusbar_pop(GTK_STATUSBAR(StatusWidgets[i][j]),idStatus);
+			gtk_statusbar_push(GTK_STATUSBAR(StatusWidgets[i][j]),idStatus, t);
 			g_free(t);
 			break;
 		}
@@ -341,15 +341,15 @@ void create_status_bar_orb(GtkWidget* box)
 	for(i=0;i<2;i++)
 		for(j=0;j<4;j++)
 		{
-			Status[i][j] = gtk_statusbar_new();
-			gtk_widget_show(Status[i][j]);
-			gtk_table_attach(GTK_TABLE(table),Status[i][j],j,j+1,i,i+1,
+			StatusWidgets[i][j] = gtk_statusbar_new();
+			gtk_widget_show(StatusWidgets[i][j]);
+			gtk_table_attach(GTK_TABLE(table),StatusWidgets[i][j],j,j+1,i,i+1,
 					(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 					(GtkAttachOptions)(GTK_FILL | GTK_EXPAND),
 					1,1);
-			idStatus= gtk_statusbar_get_context_id(GTK_STATUSBAR(Status[i][j]),"Testing");
-			gtk_statusbar_pop(GTK_STATUSBAR(Status[i][j]),idStatus);
-			gtk_statusbar_push(GTK_STATUSBAR(Status[i][j]),idStatus, label[i][j]);
+			idStatus= gtk_statusbar_get_context_id(GTK_STATUSBAR(StatusWidgets[i][j]),"Testing");
+			gtk_statusbar_pop(GTK_STATUSBAR(StatusWidgets[i][j]),idStatus);
+			gtk_statusbar_push(GTK_STATUSBAR(StatusWidgets[i][j]),idStatus, label[i][j]);
 		}
 
 

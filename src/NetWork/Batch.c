@@ -823,15 +823,15 @@ static GtkWidget* create_list_result_command(GtkWidget* gtklist,gchar* strerr,gc
 
   	gtk_box_pack_start(GTK_BOX (vbox), scr,TRUE, TRUE, 2);
   	gtk_container_add(GTK_CONTAINER(scr),gtklist);
-        set_base_style(gtklist,50000,50000,50000);
+        set_base_color(gtklist,50000,50000,50000);
   
 	Frame[0] = frame;
   }
 
   Text = create_text_widget(vboxall,_("Error"),&Frame[1]);
   set_font (Text,FontsStyleResult.fontname);
-  set_base_style(Text,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-  set_text_style(Text,FontsStyleResult.TextColor.red ,0,0);
+  set_base_color(Text,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+  set_text_color(Text,FontsStyleResult.TextColor.red ,0,0);
   /* boutons box */
   hbox = gtk_hbox_new (FALSE, 4);
   gtk_box_pack_start (GTK_BOX(vboxwin), hbox, FALSE, FALSE, 5);
@@ -877,7 +877,7 @@ void run_batch_user(gboolean remote,gchar *remoteuser,gchar *remotehost,gchar *r
 	}
 #else
 	localuser = get_local_user();
-  	gethostname(localhost,100);
+  	g_get_host_name();
 #endif /* G_OS_WIN32 */
   	if(!localuser && !remote)
   	{

@@ -138,7 +138,7 @@ static gboolean read_geomorb_qchem_file_geom(gchar *FileName)
  		while(!feof(fd))
 		{
 			if(!fgets(t,taille,fd))break;
-			if ( strstr( t,"Atom") && strstr( t,"X") && strstr( t,"Y") && strstr( t,"Z"))
+			if ( strstr( t,"GabeditAtom") && strstr( t,"X") && strstr( t,"Y") && strstr( t,"Z"))
 			{
 	  			if(!fgets(t,taille,fd))break;
 				if(!strstr( t,"----------------------------------")) break;

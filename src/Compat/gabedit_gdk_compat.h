@@ -1,6 +1,6 @@
 #pragma once
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <pango/pangocairo.h>
 #include "../../gabeditGTK3compat.h"

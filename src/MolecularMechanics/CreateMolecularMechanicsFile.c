@@ -45,7 +45,7 @@ gboolean createMMFile()
 		return FALSE;
 	}
 	fprintf(fout,"Begin Title\n");
-	fprintf(fout,"	Atom Types         : Ty(Type) Symbol Numero Masse(C12 UMA) Polarisablities(Ang**3) \n");
+	fprintf(fout,"	GabeditAtom Types         : Ty(Type) Symbol Numero Masse(C12 UMA) Polarisablities(Ang**3) \n");
 	fprintf(fout,"	Bond Length        : N1-N2 Force(Kcal/mol/A**2) Re\n");
 	fprintf(fout,"	Bond Angle         : N1-N2-N3 Force(Kcal/mol/rad**2) Angle(Deg) \n");
 	fprintf(fout,"	Dihedral           : N1-N2-N3-N4 Idiv Pk Phase(Deg) Pn \n");

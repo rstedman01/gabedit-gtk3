@@ -44,4 +44,5 @@ gint NSA[4];
 gint TotalCharges[3];
 gint SpinMultiplicities[3];
 gboolean RebuildGeom;
+gboolean ShowBoxGeom = FALSE;
 

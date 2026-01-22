@@ -27,11 +27,11 @@ typedef struct _Atom
  gchar *Residue;
  gdouble Coord[3];
  gdouble Charge;
-}Atom;
+}GabeditAtom;
 typedef struct _Fragment
 {
  gint NAtoms;
- Atom* Atoms;
+ GabeditAtom* Atoms;
  gint atomToDelete;
  gint atomToBondTo;
  gint angleAtom;

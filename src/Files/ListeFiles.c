@@ -1135,7 +1135,7 @@ static void create_local_frame_popup(GtkWidget *hbox,DataTree* data)
 #ifdef G_OS_WIN32
 	winsockCheck(stderr);
 #endif
-  gethostname(localhost,100);
+  g_get_host_name();
   LabelLeft[0] = g_strdup(_("Host"));
   LabelLeft[1] = g_strdup(_("Login"));
   LabelLeft[2] = g_strdup(_("Directory"));
@@ -1433,7 +1433,7 @@ static void create_local_frame(GtkWidget *hbox)
 #ifdef G_OS_WIN32
 	winsockCheck(stderr);
 #endif
-  gethostname(localhost,100);
+  g_get_host_name();
   LabelLeft[0] = g_strdup(_("Host"));
   LabelLeft[1] = g_strdup(_("Login"));
   LabelLeft[2] = g_strdup(_("Directory"));
@@ -1507,14 +1507,14 @@ void cree_files_out_err_notebook(GtkWidget* box)
   AddNotebookPage(NoteBook,_(" Output "),&TextOutput);
   gabedit_text_set_editable (GABEDIT_TEXT (TextOutput), FALSE);
   set_font (TextOutput,FontsStyleResult.fontname);
-  set_base_style(TextOutput,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-  set_text_style(TextOutput,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
+  set_base_color(TextOutput,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+  set_text_color(TextOutput,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
 
   AddNotebookPage(NoteBook,_(" Error "),&TextError);
   gabedit_text_set_editable (GABEDIT_TEXT (TextError), FALSE);
   set_font (TextError,FontsStyleResult.fontname);
-  set_base_style(TextError,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-  set_text_style(TextError,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
+  set_base_color(TextError,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+  set_text_color(TextError,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
   gtk_widget_show(NoteBook);
   hide_progress_connection();
   NoteBookInfo = NoteBook;

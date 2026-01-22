@@ -260,7 +260,7 @@ static gboolean read_qchem_geometry(FILE* file)
 	nCenters = 0;
 	if(Ok)
 	{
-		if(!fgets(buffer,len,file)) return FALSE; /* I     Atom         X            Y            Z */
+		if(!fgets(buffer,len,file)) return FALSE; /* I     GabeditAtom         X            Y            Z */
 		if(!fgets(buffer,len,file)) return FALSE; /* -------------------------------- */
 	}
 	else return FALSE;

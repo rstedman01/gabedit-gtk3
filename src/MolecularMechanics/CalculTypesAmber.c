@@ -596,7 +596,7 @@ static gboolean isConnectedTo( Molecule* m, gint atomA, gchar* expression, gbool
 static gchar* getAmberTypeOfAtom(Molecule* m, gint atomNumber)
 {
 	GeomDef* geom = m->geom;
-	/* printf("Atom number = %d symbol = %s\n",atomNumber, geom[atomNumber].Prop.symbol);*/
+	/* printf("GabeditAtom number = %d symbol = %s\n",atomNumber, geom[atomNumber].Prop.symbol);*/
 	if ( !strcmp(geom[atomNumber].Prop.symbol,"H" ))
 	{
 		if (  isConnectedTo( m, atomNumber, "N(*4)", TRUE ) ) return "H";

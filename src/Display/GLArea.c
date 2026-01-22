@@ -20,8 +20,8 @@ DEALINGS IN THE SOFTWARE.
 #include "../../Config.h"
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdkkeysyms-compat.h>
-#include <gdk/gdk.h>
-#include <gtk/gtkglarea.h>
+#include <gtk/gtk.h>
+#include <gtk/gtk.h>
 #include <gdk/gdkgltypes.h>
 #include <epoxy/gl.h>
 /* #include <pthread.h>*/

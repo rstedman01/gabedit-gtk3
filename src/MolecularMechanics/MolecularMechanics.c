@@ -1242,7 +1242,7 @@ static void setAtomTypes(AmberParameters* amberParameters,ForceField* forceField
 	gint i;
 	for(i=0;i<nAtoms;i++)
 	{ 
-		/* printf("Atom %s=",m->atoms[i].mmType); */
+		/* printf("GabeditAtom %s=",m->atoms[i].mmType); */
 		atomTypes[i] = getNumberType(amberParameters, m->atoms[i].mmType);
 		/*
 		{

@@ -65,7 +65,7 @@ static void SetMMTypes(Fragment* Frag)
 }
 */
 /********************************************************************************/
-static void SetAtom(Atom* A,gchar* symb,gdouble x,gdouble y,gdouble z,gdouble charge)
+static void SetAtom(GabeditAtom* A,gchar* symb,gdouble x,gdouble y,gdouble z,gdouble charge)
 {
 	A->mmType = g_strdup(symb);
 	A->pdbType = g_strdup(symb);
@@ -99,7 +99,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	initFragment(&F);
 	if(!strcmp(Name,"Fe23Zr6_cF116_Fm-3m_225")){
 		F.NAtoms =32;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Fe", 5.32362810,3.07359812, 2.17336207, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Fe", 4.13325576,2.38633633, 0.22949219, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Fe", 2.94288343,3.07359812, 2.17336207, 0.00000000);
@@ -135,7 +135,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"CaF2_cF12_Fm-3m_225")){
 		F.NAtoms =6;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ca", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "F", 1.36577500,1.36577500, 1.36577500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "F", 4.09732500,4.09732500, 4.09732500, 0.00000000);
@@ -145,7 +145,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"AlCu2Mn_cF16_Fm-3m_225")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Al", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Cu", 1.48750000,1.48750000, 1.48750000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Cu", 4.46250000,4.46250000, 4.46250000, 0.00000000);
@@ -156,7 +156,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"BiF3_cF16_Fm-3m_225")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Bi", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "F", 2.92650000,2.92650000, 2.92650000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "F", 1.46325000,1.46325000, 1.46325000, 0.00000000);
@@ -167,7 +167,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Cu2Mg_cF24_Fd-3m_227")){
 		F.NAtoms =9;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cu", 3.51000000,1.75500000, 1.75500000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Cu", 1.75500000,3.51000000, 1.75500000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Cu", 1.75500000,1.75500000, 3.51000000, 0.00000000);
@@ -180,7 +180,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"H2O_Ic_cF24_Fd-3m_227")){
 		F.NAtoms =27;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "O", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "O", 0.00000000,3.17549992, 3.17549992, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "O", 3.17549992,3.17549992, 0.00000000, 0.00000000);
@@ -211,7 +211,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Cu_cF4_Fm-3m_225")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cu", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,1.80745500, 1.80745500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.80745500,0.00000000, 1.80745500, 0.00000000);
@@ -219,7 +219,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"MgAl2O4_cF25_Fd3m_227")){
 		F.NAtoms =17;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Al", 4.04160000,2.02080000, 2.02080000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Al", 2.02080000,4.04160000, 2.02080000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Al", 2.02080000,2.02080000, 4.04160000, 0.00000000);
@@ -240,7 +240,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"C_cF8_Fs-3m_227")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "C", 0.44375000,0.44375000, 0.44375000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "C", 3.10625000,3.10625000, 3.10625000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 0.00000000,1.77500000, 1.77500000, 0.00000000);
@@ -249,7 +249,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"NaCl_cF8_Fm-3m_225")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cl", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Na", 2.81965340,2.81965340, 2.81965340, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 0.00000000,2.81965340, 2.81965340, 0.00000000);
@@ -258,7 +258,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"ZnS_cF8_F-43m_216")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "S", 1.35232500,1.35232500, 1.35232500, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Zn", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 0.00000000,2.70465000, 2.70465000, 0.00000000);
@@ -267,7 +267,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Al2Co3O12Si3_cI160_Ia-3d_230")){
 		F.NAtoms =83;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Al", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Al", 0.00000000,5.72985000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Al", 5.72985000,0.00000000, 0.00000000, 0.00000000);
@@ -354,7 +354,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Mg32AlZn48_cI162_Im-3_204")){
 		F.NAtoms =84;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Al", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Mg", 7.08000000,2.54455200, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Mg", 7.08000000,-0.00000000, 4.53544800, 0.00000000);
@@ -442,7 +442,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"W_cI2_Im-3m_229")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "W", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.57750000,1.57750000, 1.57750000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.57750000,-1.57750000, 1.57750000, 0.00000000);
@@ -450,7 +450,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Mn_cI58_I-43m_217")){
 		F.NAtoms =32;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mn", 6.39863266,0.79824738, -0.79824738, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Mn", 6.39863266,-0.79824738, 0.79824738, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Mn", 2.51236734,0.79824738, 0.79824738, 0.00000000);
@@ -486,7 +486,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"CO2_Cubic_cP12_Pa-3_205")){
 		F.NAtoms =15;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "C", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "C", 2.81200004,0.00000000, 2.81200004, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "C", 2.81200004,2.81200004, 0.00000000, 0.00000000);
@@ -505,7 +505,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Alpha-Al-Mn_c138_Pm-3_200")){
 		F.NAtoms =141;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mn", 2.27859603,3.91177990, 6.34000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Mn", 10.40140378,8.76822010, 6.34000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Mn", 10.40140378,3.91177990, 6.34000000, 0.00000000);
@@ -650,7 +650,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Mn_cP20_P4_132_213")){
 		F.NAtoms =23;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mn", 6.01339560,2.36812500, 5.03785440, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Mn", 0.30160440,5.52562500, 4.43464560, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Mn", 0.78937500,1.27714560, 2.85589560, 0.00000000);
@@ -677,7 +677,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"CsCl_cP2_Pm-3m_221")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cl", 2.03962500,2.03962500, 2.03962500, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Cs", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 4.07925000,0.00000000, 0.00000000, 0.00000000);
@@ -686,7 +686,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"AuCu3_cP4_PM-3m_221")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Au", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Cu", 0.00000000,1.87010000, 1.87010000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Cu", 1.87010000,0.00000000, 1.87010000, 0.00000000);
@@ -697,7 +697,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"CaTiO3_cP5_Pm-3m_221")){
 		F.NAtoms =8;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ca", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "O", 0.00000000,1.89750000, 1.89750000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "O", 1.89750000,0.00000000, 1.89750000, 0.00000000);
@@ -709,7 +709,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Cr3Si_cP8_Pm-3n_223")){
 		F.NAtoms =11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cr", 0.00000000,2.27800000, 1.13900000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Cr", 0.00000000,2.27800000, 3.41700000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Cr", 1.13900000,0.00000000, 2.27800000, 0.00000000);
@@ -724,7 +724,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Na4Al3Si3ClO12_cP9_P-43n_218")){
 		F.NAtoms =49;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Na", 2.89337301,2.89337301, 6.08060816, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Na", 6.08060816,2.89337301, 2.89337301, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Na", 6.08060816,6.08060816, 6.08060816, 0.00000000);
@@ -777,7 +777,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"H2OIh_hP12_P6_3/mmc_194")){
 		F.NAtoms =39;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "O", 2.60666680,0.00000000, 0.46000001, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "O", -1.30333340,2.25743967, 0.46000001, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "O", 2.60666657,4.51487894, 0.46000001, 0.00000000);
@@ -820,7 +820,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"MgZn2_hP12_P6-3/mmc_194")){
 		F.NAtoms =15;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mg", 2.61150000,1.50775023, 0.53845876, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Mg", 2.61150000,1.50775023, 3.74454124, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Mg", 2.61150000,-1.50775023, 8.02754124, 0.00000000);
@@ -839,7 +839,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"MgNi2_hP24_P6_3/mmc_194")){
 		F.NAtoms =27;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mg", 0.00000000,0.00000000, 0.72767948, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Mg", 0.00000000,0.00000000, 15.09832052, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Mg", 0.00000000,0.00000000, 7.18532052, 0.00000000);
@@ -870,7 +870,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Mg_hP2_p6_3/mmc_194")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mg", 1.60465000,0.92644511, 1.30265000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Mg", 1.60465000,-0.92644511, 3.90795000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.60465000,-2.77933533, 0.00000000, 0.00000000);
@@ -879,7 +879,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Se_hP3_P3_121_152")){
 		F.NAtoms =6;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Se", 0.49207074,0.85229152, 3.30240000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Se", 0.49207074,-0.85229152, 1.65120000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Se", 3.38205852,0.00000000, 0.00000000, 0.00000000);
@@ -889,7 +889,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Be3Al2Si6O18_hP40_P6/mmc_192")){
 		F.NAtoms =61;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Be", 4.65173578,0.00000000, 2.31939435, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Be", -2.32586789,4.02852136, 6.95818305, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Be", 2.32586789,4.02852136, 6.95818305, 0.00000000);
@@ -954,7 +954,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"NaAlSi2O6_hP40_C2/c_15")){
 		F.NAtoms =23;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Al", 4.92578206,6.00559136, 1.24489908, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Al", -0.33202594,1.39188478, 3.73471215, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Na", 1.43931489,2.16941903, 1.24489908, 0.00000000);
@@ -981,7 +981,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"alpha-La_hP4_P6_3mmc_194")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "La", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "La", 0.00000000,0.00000000, 6.06500000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "La", 1.88500000,1.08830526, 3.03250000, 0.00000000);
@@ -992,7 +992,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"C_hP4_P6_3mmc_194")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "C", 0.00000000,0.00000000, 1.67775000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "C", 0.00000000,0.00000000, 5.03325000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "C", 1.23200000,0.71129553, 1.67775000, 0.00000000);
@@ -1003,7 +1003,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"NiAs_hP4_P6_3mmc_194")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "As", 1.80950000,1.04471531, 1.26100000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "As", 1.80950000,-1.04471531, 3.78300000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Ni", 0.00000000,0.00000000, 0.00000000, 0.00000000);
@@ -1014,7 +1014,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"ZnS_hP4_P6_3mc_186")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "S", 1.91135000,1.10351844, 2.34651036, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "S", 1.91135000,-1.10351844, 5.47686036, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Zn", 1.91135000,1.10351844, 0.00000000, 0.00000000);
@@ -1025,7 +1025,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"CdI2_hP5_P-3m1_164")){
 		F.NAtoms =6;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cd", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "I", -0.00000220,2.50968810, 1.71612409, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "I", 2.17345475,1.25484215, 5.58407744, 0.00000000);
@@ -1035,7 +1035,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"BaFe12O19_hP64_P6_3/mmc_194")){
 		F.NAtoms =67;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ba", 3.00840817,1.73690175, 5.87384176, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ba", -0.00000305,3.47380877, 17.62152529, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Fe", 3.00840234,3.45977106, 2.54356149, 0.00000000);
@@ -1106,7 +1106,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ni3Sn_hP8_P6_3mmc_194")){
 		F.NAtoms =11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ni", 1.27715400,0.73736521, 3.18525000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ni", 2.64750000,3.11087410, 3.18525000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Ni", 1.27715400,-0.73736521, 1.06175000, 0.00000000);
@@ -1121,7 +1121,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ti2CS_hP8_P6_3/mmc_194")){
 		F.NAtoms =11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "C", 0.00000000,0.00000000, 5.63175535, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "C", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "S", 1.60234931,0.92511493, 2.81587768, 0.00000000);
@@ -1136,7 +1136,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"SiO2AlphaQuartz_hP9_P3_221_154")){
 		F.NAtoms =12;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Si", 2.30931458,0.00000000, 3.60256683, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Si", -1.15465729,1.99992509, 1.80128341, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Si", 1.30153783,2.25432964, 0.00000000, 0.00000000);
@@ -1152,7 +1152,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"SiO2BetaQuartz_hP9_P6_2_171")){
 		F.NAtoms =12;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Si", 2.49825001,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Si", -1.24912500,2.16354797, 3.63799996, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Si", 1.24912500,2.16354797, 1.81899998, 0.00000000);
@@ -1168,7 +1168,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"W6Fe7_hR13_R-3m_166")){
 		F.NAtoms =16;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Fe", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Fe", 1.18925000,0.68661381, 19.20773333, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Fe", -1.18925000,-0.68661381, 6.63226667, 0.00000000);
@@ -1188,7 +1188,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Hg_hR1_R-3m_166")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Po", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 1.72870341,-0.99806738, 2.22113343, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 0.00000000,1.99613476, 2.22113343, 0.00000000);
@@ -1196,7 +1196,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"As_hR2_R-3m_166")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "As", 0.00000000,0.00000000, 2.37945404, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "As", 0.00000000,0.00000000, 8.07784596, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.87975000,-1.08527417, 3.48576667, 0.00000000);
@@ -1205,7 +1205,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Al2O3_hR30_R-3c_167")){
 		F.NAtoms =13;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Al", 2.38035010,1.37429590, 2.41043039, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Al", -0.00000002,2.74859167, 0.24464692, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Al", -2.38035007,4.12288738, 1.92113666, 0.00000000);
@@ -1222,7 +1222,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ca2H2Mg5O24Si8_mC78_C3/m_12")){
 		F.NAtoms =44;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ca", 4.08198958,2.98008320, 2.55175187, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ca", 11.13336220,6.81619867, 2.55175187, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "H", 6.02328712,7.81049217, 3.92969778, 0.00000000);
@@ -1270,7 +1270,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"ZnWO4_mP12_P2/c_13")){
 		F.NAtoms =15;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "O", 3.82740693,4.70815753, 0.62263985, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "O", 1.09059182,2.85445907, 0.62263985, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "O", 1.03232851,0.33358702, 5.18291393, 0.00000000);
@@ -1289,7 +1289,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"CaMgO6Si2Diopside_mP16_C2/c_15")){
 		F.NAtoms =23;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ca", 1.54819684,2.22009463, 1.26421174, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ca", 3.40754982,5.30548227, 3.79261986, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Mg", 5.18864609,6.20703188, 1.26421174, 0.00000000);
@@ -1316,7 +1316,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Bi2Nb2O9Pb_oA56_A2_1am_36")){
 		F.NAtoms =59;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "O", 4.05439899,5.43977571, 23.78449373, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "O", 1.30639908,0.05622411, 1.76550551, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "O", 1.30639908,0.05622411, 23.78449373, 0.00000000);
@@ -1379,7 +1379,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ga_oC8_Cmca_64")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ga", 2.26150000,2.64381110, 4.15755600, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ga", 2.26150000,1.18668890, 1.89555600, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Ga", 2.26150000,-1.18668890, 2.62844400, 0.00000000);
@@ -1390,7 +1390,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"AuCu_tP2_P4/mmm_123")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Au", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Cu", 1.40000000,1.40000000, 1.83500000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.80000000,0.00000000, 0.00000000, 0.00000000);
@@ -1399,7 +1399,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"U_oC4_Cmcm_63")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "U", 1.42220000,2.33417891, 3.69870000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "U", 1.42220000,-2.33417891, 1.23290000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.42220000,-2.93445000, 0.00000000, 0.00000000);
@@ -1408,7 +1408,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"B2CoW2_oI10_Immm_71")){
 		F.NAtoms =8;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "B", 1.59253079,0.72864429, 1.13416902, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "B", -1.59252979,1.74432071, 2.71511698, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Co", 0.00000000,0.00000000, 0.00000000, 0.00000000);
@@ -1420,7 +1420,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Fe3C_oP16_Pnma_62")){
 		F.NAtoms =19;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "C", 0.55990000,5.06100000, 2.48765000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "C", 1.98510000,1.68700000, 0.22615000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "C", 3.10490000,5.06100000, 4.29685000, 0.00000000);
@@ -1443,7 +1443,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Mg2SiO4_oP28_Pbnm_62")){
 		F.NAtoms =31;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mg", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Mg", 5.09650000,0.00000000, 2.37600000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Mg", 0.00000000,2.98850000, 0.00000000, 0.00000000);
@@ -1478,7 +1478,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Al2SiO5Sillimanite_oP32_Pbnm_62")){
 		F.NAtoms =35;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "O", 0.08022906,4.73675301, 2.14925484, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "O", 2.98897616,2.83641743, 5.62893816, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "O", 5.73726471,0.95016790, 1.73984177, 0.00000000);
@@ -1517,7 +1517,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Goethite_AlphaFeO(OH)_oP40_Pnma_62")){
 		F.NAtoms =19;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Fe", 8.50725003,2.25749999, 0.20790000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Fe", 6.41774969,0.75250000, 2.51790002, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Fe", 3.53224982,2.25749999, 2.10210001, 0.00000000);
@@ -1540,7 +1540,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Fe3H6KO14S2Jarosite_R60_R-3m_166")){
 		F.NAtoms =29;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Fe", 3.56368208,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Fe", 1.68678799,3.13919994, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Fe", 1.68678778,1.00851238, 2.97278989, 0.00000000);
@@ -1573,7 +1573,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Al2Si2O9H4_Kaolinite_tC26_C1_1")){
 		F.NAtoms =29;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Al", 0.64879868,4.33299405, 3.37735116, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Al", 3.24039301,8.80537265, 3.37735116, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Al", 3.20287286,2.85131817, 3.36161276, 0.00000000);
@@ -1606,7 +1606,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"CaSiO3_tC40_C-1_2")){
 		F.NAtoms =123;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ca", 3.42650008,5.94750023, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ca", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Ca", 3.50523405,9.94063510, 0.00786922, 0.00000000);
@@ -1733,7 +1733,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Fe2B_tI12_I4/mcm_140")){
 		F.NAtoms =9;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "B", 1.61581068,2.73254514, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "B", 0.53860356,0.91084838, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Fe", -1.54036263,0.91084840, 2.98199646, 0.00000000);
@@ -1746,7 +1746,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"CuFeS2_tI16_I-42d_122")){
 		F.NAtoms =11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cu", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Cu", 0.00000000,2.64450000, 2.60575000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Fe", 2.64450000,0.00000000, 2.60575000, 0.00000000);
@@ -1761,7 +1761,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"ZrSiO4_tI24_I4_1/amd_141")){
 		F.NAtoms =15;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "O", 2.08692720,1.65105000, -0.32828004, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "O", 4.51727280,1.65105000, -0.32828004, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "O", 0.00000000,0.43587720, 1.16661996, 0.00000000);
@@ -1780,7 +1780,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"In_tI2_I4/mmm_139")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "In", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -2.30010000,2.30010000, 2.47315000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.30010000,-2.30010000, 2.47315000, 0.00000000);
@@ -1788,7 +1788,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"beta-Sn_tI4_I4_1_141")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Sn", 2.91590000,-1.45795000, 1.19321250, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Sn", 0.00000000,4.37385000, 0.39773750, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", -2.91590000,2.91590000, 1.59095000, 0.00000000);
@@ -1797,7 +1797,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"La2CuO4_tI5_I4/mmm_139")){
 		F.NAtoms =10;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "O", 1.90294226,1.90294226, 4.14192306, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "O", 0.00000171,0.00000171, 2.45594368, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "O", 0.00000000,1.90294445, 0.00000000, 0.00000000);
@@ -1811,7 +1811,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Nd2CuO4_tI5_I4/mmm_139")){
 		F.NAtoms =10;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "O", 1.88039605,1.88039605, 4.09125565, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "O", -0.00000182,-0.00000182, 2.39846413, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "O", 0.00000000,1.88039410, 0.00000000, 0.00000000);
@@ -1825,7 +1825,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Al3Ti_tI8_I4/mmm_139")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Al", 0.00000000,0.00000000, 4.29195000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Al", 1.92685000,0.00000000, 2.14597500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Al", 0.00000000,1.92685000, 2.14597500, 0.00000000);
@@ -1836,7 +1836,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Al2SiO5Kyanite_tP16_P-1_2")){
 		F.NAtoms =35;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "O", 0.69330408,1.80497047, 5.86371664, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "O", 3.56533384,3.03567613, 1.75202394, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "O", 3.57327257,1.91280521, 5.51100894, 0.00000000);
@@ -1875,7 +1875,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Al2Zr3_tP20_P4_2/mnmc_136")){
 		F.NAtoms =23;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Al", 0.95375001,0.95375001, 1.46957998, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Al", 6.67625010,6.67625010, 1.46957998, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Al", 4.76875007,2.86125004, 2.02941999, 0.00000000);
@@ -1902,7 +1902,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"AuCu_tP2_P4/mmm_123")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Au", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Cu", 1.40000000,1.40000000, 1.83500000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.80000000,0.00000000, 0.00000000, 0.00000000);
@@ -1911,7 +1911,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"CrFe_tP30_P4_2/mnm_136")){
 		F.NAtoms =33;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Pd", 0.00000000,0.00000000, 2.27909994, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Pd", 4.39830017,4.39830017, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Rh", 3.50667682,3.50667682, 0.00000000, 0.00000000);
@@ -1948,7 +1948,7 @@ Fragment GetFragmentPrototypeCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"TiO2_tP6_P4_2/mnm_136")){
 		F.NAtoms =9;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "O", 0.89566269,3.69653731, 1.47870000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "O", 1.40043731,1.40043731, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "O", 3.19176269,3.19176269, 0.00000000, 0.00000000);
@@ -1984,7 +1984,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	initFragment(&F);
 	if(!strcmp(Name,"Ac-Actinium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ac", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,2.65550000, 2.65550000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.65550000,0.00000000, 2.65550000, 0.00000000);
@@ -1992,7 +1992,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ag-Silver")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ag", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,2.04310000, 2.04310000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.04310000,0.00000000, 2.04310000, 0.00000000);
@@ -2000,7 +2000,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Al-Aluminum")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Al", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,2.02479000, 2.02479000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.02479000,0.00000000, 2.02479000, 0.00000000);
@@ -2008,7 +2008,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Am-Americium")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Am", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Am", 0.00000000,0.00000000, 5.62500000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Am", 1.00285742,1.73700000, 8.43750000, 0.00000000);
@@ -2019,7 +2019,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ar-Argon")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ar", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,2.62800000, 2.62800000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.62800000,0.00000000, 2.62800000, 0.00000000);
@@ -2027,7 +2027,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"As-Arsenic")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "As", 0.00000000,0.00000000, 2.38253416, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "As", 0.00000000,0.00000000, 8.15965239, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.17175731,0.00000000, 3.51406218, 0.00000000);
@@ -2036,7 +2036,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"As-Arsenolamprite")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "As", 1.81500000,0.40050000, -4.40592000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "As", 1.81500000,2.62550000, -1.07408000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "As", 1.81500000,1.82450000, 1.07408000, 0.00000000);
@@ -2047,7 +2047,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Au-Gold")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Au", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,2.03912500, 2.03912500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.03912500,0.00000000, 2.03912500, 0.00000000);
@@ -2055,7 +2055,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ba-Barium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ba", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -2.51250000,2.51250000, 2.51250000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.51250000,-2.51250000, 2.51250000, 0.00000000);
@@ -2063,7 +2063,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"B-Boron")){
 		F.NAtoms =15;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "B", -0.91653928,1.58749260, 2.84056090, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "B", 0.91653928,-1.58749260, 9.72643910, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "B", -1.83307856,0.00000000, 9.72643910, 0.00000000);
@@ -2082,7 +2082,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Be-Beryllium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Be", 0.66008456,1.14330000, 0.89582500, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Be", 1.32016913,-0.00000000, 2.68747500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.98025369,-1.14330000, 0.00000000, 0.00000000);
@@ -2091,7 +2091,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Bi-Bismuth")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Bi", 0.00000000,0.00000000, 2.81126896, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Bi", 0.00000000,0.00000000, 9.05062539, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.62482947,0.00000000, 3.95396478, 0.00000000);
@@ -2100,7 +2100,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Br-Bromine")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Br", 3.33500000,0.95920000, -1.63520000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Br", 3.33500000,5.31920000, -0.60480000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Br", 3.33500000,3.40080000, 0.60480000, 0.00000000);
@@ -2111,7 +2111,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ca-Calcium-alpha")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ca", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,2.78800000, 2.78800000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.78800000,0.00000000, 2.78800000, 0.00000000);
@@ -2119,7 +2119,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ca-Calcium-beta")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ca", 1.14892704,1.99000000, 1.63000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ca", 2.29785407,-0.00000000, 4.89000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.44678111,-1.99000000, 0.00000000, 0.00000000);
@@ -2128,7 +2128,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ca-Calcium-gamma")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ca", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -2.19000000,2.19000000, 2.19000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.19000000,-2.19000000, 2.19000000, 0.00000000);
@@ -2136,7 +2136,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Cd-Cadmium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cd", 0.85992570,1.48943500, 1.40441250, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Cd", 1.71985140,-0.00000000, 4.21323750, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.57977709,-1.48943500, 0.00000000, 0.00000000);
@@ -2145,7 +2145,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"C-Diamond")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "C", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "C", 0.89169750,0.89169750, 0.89169750, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 0.00000000,1.78339500, 1.78339500, 0.00000000);
@@ -2154,7 +2154,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ce-Cerium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ce", 1.05366424,1.82500000, 1.49000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ce", 2.10732848,-0.00000000, 4.47000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.16099272,-1.82500000, 0.00000000, 0.00000000);
@@ -2163,7 +2163,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"C-Graphite")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "C", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "C", 0.00000000,0.00000000, 3.34800000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "C", 0.70898613,1.22800000, 0.00000000, 0.00000000);
@@ -2174,7 +2174,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Cl-Chlorine")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cl", 3.12000000,0.82600000, -1.65760000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Cl", 3.12000000,4.95600000, -0.58240000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Cl", 3.12000000,3.30400000, 0.58240000, 0.00000000);
@@ -2185,7 +2185,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"C-Lonsdaleite")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "C", 0.72746134,1.26000000, 0.25750000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "C", 0.72746134,1.26000000, 1.80250000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "C", 1.45492268,-0.00000000, 2.31750000, 0.00000000);
@@ -2196,7 +2196,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Co-Cobalt")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Co", 0.72373743,1.25355000, 1.01715000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Co", 1.44747486,-0.00000000, 3.05145000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.17121229,-1.25355000, 0.00000000, 0.00000000);
@@ -2205,7 +2205,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Cr-Chromium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cr", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.44195000,1.44195000, 1.44195000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.44195000,-1.44195000, 1.44195000, 0.00000000);
@@ -2213,7 +2213,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Cs-Cesium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cs", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -3.03350000,3.03350000, 3.03350000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.03350000,-3.03350000, 3.03350000, 0.00000000);
@@ -2221,7 +2221,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Cu-Copper")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Cu", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,1.80748000, 1.80748000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.80748000,0.00000000, 1.80748000, 0.00000000);
@@ -2229,7 +2229,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Dy-Dysprosium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Dy", 1.03643034,1.79515000, 1.41187500, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Dy", 2.07286067,-0.00000000, 4.23562500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.10929101,-1.79515000, 0.00000000, 0.00000000);
@@ -2238,7 +2238,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Er-Erbium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Er", 1.03643034,1.79515000, 1.41187500, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Er", 2.07286067,-0.00000000, 4.23562500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.10929101,-1.79515000, 0.00000000, 0.00000000);
@@ -2247,7 +2247,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Eu-Europium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Eu", 1.03643034,1.79515000, 1.41187500, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Eu", 2.07286067,-0.00000000, 4.23562500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.10929101,-1.79515000, 0.00000000, 0.00000000);
@@ -2256,7 +2256,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Fe-Iron-alpha")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Fe", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.43325000,1.43325000, 1.43325000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.43325000,-1.43325000, 1.43325000, 0.00000000);
@@ -2264,7 +2264,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Fe-Iron-beta")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Fe", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.45500000,1.45500000, 1.45500000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.45500000,-1.45500000, 1.45500000, 0.00000000);
@@ -2272,7 +2272,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Fe-Iron-delta")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Fe", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.47000000,1.47000000, 1.47000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.47000000,-1.47000000, 1.47000000, 0.00000000);
@@ -2280,7 +2280,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Fe-Iron-gamma")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Fe", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,1.79550000, 1.79550000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.79550000,0.00000000, 1.79550000, 0.00000000);
@@ -2288,7 +2288,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ga-Gallium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ga", 1.45000000,-2.98371000, 0.79250000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ga", 1.45000000,2.98371000, 2.37750000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.45000000,-4.06500000, 0.00000000, 0.00000000);
@@ -2297,7 +2297,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Gd-Gadolinium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Gd", 1.04962279,1.81800000, 1.44565000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Gd", 2.09924558,-0.00000000, 4.33695000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.14886837,-1.81800000, 0.00000000, 0.00000000);
@@ -2306,7 +2306,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ge-Germanium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ge", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ge", 1.41433750,1.41433750, 1.41433750, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 0.00000000,2.82867500, 2.82867500, 0.00000000);
@@ -2315,7 +2315,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"He-Helium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "He", 1.03057023,1.78500000, 1.45750000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "He", 2.06114046,-0.00000000, 4.37250000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.09171069,-1.78500000, 0.00000000, 0.00000000);
@@ -2324,7 +2324,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Hf-Hafnium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Hf", 0.92280780,1.59835000, 1.26445000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Hf", 1.84561561,-0.00000000, 3.79335000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.76842341,-1.59835000, 0.00000000, 0.00000000);
@@ -2333,7 +2333,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ho-Holmium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ho", 1.03267756,1.78865000, 1.40395000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ho", 2.06535512,-0.00000000, 4.21185000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.09803268,-1.78865000, 0.00000000, 0.00000000);
@@ -2342,7 +2342,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"I-Iodine")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "I", 3.63503500,1.13212166, -1.67986703, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "I", 3.63503500,6.02884166, -0.71515297, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "I", 3.63503500,3.76459834, 0.71515297, 0.00000000);
@@ -2353,7 +2353,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"In-Indium")){
                 F.NAtoms =7;
-                F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+                F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "In", 0.00000000,0.00000000, 0.00000000, 0.00000000);
                 SetAtom(&F.Atoms[ 1 ], "In", 2.29150000,2.29150000, 0.00000000, 0.00000000);
                 SetAtom(&F.Atoms[ 2 ], "In", 0.00000000,2.29150000, 0.00000000, 0.00000000);
@@ -2365,7 +2365,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 
 	else if(!strcmp(Name,"Ir-Iridium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ir", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,1.91970000, 1.91970000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.91970000,0.00000000, 1.91970000, 0.00000000);
@@ -2373,7 +2373,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"K-Potassium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "K", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -2.62350000,2.62350000, 2.62350000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.62350000,-2.62350000, 2.62350000, 0.00000000);
@@ -2381,7 +2381,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Kr-Krypton")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Kr", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,2.86050000, 2.86050000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.86050000,0.00000000, 2.86050000, 0.00000000);
@@ -2389,7 +2389,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"La-Lanthanum")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "La", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "La", 0.00000000,0.00000000, 6.07950000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "La", 1.08830526,1.88500000, 9.11925000, 0.00000000);
@@ -2400,7 +2400,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Li-Lithium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Li", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.75465000,1.75465000, 1.75465000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.75465000,-1.75465000, 1.75465000, 0.00000000);
@@ -2408,7 +2408,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Lu-Lutetium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Lu", 1.01125786,1.75155000, 1.38772500, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Lu", 2.02251573,-0.00000000, 4.16317500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.03377359,-1.75155000, 0.00000000, 0.00000000);
@@ -2417,7 +2417,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Mg-Magnesium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mg", 0.92643645,1.60463500, 1.30258250, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Mg", 1.85287290,-0.00000000, 3.90774750, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.77930935,-1.60463500, 0.00000000, 0.00000000);
@@ -2426,7 +2426,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Mn-Manganese-alpha")){
 		F.NAtoms =32;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mn", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Mn", 2.81939800,2.81939800, 2.81939800, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Mn", -1.62760200,1.62760200, 1.62760200, 0.00000000);
@@ -2462,7 +2462,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Mn-Manganese-delta")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mn", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.54650000,1.54650000, 1.54650000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.54650000,-1.54650000, 1.54650000, 0.00000000);
@@ -2470,7 +2470,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Mn-Manganese-gamma")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mn", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,1.93150000, 1.93150000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.93150000,0.00000000, 1.93150000, 0.00000000);
@@ -2478,7 +2478,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Mo-Molybdenum")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Mo", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.57365000,1.57365000, 1.57365000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.57365000,-1.57365000, 1.57365000, 0.00000000);
@@ -2486,7 +2486,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Na-Sodium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Na", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -2.14530000,2.14530000, 2.14530000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.14530000,-2.14530000, 2.14530000, 0.00000000);
@@ -2494,7 +2494,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Nb-Niobium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Nb", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.65020000,1.65020000, 1.65020000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.65020000,-1.65020000, 1.65020000, 0.00000000);
@@ -2502,7 +2502,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Nd-Neodymium")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Nd", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Nd", 0.00000000,0.00000000, 5.89960000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Nd", 1.05594477,1.82895000, 8.84940000, 0.00000000);
@@ -2513,7 +2513,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ne-Neon")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ne", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,2.21450000, 2.21450000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.21450000,0.00000000, 2.21450000, 0.00000000);
@@ -2521,7 +2521,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ni-Nickel")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ni", 0.76498911,1.32500000, 1.08250000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ni", 1.52997821,-0.00000000, 3.24750000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.29496732,-1.32500000, 0.00000000, 0.00000000);
@@ -2530,7 +2530,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"N-Nitrogen")){
 		F.NAtoms =11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "N", 0.30477600,0.30477600, 0.30477600, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "N", 3.12677600,2.51722400, 5.33922400, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "N", 0.30477600,2.51722400, 3.12677600, 0.00000000);
@@ -2545,7 +2545,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Np-Neptunium-alpha")){
 		F.NAtoms =11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Np", 1.18075000,1.01649600, 0.23986800, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Np", 1.18075000,1.42700400, 3.57136800, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Np", 3.54225000,3.87050400, 6.42313200, 0.00000000);
@@ -2560,7 +2560,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Np-Neptunium-beta")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Np", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Np", 2.44850000,2.44850000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Np", 0.00000000,2.44850000, 2.11750000, 0.00000000);
@@ -2571,7 +2571,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Np-Neptunium-gamma")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Np", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.76000000,1.76000000, 1.76000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.76000000,-1.76000000, 1.76000000, 0.00000000);
@@ -2579,7 +2579,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Os-Osmium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Os", 0.78958423,1.36760000, 1.07975000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Os", 1.57916846,-0.00000000, 3.23925000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.36875268,-1.36760000, 0.00000000, 0.00000000);
@@ -2588,7 +2588,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Pb-Lead")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Pb", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,2.47525000, 2.47525000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.47525000,0.00000000, 2.47525000, 0.00000000);
@@ -2596,7 +2596,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Pd-Palladium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Pd", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,1.94490000, 1.94490000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.94490000,0.00000000, 1.94490000, 0.00000000);
@@ -2604,7 +2604,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"P-Phosphorus-black")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "P", 1.65500000,0.39420000, -4.22100000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "P", 1.65500000,2.58420000, -1.02900000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "P", 1.65500000,1.79580000, 1.02900000, 0.00000000);
@@ -2615,7 +2615,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"P-Phosphorus")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "P", 1.65500000,0.39420000, -4.22100000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "P", 1.65500000,2.58420000, -1.02900000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "P", 1.65500000,1.79580000, 1.02900000, 0.00000000);
@@ -2626,7 +2626,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Pr-Praseodymium")){
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Pr", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Pr", 0.00000000,0.00000000, 5.91770000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Pr", 1.06015943,1.83625000, 8.87655000, 0.00000000);
@@ -2637,7 +2637,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Pt-Platinum")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Pt", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,1.96155000, 1.96155000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.96155000,0.00000000, 1.96155000, 0.00000000);
@@ -2645,7 +2645,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Pu-Plutonium-alpha")){
 		F.NAtoms =19;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Pu", 1.70511205,1.20610000, 1.66487234, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Pu", 2.23445278,3.61830000, 9.07623952, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Pu", 4.39334034,1.20610000, 1.87969457, 0.00000000);
@@ -2668,7 +2668,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Pu-Plutonium-epsilon")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Pu", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.81900000,1.81900000, 1.81900000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.81900000,-1.81900000, 1.81900000, 0.00000000);
@@ -2676,7 +2676,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Pu-Plutonium-gamma")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Pu", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Pu", 0.78967500,1.44205000, 2.54050000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.57935000,0.00000000, 5.08100000, 0.00000000);
@@ -2685,7 +2685,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Rb-Rubidium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Rb", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -2.80250000,2.80250000, 2.80250000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.80250000,-2.80250000, 2.80250000, 0.00000000);
@@ -2693,7 +2693,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Re-Rhenium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Re", 0.79697431,1.38040000, 1.11455000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Re", 1.59394862,-0.00000000, 3.34365000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.39092293,-1.38040000, 0.00000000, 0.00000000);
@@ -2702,7 +2702,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Rh-Rhodium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Rh", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,1.90155000, 1.90155000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.90155000,0.00000000, 1.90155000, 0.00000000);
@@ -2710,7 +2710,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ru-Ruthenium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ru", 0.78054581,1.35194500, 1.07042000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ru", 1.56109162,-0.00000000, 3.21126000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.34163743,-1.35194500, 0.00000000, 0.00000000);
@@ -2719,7 +2719,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"S6-Sulfur")){
 		F.NAtoms =9;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "S", 1.77615142,0.56252350, 1.66465000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "S", -0.40091607,-1.81945400, 1.66465000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "S", 1.37523535,-1.25693050, 2.56035000, 0.00000000);
@@ -2732,7 +2732,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"S8-Sulfur-alpha")){
 		F.NAtoms =35;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "S", 8.95602326,5.82405222, 11.05444956, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "S", 1.50857674,2.60755222, 4.93294956, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "S", 4.12472674,5.82405222, 19.55305044, 0.00000000);
@@ -2771,7 +2771,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"S8-Sulfur-beta")){
 		F.NAtoms =35;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "S", 8.95602326,5.82405222, 11.05444956, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "S", 1.50857674,2.60755222, 4.93294956, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "S", 4.12472674,5.82405222, 19.55305044, 0.00000000);
@@ -2810,7 +2810,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"S8-Sulfur-gamma")){
 		F.NAtoms =35;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "S", 3.76191423,4.51207640, 2.46813325, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "S", 2.04271116,4.51207640, 1.33250311, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "S", 1.11153962,8.53992360, 6.26876960, 0.00000000);
@@ -2849,7 +2849,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Sb-Antimony")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Sb", 0.00000000,0.00000000, 2.62685171, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Sb", 0.00000000,0.00000000, 8.64718995, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.48734043,0.00000000, 3.75801388, 0.00000000);
@@ -2858,7 +2858,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Sc-Scandium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Sc", 0.95522602,1.65450000, 1.31832500, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Sc", 1.91045204,-0.00000000, 3.95497500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.86567806,-1.65450000, 0.00000000, 0.00000000);
@@ -2867,7 +2867,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Se-Selenium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Se", 0.95522602,1.65450000, 1.31832500, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Se", 1.91045204,-0.00000000, 3.95497500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.86567806,-1.65450000, 0.00000000, 0.00000000);
@@ -2876,7 +2876,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Si-Silicon")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Si", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Si", 1.35767500,1.35767500, 1.35767500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 0.00000000,2.71535000, 2.71535000, 0.00000000);
@@ -2885,7 +2885,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Sm-Samarium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Sm", 1.04529266,1.81050000, 6.56250000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Sm", 2.09058532,-0.00000000, 19.68750000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.13587799,-1.81050000, 0.00000000, 0.00000000);
@@ -2894,7 +2894,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Sn-Tin-alpha")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Sn", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Sn", 1.62280000,1.62280000, 1.62280000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 0.00000000,3.24560000, 3.24560000, 0.00000000);
@@ -2903,7 +2903,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Sn-Tin-beta")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Sn", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Sn", 5.81970000,2.90985000, 0.79372000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 5.81970000,0.00000000, 0.00000000, 0.00000000);
@@ -2912,7 +2912,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Sr-Strontium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Sr", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -2.42500000,2.42500000, 2.42500000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.42500000,-2.42500000, 2.42500000, 0.00000000);
@@ -2920,7 +2920,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ta-Tantalum")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ta", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.65290000,1.65290000, 1.65290000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.65290000,-1.65290000, 1.65290000, 0.00000000);
@@ -2928,7 +2928,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Tb-Terbium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Tb", 1.03951916,1.80050000, 1.42340000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tb", 2.07903832,-0.00000000, 4.27020000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.11855748,-1.80050000, 0.00000000, 0.00000000);
@@ -2937,7 +2937,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Te-Tellurium")){
 		F.NAtoms =6;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Te", 1.03596052,-0.59811209, 0.98582000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Te", 2.81519383,1.62535291, 2.95746000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Te", 0.00000000,1.19622417, 4.92910000, 0.00000000);
@@ -2947,7 +2947,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Th-Thorium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Th", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -2.05500000,2.05500000, 2.05500000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.05500000,-2.05500000, 2.05500000, 0.00000000);
@@ -2955,7 +2955,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ti-Titanium-alpha")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ti", 0.85159165,1.47500000, 1.17150000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Ti", 1.70318329,-0.00000000, 3.51450000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.55477494,-1.47500000, 0.00000000, 0.00000000);
@@ -2964,7 +2964,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Ti-Titanium-beta")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Ti", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.65325000,1.65325000, 1.65325000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.65325000,-1.65325000, 1.65325000, 0.00000000);
@@ -2972,7 +2972,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Tl-Thallium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Tl", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.94100000,1.94100000, 1.94100000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.94100000,-1.94100000, 1.94100000, 0.00000000);
@@ -2980,7 +2980,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Tm-Thulium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Tm", 1.02118829,1.76875000, 1.38865000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tm", 2.04237658,-0.00000000, 4.16595000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.06356487,-1.76875000, 0.00000000, 0.00000000);
@@ -2989,7 +2989,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"U-Uranium-alpha")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "U", 1.42700000,-2.33292750, 1.23875000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "U", 1.42700000,2.33292750, 3.71625000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.42700000,-2.93450000, 0.00000000, 0.00000000);
@@ -2998,7 +2998,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"U-Uranium-gamma")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "U", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.73700000,1.73700000, 1.73700000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.73700000,-1.73700000, 1.73700000, 0.00000000);
@@ -3006,7 +3006,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"V-Vanadium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "V", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.51200000,1.51200000, 1.51200000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.51200000,-1.51200000, 1.51200000, 0.00000000);
@@ -3014,7 +3014,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"W-Tungsten")){
 		F.NAtoms =11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "W", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "W", 2.54150000,2.54150000, 2.54150000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "W", 0.00000000,2.54150000, 1.27075000, 0.00000000);
@@ -3029,7 +3029,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Xe-Xenon")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Xe", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,3.09850000, 3.09850000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.09850000,0.00000000, 3.09850000, 0.00000000);
@@ -3037,7 +3037,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Yb-Ytterbium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Yb", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", 0.00000000,2.74310000, 2.74310000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.74310000,0.00000000, 2.74310000, 0.00000000);
@@ -3045,7 +3045,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Y-Yttrium")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Y", 1.05291369,1.82370000, 1.43265000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Y", 2.10582737,-0.00000000, 4.29795000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 3.15874106,-1.82370000, 0.00000000, 0.00000000);
@@ -3054,7 +3054,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Zn-Zinc")){
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Zn", 0.76926150,1.33240000, 1.23667500, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Zn", 1.53852300,-0.00000000, 3.71002500, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 2.30778450,-1.33240000, 0.00000000, 0.00000000);
@@ -3063,7 +3063,7 @@ Fragment GetFragmentElementCrystals(gchar* Name)
 	}
 	else if(!strcmp(Name,"Zr-Zirconium")){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ], "Zr", 0.00000000,0.00000000, 0.00000000, 0.00000000);
 		SetAtom(&F.Atoms[ 1 ], "Tv", -1.81000000,1.81000000, 1.81000000, 0.00000000);
 		SetAtom(&F.Atoms[ 2 ], "Tv", 1.81000000,-1.81000000, 1.81000000, 0.00000000);

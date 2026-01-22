@@ -141,7 +141,7 @@ Element newElementRotation(Point3D* center, Point3D* axis, gint n)
 		if(!(n % 2 == 0 && i % 2 == 0) && !(n % 3 == 0 && i % 3 ==0) && !(n % 5 == 0 && i % 5 == 0)) e.numUniqueOperations++;
 
 	/*Build up the coefficients for the rotation matrix*/
-	gdouble angle = 2 * M_PI / n;
+	gdouble angle = 2 * G_PI / n;
 	gdouble c = cos(angle);
 	gdouble s = sin(angle);
 		
@@ -333,7 +333,7 @@ static Point3D doImproperRotation(Element* e, Point3D* beforee)
 	gdouble b = e->axis.y;
 	gdouble c = e->axis.z;
 		
-	gdouble angle = 2 * M_PI / e->n;
+	gdouble angle = 2 * G_PI / e->n;
 	gdouble cs = cos(angle);
 	gdouble sn = sin(angle);
 		

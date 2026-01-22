@@ -249,8 +249,8 @@ static GtkWidget* createResultWindow(gchar* title)
 	textWidget = create_text_widget(vboxall,NULL,&frame);
   	gabedit_text_set_editable (GABEDIT_TEXT (textWidget), TRUE); 
 	set_font (textWidget,FontsStyleResult.fontname);
-	set_base_style(textWidget,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-	set_text_style(textWidget,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
+	set_base_color(textWidget,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+	set_text_color(textWidget,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
 
 	hbox = gtk_hbox_new (FALSE, 4);
 	gtk_box_pack_start (GTK_BOX(vboxall), hbox, FALSE, FALSE, 1);

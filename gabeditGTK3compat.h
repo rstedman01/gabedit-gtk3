@@ -4,8 +4,9 @@
 #define GABEDIT_GTK3_COMPAT_H
 
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gdk/gdkkeysyms.h>
+//#include <gdk/gdkx.h>
+#include <gtk/gtkx.h>
 #include <cairo.h>
 
 // GTK_OBJECT -> G_OBJECT
@@ -199,6 +200,13 @@ static inline gint gabedit_widget_allocated_height(GtkWidget *w)
     #else
         return alloc.height;
     #endif
+}
+
+static inline void gdkcolor_to_css_rgb(const GdkColor *c, gint *r, gint *g, gint *b)
+{
+    *r = c->red >> 8;
+    *g = c->green >> 8;
+    *b = c->blue >> 8;
 }
 
 // Remap macros, keep call sites unchanged

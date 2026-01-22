@@ -20,7 +20,7 @@ DEALINGS IN THE SOFTWARE.
 #include "../../Config.h"
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include "../Symmetry/MoleculeSymmetryType.h"
 #include "../Symmetry/MoleculeSymmetry.h"

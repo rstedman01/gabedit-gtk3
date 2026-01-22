@@ -1,6 +1,5 @@
 /* Config header file */
-#include "gabeditGTK3compat.h"
-#include "src/Compat/gabedit_gdk_compat.h"
+// #include "src/Compat/gabedit_gdk_compat.h"
 #include <math.h>
 /*#ifndef ENABLE_DEPRECATED
 #define GTK_DISABLE_DEPRECATED

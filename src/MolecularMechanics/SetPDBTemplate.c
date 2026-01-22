@@ -1009,7 +1009,7 @@ static void addTreeView(GtkWidget *win, GtkWidget *vbox)
 	}
 
 	/*
-	set_base_style(pdbTreeView,30000,50000,60000);
+	set_base_color(pdbTreeView,30000,50000,60000);
 	*/
 	gtk_container_add(GTK_CONTAINER(scr), pdbTreeView);
 }

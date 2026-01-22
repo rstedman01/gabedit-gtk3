@@ -373,7 +373,7 @@ static GtkWidget* create_peaks_list(GtkWidget *vbox, GList* peaks)
 	}
 	gtk_container_add(GTK_CONTAINER(scr),list);
   
-	set_base_style(list,55000,55000,55000);
+	set_base_color(list,55000,55000,55000);
 	gtk_widget_show (list);
 #undef  NC
 	appendList(list,peaks,1e-8,1e-3);
@@ -631,8 +631,8 @@ void compute_distribution_dlg(GtkWidget* winParent, gchar* formula)
 	gtk_widget_set_size_request(textWidget,-1,(gint)(ScreenHeight*0.15));
   	gabedit_text_set_editable (GABEDIT_TEXT (textWidget), TRUE); 
 	set_font (textWidget,FontsStyleResult.fontname);
-	set_base_style(textWidget,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-	set_text_style(textWidget,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
+	set_base_color(textWidget,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+	set_text_color(textWidget,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
 
 	i = 1;
   	hbox = gtk_hbox_new (TRUE, 0);

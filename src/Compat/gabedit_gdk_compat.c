@@ -1,6 +1,6 @@
 #include <math.h>
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <pango/pangocairo.h>
 #include "gabedit_gdk_compat.h"

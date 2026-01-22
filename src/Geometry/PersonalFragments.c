@@ -515,7 +515,7 @@ static void addFragment(GtkWidget* win, gpointer data)
 
 
 	f.NAtoms = Natoms ;
-	f.Atoms = g_malloc(f.NAtoms*sizeof(Atom));
+	f.Atoms = g_malloc(f.NAtoms*sizeof(GabeditAtom));
 	for(i=0;i<(gint)Natoms;i++)
 	{
 		f.Atoms[i].Residue = g_strdup(geometry[i].Residue);

@@ -85,7 +85,7 @@ void get_basis_list(gchar* Symb,gchar* orb,gchar* outfile,gchar* errfile)
 	{
 		if(!fgets(t,BSIZE,fin))
 			break;
-		if(strstr(t,"Atom") && strstr(t,Symb) && sscanf(t,"%s %s",dump,symb)==2 && strcmp(Symb,symb) ==0 )
+		if(strstr(t,"GabeditAtom") && strstr(t,Symb) && sscanf(t,"%s %s",dump,symb)==2 && strcmp(Symb,symb) ==0 )
 		{
 			if(!fgets(t,BSIZE,fin))
 				break;
@@ -129,7 +129,7 @@ gboolean create_molpro_basis_file()
 		return FALSE;
 	}
 	fprintf(fout,"Natoms = 102\n");
-	fprintf(fout,"Atom H\n");
+	fprintf(fout,"GabeditAtom H\n");
 	fprintf(fout,"137\n");
 	fprintf(fout,"431G 0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"631G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -268,7 +268,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"TAYLOR 0  0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"T4 0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"T3 0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom He\n");
+	fprintf(fout,"GabeditAtom He\n");
 	fprintf(fout,"90\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -360,7 +360,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO-6G 0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Li\n");
+	fprintf(fout,"GabeditAtom Li\n");
 	fprintf(fout,"79\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -441,7 +441,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO-6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Be\n");
+	fprintf(fout,"GabeditAtom Be\n");
 	fprintf(fout,"78\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -521,7 +521,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO-6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom B\n");
+	fprintf(fout,"GabeditAtom B\n");
 	fprintf(fout,"129\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -652,7 +652,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO-6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom C\n");
+	fprintf(fout,"GabeditAtom C\n");
 	fprintf(fout,"145\n");
 	fprintf(fout,"631G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SV 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -799,7 +799,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"TAYLOR 0  0  0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"T4 0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"T2 0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom N\n");
+	fprintf(fout,"GabeditAtom N\n");
 	fprintf(fout,"143\n");
 	fprintf(fout,"631G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SV 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -944,7 +944,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"TAYLOR 0  0  0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"T4 0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"T2 0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom O\n");
+	fprintf(fout,"GabeditAtom O\n");
 	fprintf(fout,"143\n");
 	fprintf(fout,"631G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SV 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -1089,7 +1089,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"TAYLOR 0  0  0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"T4 0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"T2 0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom F\n");
+	fprintf(fout,"GabeditAtom F\n");
 	fprintf(fout,"151\n");
 	fprintf(fout,"631G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SV 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -1242,7 +1242,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"TAYLOR 0  0  0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"T4 0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"T2 0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ne\n");
+	fprintf(fout,"GabeditAtom Ne\n");
 	fprintf(fout,"113\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -1357,7 +1357,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO-6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Na\n");
+	fprintf(fout,"GabeditAtom Na\n");
 	fprintf(fout,"84\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -1443,7 +1443,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO-6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Mg\n");
+	fprintf(fout,"GabeditAtom Mg\n");
 	fprintf(fout,"82\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -1527,7 +1527,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO-6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Al\n");
+	fprintf(fout,"GabeditAtom Al\n");
 	fprintf(fout,"93\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -1622,7 +1622,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"TZVP-DFT-orb 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Si\n");
+	fprintf(fout,"GabeditAtom Si\n");
 	fprintf(fout,"91\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -1715,7 +1715,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"TZVP-DFT-orb 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom P\n");
+	fprintf(fout,"GabeditAtom P\n");
 	fprintf(fout,"94\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -1811,7 +1811,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"TZVP-DFT-orb 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom S\n");
+	fprintf(fout,"GabeditAtom S\n");
 	fprintf(fout,"94\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -1907,7 +1907,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"TZVP-DFT-orb 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Cl\n");
+	fprintf(fout,"GabeditAtom Cl\n");
 	fprintf(fout,"95\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2004,7 +2004,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"TZVP-DFT-orb 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ar\n");
+	fprintf(fout,"GabeditAtom Ar\n");
 	fprintf(fout,"82\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2088,7 +2088,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G* 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"TZVP-DFT-orb 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom K\n");
+	fprintf(fout,"GabeditAtom K\n");
 	fprintf(fout,"34\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2124,7 +2124,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO3G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ca\n");
+	fprintf(fout,"GabeditAtom Ca\n");
 	fprintf(fout,"33\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2159,7 +2159,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO3G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Sc\n");
+	fprintf(fout,"GabeditAtom Sc\n");
 	fprintf(fout,"48\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2209,7 +2209,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"W 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WSUPP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ti\n");
+	fprintf(fout,"GabeditAtom Ti\n");
 	fprintf(fout,"42\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2253,7 +2253,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"W 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WSUPP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom V\n");
+	fprintf(fout,"GabeditAtom V\n");
 	fprintf(fout,"41\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2296,7 +2296,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"W 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WSUPP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Cr\n");
+	fprintf(fout,"GabeditAtom Cr\n");
 	fprintf(fout,"41\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2339,7 +2339,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"W 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WSUPP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Mn\n");
+	fprintf(fout,"GabeditAtom Mn\n");
 	fprintf(fout,"41\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2382,7 +2382,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"W 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WSUPP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Fe\n");
+	fprintf(fout,"GabeditAtom Fe\n");
 	fprintf(fout,"41\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2425,7 +2425,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"W 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WSUPP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Co\n");
+	fprintf(fout,"GabeditAtom Co\n");
 	fprintf(fout,"41\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2468,7 +2468,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"W 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WSUPP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ni\n");
+	fprintf(fout,"GabeditAtom Ni\n");
 	fprintf(fout,"41\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2511,7 +2511,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"W 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WSUPP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Cu\n");
+	fprintf(fout,"GabeditAtom Cu\n");
 	fprintf(fout,"50\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2563,7 +2563,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"WSP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WD 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"WDP 0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Zn\n");
+	fprintf(fout,"GabeditAtom Zn\n");
 	fprintf(fout,"33\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2598,7 +2598,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ga\n");
+	fprintf(fout,"GabeditAtom Ga\n");
 	fprintf(fout,"39\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2639,7 +2639,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ge\n");
+	fprintf(fout,"GabeditAtom Ge\n");
 	fprintf(fout,"37\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2678,7 +2678,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom As\n");
+	fprintf(fout,"GabeditAtom As\n");
 	fprintf(fout,"36\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2716,7 +2716,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Se\n");
+	fprintf(fout,"GabeditAtom Se\n");
 	fprintf(fout,"36\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2754,7 +2754,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Br\n");
+	fprintf(fout,"GabeditAtom Br\n");
 	fprintf(fout,"37\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2793,7 +2793,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Kr\n");
+	fprintf(fout,"GabeditAtom Kr\n");
 	fprintf(fout,"36\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"Ahlrichs-pVDZ 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2831,7 +2831,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO6G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Rb\n");
+	fprintf(fout,"GabeditAtom Rb\n");
 	fprintf(fout,"16\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2849,7 +2849,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Sr\n");
+	fprintf(fout,"GabeditAtom Sr\n");
 	fprintf(fout,"19\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2870,7 +2870,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"STO2G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Y\n");
+	fprintf(fout,"GabeditAtom Y\n");
 	fprintf(fout,"14\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2886,7 +2886,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Zr\n");
+	fprintf(fout,"GabeditAtom Zr\n");
 	fprintf(fout,"14\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2902,7 +2902,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Nb\n");
+	fprintf(fout,"GabeditAtom Nb\n");
 	fprintf(fout,"14\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2918,7 +2918,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Mo\n");
+	fprintf(fout,"GabeditAtom Mo\n");
 	fprintf(fout,"14\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2934,7 +2934,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Tc\n");
+	fprintf(fout,"GabeditAtom Tc\n");
 	fprintf(fout,"14\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2950,7 +2950,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ru\n");
+	fprintf(fout,"GabeditAtom Ru\n");
 	fprintf(fout,"14\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2966,7 +2966,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Rh\n");
+	fprintf(fout,"GabeditAtom Rh\n");
 	fprintf(fout,"14\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2982,7 +2982,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Pd\n");
+	fprintf(fout,"GabeditAtom Pd\n");
 	fprintf(fout,"14\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -2998,7 +2998,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ag\n");
+	fprintf(fout,"GabeditAtom Ag\n");
 	fprintf(fout,"16\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3016,7 +3016,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Cd\n");
+	fprintf(fout,"GabeditAtom Cd\n");
 	fprintf(fout,"14\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3032,7 +3032,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom In\n");
+	fprintf(fout,"GabeditAtom In\n");
 	fprintf(fout,"15\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3049,7 +3049,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Sn\n");
+	fprintf(fout,"GabeditAtom Sn\n");
 	fprintf(fout,"12\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3063,7 +3063,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Sb\n");
+	fprintf(fout,"GabeditAtom Sb\n");
 	fprintf(fout,"11\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3076,7 +3076,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Te\n");
+	fprintf(fout,"GabeditAtom Te\n");
 	fprintf(fout,"11\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3089,7 +3089,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO-3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"STO3G 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom I\n");
+	fprintf(fout,"GabeditAtom I\n");
 	fprintf(fout,"11\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3102,7 +3102,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP46MWB 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP46MDF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Xe\n");
+	fprintf(fout,"GabeditAtom Xe\n");
 	fprintf(fout,"9\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"DeMon-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3113,7 +3113,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP46MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP46MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Cs\n");
+	fprintf(fout,"GabeditAtom Cs\n");
 	fprintf(fout,"10\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3125,7 +3125,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP54SDF 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP46MWB 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ba\n");
+	fprintf(fout,"GabeditAtom Ba\n");
 	fprintf(fout,"12\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3139,7 +3139,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP46MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP46MWB_MP2 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom La\n");
+	fprintf(fout,"GabeditAtom La\n");
 	fprintf(fout,"10\n");
 	fprintf(fout,"ECP1 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"MBS-ECP1 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3151,7 +3151,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP47MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP47MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ce\n");
+	fprintf(fout,"GabeditAtom Ce\n");
 	fprintf(fout,"8\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3161,7 +3161,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP48MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP48MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Pr\n");
+	fprintf(fout,"GabeditAtom Pr\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3169,7 +3169,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP48MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP49MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP49MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Nd\n");
+	fprintf(fout,"GabeditAtom Nd\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3177,7 +3177,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP49MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP50MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP50MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Pm\n");
+	fprintf(fout,"GabeditAtom Pm\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3185,7 +3185,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP50MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP51MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP51MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Sm\n");
+	fprintf(fout,"GabeditAtom Sm\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3193,7 +3193,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP51MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP52MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP52MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Eu\n");
+	fprintf(fout,"GabeditAtom Eu\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3201,7 +3201,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP52MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP53MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP53MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Gd\n");
+	fprintf(fout,"GabeditAtom Gd\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3209,7 +3209,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP53MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP54MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP54MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Tb\n");
+	fprintf(fout,"GabeditAtom Tb\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3217,7 +3217,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP54MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP55MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP55MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Dy\n");
+	fprintf(fout,"GabeditAtom Dy\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3225,7 +3225,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP55MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP56MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP56MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ho\n");
+	fprintf(fout,"GabeditAtom Ho\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3233,7 +3233,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP56MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP57MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP57MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Er\n");
+	fprintf(fout,"GabeditAtom Er\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3241,7 +3241,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP57MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP58MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP58MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Tm\n");
+	fprintf(fout,"GabeditAtom Tm\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3249,7 +3249,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP58MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP59MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP59MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Yb\n");
+	fprintf(fout,"GabeditAtom Yb\n");
 	fprintf(fout,"9\n");
 	fprintf(fout,"ECP28MHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP28MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3260,11 +3260,11 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP60MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MDF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP68MDF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Lu\n");
+	fprintf(fout,"GabeditAtom Lu\n");
 	fprintf(fout,"2\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Hf\n");
+	fprintf(fout,"GabeditAtom Hf\n");
 	fprintf(fout,"9\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3275,7 +3275,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP60MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ta\n");
+	fprintf(fout,"GabeditAtom Ta\n");
 	fprintf(fout,"9\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3286,7 +3286,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP60MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom W\n");
+	fprintf(fout,"GabeditAtom W\n");
 	fprintf(fout,"9\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3297,7 +3297,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP60MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Re\n");
+	fprintf(fout,"GabeditAtom Re\n");
 	fprintf(fout,"9\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3308,7 +3308,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP60MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Os\n");
+	fprintf(fout,"GabeditAtom Os\n");
 	fprintf(fout,"9\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3319,7 +3319,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP60MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ir\n");
+	fprintf(fout,"GabeditAtom Ir\n");
 	fprintf(fout,"9\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3330,7 +3330,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP60MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Pt\n");
+	fprintf(fout,"GabeditAtom Pt\n");
 	fprintf(fout,"8\n");
 	fprintf(fout,"ECP1 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"MBS-ECP1 0  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3340,7 +3340,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP60MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Au\n");
+	fprintf(fout,"GabeditAtom Au\n");
 	fprintf(fout,"14\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3356,7 +3356,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP78SHF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78SDF 1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Hg\n");
+	fprintf(fout,"GabeditAtom Hg\n");
 	fprintf(fout,"11\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3369,7 +3369,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP78MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Tl\n");
+	fprintf(fout,"GabeditAtom Tl\n");
 	fprintf(fout,"11\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3382,7 +3382,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP60MWB_MP2 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MDF 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Pb\n");
+	fprintf(fout,"GabeditAtom Pb\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3390,7 +3390,7 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP78MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Bi\n");
+	fprintf(fout,"GabeditAtom Bi\n");
 	fprintf(fout,"6\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP1 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
@@ -3398,102 +3398,102 @@ gboolean create_molpro_basis_file()
 	fprintf(fout,"ECP78MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Po\n");
+	fprintf(fout,"GabeditAtom Po\n");
 	fprintf(fout,"4\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom At\n");
+	fprintf(fout,"GabeditAtom At\n");
 	fprintf(fout,"4\n");
 	fprintf(fout,"Ahlrichs-Cfit 0  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Rn\n");
+	fprintf(fout,"GabeditAtom Rn\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP78MHF 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"SBKJC 1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ac\n");
+	fprintf(fout,"GabeditAtom Ac\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Th\n");
+	fprintf(fout,"GabeditAtom Th\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Pa\n");
+	fprintf(fout,"GabeditAtom Pa\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom U\n");
+	fprintf(fout,"GabeditAtom U\n");
 	fprintf(fout,"4\n");
 	fprintf(fout,"LANL2DZ 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Np\n");
+	fprintf(fout,"GabeditAtom Np\n");
 	fprintf(fout,"4\n");
 	fprintf(fout,"LANL2DZ 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Pu\n");
+	fprintf(fout,"GabeditAtom Pu\n");
 	fprintf(fout,"4\n");
 	fprintf(fout,"LANL2DZ 0  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Am\n");
+	fprintf(fout,"GabeditAtom Am\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Cm\n");
+	fprintf(fout,"GabeditAtom Cm\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Bk\n");
+	fprintf(fout,"GabeditAtom Bk\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Cf\n");
+	fprintf(fout,"GabeditAtom Cf\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Es\n");
+	fprintf(fout,"GabeditAtom Es\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Fm\n");
+	fprintf(fout,"GabeditAtom Fm\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Md\n");
+	fprintf(fout,"GabeditAtom Md\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom No\n");
+	fprintf(fout,"GabeditAtom No\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Lr\n");
+	fprintf(fout,"GabeditAtom Lr\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP60MHF 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP60MWB 1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP78MWB 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
-	fprintf(fout,"Atom Ha\n");
+	fprintf(fout,"GabeditAtom Ha\n");
 	fprintf(fout,"3\n");
 	fprintf(fout,"ECP92MHF 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");
 	fprintf(fout,"ECP92MDF 1  1  1  1  1  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0 \n");

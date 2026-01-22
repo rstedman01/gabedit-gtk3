@@ -32,7 +32,7 @@ DEALINGS IN THE SOFTWARE.
 static GtkWidget *combo_entry1;
 static GtkWidget *text1;
 static GtkWidget *text2;
-static  GtkWidget *Window;
+static  GtkWidget *WindowWidget = NULL;
 static  GtkWidget *VboxOption;
 static  GtkWidget *FrameShow;
 static  GtkWidget *Wins;
@@ -124,17 +124,17 @@ static void c_restrictexcitation(GtkWidget *bframe,guint del)
 
   vboxframe = create_vbox(frame);
   hbox1 = create_hbox(vboxframe);
-  entry= create_combo_box_entry_liste(Window,hbox1," Select : ",liste,nliste);
+  entry= create_combo_box_entry_liste(WindowWidget,hbox1," Select : ",liste,nliste);
 
   hbox2 = create_hbox(vboxall);
-  gtk_widget_realize(Window);
+  gtk_widget_realize(WindowWidget);
 
-  button = create_button(Window,_("Cancel"));
+  button = create_button(WindowWidget,_("Cancel"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   g_signal_connect_swapped(G_OBJECT(button), "clicked",G_CALLBACK(delete_child),GTK_OBJECT(fp));
   gtk_widget_show (button);
 
-  button = create_button(Window,_("OK"));
+  button = create_button(WindowWidget,_("OK"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   gtk_widget_show (button);
   g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(gene_entry),(gpointer)entry);
@@ -184,17 +184,17 @@ static void c_type_orb(GtkWidget *bframe,guint del)
 
   vboxframe = create_vbox(frame);
   hbox1 = create_hbox(vboxframe);
-  entry= create_combo_box_entry_liste(Window,hbox1,_(" Type of robital :"),liste,nliste);
+  entry= create_combo_box_entry_liste(WindowWidget,hbox1,_(" Type of robital :"),liste,nliste);
   
   hbox2 = create_hbox(vboxall);
-  gtk_widget_realize(Window);
+  gtk_widget_realize(WindowWidget);
 
-  button = create_button(Window,_("Cancel"));
+  button = create_button(WindowWidget,_("Cancel"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   g_signal_connect_swapped(G_OBJECT(button), "clicked",G_CALLBACK(delete_child),GTK_OBJECT(fp));
   gtk_widget_show (button);
 
-  button = create_button(Window,_("OK"));
+  button = create_button(WindowWidget,_("OK"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   gtk_widget_show (button);
   g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(gene_entry),(gpointer)entry);
@@ -247,17 +247,17 @@ static void c_ref(GtkWidget *bframe,guint del)
 
   vboxframe = create_vbox(frame);
   hbox1 = create_hbox(vboxframe);
-  entry= create_combo_box_entry_liste(Window,hbox1,_("Additional reference symmetries  :"),liste,nliste);
+  entry= create_combo_box_entry_liste(WindowWidget,hbox1,_("Additional reference symmetries  :"),liste,nliste);
   
   hbox2 = create_hbox(vboxall);
-  gtk_widget_realize(Window);
+  gtk_widget_realize(WindowWidget);
 
-  button = create_button(Window,_("Cancel"));
+  button = create_button(WindowWidget,_("Cancel"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   g_signal_connect_swapped(G_OBJECT(button), "clicked",G_CALLBACK(delete_child),GTK_OBJECT(fp));
   gtk_widget_show (button);
 
-  button = create_button(Window,_("OK"));
+  button = create_button(WindowWidget,_("OK"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   gtk_widget_show (button);
   g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(gene_ref),(gpointer)entry);
@@ -309,17 +309,17 @@ static void c_nstate(GtkWidget *bframe,guint del)
 
   vboxframe = create_vbox(frame);
   hbox1 = create_hbox(vboxframe);
-  entry= create_combo_box_entry_liste(Window,hbox1,_(" Number of states :"),liste,nliste);
+  entry= create_combo_box_entry_liste(WindowWidget,hbox1,_(" Number of states :"),liste,nliste);
   
   hbox2 = create_hbox(vboxall);
-  gtk_widget_realize(Window);
+  gtk_widget_realize(WindowWidget);
 
-  button = create_button(Window,_("Cancel"));
+  button = create_button(WindowWidget,_("Cancel"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   g_signal_connect_swapped(G_OBJECT(button), "clicked",G_CALLBACK(delete_child),GTK_OBJECT(fp));
   gtk_widget_show (button);
 
-  button = create_button(Window,_("OK"));
+  button = create_button(WindowWidget,_("OK"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   gtk_widget_show (button);
   g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(gene_nstate),(gpointer)entry);
@@ -367,17 +367,17 @@ static void c_initial_guess (GtkWidget *bframe)
 
   vboxframe = create_vbox(frame);
   hbox1 = create_hbox(vboxframe);
-  entry= create_combo_box_entry_liste(Window,hbox1,_(" The type of the initial orbital guess :"),liste,nliste);
+  entry= create_combo_box_entry_liste(WindowWidget,hbox1,_(" The type of the initial orbital guess :"),liste,nliste);
   
   hbox2 = create_hbox(vboxall);
-  gtk_widget_realize(Window);
+  gtk_widget_realize(WindowWidget);
 
-  button = create_button(Window,_("Cancel"));
+  button = create_button(WindowWidget,_("Cancel"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   g_signal_connect_swapped(G_OBJECT(button), "clicked",G_CALLBACK(delete_child),GTK_OBJECT(fp));
   gtk_widget_show (button);
 
-  button = create_button(Window,_("OK"));
+  button = create_button(WindowWidget,_("OK"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   gtk_widget_show (button);
   g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(gene_guess),(gpointer)entry);
@@ -495,14 +495,14 @@ static void c_one_entry (GtkWidget *bframe,gchar *titre,gchar *mode,gchar *set,g
   gtk_entry_set_text(GTK_ENTRY(entry),set);
 
   hbox2 = create_hbox(vboxall);
-  gtk_widget_realize(Window);
+  gtk_widget_realize(WindowWidget);
 
-  button = create_button(Window,_("Cancel"));
+  button = create_button(WindowWidget,_("Cancel"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   g_signal_connect_swapped(G_OBJECT(button), "clicked",G_CALLBACK(delete_child),GTK_OBJECT(fp));
   gtk_widget_show (button);
 
-  button = create_button(Window,_("OK"));
+  button = create_button(WindowWidget,_("OK"));
   gtk_box_pack_start (GTK_BOX( hbox2), button, TRUE, TRUE, 3);
   gtk_widget_show (button);
   g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(gene_one_entry1),(gpointer)mode);
@@ -747,11 +747,11 @@ static void cw_wave (GtkWidget *bframe,guint del)
 
   vboxframe = create_vbox(frame);
   hbox1 = create_hbox(vboxframe);
-  entry[0]= create_combo_box_entry_liste(Window,hbox1,_("Number of electrons :"),listene,nlistene);
+  entry[0]= create_combo_box_entry_liste(WindowWidget,hbox1,_("Number of electrons :"),listene,nlistene);
   hbox1 = create_hbox(vboxframe);
-  entry[1]= create_combo_box_entry_liste(Window,hbox1,_("Number of the irreducible representation :"),listeirre,nlisteiree);
+  entry[1]= create_combo_box_entry_liste(WindowWidget,hbox1,_("Number of the irreducible representation :"),listeirre,nlisteiree);
   hbox1 = create_hbox(vboxframe);
-  entry[2]= create_combo_box_entry_liste(Window,hbox1,_("2*Spin :"),listespin,nlistespin);
+  entry[2]= create_combo_box_entry_liste(WindowWidget,hbox1,_("2*Spin :"),listespin,nlistespin);
   
   hbox2 = create_hbox(vboxall);
   gtk_widget_realize(fp);
@@ -1118,7 +1118,7 @@ static GtkWidget *CreateListeComm(GtkWidget* BoiteVP)
 	GtkWidget *hbox1;
 	GtkWidget *window1;
 
-	window1 = Window;
+        window1 = WindowWidget;
 	hbox1 = gtk_hbox_new (FALSE, 0);
 	gtk_widget_show (hbox1);
 	gtk_box_pack_start (GTK_BOX (BoiteVP), hbox1, FALSE, TRUE, 10);
@@ -1208,7 +1208,7 @@ void AjoutePageComm(GtkWidget* Win,GtkWidget *NoteBook,CommS *comm)
   gtk_notebook_append_page_menu(GTK_NOTEBOOK(NoteBook),Frame,LabelOnglet, LabelMenu);
 
   window1 = Frame;
-  Window = window1;
+        WindowWidget = window1;
   g_object_set_data (G_OBJECT (window1), "window1", window1);
 
   vbox1 =create_vbox(window1);

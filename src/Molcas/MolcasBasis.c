@@ -340,7 +340,7 @@ static void selectAnAtoms(GtkTreeSelection *selection, gpointer data)
 	*/
 	row = atoi(pathString);
   	numberOfSelectedAtom = row;
-	terr = g_strdup_printf(_("Atom n %d is selected "), row);
+	terr = g_strdup_printf(_("GabeditAtom n %d is selected "), row);
 	gtk_widget_show(labelInfo);
   	gtk_label_set_text( GTK_LABEL(labelInfo),terr);
 	g_free(terr);

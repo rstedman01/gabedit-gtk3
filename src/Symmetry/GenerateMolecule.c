@@ -484,8 +484,8 @@ static gint AddRotnZ(MolSymMolecule* mol, gint nax)
 		if (rr >  atomList->eps*atomList->eps)
 		for(k=1;k<nax;k++)
 		{
-			cr = cos(2*k*M_PI/nax);
-			sr = sin(2*k*M_PI/nax);
+			cr = cos(2*k*G_PI/nax);
+			sr = sin(2*k*G_PI/nax);
 			x = atomList->position[0]*cr-atomList->position[1]*sr;
 			y = atomList->position[0]*sr+atomList->position[1]*cr;
 
@@ -695,7 +695,7 @@ static gint AddProperRotationMolecule(MolSymMolecule* mol, gint nax, gdouble x, 
 	{
 		for(k=1;k<nax;k++)
 		{
-			angle = 2*k*M_PI/nax;
+			angle = 2*k*G_PI/nax;
 			applyProperRotationOneAtom(point, axis, angle, atomList->position, tmpAtomList->position);
 			numberOfAtoms++;
 			symbols[numberOfAtoms-1] = g_strdup(mol->symbol[atomList->type]); 
@@ -799,7 +799,7 @@ static gint AddImproperRotationMolecule(MolSymMolecule* mol, gint nax, gdouble x
 	{
 		for(k=1;k<nax;k++)
 		{
-			angle = 2*k*M_PI/nax;
+			angle = 2*k*G_PI/nax;
 			applyImproperRotationOneAtom(point, axis, angle, atomList->position, tmpAtomList->position);
 			numberOfAtoms++;
 			symbols[numberOfAtoms-1] = g_strdup(mol->symbol[atomList->type]); 

@@ -70,7 +70,7 @@ static void SetMMTypes(Fragment* Frag)
 
 }
 /********************************************************************************/
-static void SetAtom(Atom* A,gchar* symb,gdouble x,gdouble y,gdouble z,gdouble charge)
+static void SetAtom(GabeditAtom* A,gchar* symb,gdouble x,gdouble y,gdouble z,gdouble charge)
 {
 	A->mmType = g_strdup(symb);
 	A->pdbType = g_strdup(symb);
@@ -102,7 +102,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 
 	if ( !strcmp(Name, "Lace" ) ){
 		F.NAtoms =  6 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "HH31", 0.000f, 0.000f, 0.000f,0.000f );
                 SetAtom(&F.Atoms[ 1 ], "CH3", 0.000f, 1.090f, 0.000f,0.000f );
                 SetAtom(&F.Atoms[ 2 ], "HH32", 1.028f, 1.453f, 0.000f,0.000f );
@@ -112,7 +112,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lala" ) ){
 		F.NAtoms =  10 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
         	SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -126,7 +126,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Larg" ) ){
 		F.NAtoms = 24 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -154,7 +154,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lasn" ) ){
 		F.NAtoms =  14 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -172,7 +172,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lasp" ) ){
 		F.NAtoms =  12 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -189,7 +189,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Lash" ) )
 	{
 		F.NAtoms = 13;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "H",-1.174000f,-1.717000f,0.799000f,0.271900f);
 		SetAtom(&F.Atoms[ 1 ] , "N",-0.440000f,-1.888000f,0.054000f,-0.415700f);
 		SetAtom(&F.Atoms[ 2 ] , "HB2",0.481000f,0.068000f,1.497000f,0.048800f);
@@ -206,7 +206,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lcys" ) ){
 		F.NAtoms =  11 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -221,7 +221,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lcyx" ) ){
 		F.NAtoms =  10 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -235,7 +235,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lcym" ) ){
 		F.NAtoms =  10 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.41570f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.27190f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, -0.03510f );
@@ -249,7 +249,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lgln" ) ){
 		F.NAtoms =  17 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -270,7 +270,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lglu" ) ){
 		F.NAtoms =  15 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -290,7 +290,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Lglh" ) )
 	{
 		F.NAtoms = 16;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "O",-1.949000f,-2.791000f,-0.835000f,-0.567900f);
 		SetAtom(&F.Atoms[ 1 ] , "C",-2.296000f,-1.802000f,-0.153000f,0.597300f);
 		SetAtom(&F.Atoms[ 2 ] , "HB2",-0.260000f,-0.468000f,-1.065000f,0.025600f);
@@ -310,7 +310,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lgly" ) ){
 		F.NAtoms =  7 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.027f, 1.358f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.697f, 1.839f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -321,7 +321,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lhid" ) ){
 		F.NAtoms =  17 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -342,7 +342,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lhie" ) ){
 		F.NAtoms =  17;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -363,7 +363,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lhip" ) ){
 		F.NAtoms = 18;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -385,7 +385,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lhis" ) ){
 		F.NAtoms =  18;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -407,7 +407,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lile" ) ){
 		F.NAtoms =  19;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -430,7 +430,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lleu" ) ){
 		F.NAtoms =  19;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -453,7 +453,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Llys" ) ){
 		F.NAtoms =  22;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -480,7 +480,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Llyn" ) )
 	{
 		F.NAtoms = 21;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "O",1.729000f,2.855000f,-1.324000f,-0.567900f);
 		SetAtom(&F.Atoms[ 1 ] , "HB2",-0.594000f,1.168000f,-0.595000f,0.034000f);
 		SetAtom(&F.Atoms[ 2 ] , "HD2",-2.511000f,-0.662000f,-0.388000f,0.011500f);
@@ -505,7 +505,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lmet" ) ){
 		F.NAtoms =  17;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -526,7 +526,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lnme" ) ){
 		F.NAtoms =  6;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", -1.227f, 0.728f, 2.125f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", -1.124f, -0.261f, 1.947f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CH3", -1.918f, 1.159f, 3.323f, 0.03502f );
@@ -536,14 +536,14 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lnhe" ) ){
 		F.NAtoms =  3;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 1.074f, -6.424f, -3.287f, -0.624f );
 		SetAtom(&F.Atoms[ 1 ], "H1", 0.494f, -6.652f, -2.492f, 0.361f );
                 SetAtom(&F.Atoms[ 2 ], "H2", 1.252f, -7.112f, -4.004f, 0.361f );
 	}
 	else if ( !strcmp(Name, "Lphe" ) ){
 		F.NAtoms =  20;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -567,7 +567,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lpro" ) ){
 		F.NAtoms =  14;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 1.308,  -0.309, -0.502, -0.229f );
                 SetAtom(&F.Atoms[ 1 ], "CA",  0.530,  0.966,  -0.441, 0.035f );
                 SetAtom(&F.Atoms[ 2 ], "HA", 0.207, 1.291,  -1.428, 0.048f );
@@ -585,7 +585,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lser" ) ){
 		F.NAtoms =  11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -600,7 +600,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lthr" ) ){
 		F.NAtoms =  14;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -618,7 +618,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Ltrp" ) ){
 		F.NAtoms =  24;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -646,7 +646,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Ltyr" ) ){
 		F.NAtoms =  21;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -671,7 +671,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Lval" ) ){
 		F.NAtoms =  16;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -692,7 +692,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Lnmet" ) )
 	{
 		F.NAtoms = 19;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "H1",0.908681f,-1.794836f,2.943187f,0.198400f);
 		SetAtom(&F.Atoms[ 1 ] , "H3",2.228918f,-1.389931f,1.627620f,0.198400f);
 		SetAtom(&F.Atoms[ 2 ] , "H2",1.146678f,0.003813f,2.153970f,0.198400f);
@@ -716,7 +716,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Lnser" ) )
 	{
 		F.NAtoms = 13;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "O",-2.281000f,1.023000f,-0.519000f,-0.572200f);
 		SetAtom(&F.Atoms[ 1 ] , "HB2",-0.045000f,-0.256000f,1.687000f,0.027300f);
 		SetAtom(&F.Atoms[ 2 ] , "C",-1.657000f,-0.037000f,-0.519000f,0.616300f);
@@ -734,7 +734,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Lroh" ) )
 	{
 		F.NAtoms = 26;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "HA",2.974000f,-0.251000f,-1.589000f,-0.013000f);
 		SetAtom(&F.Atoms[ 1 ] , "HG2",0.512000f,0.260000f,-1.433000f,0.078100f);
 		SetAtom(&F.Atoms[ 2 ] , "HB1",1.407000f,-1.903000f,-0.628000f,0.162200f);
@@ -764,7 +764,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dace" ) ){
 		F.NAtoms =  6;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "HH31", 0.000f, 0.000f, 0.000f,0.000f );
                 SetAtom(&F.Atoms[ 1 ], "CH3", 0.000f, 1.090f, 0.000f,0.000f );
                 SetAtom(&F.Atoms[ 2 ], "HH32", 1.028f, 1.453f, 0.000f,0.000f );
@@ -774,7 +774,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dala" ) ){
 		F.NAtoms =  10;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -788,7 +788,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Darg" ) ){
 		F.NAtoms =  24;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -816,7 +816,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dasn" ) ){
 		F.NAtoms =  14;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -834,7 +834,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dasp" ) ){
 		F.NAtoms =  12;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -851,7 +851,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Dash" ) )
 	{
 		F.NAtoms = 13;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "OD1",0.300000f,-1.105000f,-4.076000f,-0.555400f);
 		SetAtom(&F.Atoms[ 1 ] , "HB1",0.597000f,0.562000f,-1.945000f,0.048800f);
 		SetAtom(&F.Atoms[ 2 ] , "HD2",1.746000f,-2.820000f,-3.224000f,0.474700f);
@@ -868,7 +868,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dcys" ) ){
 		F.NAtoms =  11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -883,7 +883,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dcyx" ) ){
 		F.NAtoms =  10;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -897,7 +897,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dcym" ) ){
 		F.NAtoms =  10;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.41570f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.27190f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, -0.03510f );
@@ -911,7 +911,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dgln" ) ){
 		F.NAtoms = 17;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -932,7 +932,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dglu" ) ){
 		F.NAtoms =  15;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -952,7 +952,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Dglh" ) )
 	{
 		F.NAtoms = 16;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "HG1",-0.822000f,1.476000f,1.725000f,0.043000f);
 		SetAtom(&F.Atoms[ 1 ] , "OE1",-2.016000f,2.827000f,3.246000f,-0.583800f);
 		SetAtom(&F.Atoms[ 2 ] , "HA",-0.795000f,-0.376000f,0.062000f,0.077900f);
@@ -975,7 +975,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dgly" ) ){
 		F.NAtoms =  7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.027f, 1.358f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.697f, 1.839f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -986,7 +986,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dhid" ) ){
 		F.NAtoms =  17;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1007,7 +1007,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dhie" ) ){
 		F.NAtoms =  17;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1028,7 +1028,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dhip" ) ){
 		F.NAtoms =  18;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1050,7 +1050,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dhis" ) ){
 		F.NAtoms =  18;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1072,7 +1072,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dile" ) ){
 		F.NAtoms =  19;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1095,7 +1095,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dleu" ) ){
 		F.NAtoms = 19;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1118,7 +1118,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dlys" ) ){
 		F.NAtoms =  22;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1145,7 +1145,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Dlyn" ) )
 	{
 		F.NAtoms = 21;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "HZ2",1.325000f,-3.726000f,3.419000f,0.386000f);
 		SetAtom(&F.Atoms[ 1 ] , "HZ1",1.239000f,-2.700000f,1.729000f,0.386000f);
 		SetAtom(&F.Atoms[ 2 ] , "NZ",1.916000f,-3.280000f,2.501000f,-1.035800f);
@@ -1170,7 +1170,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dmet" ) ){
 		F.NAtoms =  17;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1191,7 +1191,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dnme" ) ){
 		F.NAtoms =  6;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", -1.227f, 0.728f, 2.125f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", -1.124f, -0.261f, 1.947f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CH3", -1.918f, 1.159f, 3.323f, 0.03502f );
@@ -1201,14 +1201,14 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dnhe" ) ){
 		F.NAtoms =  3;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 1.074f, -6.424f, -3.287f, -0.624f );
 		SetAtom(&F.Atoms[ 1 ], "H1", 0.494f, -6.652f, -2.492f, 0.361f );
                 SetAtom(&F.Atoms[ 2 ], "H2", 1.252f, -7.112f, -4.004f, 0.361f );
 	}
 	else if ( !strcmp(Name, "Dphe" ) ){
 		F.NAtoms =  20;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1232,7 +1232,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dpro" ) ){
 		F.NAtoms =  14;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 
 
 
@@ -1253,7 +1253,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dser" ) ){
 		F.NAtoms =  11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1268,7 +1268,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dthr" ) ){
 		F.NAtoms =  14;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1286,7 +1286,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dtrp" ) ){
 		F.NAtoms =  24;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1314,7 +1314,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dtyr" ) ){
 		F.NAtoms =  21;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1339,7 +1339,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Dval" ) ){
 		F.NAtoms =  16;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
                 SetAtom(&F.Atoms[ 0 ], "N", 2.044f, 1.352f, 0.000f, -0.463f );
                 SetAtom(&F.Atoms[ 1 ], "H", 1.721f, 1.837f, 0.824f, 0.252f );
                 SetAtom(&F.Atoms[ 2 ], "CA", 1.522f, 0.000f, 0.000f, 0.035f );
@@ -1360,7 +1360,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Dnmet" ) )
 	{
 		F.NAtoms = 19;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "HA",0.339414f,-0.885395f,0.470621f,0.111600f);
 		SetAtom(&F.Atoms[ 1 ] , "H2",1.914305f,-0.102627f,-1.243780f,0.198400f);
 		SetAtom(&F.Atoms[ 2 ] , "HG2",-0.365841f,-3.125766f,1.851430f,0.029200f);
@@ -1385,7 +1385,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Dnser" ) )
 	{
 		F.NAtoms = 13;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "HG",0.088000f,-0.452000f,-3.739000f,0.423900f);
 		SetAtom(&F.Atoms[ 1 ] , "OG",-0.204000f,-0.024000f,-2.930000f,-0.671400f);
 		SetAtom(&F.Atoms[ 2 ] , "HB2",-0.045000f,-1.836000f,-1.814000f,0.027300f);
@@ -1403,7 +1403,7 @@ Fragment GetFragmentPPDNonTerminal(gchar* Name)
 	else if ( !strcmp(Name, "Droh" ) )
 	{
 		F.NAtoms = 26;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "HH21",-3.014000f,2.568000f,-1.738000f,0.511600f);
 		SetAtom(&F.Atoms[ 1 ] , "HE",-1.768000f,1.277000f,-0.439000f,0.383700f);
 		SetAtom(&F.Atoms[ 2 ] , "HG1",-0.992000f,-0.793000f,0.861000f,0.126700f);
@@ -1482,7 +1482,7 @@ Fragment GetFragmentPPDCTerminal(gchar* Name)
 		return F;
 	}
 	F.NAtoms = FNonTerm.NAtoms+1;
-	F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+	F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 	for(i=0;i<FNonTerm.NAtoms;i++)
 	{
 		if(i!=O) SetAtom(&F.Atoms[ i ] , FNonTerm.Atoms[i].pdbType, 0.0f,0.0f,0.0f, FNonTerm.Atoms[i].Charge);
@@ -1566,7 +1566,7 @@ Fragment GetFragmentPPDNTerminal(gchar* Name)
 		return F;
 	}
 	F.NAtoms = FNonTerm.NAtoms+2;
-	F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+	F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 	for(i=0;i<FNonTerm.NAtoms;i++)
 	{
 		if(i!=H) SetAtom(&F.Atoms[ i ] , FNonTerm.Atoms[i].pdbType, 0.0f,0.0f,0.0f, FNonTerm.Atoms[i].Charge);
@@ -1704,7 +1704,7 @@ Fragment GetFragmentPPDCOOHTerminal(gchar* Name)
 	chargeC *= scaleCH;
 
 	F.NAtoms = FNonTerm.NAtoms+2;
-	F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+	F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 	for(j=0;j<3;j++) vCO[j] = 0;
 	for(i=0;i<FNonTerm.NAtoms;i++)
 	{
@@ -1845,7 +1845,7 @@ Fragment GetFragmentPPDNH2Terminal(gchar* Name)
 	}
 
 	F.NAtoms = FNonTerm.NAtoms+1;
-	F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+	F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 	for(i=0;i<FNonTerm.NAtoms;i++)
 	{
 		SetAtom(&F.Atoms[ i ] , FNonTerm.Atoms[i].pdbType, 0.0f,0.0f,0.0f, FNonTerm.Atoms[i].Charge);

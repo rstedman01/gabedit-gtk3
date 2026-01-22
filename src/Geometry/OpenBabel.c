@@ -20,7 +20,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../../Config.h"
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -641,8 +641,8 @@ void create_babel_dialogue()
 	inputTextEditor = g_object_get_data (G_OBJECT (frame), "TextEditor");
 	gabedit_text_set_editable (GABEDIT_TEXT (inputTextEditor), TRUE);
 	frameInput = frame;
-	set_base_style(inputTextEditor,0,0,0);
-	set_text_style(inputTextEditor,0,256*250,0);
+	set_base_color(inputTextEditor,0,0,0);
+	set_text_color(inputTextEditor,0,256*250,0);
 	gtk_table_attach(GTK_TABLE(table),hbox,0,1,0,1,
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
@@ -713,8 +713,8 @@ void create_babel_dialogue()
 	gabedit_text_set_editable (GABEDIT_TEXT (outputTextEditor), TRUE);
 	frameOutput = frame;
 
-	set_base_style(outputTextEditor,0,0,0);
-	set_text_style(outputTextEditor,256*250,256*250,256*250);
+	set_base_color(outputTextEditor,0,0,0);
+	set_text_color(outputTextEditor,256*250,256*250,256*250);
 	gtk_table_attach(GTK_TABLE(table),hbox,2,3,0,1,
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
                   (GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,
@@ -724,8 +724,8 @@ void create_babel_dialogue()
 	gtk_box_pack_start (GTK_BOX(vbox2), hbox, TRUE, TRUE, 5);
 	errorEditor = create_text_editor(hbox);
 	set_font (errorEditor,FontsStyleData.fontname);
-	set_base_style(errorEditor,0,256*50,256*50);
-	set_text_style(errorEditor,256*250,256*250,256*250);
+	set_base_color(errorEditor,0,256*50,256*50);
+	set_text_color(errorEditor,256*250,256*250,256*250);
 	g_signal_connect(G_OBJECT(button), "clicked",G_CALLBACK(conversion_file),fp);
 
 	gtk_widget_show_all(fp);

@@ -967,7 +967,7 @@ static GtkWidget* new_alpha_list(GtkWidget *hboxall)
   	gtk_box_pack_start(GTK_BOX (vbox), scr,TRUE, TRUE, 1);
   	gtk_container_add(GTK_CONTAINER(scr),gtklist);
 
-	set_base_style(gtklist,55000,55000,55000);
+	set_base_color(gtklist,55000,55000,55000);
 
 
 	for(i=0;i<N;i++) g_free(sym[i]);
@@ -1020,7 +1020,7 @@ static GtkWidget* new_beta_list(GtkWidget *hboxall)
 	gtk_widget_set_size_request(scr,widall,(gint)(ScreenHeightD*WIDTHSCR));
   	gtk_box_pack_start(GTK_BOX (vbox), scr,TRUE, TRUE, 1);
   	gtk_container_add(GTK_CONTAINER(scr),gtklist);
-	set_base_style(gtklist,55000,55000,55000);
+	set_base_color(gtklist,55000,55000,55000);
   	gtk_widget_show (scr);
   	gtk_widget_show (gtklist);
 

@@ -20,7 +20,7 @@ DEALINGS IN THE SOFTWARE.
 #define __GABEDIT_ENERGIESCURVES_H__
 
 extern gboolean GeomConvIsOpen;
-void create_energies_curves(DataGeomConv*,gint );
+// void create_energies_curves(DataGeomConv*,gint );
 
 typedef struct _EnergiesCurvesData 
 {

@@ -1401,26 +1401,26 @@ static void set_button_color(GtkObject *b,gpointer *data)
   gtk_widget_show_all (GTK_WIDGET(button));
   if(strstr(Type,"Data _Back"))
   {
-  	set_base_style(text,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
+  	set_base_color(text,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
         FontsStyleData.BaseColor  = ColorTemp;
   }
   else if(strstr(Type,"Data _Fore"))
   {
-  	set_text_style(text,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
+  	set_text_color(text,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
         FontsStyleData.TextColor  = ColorTemp;
   }
   if(strstr(Type,"Result _Back"))
   {
-  	set_base_style(textresult,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
-  	set_base_style(TextOutput,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
-  	set_base_style(TextError,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
+  	set_base_color(textresult,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
+  	set_base_color(TextOutput,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
+  	set_base_color(TextError,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
         FontsStyleResult.BaseColor  = ColorTemp;
   }
   else if(strstr(Type,"Result _Fore"))
   {
-  	set_text_style(textresult,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
-  	set_text_style(TextOutput,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
-  	set_text_style(TextError,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
+  	set_text_color(textresult,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
+  	set_text_color(TextOutput,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
+  	set_text_color(TextError,ColorTemp.red,ColorTemp.green,ColorTemp.blue);
         FontsStyleResult.TextColor  = ColorTemp;
   }
   else if(strstr(Type,"Label_Fore"))
@@ -1444,7 +1444,7 @@ static void on_color_dialog_response(GtkDialog* dlg, gint response_id, gpointer 
 /********************************************************************************/
 static void open_color_dlg(GtkWidget *button,gpointer tcolor)
 {
-	GtkWidget* ColorDlg = gtk_color_chooser_dialog_new(_("Set Atom Color"), GTK_WINDOW(Wins));
+	GtkWidget* ColorDlg = gtk_color_chooser_dialog_new(_("Set GabeditAtom Color"), GTK_WINDOW(Wins));
 
   if (tcolor) {
       GdkColor* c = (GdkColor*)tcolor;

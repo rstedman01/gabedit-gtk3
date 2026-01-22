@@ -240,7 +240,7 @@ gint find_energy_mopac_aux(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k;
 	}
-	create_energies_curves(GeomConv,Ncalculs);
+	// create_energies_curves(GeomConv,Ncalculs);
 	g_free(t);
 	g_free(temp);
 	g_free(tmp);
@@ -370,7 +370,7 @@ void find_energy_mopac_irc_output(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k;
 	}
-	create_energies_curves(GeomConv,Ncalculs);
+	//create_energies_curves(GeomConv,Ncalculs);
 	g_free(t);
 	g_free(elost);
 	g_free(potential);
@@ -501,7 +501,7 @@ void find_energy_mopac_scan_output(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k;
 	}
-	create_energies_curves(GeomConv,Ncalculs);
+	// create_energies_curves(GeomConv,Ncalculs);
 	g_free(t);
 	g_free(var1);
 	g_free(var2);
@@ -684,7 +684,7 @@ void find_energy_mpqc_output(gchar* NomFichier)
 		}
 		k++;
 	}
-	create_energies_curves(GeomConv,Ncalculs);
+	// create_energies_curves(GeomConv,Ncalculs);
 	g_free(t);
 	g_free(temp);
 }
@@ -800,7 +800,7 @@ static void find_energy_xyz(gchar* fileName)
 		}
 	}
 	if(energies) g_free(energies);
-	create_energies_curves(GeomConv,Ncalculs);
+	//create_energies_curves(GeomConv,Ncalculs);
 }
 /*********************************************************************/
 DataGeomConv init_geom_gauss_conv(gchar *namefile)
@@ -968,7 +968,7 @@ void find_energy_dalton_output(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k;
 	}
-	create_energies_curves(GeomConv,Ncalculs);
+	//create_energies_curves(GeomConv,Ncalculs);
 	g_free(t);
 	g_free(temp);
 	g_free(tmp);
@@ -1108,7 +1108,7 @@ void find_energy_gamess_output(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k+1;
 	}
-	create_energies_curves(GeomConv,Ncalculs);
+	//create_energies_curves(GeomConv,Ncalculs);
 	g_free(t);
 	g_free(tmp);
 	g_free(maxgrad);
@@ -1231,7 +1231,7 @@ void find_energy_gamess_output_heat(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k+1;
 	}
-	create_energies_curves(GeomConv,Ncalculs);
+	//create_energies_curves(GeomConv,Ncalculs);
 	g_free(t);
 	g_free(tmp);
 	g_free(maxgrad);
@@ -1337,7 +1337,7 @@ void find_energy_gamess_irc(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k;
 	}
-	create_energies_curves(GeomConv,Ncalculs);
+	//create_energies_curves(GeomConv,Ncalculs);
 	g_free(t);
 	g_free(tmp);
 }
@@ -1479,7 +1479,7 @@ void find_energy_gauss_standard_output(gchar* NomFichier)
 	}
         k++;
   }
-  create_energies_curves(GeomConv,Ncalculs);
+  //create_energies_curves(GeomConv,Ncalculs);
   g_free(t);
   g_free(temp);
 }
@@ -1645,7 +1645,7 @@ void find_energy_orca_output(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k;
 	}
-  create_energies_curves(GeomConv,Ncalculs);
+  // create_energies_curves(GeomConv,Ncalculs);
   g_free(t);
   g_free(temp);
 }
@@ -1788,7 +1788,7 @@ void find_energy_vasp_outcar(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k;
 	}
-  create_energies_curves(GeomConv,Ncalculs);
+  // create_energies_curves(GeomConv,Ncalculs);
   g_free(t);
   g_free(temp);
 }
@@ -1943,7 +1943,7 @@ void find_energy_vasp_xml(gchar* NomFichier)
 		k++;
 		GeomConv[i].NumGeom[j] = k;
 	}
-	create_energies_curves(GeomConv, Ncalculs);
+	// create_energies_curves(GeomConv, Ncalculs);
 	g_free(t);
 }
 /*************************************************************************************/
@@ -2103,7 +2103,7 @@ void find_energy_molpro_log(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k;
 	}
-  create_energies_curves(GeomConv,Ncalculs);
+  // create_energies_curves(GeomConv,Ncalculs);
   g_free(t);
   g_free(temp);
 }
@@ -2227,7 +2227,7 @@ void find_energy_qchem_log(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k;
 	}
-  create_energies_curves(GeomConv,Ncalculs);
+  // create_energies_curves(GeomConv,Ncalculs);
   g_free(t);
   g_free(temp);
 }
@@ -2364,7 +2364,7 @@ void find_energy_nwchem_log(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k;
 	}
-  create_energies_curves(GeomConv,Ncalculs);
+  // create_energies_curves(GeomConv,Ncalculs);
   g_free(t);
   g_free(temp);
 }
@@ -2523,7 +2523,7 @@ void find_energy_psicode_log(gchar* NomFichier)
 	   k++;
 	   GeomConv[i].NumGeom[j] = k;
 	}
-  create_energies_curves(GeomConv,Ncalculs);
+  // create_energies_curves(GeomConv,Ncalculs);
   g_free(t);
   g_free(temp);
 }
@@ -2679,7 +2679,7 @@ void find_energy_gauss_scanOpt_output(gchar* NomFichier)
 		}
 	}
 	*/
-	create_energies_curves(GeomConv,Ncalculs);
+	// create_energies_curves(GeomConv,Ncalculs);
 	g_free(t);
 	g_free(temp);
 	for(i=0;(gint)i<nTypes;i++) if(props[i]) g_free(props[i]);
@@ -2862,7 +2862,7 @@ void find_energy_gauss_ircOpt_output(gchar* NomFichier)
 			}
 		}
 	}
-	create_energies_curves(GeomConv,Ncalculs);
+	// create_energies_curves(GeomConv,Ncalculs);
 	g_free(t);
 	g_free(temp);
 	for(i=0;(gint)i<nTypes;i++) if(props[i]) g_free(props[i]);
@@ -3054,7 +3054,7 @@ void find_energy_molden_gabedit(gchar* FileName, GabEditTypeFile type)
 			GeomConv[i].NumGeom[j] = k;
 		}
 	}
-	create_energies_curves(GeomConv,Ncalculs);
+	// create_energies_curves(GeomConv,Ncalculs);
 }
 /*************************************************************************************/
 static DataGeomConv init_geom_gabedit_geoms(gchar *fileName, gint nLabels, gchar** labels)
@@ -3216,7 +3216,7 @@ static gint find_energy_gabedit_geoms(gchar* FileName)
 			GeomConv[i].NumGeom[j] = k;
 		}
 	}
-	create_energies_curves(GeomConv,Ncalculs);
+	// create_energies_curves(GeomConv,Ncalculs);
 	return 0;
 }
 /*********************************************************************/

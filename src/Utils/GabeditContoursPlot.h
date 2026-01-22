@@ -24,8 +24,8 @@ DEALINGS IN THE SOFTWARE.
 #include "../Compat/gabedit_gdk_compat.h"
 
 
-#include <gdk/gdk.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

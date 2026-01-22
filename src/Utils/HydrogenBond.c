@@ -473,7 +473,7 @@ static GtkTreeView* addListOfAtoms(GtkWidget *vbox, GtkUIManager *manager)
 		gtk_tree_view_append_column (GTK_TREE_VIEW (treeView), column);
 	}
   
-  	set_base_style(GTK_WIDGET(treeView),55000,55000,55000);
+  	set_base_color(GTK_WIDGET(treeView),55000,55000,55000);
 	gtk_widget_show (GTK_WIDGET(treeView));
 
 	g_signal_connect (treeView, "button_press_event", G_CALLBACK (event_dispatcher2), manager);

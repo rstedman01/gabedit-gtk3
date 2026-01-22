@@ -20,7 +20,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../../Config.h"
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -851,7 +851,7 @@ static void open_color_dlg_atoms(GtkWidget *win,gpointer tdata)
 	v[0] =style->bg[0].red/65535.0;
 	v[1] =style->bg[0].green/65535.0;
 	v[2] =style->bg[0].blue/65535.0;
-	ColorDlg = (GtkColorSelectionDialog *)gtk_color_selection_dialog_new("Set Atom Color");
+	ColorDlg = (GtkColorSelectionDialog *)gtk_color_selection_dialog_new("Set GabeditAtom Color");
 	gtk_color_selection_set_current_color (GTK_COLOR_SELECTION(ColorDlg), &style->bg[0]);
 
 	gtk_window_set_transient_for(GTK_WINDOW(ColorDlg),GTK_WINDOW(data->Window));
@@ -1164,7 +1164,7 @@ static GtkWidget* create_isotope_list(GtkWidget *vbox, gint numAtom)
 	}
 	gtk_container_add(GTK_CONTAINER(scr),list);
   
-	set_base_style(list,55000,55000,55000);
+	set_base_color(list,55000,55000,55000);
 	gtk_widget_show (list);
 #undef  NC
 	appendList(list,numAtom);
@@ -1301,7 +1301,7 @@ static void dialog_set_atom_prop(GtkWidget *w,gpointer data)
   Add_Label_Table(Table,"eV",i,3);
 
   i++;
-  Add_Label_Table(Table,_("Atom Color"),i,0);
+  Add_Label_Table(Table,_("GabeditAtom Color"),i,0);
   Add_Label_Table(Table,":",i,1);
 
   Bouton = gtk_button_new_with_label(_("Set Color"));
@@ -1349,14 +1349,23 @@ static void dialog_set_atom_prop(GtkWidget *w,gpointer data)
 /******************************************************************/
 GtkStyle *set_button_style( GtkStyle *button_style,GtkWidget *button,gchar *Symb)
 {
-          SAtomsProp Pro=prop_atom_get(Symb);
-	  GtkStyle *style;
-          style =  gtk_style_copy(button_style); 
-          style->bg[0].red=Pro.color.red;
-          style->bg[0].green=Pro.color.green;
-          style->bg[0].blue=Pro.color.blue;
-	  gtk_widget_set_style(button, style );
-          return style;
+	SAtomsProp Pro = prop_atom_get(Symb);
+	GtkCssProvider *provider;
+	gchar *css;
+	
+	provider = gtk_css_provider_new();
+	css = g_strdup_printf("button { background-color: rgb(%d,%d,%d); }",
+	                      Pro. color.red * 255 / 65535,
+	                      Pro.color. green * 255 / 65535,
+	                      Pro. color.blue * 255 / 65535);
+	gtk_css_provider_load_from_data(provider, css, -1, NULL);
+	gtk_style_context_add_provider(gtk_widget_get_style_context(button),
+	                                GTK_STYLE_PROVIDER(provider),
+	                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	g_object_unref(provider);
+	g_free(css);
+	
+	return NULL;
 }
 /******************************************************************/
 gchar*** get_periodic_table()

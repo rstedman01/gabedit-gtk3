@@ -932,9 +932,9 @@ gboolean readGeometryFromGenericOutputFile(MoleculeSE* molecule, char* namefile)
 			if (l==2) symbol[1]=tolower(symbol[1]);
 
 			mol->atoms[i].prop = prop_atom_get(symbol);
-			mol->atoms[i].mmType=strdup(mmType);
-			mol->atoms[i].pdbType=strdup(pdbType);
-			mol->atoms[i].residueName=strdup(residueName);
+			mol->atoms[i].mmType=g_strdup(mmType);
+			mol->atoms[i].pdbType=g_strdup(pdbType);
+			mol->atoms[i].residueName=g_strdup(residueName);
 			mol->atoms[i].N=i+1;
 			mol->atoms[i].layer=layer;
 			mol->atoms[i].variable=variable;

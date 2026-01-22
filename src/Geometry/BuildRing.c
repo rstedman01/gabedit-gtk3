@@ -212,9 +212,9 @@ void build_ring_molecule_dlg()
   vboxframe = create_vbox(frame);
 
 
-  /* The Atom Entry */
+  /* The GabeditAtom Entry */
   hbox=create_hbox_false(vboxframe);
-  Entries[0] = create_label_entry(hbox,_("Atom                       : "),(gint)(ScreenHeight*0.2),(gint)(ScreenHeight*0.15));
+  Entries[0] = create_label_entry(hbox,_("GabeditAtom                       : "),(gint)(ScreenHeight*0.2),(gint)(ScreenHeight*0.15));
   gtk_entry_set_text(GTK_ENTRY(Entries[0]),Symb);
   gtk_editable_set_editable((GtkEditable*) Entries[0],FALSE);
 

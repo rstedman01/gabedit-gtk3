@@ -43,7 +43,7 @@ void save_ao_orbitals_gabedit_format(FILE* file)
 		fprintf(file," Ene= %lf\n",GeomOrb[i].EnerAlphaOrbitals[j]);
 		fprintf(file," Spin= Alpha\n");
 		fprintf(file," Occup= %lf\n",GeomOrb[i].OccAlphaOrbitals[j]);
-		fprintf(file," Atom= %s\n",GeomOrb[i].Symb);
+		fprintf(file," GabeditAtom= %s\n",GeomOrb[i].Symb);
 		for(k=0;k<GeomOrb[i].NAOrb;k++)
 			fprintf(file,"     %d    %lf\n",k+1, GeomOrb[i].CoefAlphaOrbitals[j][k]);
 	}
@@ -53,7 +53,7 @@ void save_ao_orbitals_gabedit_format(FILE* file)
 		fprintf(file," Ene= %lf\n",GeomOrb[i].EnerBetaOrbitals[j]);
 		fprintf(file," Spin= Beta\n");
 		fprintf(file," Occup= %lf\n",GeomOrb[i].OccBetaOrbitals[j]);
-		fprintf(file," Atom= %s\n",GeomOrb[i].Symb);
+		fprintf(file," GabeditAtom= %s\n",GeomOrb[i].Symb);
 		for(k=0;k<GeomOrb[i].NAOrb;k++)
 			fprintf(file,"     %d    %lf\n",k+1, GeomOrb[i].CoefBetaOrbitals[j][k]);
 	}
@@ -365,7 +365,7 @@ gboolean read_atomic_orbitals_in_gabedit(gchar *fileName,gint itype)
 
 				if( strstr(t,"Sym") != 0)
 					sscanf(begin,"%s",sym);
-				if( strstr(t,"Atom") != 0)
+				if( strstr(t,"GabeditAtom") != 0)
 					sscanf(begin,"%s",symb);
     				{ char* e = fgets(t,taille,fd);}
 				

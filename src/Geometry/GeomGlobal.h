@@ -126,6 +126,7 @@ extern gint NSA[4];
 extern gint TotalCharges[3];
 extern gint SpinMultiplicities[3];
 extern gboolean RebuildGeom;
+extern gboolean ShowBoxGeom;
 
 
 

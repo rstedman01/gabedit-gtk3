@@ -336,7 +336,7 @@ gboolean crystalloAddTvectorsToGeom(Crystal* crystal)
 {
 	gdouble calpha, cbeta, cgamma, sgamma;
 	gdouble cx,cy;
-	gdouble conv=M_PI/180.0;
+	gdouble conv=G_PI/180.0;
 
 	CrystalloAtom* crystalAtom = NULL;
 	if(!crystal) return FALSE;
@@ -763,7 +763,7 @@ static gdouble angle(gdouble v1[], gdouble v2[])
 	if (cosa>1.0-prec) cosa = 1.0-prec;
 	if (cosa<-1.0+prec) cosa = -1.0+prec;
 	/* fprintf(stderr,"d1=%f d2=%f cosa=%f\n",d1,d2,cosa);*/
-	return acos(cosa)*180.0/M_PI;
+	return acos(cosa)*180.0/G_PI;
 }
 static void cross(gdouble v1[], gdouble v2[], gdouble cross[])
 {
@@ -850,7 +850,7 @@ gboolean crystalloComputeLengthsAndAngles(Crystal* crystal)
 {
 	gdouble calpha, cbeta, cgamma, sgamma;
 	gdouble cx,cy;
-	gdouble conv=M_PI/180.0;
+	gdouble conv=G_PI/180.0;
 	gint nTv;
 	gdouble Tv[3][3];
 
@@ -1687,8 +1687,8 @@ gboolean generateExtendedPearsonSymbol(char extendedPearsonSymbol[], Crystal* cr
 	if(crystalclass=='h' && latticetype=='R' && a*sqrt(3.0)>c*sqrt(2.0) ) eType='2';
 	if(crystalclass=='m' && latticetype=='C' )
 	{
-		gdouble sbeta=sin(crystal->beta/180.0*M_PI);
-		gdouble cbeta=cos(crystal->beta/180.0*M_PI);
+		gdouble sbeta=sin(crystal->beta/180.0*G_PI);
+		gdouble cbeta=cos(crystal->beta/180.0*G_PI);
 		/*
 			gdouble r=a*a*sbeta*sbeta/b/b-a/c*cbeta;
 			fprintf(stderr,"a=%f b=%f c=%f alpha=%f beta=%f gamma=%f r=%f\n",

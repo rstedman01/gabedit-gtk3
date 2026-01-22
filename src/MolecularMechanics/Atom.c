@@ -1,4 +1,4 @@
-/* Atom.c */
+/* GabeditAtom.c */
 /**********************************************************************************************************
 Copyright (c) 2002-2021 Abdul-Rahman Allouche. All rights reserved
 

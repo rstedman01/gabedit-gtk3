@@ -2099,7 +2099,7 @@ static void save_atom_pdb_file(FILE* file,
 		residueNumber = 9999;
 
 
-	fprintf(file, "%-6s", localName); /* Atom or HETATM */
+	fprintf(file, "%-6s", localName); /* GabeditAtom or HETATM */
 	fprintf(file, "%-6d", atomNumber);
 	fprintf(file, "%-4s", localAtomType);
 	fprintf(file, "%-4s", localResidueName);
@@ -3784,7 +3784,7 @@ static GtkTreeView* addList(GtkWidget* vbox, GtkUIManager* manager)
 	}
 
 	gtk_tree_view_set_reorderable(treeView, TRUE);
-	set_base_style(GTK_WIDGET(treeView), 55000, 55000, 55000);
+	set_base_color(GTK_WIDGET(treeView), 55000, 55000, 55000);
 	gtk_widget_show(GTK_WIDGET(treeView));
 	g_signal_connect(G_OBJECT(treeView), "button_press_event", G_CALLBACK(event_dispatcher), manager);
 	return treeView;

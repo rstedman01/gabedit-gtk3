@@ -935,18 +935,18 @@ static void DialogueDelete(GtkWidget *w)
 
   if (NRatoms <1)
   {
-    Message(_(" No Atom to delete !"),_("Warning"),TRUE);
+    Message(_(" No GabeditAtom to delete !"),_("Warning"),TRUE);
     return ;
   }
     if (atoi(pathSelectedAtom) <0)
   {
-    Message(_(" Please Select Your Atom to delete!"),_("Warning"),TRUE);
+    Message(_(" Please Select Your GabeditAtom to delete!"),_("Warning"),TRUE);
     return ;
   }
 
 
   Dialogue = gtk_dialog_new();
-  gtk_window_set_title(GTK_WINDOW(Dialogue),_("Delete Atom"));
+  gtk_window_set_title(GTK_WINDOW(Dialogue),_("Delete GabeditAtom"));
   gtk_window_set_modal (GTK_WINDOW (Dialogue), TRUE);
   gtk_window_set_position(GTK_WINDOW(Dialogue),GTK_WIN_POS_CENTER);
 
@@ -1098,7 +1098,7 @@ void ButtonBar(GtkWidget *BoiteV)
   gtk_widget_show (hbox);
   gtk_box_pack_start (GTK_BOX (BoiteV), hbox, FALSE, FALSE, 5);
 
-  button = gtk_button_new_with_label (_(" New Atom "));
+  button = gtk_button_new_with_label (_(" New GabeditAtom "));
 
   g_signal_connect(G_OBJECT(button), "clicked",(GCallback)DialogueAdd,Wins);
  
@@ -1106,7 +1106,7 @@ void ButtonBar(GtkWidget *BoiteV)
   gtk_widget_show (button);
 
 
-  button = gtk_button_new_with_label (_(" Delete Atom "));
+  button = gtk_button_new_with_label (_(" Delete GabeditAtom "));
 
   g_signal_connect(G_OBJECT(button), "clicked", (GCallback)DialogueDelete,NULL);
 

@@ -1062,7 +1062,7 @@ static void readMolcasGeometryXYZFromInputFile(gchar* fileName)
 	printf("TODEL Basis List\n");
 	for(i=0;i<numberOfBasis;i++)
 		printf("TODEL : %s\n",listOfBasis[i]);
-	printf("\nTODEL Atom List\n");
+	printf("\nTODEL GabeditAtom List\n");
 	for(i=0;i<numberOfAtoms;i++)
 		printf("TODEL : %s Basis Number = %d \n",listOfAtoms[i], basisNumber[i]);
 		*/

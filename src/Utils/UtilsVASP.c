@@ -22,8 +22,8 @@ DEALINGS IN THE SOFTWARE.
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-#include <gdk/gdk.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
+#include <gtk/gtk.h>
 #include <gtk/gtk.h>
 #include "../Common/Global.h"
 #include "../Utils/Constants.h"
@@ -261,7 +261,7 @@ static GList* read_pdos_vasp_xml_file(GtkWidget* window, gchar* fileName, G_CONS
 	{
 		// symbol contain iBegin and iEnd
 		gint i,j;
-		gchar* s = strdup(symbol);
+		gchar* s = g_strdup(symbol);
 		//printf("symbol %s\n",symbol);
 		for(i=0;i<strlen(s);i++) if(s[i]=='-') s[i] = ' ';
 		//printf("s %s\n",s);
@@ -1072,7 +1072,7 @@ static GtkWidget* dos_vasp_win_new(gchar* title,GList* X, GList* listOfAtomTypes
 		i++;
 		listAtoms[i] = g_strdup_printf("%d",1);
 	}
-	entry_atom = create_label_combo(hbox_data,_(" Atom(s) : "),listAtoms, nAtoms+2, TRUE,-1,-1);
+	entry_atom = create_label_combo(hbox_data,_(" GabeditAtom(s) : "),listAtoms, nAtoms+2, TRUE,-1,-1);
         gtk_editable_set_editable((GtkEditable*) entry_atom,TRUE);
 	gtk_widget_show(entry_atom);
 

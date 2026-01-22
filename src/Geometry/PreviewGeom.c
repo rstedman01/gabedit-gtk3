@@ -1258,7 +1258,7 @@ static gboolean motion_notify(GtkWidget *drawingArea, GdkEventMotion *event)
 	{
 #if !defined(G_OS_WIN32)
 		gint x,y;
-		gdk_window_get_pointer(gtk_widget_get_window(event), &x, &y, &state);
+		gdk_window_get_pointer(gtk_widget_get_window(drawingArea), &x, &y, &state);
 #else
 		state = event->state;
 #endif

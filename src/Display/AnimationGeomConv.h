@@ -27,11 +27,11 @@ typedef struct _Atom
 	gboolean variable;
 	gdouble partialCharge;
 	gdouble nuclearCharge;
-}Atom;
+}GabeditAtom;
 typedef struct _Geometry
 {
 	gint numberOfAtoms;
-	Atom* listOfAtoms;
+	GabeditAtom* listOfAtoms;
 }Geometry;
 
 typedef struct _GeometryConvergence

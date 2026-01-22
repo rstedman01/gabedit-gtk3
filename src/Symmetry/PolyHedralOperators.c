@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 /************************************************************************************************************/
 /* 
  * compare 2 atoms -- order hierarchy:
- * 	1. Atom type
+ * 	1. GabeditAtom type
  * 	2. distance from center of gravity (bigger distances first)
  * 	3. z coordinate 
 */

@@ -94,7 +94,7 @@ static void SetMMTypes(Fragment* Frag)
 
 }
 /*****************************************************************/
-static void SetAtom(Atom* A,gchar* symb,gdouble x,gdouble y,gdouble z)
+static void SetAtom(GabeditAtom* A,gchar* symb,gdouble x,gdouble y,gdouble z)
 {
 	gchar Forbidden[]={'0','1','2','3','4','5','6','7','8','9'};
 
@@ -220,7 +220,7 @@ gint AddHToAtomPDB(Fragment* Frag, gchar* pdb)
 		V[j] +=Frag->Atoms[C].Coord[j]*BOHR_TO_ANG;
 
 	Frag->NAtoms++;
-	Frag->Atoms = g_realloc(Frag->Atoms,Frag->NAtoms*sizeof(Atom));
+	Frag->Atoms = g_realloc(Frag->Atoms,Frag->NAtoms*sizeof(GabeditAtom));
 	i = Frag->NAtoms-1;
 	SetAtom(&Frag->Atoms[i],"H",
 			(gdouble)(V[0]),
@@ -276,7 +276,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Acid Anhydride" ) )
 	{
 		F.NAtoms =7 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GANH");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 4.996f, 1.858f, -8.663f );
         	SetAtom(&F.Atoms[ 1 ] ,  "O2", 6.185f, 1.875f, -8.348f );
@@ -293,7 +293,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Aldehyde" ) )
 	{
 		F.NAtoms =4 ;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GALD");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 3.450f, 0.774f, -9.239f );
         	SetAtom(&F.Atoms[ 1 ] ,  "O2", 4.639f, 0.791f, -8.925f );
@@ -306,7 +306,7 @@ Fragment GetFragment(gchar* Name)
 	}
 	else if ( !strcmp(Name, "Amide" ) ){
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GAMD");
         	SetAtom(&F.Atoms[ 0 ] ,  "N1", 3.975f, 0.737f, -8.798f );
         	SetAtom(&F.Atoms[ 1 ] ,  "H11", 4.979f, 0.953f, -8.799f );
@@ -320,7 +320,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Amine" ) )
 	{
 		F.NAtoms = 4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GAMN");
         	SetAtom(&F.Atoms[ 0 ] ,  "N1", 4.030f, 0.810f, -9.087f );
         	SetAtom(&F.Atoms[ 1 ] ,  "H11", 5.007f, 0.824f, -8.828f );
@@ -333,7 +333,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Isopropyl" ) )
 	{
 		F.NAtoms = 11;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GIPP");
 		SetAtom(&F.Atoms[ 0 ] , "H",-2.026358f,-0.863664f,0.000860f);
 		SetAtom(&F.Atoms[ 1 ] , "H",-0.613329f,-1.465632f,0.893451f);
@@ -353,7 +353,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Carboxylate" ) )
 	{
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCXT");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 9.131f, 1.248f, -7.673f );
         	SetAtom(&F.Atoms[ 1 ] ,  "O2", 10.445f, 1.266f, -7.325f );
@@ -368,7 +368,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Carboxylic Acid" ) )
 	{
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCXA");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 6.536f, 1.243f, -8.355f );
         	SetAtom(&F.Atoms[ 1 ] ,  "O2", 7.725f, 1.260f, -8.040f );
@@ -384,7 +384,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Hydroxy" ) )
 	{
 		F.NAtoms =3;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GHDX");
         	SetAtom(&F.Atoms[ 0 ] ,  "OH", 4.013f, 0.831f, -9.083f );
         	SetAtom(&F.Atoms[ 1 ] ,  "HH1", 4.941f, 0.844f, -8.837f );
@@ -397,7 +397,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Methoxy" ) )
 	{
 		F.NAtoms =6;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GMTX");
         	SetAtom(&F.Atoms[ 0 ] ,  "O1", 3.177f, 0.623f, -8.490f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 4.559f, 0.642f, -8.124f );
@@ -413,7 +413,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( ( !strcmp(Name, "Methyl" ) ) )
 	{
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GMTL");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 3.875f, 0.678f, -8.417f );
         	SetAtom(&F.Atoms[ 1 ] ,  "H11", 3.800f, 1.690f, -8.076f );
@@ -428,7 +428,7 @@ Fragment GetFragment(gchar* Name)
 	else if (( !strcmp(Name, "Methane" ) ) )
 	{
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GMTL");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 3.875f, 0.678f, -8.417f );
         	SetAtom(&F.Atoms[ 1 ] ,  "H11", 3.800f, 1.690f, -8.076f );
@@ -444,7 +444,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Nitrile" ) )
 	{
 		F.NAtoms =3;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GNIL");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 3.506f, 0.774f, -9.225f );
         	SetAtom(&F.Atoms[ 1 ] ,  "N2", 4.628f, 0.790f, -8.928f );
@@ -457,7 +457,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Nitroso" ) )
 	{
 		F.NAtoms =3;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GNIS");
         	SetAtom(&F.Atoms[ 0 ] ,  "N1", 3.470f, 0.802f, -9.230f );
         	SetAtom(&F.Atoms[ 1 ] ,  "O2", 4.621f, 0.818f, -8.925f );
@@ -470,7 +470,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Nitro" ) )
 	{
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GNIO");
      		SetAtom(&F.Atoms[ 0 ] ,  "N1", 10.980f, 1.214f, -7.193f );
         	SetAtom(&F.Atoms[ 1 ] ,  "O2", 12.149f, 1.231f, -6.883f );
@@ -485,7 +485,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Thiol" ) )
 	{
 		F.NAtoms =3;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GTHL");
         	SetAtom(&F.Atoms[ 0 ] ,  "C", -1.444f, 0.079f, 0.000f );
         	SetAtom(&F.Atoms[ 1 ] ,  "S", -1.396f, 1.890f, 0.000f );
@@ -498,7 +498,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Ethane" ) )
 	{
 		F.NAtoms =8;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GETH");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 3.108f, 0.653f, -8.526f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 4.597f, 0.674f, -8.132f );
@@ -516,7 +516,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Ethylene" ) )
 	{
 		F.NAtoms =6;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GETL");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 3.402f, 0.773f, -9.252f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 4.697f, 0.791f, -8.909f );
@@ -532,7 +532,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Propane" ) )
 	{
 		F.NAtoms =11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GPPN");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 2.709f, 1.156f, -8.689f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 4.198f, 1.177f, -8.295f );
@@ -553,7 +553,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Propylene" ) )
 	{
 		F.NAtoms =9;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GPPL");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 5.705f, 1.171f, -7.853f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 7.000f, 1.189f, -7.509f );
@@ -572,7 +572,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "cis-Butane" ) )
 	{
 		F.NAtoms =14;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GSBN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -0.064f, -0.757f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -0.064f, 0.783f, 0.000f );
@@ -596,7 +596,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "trans-Butane" ) )
 	{
 		F.NAtoms =14;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GTBN");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 2.142f, 1.395f, -8.932f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 3.631f, 1.416f, -8.537f );
@@ -620,7 +620,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Butadiene" ) )
 	{
 		F.NAtoms =10;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GBDN");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 2.351f, 1.413f, -9.428f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 3.646f, 1.432f, -9.085f );
@@ -641,7 +641,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Hexane" ) )
 	{
 		F.NAtoms =20;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GHXN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -0.124f, -2.470f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -0.124f, -0.930f, 0.000f );
@@ -671,7 +671,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Heptane" ) )
 	{
 		F.NAtoms =23;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GHPN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -0.265f, -2.359f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -0.265f, -0.819f, 0.000f );
@@ -703,7 +703,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Octane" ) )
 	{
 		F.NAtoms =26;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GOCN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -0.324f, -2.196f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -0.324f, -0.656f, 0.000f );
@@ -739,7 +739,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Nonane" ) )
 	{
 		F.NAtoms =29;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GNNN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -0.451f, -2.085f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -0.451f, -0.545f, 0.000f );
@@ -778,7 +778,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Decane" ) )
 	{
 		F.NAtoms =32;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GDCN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -0.514f, -1.932f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -0.514f, -0.392f, 0.000f );
@@ -820,7 +820,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Undecane" ) )
 	{
 		F.NAtoms =35;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GUCN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -0.632f, -1.821f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -0.632f, -0.281f, 0.000f );
@@ -865,7 +865,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Dodecane" ) )
 	{
 		F.NAtoms =38;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GDON");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -0.697f, -1.676f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -0.697f, -0.136f, 0.000f );
@@ -913,7 +913,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Tridecane" ) )
 	{
 		F.NAtoms =41;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GTDN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -0.809f, -1.565f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -0.809f, -0.025f, 0.000f );
@@ -964,7 +964,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Tetradecane" ) )
 	{
 		F.NAtoms =44;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GTTN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -0.877f, -1.424f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -0.877f, 0.116f, 0.000f );
@@ -1018,7 +1018,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Pentadecane" ) )
 	{
 		F.NAtoms =47;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GPTN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -0.984f, -1.314f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -0.984f, 0.226f, 0.000f );
@@ -1075,7 +1075,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Hexadecane" ) )
 	{
 		F.NAtoms =50;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GHTN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -1.053f, -1.177f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -1.053f, 0.363f, 0.000f );
@@ -1135,7 +1135,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Heptadecane" ) )
 	{
 		F.NAtoms =53;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GHDN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -1.157f, -1.066f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -1.157f, 0.474f, 0.000f );
@@ -1198,7 +1198,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Octadecane" ) )
 	{
 		F.NAtoms =56;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GODN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -1.227f, -0.932f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -1.227f, 0.608f, 0.000f );
@@ -1264,7 +1264,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Nonadecane" ) )
 	{
 		F.NAtoms =59;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GNDN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -1.328f, -0.821f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -1.328f, 0.719f, 0.000f );
@@ -1333,7 +1333,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Eicosane" ) )
 	{
 		F.NAtoms =62;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GECS");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -1.399f, -0.690f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -1.399f, 0.850f, 0.000f );
@@ -1405,7 +1405,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Triacontane" ) )
 	{
 		F.NAtoms =92;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GTCN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -2.185f, 0.280f, -0.037f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -2.185f, 1.820f, -0.037f );
@@ -1507,7 +1507,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Tetracontane" ) )
 	{
 		F.NAtoms =122;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GTON");
 		SetAtom(&F.Atoms[ 0 ] ,  "C", -2.909f, 1.109f, -0.079f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C", -2.909f, 2.649f, -0.079f );
@@ -1639,7 +1639,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Acenaphthene" ) )
 	{
 		F.NAtoms =22;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GAPT");
         	SetAtom(&F.Atoms[ 0 ] ,  "C6", -1.247f, -2.075f, -0.001f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C7", -2.425f, -1.310f, 0.002f );
@@ -1671,7 +1671,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Benzene" ) )
 	{
 		F.NAtoms =12;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GBZN");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 5.274f, 1.999f, -8.568f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 6.627f, 2.018f, -8.209f );
@@ -1693,7 +1693,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Benzofuran" ) )
 	{
 		F.NAtoms =15;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GBNZ");
         	SetAtom(&F.Atoms[ 0 ] ,  "C3", -0.630f, -1.409f, -0.001f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C4", -1.896f, -0.810f, 0.000f );
@@ -1718,7 +1718,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Cyclopropane" ) )
 	{
 		F.NAtoms =9;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCPA");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", -0.727f, -0.481f, 0.111f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 0.780f, -0.397f, -0.078f );
@@ -1737,7 +1737,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Cyclobutane" ) )
 	{
 		F.NAtoms =12;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCBN");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", -1.469f, 0.919f, -0.493f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", -0.744f, 0.468f, 0.829f );
@@ -1759,7 +1759,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Cyclobutene" ) )
 	{
 		F.NAtoms =10;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCTN");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", -0.662f, -0.898f, 0.000f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 0.664f, -0.897f, 0.000f );
@@ -1779,7 +1779,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Cyclobutadiene" ) )
 	{
 		F.NAtoms =8;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCBD");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", -0.735f, 0.668f, 0.000f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", -0.735f, -0.668f, 0.000f );
@@ -1797,7 +1797,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Cyclopentane" ) )
 	{
 		F.NAtoms =15;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCPT");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 2.791f, 1.160f, -8.743f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 4.193f, 1.206f, -8.137f );
@@ -1822,7 +1822,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Cyclopentene" ) )
 	{
 		F.NAtoms =13;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCPN");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", -0.667f, 1.157f, 0.052f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 0.667f, 1.157f, 0.052f );
@@ -1845,7 +1845,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Cyclopentadiene" ) )
 	{
 		F.NAtoms =11;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCPE");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", -0.189f, 1.147f, 0.000f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 1.081f, 0.733f, 0.000f );
@@ -1866,7 +1866,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Cyclohexane" ) )
 	{
 		F.NAtoms =18;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCHX");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 3.593f, 1.069f, -9.284f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 4.975f, 0.956f, -8.613f );
@@ -1894,7 +1894,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Cyclohexene" ) )
 	{
 		F.NAtoms =16;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCHH");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", -0.668f, 1.407f, 0.049f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 0.668f, 1.407f, -0.050f );
@@ -1920,7 +1920,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Cycloheptane" ) )
 	{
 		F.NAtoms =21;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCPP");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 1.612f, -0.409f, -0.203f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 1.326f, 0.967f, 0.406f );
@@ -1951,7 +1951,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Cycloheptene" ) )
 	{
 		F.NAtoms =19;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCHE");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", -0.669f, 1.630f, -0.184f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 0.669f, 1.630f, -0.184f );
@@ -1980,7 +1980,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Cyclooctane" ) )
 	{
 		F.NAtoms =24;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCON");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", 0.255f, 0.953f, -1.443f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", -1.254f, 0.921f, -1.138f );
@@ -2014,7 +2014,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Imidazole" ) )
 	{
 		F.NAtoms =9;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GIDL");
         	SetAtom(&F.Atoms[ 0 ] ,  "N1", 0.650f, 0.656f, 0.000f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C1", 1.087f, -0.564f, 0.000f );
@@ -2033,7 +2033,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Norbornane" ) )
 	{
 		F.NAtoms =19;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GNBN");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", -0.002f, 1.117f, 0.354f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", 1.264f, 0.778f, -0.478f );
@@ -2062,7 +2062,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "2-Norbornene" ) )
 	{
 		F.NAtoms =17;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"G2NB");
         	SetAtom(&F.Atoms[ 0 ] ,  "C1", -0.184f, -1.124f, -0.292f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C2", -1.342f, -0.666f, 0.553f );
@@ -2089,7 +2089,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Oxazole" ) )
 	{
 		F.NAtoms =8;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GOXL");
         	SetAtom(&F.Atoms[ 0 ] ,  "O1", 0.602f, 1.081f, 0.000f );
         	SetAtom(&F.Atoms[ 1 ] ,  "C1", 1.321f, -0.058f, 0.000f );
@@ -2107,7 +2107,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Porphine" ) )
 	{
 		F.NAtoms =38;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GPFN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C1", -2.374f, 0.827f, -8.284f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C2", -1.021f, 0.847f, -7.926f );
@@ -2155,7 +2155,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Xanthene" ) )
 	{
 		F.NAtoms =24;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GXTN");
 		SetAtom(&F.Atoms[ 0 ] ,  "C1", 2.512f, 1.210f, 0.031f );
 		SetAtom(&F.Atoms[ 1 ] ,  "C2", 3.694f, 0.467f, 0.092f );
@@ -2189,7 +2189,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Ammonia" ) )
 	{
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GAMA");
 		SetAtom(&F.Atoms[ 0 ] , "N1", 0.000f, 0.000f, -0.270f );
 		SetAtom(&F.Atoms[ 1 ] , "H1", 0.000f, 1.018f, 0.090f );
@@ -2203,7 +2203,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Formaldehyde" ) )
 	{
 		F.NAtoms =4;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GFMD");
 		SetAtom(&F.Atoms[ 0 ] , "C1", 0.033f, 0.000f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] , "O1", -1.187f, 0.000f, 0.000f );
@@ -2217,7 +2217,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Formamide" ) )
 	{
 		F.NAtoms =6;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GFME");
 		SetAtom(&F.Atoms[ 0 ] , "C1", -0.640f, -0.053f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] , "O1", -1.364f, 0.930f, 0.000f );
@@ -2232,7 +2232,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Glycerol" ) )
 	{
 		F.NAtoms =14;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GGCL");
 		SetAtom(&F.Atoms[ 0 ] , "C1", 2.383f, 0.745f, -8.395f );
 		SetAtom(&F.Atoms[ 1 ] , "O4", 1.852f, 2.071f, -8.326f );
@@ -2255,7 +2255,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Glycol" ) )
 	{
 		F.NAtoms =10;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GGCO");
 		SetAtom(&F.Atoms[ 0 ] , "C1", 3.176f, 0.694f, -8.784f );
 		SetAtom(&F.Atoms[ 1 ] , "O3", 2.784f, -0.645f, -9.098f );
@@ -2274,7 +2274,7 @@ Fragment GetFragment(gchar* Name)
 	if ( !strcmp(Name, "Hydrazone" ) )
 	{
 		F.NAtoms =7;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GHZN");
 		SetAtom(&F.Atoms[ 0 ] , "C1", 2.803f, 1.003f, -8.612f );
 		SetAtom(&F.Atoms[ 1 ] , "N2", 4.050f, 1.020f, -8.282f );
@@ -2290,7 +2290,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Imine" ) )
 	{
 		F.NAtoms =5;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GIMN");
 		SetAtom(&F.Atoms[ 0 ] , "N1", -0.747f, -0.496f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] , "C1", 0.425f, -0.001f, 0.000f );
@@ -2304,7 +2304,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Urea" ) )
 	{
 		F.NAtoms =8;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GURA");
 		SetAtom(&F.Atoms[ 0 ] , "C1", 0.000f, 0.481f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] , "O1", 0.000f, 1.703f, 0.000f );
@@ -2321,7 +2321,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Water" ) )
 	{
 		F.NAtoms =3;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"HOH");
 		SetAtom(&F.Atoms[ 0 ] , "OW", 0.000f, -0.388f, 0.000f );
 		SetAtom(&F.Atoms[ 1 ] , "HW1", 0.751f, 0.194f, 0.000f );
@@ -2334,7 +2334,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "C60" ) )
 	{
 		F.NAtoms = 60;
-		F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GC60");
 		SetAtom(&F.Atoms[ 0 ] , "C",1.226500f,0.000000f,3.314500f);
 		SetAtom(&F.Atoms[ 1 ] , "C",0.379000f,1.166400f,3.314500f);
@@ -2403,7 +2403,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Aspirin" ) )
 	{
 		F.NAtoms = 21;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GAPN");
 		SetAtom(&F.Atoms[ 0 ] , "C",0.000000f,0.000000f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",1.400000f,0.000000f,0.000000f);
@@ -2433,7 +2433,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Caffeine" ) )
 	{
 		F.NAtoms = 24;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GCFN");
 		SetAtom(&F.Atoms[ 0 ] , "C",0.000000f,0.000000f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",1.392000f,0.000000f,0.000000f);
@@ -2466,7 +2466,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Heroine" ) )
 	{
 		F.NAtoms = 50;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GHIN");
 		SetAtom(&F.Atoms[ 0 ] , "C",0.000000f,0.000000f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",1.400000f,0.000000f,0.000000f);
@@ -2525,7 +2525,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "LSD" ) )
 	{
 		F.NAtoms = 49;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GLSD");
 		SetAtom(&F.Atoms[ 0 ] , "C",0.000000f,0.000000f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",1.397000f,0.000000f,0.000000f);
@@ -2583,7 +2583,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Methadone" ) )
 	{
 		F.NAtoms = 50;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GMTD");
 		SetAtom(&F.Atoms[ 0 ] , "C",0.000000f,0.000000f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",1.399000f,0.000000f,0.000000f);
@@ -2642,7 +2642,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Morphine" ) )
 	{
 		F.NAtoms = 40;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GMPN");
 		SetAtom(&F.Atoms[ 0 ] , "C",0.000000f,0.000000f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",1.400000f,0.000000f,0.000000f);
@@ -2691,7 +2691,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Nicotine" ) )
 	{
 		F.NAtoms = 26;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GNTN");
 		SetAtom(&F.Atoms[ 0 ] , "C",0.000000f,0.000000f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",1.400000f,0.000000f,0.000000f);
@@ -2726,7 +2726,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Valium" ) )
 	{
 		F.NAtoms = 33;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GVLM");
 		SetAtom(&F.Atoms[ 0 ] , "C",0.000000f,0.000000f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",1.404000f,0.000000f,0.000000f);
@@ -2768,7 +2768,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Viagra" ) )
 	{
 		F.NAtoms = 63;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GVGR");
 		SetAtom(&F.Atoms[ 0 ] , "C",0.000000f,0.000000f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",1.398000f,0.000000f,0.000000f);
@@ -2840,7 +2840,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "C70" ) )
 	{
 		F.NAtoms = 70;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GC70");
 		SetAtom(&F.Atoms[ 0 ] , "C",8.793000f,-0.828000f,-0.153000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",9.405000f,0.041000f,-1.062000f);
@@ -2919,7 +2919,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "C78" ) )
 	{
 		F.NAtoms = 78;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GC78");
 		SetAtom(&F.Atoms[ 0 ] , "C",4.214000f,-1.186000f,0.704000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",3.416000f,-2.159000f,1.422000f);
@@ -3006,7 +3006,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "C80" ) )
 	{
 		F.NAtoms = 80;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GC80");
 		SetAtom(&F.Atoms[ 0 ] , "C",-1.790000f,-1.249000f,7.854000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",-1.795000f,0.150000f,7.869000f);
@@ -3095,7 +3095,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "C82" ) )
 	{
 		F.NAtoms = 82;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GC82");
 		SetAtom(&F.Atoms[ 0 ] , "C",3.228000f,-1.003000f,2.195000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",4.135000f,-0.812000f,1.136000f);
@@ -3186,7 +3186,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "C84" ) )
 	{
 		F.NAtoms = 84;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GC84");
 		SetAtom(&F.Atoms[ 0 ] , "C",-1.579000f,0.721000f,3.576000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",-2.509000f,1.451000f,2.805000f);
@@ -3279,7 +3279,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "C240" ) )
 	{
 		F.NAtoms = 240;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		sprintf(T,"GC240");
 		SetAtom(&F.Atoms[ 0 ] , "C",-2.281342f,4.587967f,4.598389f);
 		SetAtom(&F.Atoms[ 1 ] , "C",-2.163620f,5.608307f,3.610657f);
@@ -3528,7 +3528,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Acyclovir" ) )
 	{
 		F.NAtoms = 27;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",0.547000f,-1.514000f,0.152000f);
 		SetAtom(&F.Atoms[ 1 ] , "N",-0.646000f,-2.035000f,0.111000f);
 		SetAtom(&F.Atoms[ 2 ] , "C",-1.561000f,-1.041000f,0.039000f);
@@ -3563,7 +3563,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Cidofovir" ) )
 	{
 		F.NAtoms = 32;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",2.399000f,0.658000f,-1.469000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",1.181000f,1.229000f,-1.307000f);
 		SetAtom(&F.Atoms[ 2 ] , "N",0.709000f,1.445000f,-0.047000f);
@@ -3603,7 +3603,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Famciclovir" ) )
 	{
 		F.NAtoms = 42;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",5.860000f,-2.729000f,-0.247000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",4.574000f,-2.346000f,0.439000f);
 		SetAtom(&F.Atoms[ 2 ] , "O",4.405000f,-2.622000f,1.603000f);
@@ -3653,7 +3653,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Ganciclovir" ) )
 	{
 		F.NAtoms = 31;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",-0.048000f,-1.611000f,0.045000f);
 		SetAtom(&F.Atoms[ 1 ] , "N",-1.257000f,-2.081000f,-0.072000f);
 		SetAtom(&F.Atoms[ 2 ] , "C",-2.137000f,-1.054000f,-0.048000f);
@@ -3692,7 +3692,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Idoxuridine" ) )
 	{
 		F.NAtoms = 28;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",3.367000f,1.217000f,0.292000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",3.501000f,-0.136000f,1.026000f);
 		SetAtom(&F.Atoms[ 2 ] , "C",2.605000f,-1.095000f,0.212000f);
@@ -3728,7 +3728,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Penciclovir" ) )
 	{
 		F.NAtoms = 33;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",-0.831000f,-2.426000f,0.380000f);
 		SetAtom(&F.Atoms[ 1 ] , "N",-2.077000f,-2.305000f,0.021000f);
 		SetAtom(&F.Atoms[ 2 ] , "C",-2.394000f,-0.991000f,-0.046000f);
@@ -3769,7 +3769,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Valacyclovir" ) )
 	{
 		F.NAtoms = 43;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",5.303000f,2.771000f,1.124000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",4.720000f,1.669000f,0.238000f);
 		SetAtom(&F.Atoms[ 2 ] , "C",5.419000f,1.684000f,-1.123000f);
@@ -3820,7 +3820,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Vidarabine" ) )
 	{
 		F.NAtoms = 32;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",3.517000f,-1.643000f,-0.431000f);
 		SetAtom(&F.Atoms[ 1 ] , "N",2.220000f,-1.488000f,-0.586000f);
 		SetAtom(&F.Atoms[ 2 ] , "C",1.640000f,-0.321000f,-0.320000f);
@@ -3860,7 +3860,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Oxirane" ) )
 	{
 		F.NAtoms = 7;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",-0.402595f,-0.615042f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",0.284268f,0.677882f,0.000000f);
 		SetAtom(&F.Atoms[ 2 ] , "O",1.059153f,-0.562572f,0.000000f);
@@ -3875,7 +3875,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Pyrazine" ) )
 	{
 		F.NAtoms = 10;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",-1.142455f,0.693552f,-0.000001f);
 		SetAtom(&F.Atoms[ 1 ] , "C",-1.142454f,-0.693554f,-0.000001f);
 		SetAtom(&F.Atoms[ 2 ] , "N",0.000003f,-1.379209f,-0.000001f);
@@ -3893,7 +3893,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Pyridazine" ) )
 	{
 		F.NAtoms = 10;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "N",1.577143f,-0.662045f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "C",0.430083f,-1.327300f,0.000000f);
 		SetAtom(&F.Atoms[ 2 ] , "C",-0.808096f,-0.688291f,0.000000f);
@@ -3911,7 +3911,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Pyridine" ) )
 	{
 		F.NAtoms = 11;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",-1.148339f,-0.906766f,-0.000006f);
 		SetAtom(&F.Atoms[ 1 ] , "C",-1.195817f,0.480609f,0.000107f);
 		SetAtom(&F.Atoms[ 2 ] , "C",-0.000022f,1.186549f,-0.000100f);
@@ -3930,7 +3930,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Pyrimidine" ) )
 	{
 		F.NAtoms = 10;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",1.534217f,-0.000108f,-0.000080f);
 		SetAtom(&F.Atoms[ 1 ] , "N",0.918358f,1.179416f,0.000059f);
 		SetAtom(&F.Atoms[ 2 ] , "C",-0.415899f,1.181598f,-0.000071f);
@@ -3948,7 +3948,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Pyrrol" ) )
 	{
 		F.NAtoms = 10;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",0.351489f,1.121865f,0.000023f);
 		SetAtom(&F.Atoms[ 1 ] , "C",-0.952283f,0.715301f,-0.000093f);
 		SetAtom(&F.Atoms[ 2 ] , "C",-0.952387f,-0.715164f,0.000117f);
@@ -3966,7 +3966,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Tetrahydrofuran" ) )
 	{
 		F.NAtoms = 13;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",-1.202620f,0.698233f,0.000000f);
 		SetAtom(&F.Atoms[ 1 ] , "O",-0.000000f,1.490026f,0.000000f);
 		SetAtom(&F.Atoms[ 2 ] , "C",1.202620f,0.698233f,0.000000f);
@@ -3987,7 +3987,7 @@ Fragment GetFragment(gchar* Name)
 	else if ( !strcmp(Name, "Thiophene" ) )
 	{
 		F.NAtoms = 9;
-		F.Atoms  = g_malloc(F.NAtoms*sizeof(Atom));
+		F.Atoms  = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 		SetAtom(&F.Atoms[ 0 ] , "C",0.545098f,-1.259389f,0.000035f);
 		SetAtom(&F.Atoms[ 1 ] , "C",-0.688205f,-0.722497f,-0.000052f);
 		SetAtom(&F.Atoms[ 2 ] , "C",-0.688205f,0.722496f,0.000044f);

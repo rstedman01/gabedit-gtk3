@@ -409,11 +409,11 @@ static void create_frame_rotation(GtkWidget *Dialogue,GtkWidget *vboxframe)
   {
 	Label = add_label_table(Table,textlabel[j][i],(gushort)j,(gushort)i); 
 	if(j== 1)
-	set_fg_style(Label,20000,0,0);
+	set_fg_color(Label,20000,0,0);
 	if(j== 2)
-	set_fg_style(Label,0,20000,0);
+	set_fg_color(Label,0,20000,0);
 	if(j== 3)
-	set_fg_style(Label,0,0,20000);
+	set_fg_color(Label,0,0,20000);
 	gtk_widget_hide(Label);
 	gtk_widget_show(Label);
 }
@@ -464,9 +464,9 @@ static void create_frame_dipole(GtkWidget *Dialogue,GtkWidget *vboxframe)
   {
 	Label = add_label_table(Table,textlabel[j][i],(gushort)j,(gushort)i); 
 	if(j== 1)
-	set_fg_style(Label,20000,0,0);
+	set_fg_color(Label,20000,0,0);
 	if(j== 2)
-	set_fg_style(Label,0,20000,0);
+	set_fg_color(Label,0,20000,0);
 	gtk_widget_hide(Label);
 	gtk_widget_show(Label);
   }

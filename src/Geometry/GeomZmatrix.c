@@ -316,12 +316,12 @@ static gchar* get_distance_zmatrix(gint ai, gint aj)
 
 	for (i = 0; i <(gint)NcentersZmat; i++) X[i] = Y[i] = Z[i] = 0; 
 
-	/* Atom #1 */
+	/* GabeditAtom #1 */
 	X[0] = 0;
 	Y[0] = 0;
 	Z[0] = 0;
 	
-	/* Atom #2 */
+	/* GabeditAtom #2 */
 	if(!test(Geom[1].R)) X[1] = get_value_variableZmat(Geom[1].R);
 	else X[1] = atof(Geom[1].R);
 	Y[1] = 0;
@@ -335,7 +335,7 @@ static gchar* get_distance_zmatrix(gint ai, gint aj)
 		return g_strdup_printf("%f",r);
 	}
 
-	/* Atom #3 */
+	/* GabeditAtom #3 */
 	if(!test(Geom[2].R)) dist = get_value_variableZmat(Geom[2].R);
 	else dist = atof(Geom[2].R);
 
@@ -521,18 +521,18 @@ static gchar* get_angle_zmatrix(gint ai, gint aj, gint ak)
 
 	for (i = 0; i <(gint)NcentersZmat; i++) X[i] = Y[i] = Z[i] = 0; 
 
-	/* Atom #1 */
+	/* GabeditAtom #1 */
 	X[0] = 0;
 	Y[0] = 0;
 	Z[0] = 0;
 	
-	/* Atom #2 */
+	/* GabeditAtom #2 */
 	if(!test(Geom[1].R)) X[1] = get_value_variableZmat(Geom[1].R);
 	else X[1] = atof(Geom[1].R);
 	Y[1] = 0;
 	Z[1] = 0;
 
-	/* Atom #3 */
+	/* GabeditAtom #3 */
 	if(!test(Geom[2].R)) dist = get_value_variableZmat(Geom[2].R);
 	else dist = atof(Geom[2].R);
 
@@ -751,18 +751,18 @@ static gchar* get_dihedral_zmatrix(gint ai, gint aj, gint ak, gint al)
 
 	for (i = 0; i <(gint)NcentersZmat; i++) X[i] = Y[i] = Z[i] = 0; 
 
-	/* Atom #1 */
+	/* GabeditAtom #1 */
 	X[0] = 0;
 	Y[0] = 0;
 	Z[0] = 0;
 	
-	/* Atom #2 */
+	/* GabeditAtom #2 */
 	if(!test(Geom[1].R)) X[1] = get_value_variableZmat(Geom[1].R);
 	else X[1] = atof(Geom[1].R);
 	Y[1] = 0;
 	Z[1] = 0;
 
-	/* Atom #3 */
+	/* GabeditAtom #3 */
 	if(!test(Geom[2].R)) dist = get_value_variableZmat(Geom[2].R);
 	else dist = atof(Geom[2].R);
 
@@ -1687,7 +1687,7 @@ static void event_dispatcher(GtkWidget *widget, GdkEventButton *event, gpointer 
 	gchar* menuName = NULL;
 
 	if (!event) return;
-	if (gtk_widget_get_window(event) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
+	if (gtk_widget_get_window(widget) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
 	    && !gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget),
 					       event->x, event->y, NULL, NULL, NULL, NULL)) {
 		gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW (widget)));
@@ -2953,7 +2953,7 @@ static void DialogueTransInConst()
 /********************************************************************************/
 static void set_entry_Zmat()
 {
-   SAtomsProp Atom[3];
+   SAtomsProp GabeditAtom[3];
    gdouble r;
    gdouble Coord[3];
    gdouble angle;
@@ -2972,9 +2972,9 @@ static void set_entry_Zmat()
              return;
 
         Atomdump =gtk_entry_get_text(GTK_ENTRY(Entry[E_SYMBOL]));
-   	Atom[0] = prop_atom_get(Atomdump);
-   	Atom[1] = prop_atom_get(Geom[NcentersZmat-1].Symb);
-        r = Atom[0].covalentRadii+Atom[1].covalentRadii;
+   	GabeditAtom[0] = prop_atom_get(Atomdump);
+   	GabeditAtom[1] = prop_atom_get(Geom[NcentersZmat-1].Symb);
+        r = GabeditAtom[0].covalentRadii+GabeditAtom[1].covalentRadii;
         r *=0.8;
         if(Units==1)
 		r*=BOHR_TO_ANG;
@@ -3084,9 +3084,9 @@ static void addAtom(GtkWidget *w,gpointer Entree)
   gchar *texts[NUMBER_LIST_ZMATRIX];
   gchar *message;
   gint i;
-  gboolean false;
+  gboolean invalid;
 
-  false = FALSE;
+  invalid = FALSE;
   DestroyDialog=TRUE;
   
   for (i=0;i<NUMBER_LIST_ZMATRIX;i++)
@@ -3134,7 +3134,7 @@ static void addAtom(GtkWidget *w,gpointer Entree)
         	{
 			MessageGeom(_("Sorry a Entry text is void !\n"),_("Warning"),TRUE);
   			DestroyDialog=FALSE;
-			false = TRUE;
+			invalid = TRUE;
         	}
 		i=testav(texts[E_R]);
         	if(i>-1)Variables[i].Used=TRUE;
@@ -3147,7 +3147,7 @@ static void addAtom(GtkWidget *w,gpointer Entree)
 			MessageGeom(message,_("Warning"),TRUE);
 			g_free(message);
   			DestroyDialog=FALSE;
-			false = TRUE;
+			invalid = TRUE;
 		}
 	
 		Geom[NcentersZmat-1].Nentry = NUMBER_ENTRY_R;
@@ -3157,7 +3157,7 @@ static void addAtom(GtkWidget *w,gpointer Entree)
 		Geom[NcentersZmat-1].R=g_strdup(texts[E_R]);
 		Geom[NcentersZmat-1].NR=g_strdup(texts[E_NUMBER_R]);
   	}
-	if ( (NcentersZmat>2) && (!false) )
+	if ( (NcentersZmat>2) && (!invalid) )
 	{
 		for (i=E_ANGLE;i<=E_NUMBER_ANGLE;i++)
 			texts[i] = g_strdup(gtk_entry_get_text(GTK_ENTRY(Entry[i])));	  
@@ -3166,7 +3166,7 @@ static void addAtom(GtkWidget *w,gpointer Entree)
         	{
 			MessageGeom(_("Sorry a Entry text is void !\n"),_("Warning"),TRUE);
   			DestroyDialog=FALSE;
-			false = TRUE;
+			invalid = TRUE;
         	}
 		i=testav(texts[E_ANGLE]);
         	if(i>-1)Variables[i].Used=TRUE;
@@ -3179,7 +3179,7 @@ static void addAtom(GtkWidget *w,gpointer Entree)
 			MessageGeom(message,_("Warning"),TRUE);
 			g_free(message);
   			DestroyDialog=FALSE;
-			false = TRUE;
+			invalid = TRUE;
 		}
 
 		Geom[NcentersZmat-1].Nentry = NUMBER_ENTRY_ANGLE;
@@ -3189,7 +3189,7 @@ static void addAtom(GtkWidget *w,gpointer Entree)
 		Geom[NcentersZmat-1].Angle=g_strdup(texts[E_ANGLE]);
 		Geom[NcentersZmat-1].NAngle=g_strdup(texts[E_NUMBER_ANGLE]);
 	}
-  	if( (NcentersZmat>3) && (!false) )
+  	if( (NcentersZmat>3) && (!invalid) )
   	{
 		for (i=E_DIHEDRAL;i<=E_NUMBER_DIHEDRAL;i++)
 			texts[i] = g_strdup(gtk_entry_get_text(GTK_ENTRY(Entry[i])));
@@ -3198,7 +3198,7 @@ static void addAtom(GtkWidget *w,gpointer Entree)
         	{
 			MessageGeom(_("Sorry a Entry text is void !\n"),_("Warning"),TRUE);
   			DestroyDialog=FALSE;
-			false = TRUE;
+			invalid = TRUE;
         	}
 
 		i=testav(texts[E_DIHEDRAL]);
@@ -3212,7 +3212,7 @@ static void addAtom(GtkWidget *w,gpointer Entree)
 			MessageGeom(message,_("Warning"),TRUE);
 			g_free(message);
   			DestroyDialog=FALSE;
-			false = TRUE;
+			invalid = TRUE;
 		}
 
 		Geom[NcentersZmat-1].Nentry = NUMBER_ENTRY_DIHEDRAL;
@@ -3231,7 +3231,7 @@ static void addAtom(GtkWidget *w,gpointer Entree)
   		texts[E_LAYER] = g_strdup(" ");
 
 	Geom[NcentersZmat-1].Layer=g_strdup(texts[E_LAYER]);
-  	if(!false)
+  	if(!invalid)
         {
    	appendToList(list, texts, NUMBER_LIST_ZMATRIX);
   	if(GeomDrawingArea != NULL)
@@ -3260,10 +3260,10 @@ static void EditAtom(GtkWidget *w,gpointer Entree)
   gint Nc;
   gint j;
   gint k;
-  gboolean False;
+  gboolean invalid;
   GeomAtomDef Gtmp;
 
-  False = FALSE;
+  invalid = FALSE;
   DestroyDialog=TRUE;
   j=-1;
   Nc=-1; 
@@ -3330,7 +3330,7 @@ static void EditAtom(GtkWidget *w,gpointer Entree)
 			if(k<-1)
                 	{
                         	j=i;
-				False=TRUE;
+				invalid=TRUE;
                         	break;
                 	}
         	}
@@ -3365,7 +3365,7 @@ static void EditAtom(GtkWidget *w,gpointer Entree)
 			if(k<-1)
                 	{
                         	j=i;
-				False=TRUE;
+				invalid=TRUE;
                         	break;
                 	}
    		}
@@ -3375,7 +3375,7 @@ static void EditAtom(GtkWidget *w,gpointer Entree)
   			DestroyDialog=FALSE;
    			return;
         	}
-		if(False)
+		if(invalid)
 		{
 			message=g_strdup_printf(
 			_("Sorry\n %s \nis not a number \nand is not a variable ")
@@ -3400,7 +3400,7 @@ static void EditAtom(GtkWidget *w,gpointer Entree)
 			if(k<-1)
                 	{
                         	j=i;
-				False=TRUE;
+				invalid=TRUE;
                         	break;
                 	}
    		}
@@ -3487,7 +3487,7 @@ static void DialogueAdd()
   guint nlist;
   gchar *tlabel[]={		
   			" ",
-  			N_("Atom Symbol : "),
+  			N_("GabeditAtom Symbol : "),
   			N_("MM Type : "),
   			N_("PDB Type : "),
   			N_("Residue : "),
@@ -3682,7 +3682,7 @@ static void DialogueEdit()
   gint nlist;
   gchar *tlabel[]={		
   			" ",
-  			N_("Atom Symbol : "),
+  			N_("GabeditAtom Symbol : "),
   			N_("MM Type : "),
   			N_("PDB Type : "),
   			N_("Residue : "),
@@ -6883,7 +6883,7 @@ void selc_ZMatrix_file()
   gchar* patterns[] = {"*.gzmt","*",NULL};
 
 
-  /* Création du sélecteur de fichier */
+  /* Crï¿½ation du sï¿½lecteur de fichier */
   SelecteurFichier = gabedit_file_chooser_new("Read Z-Matrix file", GTK_FILE_CHOOSER_ACTION_OPEN);
   gabedit_file_chooser_hide_hidden(GABEDIT_FILE_CHOOSER(SelecteurFichier));
   gabedit_file_chooser_set_filters(GABEDIT_FILE_CHOOSER(SelecteurFichier),patterns);
@@ -7289,7 +7289,7 @@ void create_geom_list(GtkWidget *vbox, GabEditTypeFileGeom readfile)
 	gtk_tree_view_enable_model_drag_dest (GTK_TREE_VIEW (list), row_targets, G_N_ELEMENTS (row_targets), GDK_ACTION_MOVE);
 	*/
   
-	set_base_style(list,55000,55000,55000);
+	set_base_color(list,55000,55000,55000);
 	gtk_widget_show (list);
 
 	if(readfile == GABEDIT_TYPEFILEGEOM_GAUSSIAN_ZMATRIX) selc_ZMatrix_file();
@@ -7694,7 +7694,7 @@ void create_variables_list(GtkWidget *vbox,GabEditTypeFileGeom itype)
 	}
 	gtk_container_add(GTK_CONTAINER(scr),listv);
 
-	set_base_style(listv,58000,58000,58000);
+	set_base_color(listv,58000,58000,58000);
 	gtk_widget_show (listv);
 
 

@@ -19,7 +19,7 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __GABEDIT_GEOMORBXYZ_H__
 #define __GABEDIT_GEOMORBXYZ_H__
 
-void DefineType();
+static void DefineType();
 void reset_old_geometry();
 gboolean this_is_a_new_geometry();
 void free_geometry();
@@ -82,5 +82,4 @@ void reset_grid_limits();
 void gl_get_charges_from_mopac_output_file(FILE* fd);
 void gl_read_geom_any_file_sel(GabeditFileChooser *selecFile, gint response_id);
 
-#endif /* __GABEDIT_GEOMORBXYZ_H__ */
-
+#endif //__GABEDIT_GEOMORBXYZ_H__

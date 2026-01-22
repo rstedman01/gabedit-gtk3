@@ -150,7 +150,7 @@ static void build_nanotube(GtkWidget *w,gpointer data)
 
 	init_dipole();
  	if(GeomXYZ) freeGeomXYZ();
- 	if(VariablesXYZ) freeVariablesXYZ(VariablesXYZ);
+ 	if(VariablesXYZ) freeVariablesXYZ();
 
 	NcentersXYZ = 2*Nc*ncells;
 	GeomXYZ=g_malloc(NcentersXYZ*sizeof(GeomXYZAtomDef));

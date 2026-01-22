@@ -58,7 +58,7 @@ static void eventDispatcher(GtkWidget *widget, GdkEventButton *event, gpointer u
 	gchar selectedRow[100];
 
 	if (!event) return;
-	if (gtk_widget_get_window(event) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
+	if (gtk_widget_get_window(widget) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
 	    && !gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget), event->x, event->y, NULL, NULL, NULL, NULL)) {
 		gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW (widget)));
 	}
@@ -849,7 +849,7 @@ static GtkWidget *addTreeView(GtkWidget *win, GtkWidget *vbox)
 		g_object_set_data(G_OBJECT(renderer),"TreeView",treeView);
 		g_signal_connect (renderer, "toggled", G_CALLBACK (toggledRow), GINT_TO_POINTER(i));
 	}
-	set_base_style(treeView,30000,50000,60000);
+	set_base_color(treeView,30000,50000,60000);
 
 	gtk_container_add(GTK_CONTAINER(scr), treeView);
 	return treeView;

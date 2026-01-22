@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 
 /************************************************************************************************************/
 /* compare 2 atoms -- Hierarchy:
-	1. Atom type
+	1. GabeditAtom type
 	2. distance from z-axis (bigger distances first)
 	3. angle around z -axis 
 	4. z coordinate

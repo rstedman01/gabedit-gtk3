@@ -65,7 +65,7 @@ static void build_rozphi_molecule(GtkWidget *w,gpointer data)
 		if(GeomXYZ)
    			freeGeomXYZ();
 		if(VariablesXYZ)
-			freeVariablesXYZ(VariablesXYZ);
+			freeVariablesXYZ();
 		NcentersXYZ = 0;
 
 	}
@@ -247,7 +247,7 @@ void build_rozphi_molecule_dlg()
   GtkWidget *Label;
   gint nligne = 6;
   gchar* tlabel[]={
-	N_("Atom"),
+	N_("GabeditAtom"),
 	N_("Number of atoms"),
 	N_("Distance between atoms(Ang)"),
 	N_("Distance betwenn an atom to center of Fragment(Ang)"),

@@ -3569,7 +3569,7 @@ GtkWidget * newMMList(GtkWidget *vbox,gint len, gchar** titles, gint* widths, Gt
 	}
 
 	gtk_widget_set_size_request(list,widall*Factor,-1);
-	set_base_style(list,55000,55000,55000);
+	set_base_color(list,55000,55000,55000);
 	gtk_container_add(GTK_CONTAINER(scr), list);
 
 	gtk_widget_show (list);

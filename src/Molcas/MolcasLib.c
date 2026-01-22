@@ -89,7 +89,7 @@ void getMolcasBasisList(gchar* Symb, gchar* outfile, gchar* errfile)
 	while(!feof(fin))
 	{
 		if(!fgets(t,BSIZE,fin)) break;
-		if(strstr(t,"Atom") && strstr(t,Symb) && sscanf(t,"%s %s",dump,symb)==2 && strcmp(Symb,symb) ==0 )
+		if(strstr(t,"GabeditAtom") && strstr(t,Symb) && sscanf(t,"%s %s",dump,symb)==2 && strcmp(Symb,symb) ==0 )
 		{
 			if(!fgets(t,BSIZE,fin)) break;
 			sscanf(t,"%d",&nbas);
@@ -157,7 +157,7 @@ gboolean create_molcas_basis_file()
 		return FALSE;
 	}
 	fprintf(file,"Natoms = 103\n");
-	fprintf(file,"Atom  H\n");
+	fprintf(file,"GabeditAtom  H\n");
 	fprintf(file,"16\n");
 	fprintf(file,"H Pol Sadlej 6s4p 3s2p UNK\n");
 	fprintf(file,"H ano-l Widmark 8s4p3d 6s4p3d UNK\n");
@@ -175,7 +175,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"H ano-rcc Widmark 8s4p3d1f 6s4p3d1f UNK\n");
 	fprintf(file,"H aug-cc-pVDZ Dunning 5s2p 3s2p UNK\n");
 	fprintf(file,"H aug-cc-pVTZ Dunning 6s3p2d 4s3p2d UNK\n");
-	fprintf(file,"Atom  Li\n");
+	fprintf(file,"GabeditAtom  Li\n");
 	fprintf(file,"20\n");
 	fprintf(file,"Li Pol Sadlej 10s6p4d 5s3p2d UNK\n");
 	fprintf(file,"Li ano-l Widmark 14s9p4d3f 7s6p4d3f UNK\n");
@@ -197,7 +197,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Li ECP Barandiaran 5s1p 1s1p 1e-CG-AIMP\n");
 	fprintf(file,"Li ECP Huzinaga 5s1p 1s1p 1e-NR-AIMP\n");
 	fprintf(file,"Li ECP Stoll 4s4p 2s2p 2e-SDF\n");
-	fprintf(file,"Atom  Na\n");
+	fprintf(file,"GabeditAtom  Na\n");
 	fprintf(file,"31\n");
 	fprintf(file,"Na Pol Sadlej 14s10p4d 7s5p2d UNK\n");
 	fprintf(file,"Na ano-l Widmark 17s12p5d4f 7s7p5d4f UNK\n");
@@ -230,7 +230,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Na ECP Seijo 6s3p 1s1p 0e-AIMP-NaCl\n");
 	fprintf(file,"Na ECP Stoll 4s4p 2s2p 1e-SDF\n");
 	fprintf(file,"Na ECP Hay-Wadt 3s3p 2s2p 1e-LANL2DZ\n");
-	fprintf(file,"Atom  K\n");
+	fprintf(file,"GabeditAtom  K\n");
 	fprintf(file,"21\n");
 	fprintf(file,"K Pol Sadlej 15s13p4d 9s7p2d UNK\n");
 	fprintf(file,"K ano-s Pierloot 17s12p4d 7s6p4d UNK\n");
@@ -253,7 +253,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"K ECP Seijo 10s7p 1s1p 0e-AIMP-KF\n");
 	fprintf(file,"K ECP Stoll 7s6p 5s4p 9e-MWB\n");
 	fprintf(file,"K ECP Hay-Wadt 5s5p 3s3p 9e-LANL2DZ\n");
-	fprintf(file,"Atom  Rb\n");
+	fprintf(file,"GabeditAtom  Rb\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Rb Pol Sadlej 18s15p10d 11s9p4d UNK\n");
 	fprintf(file,"Rb ANO-DK3 Tsuchiya 23s19p12d 5s3p1d UNK\n");
@@ -264,7 +264,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Rb ECP Barandiaran 11s9p6d 1s2p1d 7e-CG-AIMP\n");
 	fprintf(file,"Rb ECP Stoll 7s6p 5s4p 9e-MWB\n");
 	fprintf(file,"Rb ECP Hay-Wadt 5s6p 3s3p 9e-LANL2DZ\n");
-	fprintf(file,"Atom  Cs\n");
+	fprintf(file,"GabeditAtom  Cs\n");
 	fprintf(file,"12\n");
 	fprintf(file,"Cs ANO-DK3 Tsuchiya 27s23p15d 6s4p2d UNK\n");
 	fprintf(file,"Cs ano-rcc Roos 26s22p15d4f 12s10p8d4f UNK\n");
@@ -278,11 +278,11 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Cs ECP Seijo 13s11p8d 1s2p1d 7e-NR-AIMP\n");
 	fprintf(file,"Cs ECP Stoll 7s6p 5s4p 9e-MWB\n");
 	fprintf(file,"Cs ECP Hay-Wadt 5s6p 3s3p 9e-LANL2DZ\n");
-	fprintf(file,"Atom  Fr\n");
+	fprintf(file,"GabeditAtom  Fr\n");
 	fprintf(file,"2\n");
 	fprintf(file,"Fr ANO-DK3 Tsuchiya 35s26p18d13f 7s5p3d1f UNK\n");
 	fprintf(file,"Fr ano-rcc Roos 28s25p17d12f 12s11p8d5f UNK\n");
-	fprintf(file,"Atom  Be\n");
+	fprintf(file,"GabeditAtom  Be\n");
 	fprintf(file,"18\n");
 	fprintf(file,"Be Pol Sadlej 10s6p4d 5s3p2d UNK\n");
 	fprintf(file,"Be ano-l Widmark 14s9p4d3f 7s7p4d3f UNK\n");
@@ -302,7 +302,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Be ECP Barandiaran 5s1p 1s1p 2e-CG-AIMP\n");
 	fprintf(file,"Be ECP Dolg 4s4p 2s2p 2e-SDF\n");
 	fprintf(file,"Be ECP Stoll 4s4p 2s2p 2e-SDF\n");
-	fprintf(file,"Atom  Mg\n");
+	fprintf(file,"GabeditAtom  Mg\n");
 	fprintf(file,"24\n");
 	fprintf(file,"Mg Pol Sadlej 14s10p4d 7s5p2d UNK\n");
 	fprintf(file,"Mg ano-l Widmark 17s12p5d4f 7s7p5d4f UNK\n");
@@ -328,7 +328,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Mg ECP HW 3s3p 2s2p 2e-LANL2DZ\n");
 	fprintf(file,"Mg ECP Stoll 4s4p 2s2p 2e-SDF\n");
 	fprintf(file,"Mg ECP Hay-Wadt 3s3p 2s2p 2e-LANL2DZ\n");
-	fprintf(file,"Atom  Ca\n");
+	fprintf(file,"GabeditAtom  Ca\n");
 	fprintf(file,"19\n");
 	fprintf(file,"Ca Pol Sadlej 15s13p4d 9s7p2d UNK\n");
 	fprintf(file,"Ca ano-s Pierloot 17s12p4d 7s7p4d UNK\n");
@@ -349,7 +349,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ca ECP Barandiaran 9s7p5d 1s2p3d 8e-CG-AIMP\n");
 	fprintf(file,"Ca ECP Stoll 6s6p5d 4s4p2d 10e-MWB\n");
 	fprintf(file,"Ca ECP Hay-Wadt 5s5p 3s3p 10e-LANL2DZ\n");
-	fprintf(file,"Atom  Sr\n");
+	fprintf(file,"GabeditAtom  Sr\n");
 	fprintf(file,"13\n");
 	fprintf(file,"Sr Pol Sadlej 18s15p10d 11s9p4d UNK\n");
 	fprintf(file,"Sr ANO-DK3 Tsuchiya 23s19p12d 5s3p1d UNK\n");
@@ -364,7 +364,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Sr ECP Pascual 16s10p 1s1p 0e-AIMP-SrO\n");
 	fprintf(file,"Sr ECP Stoll 6s6p5d 4s4p2d 10e-MWB\n");
 	fprintf(file,"Sr ECP Hay-Wadt 5s6p 3s3p 10e-LAN2LDZ\n");
-	fprintf(file,"Atom  Ba\n");
+	fprintf(file,"GabeditAtom  Ba\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Ba ANO-DK3 Tsuchiya 27s23p15d 6s4p2d UNK\n");
 	fprintf(file,"Ba ano-rcc Roos 26s22p15d4f 12s10p8d4f UNK\n");
@@ -375,11 +375,11 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ba ECP Seijo 13s11p8d 1s2p1d 8e-NR-AIMP\n");
 	fprintf(file,"Ba ECP Stoll 6s6p5d1f 4s4p2d1f 10e-MWB\n");
 	fprintf(file,"Ba ECP Hay-Wadt 5s6p 3s3p 10e-LANL2DZ\n");
-	fprintf(file,"Atom  Ra\n");
+	fprintf(file,"GabeditAtom  Ra\n");
 	fprintf(file,"2\n");
 	fprintf(file,"Ra ANO-DK3 Tsuchiya 35s26p18d13f 7s5p3d1f UNK\n");
 	fprintf(file,"Ra ano-rcc Roos 28s25p17d12f 12s11p8d5f UNK\n");
-	fprintf(file,"Atom  Sc\n");
+	fprintf(file,"GabeditAtom  Sc\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Sc ano-l Pou 21s15p10d6f4g 8s7p6d5f4g UNK\n");
 	fprintf(file,"Sc ano-s Pierloot 17s12p9d4f 8s7p7d4f UNK\n");
@@ -392,7 +392,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Sc ECP Barandiaran 9s6p6d 1s2p2d 9e-CG-AIMP\n");
 	fprintf(file,"Sc ECP Stoll 8s7p6d1f 6s5p3d1f 11e-MDF\n");
 	fprintf(file,"Sc ECP Hay-Wadt 5s5p5d 3s3p2d 11e-LANL2DZ\n");
-	fprintf(file,"Atom  Y\n");
+	fprintf(file,"GabeditAtom  Y\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Y Raf-r Wahlgren 17s13p9d2f 7s6p4d2f UNK\n");
 	fprintf(file,"Y ANO-DK3 Tsuchiya 23s19p12d 5s3p2d UNK\n");
@@ -405,7 +405,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Y ECP Barandiaran 11s8p7d 1s2p2d 9e-NR-AIMP\n");
 	fprintf(file,"Y ECP Stoll 8s7p6d 6s5p3d 11e-MWB\n");
 	fprintf(file,"Y ECP Hay-Wadt 5s6p4d 3s3p2d 11e-LANL2DZ\n");
-	fprintf(file,"Atom  La\n");
+	fprintf(file,"GabeditAtom  La\n");
 	fprintf(file,"10\n");
 	fprintf(file,"La ANO-DK3 Tsuchiya 27s23p15d 6s4p3d UNK\n");
 	fprintf(file,"La ano-rcc Roos 24s21p15d5f3g 11s10p8d5f3g UNK\n");
@@ -417,14 +417,14 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"La ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"La ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
 	fprintf(file,"La ECP Hay-Wadt 5s6p3d 3s3p2d 11e-LANL2DZ\n");
-	fprintf(file,"Atom  Ac\n");
+	fprintf(file,"GabeditAtom  Ac\n");
 	fprintf(file,"5\n");
 	fprintf(file,"Ac ANO-DK3 Tsuchiya 35s26p18d13f 7s5p4d1f UNK\n");
 	fprintf(file,"Ac ECP Dolg 14s13p10d8f6g 6s6p5d4f3g 29e-MWB\n");
 	fprintf(file,"Ac ECP Dolg 12s11p10d8f 8s7p6d4f 29e-MWB\n");
 	fprintf(file,"Ac ECP Stoll 14s13p10d8f6g 6s6p5d4f3g 29e-MWB\n");
 	fprintf(file,"Ac ECP Stoll 12s11p10d8f 8s7p6d4f 29e-MWB\n");
-	fprintf(file,"Atom  Ti\n");
+	fprintf(file,"GabeditAtom  Ti\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Ti ano-l Pou 21s15p10d6f4g 8s7p6d5f4g UNK\n");
 	fprintf(file,"Ti ano-s Pierloot 17s12p9d4f 8s7p7d4f UNK\n");
@@ -437,7 +437,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ti ECP Barandiaran 9s6p6d 1s2p2d 10e-CG-AIMP\n");
 	fprintf(file,"Ti ECP Stoll 8s7p6d1f 6s5p3d1f 12e-MDF\n");
 	fprintf(file,"Ti ECP Hay-Wadt 5s5p5d 3s3p2d 12e-LANL2DZ\n");
-	fprintf(file,"Atom  Zr\n");
+	fprintf(file,"GabeditAtom  Zr\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Zr Raf-r Wahlgren 17s13p9d2f 7s6p4d2f UNK\n");
 	fprintf(file,"Zr ANO-DK3 Tsuchiya 23s19p12d 5s3p2d UNK\n");
@@ -448,7 +448,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Zr ECP Barandiaran 11s8p7d 1s2p2d 10e-NR-AIMP\n");
 	fprintf(file,"Zr ECP Stoll 8s7p6d 6s5p3d 12e-MWB\n");
 	fprintf(file,"Zr ECP Hay-Wadt 5s6p4d 3s3p2d 12e-LANL2DZ\n");
-	fprintf(file,"Atom  Hf\n");
+	fprintf(file,"GabeditAtom  Hf\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Hf Raf-r Wahlgren 22s18p14d9f 8s7p5d3f UNK\n");
 	fprintf(file,"Hf ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
@@ -461,7 +461,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Hf ECP Rakowitz 13s10p9d6f 5s4p4d2f 12e-NP-AIMP\n");
 	fprintf(file,"Hf ECP Stoll 8s7p6d 6s5p3d 12e-MWB\n");
 	fprintf(file,"Hf ECP Hay-Wadt 5s6p3d 3s3p2d 12e-LANL2DZ\n");
-	fprintf(file,"Atom  V\n");
+	fprintf(file,"GabeditAtom  V\n");
 	fprintf(file,"11\n");
 	fprintf(file,"V ano-l Pou 21s15p10d6f4g 8s7p6d5f4g UNK\n");
 	fprintf(file,"V ano-s Pierloot 17s12p9d4f 8s7p7d4f UNK\n");
@@ -474,7 +474,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"V ECP Barandiaran 9s6p6d 1s2p2d 11e-CG-AIMP\n");
 	fprintf(file,"V ECP Stoll 8s7p6d1f 6s5p3d1f 13e-MDF\n");
 	fprintf(file,"V ECP Hay-Wadt 5s5p5d 3s3p2d 13e-LANL2DZ\n");
-	fprintf(file,"Atom  Nb\n");
+	fprintf(file,"GabeditAtom  Nb\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Nb Raf-r Wahlgren 17s13p9d2f 7s6p4d2f UNK\n");
 	fprintf(file,"Nb ANO-DK3 Tsuchiya 23s19p12d 5s3p2d UNK\n");
@@ -485,7 +485,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Nb ECP Barandiaran 11s8p7d 1s2p2d 11e-NR-AIMP\n");
 	fprintf(file,"Nb ECP Stoll 8s7p6d 6s5p3d 13e-MWB\n");
 	fprintf(file,"Nb ECP Hay-Wadt 5s6p4d 3s3p2d 13e-LANL2DZ\n");
-	fprintf(file,"Atom  Ta\n");
+	fprintf(file,"GabeditAtom  Ta\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Ta Raf-r Wahlgren 22s18p14d9f 8s7p5d3f UNK\n");
 	fprintf(file,"Ta ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
@@ -498,7 +498,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ta ECP Rakowitz 13s10p9d6f 5s4p4d2f 13e-NP-AIMP\n");
 	fprintf(file,"Ta ECP Stoll 8s7p6d 6s5p3d 13e-MWB\n");
 	fprintf(file,"Ta ECP Hay-Wadt 5s6p3d 3s3p2d 13e-LANL2DZ\n");
-	fprintf(file,"Atom  Ce\n");
+	fprintf(file,"GabeditAtom  Ce\n");
 	fprintf(file,"7\n");
 	fprintf(file,"Ce ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
 	fprintf(file,"Ce ECP Dolg 7s6p5d 5s4p3d 11e-MWB\n");
@@ -507,7 +507,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ce ECP Tsuchiya 14s10p9d8f 2s1p1d1f 12e-DK3-AIMP\n");
 	fprintf(file,"Ce ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Ce ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  Th\n");
+	fprintf(file,"GabeditAtom  Th\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Th Raf-r Wahlgren 24s19p14d11f 9s8p7d5f UNK\n");
 	fprintf(file,"Th ANO-DK3 Tsuchiya 35s26p18d13f 7s5p4d1f UNK\n");
@@ -518,7 +518,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Th ECP Seijo 14s10p11d9f 2s1p1d1f 12e-CG-AIMP\n");
 	fprintf(file,"Th ECP Stoll 14s13p10d8f6g 6s6p5d4f3g 30e-MWB\n");
 	fprintf(file,"Th ECP Stoll 12s11p7d8f 8s7p6d4f 30e-MWB\n");
-	fprintf(file,"Atom  Cr\n");
+	fprintf(file,"GabeditAtom  Cr\n");
 	fprintf(file,"13\n");
 	fprintf(file,"Cr ano-l Pou 21s15p10d6f4g 8s7p6d5f4g UNK\n");
 	fprintf(file,"Cr ano-s Pierloot 17s12p9d4f 8s7p7d4f UNK\n");
@@ -533,7 +533,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Cr ECP Stoll 8s7p6d1f 6s5p3d1f 14e-MDF\n");
 	fprintf(file,"Cr ECP Stoll 8s7p6d 6s5p3d 14e-MDF\n");
 	fprintf(file,"Cr ECP Hay-Wadt 5s5p5d 3s3p2d 14e-LANL2DZ\n");
-	fprintf(file,"Atom  Mo\n");
+	fprintf(file,"GabeditAtom  Mo\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Mo Raf-r Wahlgren 17s13p9d2f 7s6p4d2f UNK\n");
 	fprintf(file,"Mo ANO-DK3 Tsuchiya 23s19p12d 5s3p2d UNK\n");
@@ -544,7 +544,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Mo ECP Barandiaran 11s8p7d 1s2p2d 12e-NR-AIMP\n");
 	fprintf(file,"Mo ECP Stoll 8s7p6d 6s5p3d 14e-MWB\n");
 	fprintf(file,"Mo ECP Hay-Wadt 5s6p4d 3s3p2d 14e-LANL2DZ\n");
-	fprintf(file,"Atom  W\n");
+	fprintf(file,"GabeditAtom  W\n");
 	fprintf(file,"11\n");
 	fprintf(file,"W Raf-r Wahlgren 22s18p14d9f 8s7p5d3f UNK\n");
 	fprintf(file,"W ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
@@ -557,7 +557,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"W ECP Rakowitz 13s10p9d6f 5s4p4d2f 14e-NP-AIMP\n");
 	fprintf(file,"W ECP Stoll 8s7p6d 6s5p3d 14e-MWB\n");
 	fprintf(file,"W ECP Hay-Wadt 5s6p3d 3s3p2d 14e-LANL2DZ\n");
-	fprintf(file,"Atom  Pr\n");
+	fprintf(file,"GabeditAtom  Pr\n");
 	fprintf(file,"7\n");
 	fprintf(file,"Pr ANO-DK3 Tsuchiya 27s23p15d10f 6s4p2d1f UNK\n");
 	fprintf(file,"Pr ECP Dolg 7s6p5d 5s4p3d 11e-MWB\n");
@@ -566,7 +566,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Pr ECP Tsuchiya 14s10p9d8f 2s1p1d1f 13e-DK3-AIMP\n");
 	fprintf(file,"Pr ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Pr ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  Pa\n");
+	fprintf(file,"GabeditAtom  Pa\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Pa ANO-DK3 Tsuchiya 35s26p18d13f 7s5p4d2f UNK\n");
 	fprintf(file,"Pa ECP Dolg 12s11p10d8f 8s7p6d4f 31e-MWB\n");
@@ -576,7 +576,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Pa ECP Seijo 14s10p11d9f 2s1p1d1f 13e-CG-AIMP\n");
 	fprintf(file,"Pa ECP Stoll 14s13p10d8f3g 6s6p5d4f3g 31e-MWB\n");
 	fprintf(file,"Pa ECP Stoll 12s11p10d8f 8s7p6d4f 31e-MWB\n");
-	fprintf(file,"Atom  Mn\n");
+	fprintf(file,"GabeditAtom  Mn\n");
 	fprintf(file,"12\n");
 	fprintf(file,"Mn ano-l Pou 21s15p10d6f4g 8s7p6d5f4g UNK\n");
 	fprintf(file,"Mn ano-s Pierloot 17s12p9d4f 8s7p7d4f UNK\n");
@@ -590,7 +590,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Mn ECP Seijo 9s6p6d 1s2p2d 13e-NR-AIMP\n");
 	fprintf(file,"Mn ECP Stoll 8s7p6d1f 6s5p3d1f 15e-MDF\n");
 	fprintf(file,"Mn ECP Hay-Wadt 5s5p5d 3s3p2d 15e-LANL2DZ\n");
-	fprintf(file,"Atom  Tc\n");
+	fprintf(file,"GabeditAtom  Tc\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Tc Raf-r Wahlgren 17s13p9d2f 7s6p4d2f UNK\n");
 	fprintf(file,"Tc ANO-DK3 Tsuchiya 23s19p12d 5s3p2d UNK\n");
@@ -601,7 +601,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Tc ECP Barandiaran 11s8p7d 1s2p2d 13e-NR-AIMP\n");
 	fprintf(file,"Tc ECP Stoll 8s7p6d 6s5p3d 15e-MWB\n");
 	fprintf(file,"Tc ECP Hay-Wadt 5s6p4d 3s3p2d 15e-LANL2DZ\n");
-	fprintf(file,"Atom  Re\n");
+	fprintf(file,"GabeditAtom  Re\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Re Raf-r Wahlgren 22s18p14d9f 8s7p5d3f UNK\n");
 	fprintf(file,"Re ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
@@ -614,7 +614,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Re ECP Rakowitz 13s10p9d6f 5s4p4d2f 15e-NP-AIMP\n");
 	fprintf(file,"Re ECP Stoll 8s7p6d 6s5p3d 15e-MWB\n");
 	fprintf(file,"Re ECP Hay-Wadt 5s6p3d 3s3p2d 15e-LANL2DZ\n");
-	fprintf(file,"Atom  Nd\n");
+	fprintf(file,"GabeditAtom  Nd\n");
 	fprintf(file,"7\n");
 	fprintf(file,"Nd ANO-DK3 Tsuchiya 27s23p15d10f 6s4p2d1f UNK\n");
 	fprintf(file,"Nd ECP Dolg 7s6p5d 5s4p3d 11e-MWB\n");
@@ -623,7 +623,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Nd ECP Tsuchiya 14s10p9d8f 2s1p1d1f 14e-DK3-AIMP\n");
 	fprintf(file,"Nd ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Nd ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  U\n");
+	fprintf(file,"GabeditAtom  U\n");
 	fprintf(file,"15\n");
 	fprintf(file,"U Raf-r Wahlgren 24s19p14d11f 9s8p7d5f UNK\n");
 	fprintf(file,"U ANO-DK3 Tsuchiya 35s26p18d13f 7s5p4d2f UNK\n");
@@ -640,7 +640,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"U ECP Stoll 12s11p10d8f 8s7p6d4f 32e-MWB\n");
 	fprintf(file,"U ECP Stoll 12s11p10d8f2g 8s7p6d4f2g 32e-MWB\n");
 	fprintf(file,"U ECP Stoll 12s11p10d8f2g 8s7p6d4f2g 32e-SOC\n");
-	fprintf(file,"Atom  Fe\n");
+	fprintf(file,"GabeditAtom  Fe\n");
 	fprintf(file,"12\n");
 	fprintf(file,"Fe ano-l Pou 21s15p10d6f4g 8s7p6d5f4g UNK\n");
 	fprintf(file,"Fe ano-s Pierloot 17s12p9d4f 8s7p7d4f UNK\n");
@@ -654,7 +654,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Fe ECP Seijo 9s6p6d 1s2p2d 14e-NR-AIMP\n");
 	fprintf(file,"Fe ECP Stoll 8s7p6d1f 6s5p3d1f 16-MDF\n");
 	fprintf(file,"Fe ECP Hay-Wadt 5s5p5d 3s3p2d 16e-LANL2DZ\n");
-	fprintf(file,"Atom  Ru\n");
+	fprintf(file,"GabeditAtom  Ru\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Ru Raf-r Wahlgren 17s13p9d2f 7s6p4d2f UNK\n");
 	fprintf(file,"Ru ANO-DK3 Tsuchiya 23s19p12d 5s3p2d UNK\n");
@@ -665,7 +665,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ru ECP Barandiaran 11s8p7d 1s2p2d 14e-NR-AIMP\n");
 	fprintf(file,"Ru ECP Stoll 8s7p6d 6s5p3d 16e-MWB\n");
 	fprintf(file,"Ru ECP Hay-Wadt 5s6p4d 3s3p2d 16e-LANL2DZ\n");
-	fprintf(file,"Atom  Os\n");
+	fprintf(file,"GabeditAtom  Os\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Os Raf-r Wahlgren 22s18p14d9f 8s7p5d3f UNK\n");
 	fprintf(file,"Os ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
@@ -678,7 +678,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Os ECP Rakowitz 13s10p9d6f 5s4p4d2f 16e-NP-AIMP\n");
 	fprintf(file,"Os ECP Stoll 8s7p6d 6s5p3d 16e-MWB\n");
 	fprintf(file,"Os ECP Hay-Wadt 5s6p3d 3s3p2d 16e-LANL2DZ\n");
-	fprintf(file,"Atom  Pm\n");
+	fprintf(file,"GabeditAtom  Pm\n");
 	fprintf(file,"7\n");
 	fprintf(file,"Pm ANO-DK3 Tsuchiya 27s23p15d10f 6s4p2d1f UNK\n");
 	fprintf(file,"Pm ECP Dolg 7s6p5d 5s4p3d 11e-MWB\n");
@@ -687,7 +687,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Pm ECP Tsuchiya 14s10p9d8f 2s1p1d1f 15e-DK3-AIMP\n");
 	fprintf(file,"Pm ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Pm ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  Np\n");
+	fprintf(file,"GabeditAtom  Np\n");
 	fprintf(file,"15\n");
 	fprintf(file,"Np ANO-DK3 Tsuchiya 35s26p18d13f 7s5p4d2f UNK\n");
 	fprintf(file,"Np ECP Dolg 12s11p10d8f 8s7p6d4f 33e-MWB\n");
@@ -704,7 +704,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Np ECP Stoll 14s13p10d8f6g 6s6p5d4f3g 33e-MWB\n");
 	fprintf(file,"Np ECP Stoll 12s11p10d8f 8s7p6d4f 33e-MWB\n");
 	fprintf(file,"Np ECP Stoll 12s11p10d8f2g 8s7p6d4f2g 33e-MWB\n");
-	fprintf(file,"Atom  Co\n");
+	fprintf(file,"GabeditAtom  Co\n");
 	fprintf(file,"12\n");
 	fprintf(file,"Co ano-l Pou 21s15p10d6f4g 8s7p6d5f4g UNK\n");
 	fprintf(file,"Co ano-s Pierloot 17s12p9d4f 7s7p7d4f UNK\n");
@@ -718,7 +718,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Co ECP Seijo 9s6p6d 1s2p2d 15e-NR-AIMP\n");
 	fprintf(file,"Co ECP Stoll 8s7p6d1f 6s5p3d1f 17e-MDF\n");
 	fprintf(file,"Co ECP Hay-Wadt 5s5p5d 3s3p2d 17e-LANL2DZ\n");
-	fprintf(file,"Atom  Rh\n");
+	fprintf(file,"GabeditAtom  Rh\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Rh Raf-r Wahlgren 17s13p9d2f 7s6p4d2f UNK\n");
 	fprintf(file,"Rh ANO-DK3 Tsuchiya 23s19p12d 5s3p2d UNK\n");
@@ -729,7 +729,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Rh ECP Barandiaran 11s8p7d 1s2p2d 15e-NR-AIMP\n");
 	fprintf(file,"Rh ECP Stoll 8s7p6d 6s5p3d 17e-MWB\n");
 	fprintf(file,"Rh ECP Hay-Wadt 5s6p4d 3s3p2d 17e-LANL2DZ\n");
-	fprintf(file,"Atom  Ir\n");
+	fprintf(file,"GabeditAtom  Ir\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Ir Raf-r Wahlgren 22s18p14d9f 8s7p5d3f UNK\n");
 	fprintf(file,"Ir ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
@@ -742,7 +742,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ir ECP Rakowitz 13s10p9d6f 5s4p4d2f 17e-NP-AIMP\n");
 	fprintf(file,"Ir ECP Stoll 8s7p6d 6s5p3d 17e-MWB\n");
 	fprintf(file,"Ir ECP Hay-Wadt 5s6p3d 3s3p2d 17e-LANL2DZ\n");
-	fprintf(file,"Atom  Sm\n");
+	fprintf(file,"GabeditAtom  Sm\n");
 	fprintf(file,"10\n");
 	fprintf(file,"Sm ANO-DK3 Tsuchiya 27s23p15d10f 6s4p2d1f UNK\n");
 	fprintf(file,"Sm ano-rcc Roos 25s22p15d11f4g 12s11p8d7f4g UNK\n");
@@ -754,7 +754,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Sm ECP Stoll 12s11p9d8f6g 5s5p4d4f3g 34e-MWB\n");
 	fprintf(file,"Sm ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Sm ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  Pu\n");
+	fprintf(file,"GabeditAtom  Pu\n");
 	fprintf(file,"12\n");
 	fprintf(file,"Pu ANO-DK3 Tsuchiya 35s26p18d13f 7s5p3d2f UNK\n");
 	fprintf(file,"Pu ECP Dolg 12s11p10d8f 8s7p6d4f 34e-MWB\n");
@@ -768,7 +768,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Pu ECP Stoll 12s11p10d8f 8s7p6d4f 34e-MWB\n");
 	fprintf(file,"Pu ECP Stoll 12s11p10d8f2g 8s7p6d4f2g 34e-MWB\n");
 	fprintf(file,"Pu ECP Stoll 12s11p10d8f2g 8s7p6d4f2g 34e-SOC\n");
-	fprintf(file,"Atom  Ni\n");
+	fprintf(file,"GabeditAtom  Ni\n");
 	fprintf(file,"13\n");
 	fprintf(file,"Ni ano-l Pou 21s15p10d6f4g 8s7p6d5f4g UNK\n");
 	fprintf(file,"Ni ano-s Pierloot 17s12p9d4f 7s7p7d4f UNK\n");
@@ -783,7 +783,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ni ECP Seijo 0s 0s 0e-AIMP-NiO\n");
 	fprintf(file,"Ni ECP Stoll 8s7p6d1f 6s5p3d1f 18e-MDF\n");
 	fprintf(file,"Ni ECP Hay-Wadt 5s5p5d 3s3p2d 18e-LANL2DZ\n");
-	fprintf(file,"Atom  Pd\n");
+	fprintf(file,"GabeditAtom  Pd\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Pd Raf-r Wahlgren 17s13p9d2f 7s6p4d2f UNK\n");
 	fprintf(file,"Pd ANO-DK3 Tsuchiya 23s19p12d 4s3p2d UNK\n");
@@ -794,7 +794,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Pd ECP Barandiaran 11s8p7d 1s2p2d 16e-NR-AIMP\n");
 	fprintf(file,"Pd ECP Stoll 8s7p6d 6s5p3d 18e-MWB\n");
 	fprintf(file,"Pd ECP Hay-Wadt 5s6p4d 3s3p2d 18e-LANL2DZ\n");
-	fprintf(file,"Atom  Pt\n");
+	fprintf(file,"GabeditAtom  Pt\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Pt Raf-r Wahlgren 22s18p14d9f 8s7p5d3f UNK\n");
 	fprintf(file,"Pt ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
@@ -807,7 +807,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Pt ECP Casarrubios 13s10p9d5f 1s2p2d1f 16e-CG-AIMP-ave\n");
 	fprintf(file,"Pt ECP Stoll 8s7p6d 6s5p3d 18e-MWB\n");
 	fprintf(file,"Pt ECP Hay-Wadt 5s6p3d 3s3p2d 18e-LANL2DZ\n");
-	fprintf(file,"Atom  Eu\n");
+	fprintf(file,"GabeditAtom  Eu\n");
 	fprintf(file,"7\n");
 	fprintf(file,"Eu ANO-DK3 Tsuchiya 27s23p15d10f 6s4p2d1f UNK\n");
 	fprintf(file,"Eu ECP Dolg 7s6p5d 5s4p3d 11e-MWB\n");
@@ -816,7 +816,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Eu ECP Tsuchiya 14s10p9d8f 2s1p1d1f 17e-DK3-AIMP\n");
 	fprintf(file,"Eu ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Eu ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  Am\n");
+	fprintf(file,"GabeditAtom  Am\n");
 	fprintf(file,"10\n");
 	fprintf(file,"Am ANO-DK3 Tsuchiya 35s26p18d13f 7s5p3d2f UNK\n");
 	fprintf(file,"Am ECP Dolg 12s11p10d8f 8s7p6d4f 35e-MWB\n");
@@ -828,7 +828,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Am ECP Stoll 14s13p10d8f6g 6s6p5d4f3g 35e-MWB\n");
 	fprintf(file,"Am ECP Stoll 12s11p10d8f 8s7p6d4f 35e-MWB\n");
 	fprintf(file,"Am ECP Stoll 12s11p10d8f2g 8s7p6d4f2g 35e-MWB\n");
-	fprintf(file,"Atom  Cu\n");
+	fprintf(file,"GabeditAtom  Cu\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Cu ano-l Pou 21s15p10d6f4g 8s7p6d5f4g UNK\n");
 	fprintf(file,"Cu ano-s Pierloot 17s12p9d4f 8s8p8d4f UNK\n");
@@ -841,7 +841,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Cu ECP Barandiaran 9s6p6d 1s2p2d 17e-CG-AIMP\n");
 	fprintf(file,"Cu ECP Stoll 8s7p6d 6s5p3d 19e-MDF\n");
 	fprintf(file,"Cu ECP Hay-Wadt 5s5p5d 3s3p2d 19e-LANL2DZ\n");
-	fprintf(file,"Atom  Ag\n");
+	fprintf(file,"GabeditAtom  Ag\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Ag ANO-DK3 Tsuchiya 23s19p12d 5s3p2d UNK\n");
 	fprintf(file,"Ag ECP Barandiaran 11s8p7d 1s2p2d 17e-NR-AIMP\n");
@@ -851,7 +851,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ag ECP Barandiaran 11s8p7d 1s2p2d 17e-CG-AIMP\n");
 	fprintf(file,"Ag ECP Stoll 8s7p6d 6s5p3d 19e-MWB\n");
 	fprintf(file,"Ag ECP Hay-Wadt 5s6p4d 3s3p2d 19e-LANL2DZ\n");
-	fprintf(file,"Atom  Au\n");
+	fprintf(file,"GabeditAtom  Au\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Au Raf-r Wahlgren 22s18p14d9f 8s7p5d3f UNK\n");
 	fprintf(file,"Au ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
@@ -864,7 +864,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Au ECP Rakowitz 13s10p9d6f 5s4p4d2f 19e-NP-AIMP\n");
 	fprintf(file,"Au ECP Stoll 8s7p6d 6s5p3d 19e-MWB\n");
 	fprintf(file,"Au ECP Hay-Wadt 5s6p3d 3s3p2d 19e-LANL2DZ\n");
-	fprintf(file,"Atom  Gd\n");
+	fprintf(file,"GabeditAtom  Gd\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Gd ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
 	fprintf(file,"Gd ano-rcc Roos 25s22p15d11f4g 12s11p8d7f4g UNK\n");
@@ -874,7 +874,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Gd ECP Tsuchiya 14s10p9d8f 2s1p1d1f 18e-DK3-AIMP\n");
 	fprintf(file,"Gd ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Gd ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  Cm\n");
+	fprintf(file,"GabeditAtom  Cm\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Cm ANO-DK3 Tsuchiya 35s26p18d13f 7s5p4d2f UNK\n");
 	fprintf(file,"Cm ECP Dolg 12s11p10d8f 8s7p6d4f 36e-MWB\n");
@@ -884,7 +884,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Cm ECP Seijo 14s10p11d9f 2s1p1d1f 18e-CG-AIMP\n");
 	fprintf(file,"Cm ECP Stoll 14s13p10d8f6g 6s6p5d4f3g 36e-MWB\n");
 	fprintf(file,"Cm ECP Stoll 12s11p10d8f 8s7p6d4f 36e-MWB\n");
-	fprintf(file,"Atom  Zn\n");
+	fprintf(file,"GabeditAtom  Zn\n");
 	fprintf(file,"16\n");
 	fprintf(file,"Zn ano-l Pou 21s15p10d6f4g 8s7p6d5f4g UNK\n");
 	fprintf(file,"Zn ano-s Pierloot 17s12p9d4f 8s8p8d4f UNK\n");
@@ -902,7 +902,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Zn ECP Stoll 8s7p6d 6s5p3d 20e-MDF\n");
 	fprintf(file,"Zn ECP Stoll 4s2p 3s2p 2e-MWB\n");
 	fprintf(file,"Zn ECP Hay-Wadt 3s2p5d 2s2p2d 12e-LANL2DZ\n");
-	fprintf(file,"Atom  Cd\n");
+	fprintf(file,"GabeditAtom  Cd\n");
 	fprintf(file,"12\n");
 	fprintf(file,"Cd ANO-DK3 Tsuchiya 23s19p12d 5s3p2d UNK\n");
 	fprintf(file,"Cd ECP Barandiaran 11s8p6d 1s2p1d 18e-NR-AIMP\n");
@@ -916,7 +916,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Cd ECP Barandiaran 11s8p6d 1s2p1d 18e-CG-AIMP\n");
 	fprintf(file,"Cd ECP Stoll 8s7p6d 6s5p3d 20e-MWB\n");
 	fprintf(file,"Cd ECP Hay-Wadt 3s3p4d 2s2p2d 12e-LANL2DZ\n");
-	fprintf(file,"Atom  Hg\n");
+	fprintf(file,"GabeditAtom  Hg\n");
 	fprintf(file,"12\n");
 	fprintf(file,"Hg Raf-r Wahlgren 22s18p14d9f 8s7p5d3f UNK\n");
 	fprintf(file,"Hg ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
@@ -930,7 +930,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Hg ECP Stoll 8s7p6d 6s5p3d 20e-MWB\n");
 	fprintf(file,"Hg ECP Stoll 4s4p1d 2s2p1d 2e-MWB\n");
 	fprintf(file,"Hg ECP Hay-Wadt 3s3p3d 2s2p2d 12e-LANL2DZ\n");
-	fprintf(file,"Atom  Tb\n");
+	fprintf(file,"GabeditAtom  Tb\n");
 	fprintf(file,"7\n");
 	fprintf(file,"Tb ANO-DK3 Tsuchiya 27s23p15d10f 6s4p2d1f UNK\n");
 	fprintf(file,"Tb ECP Dolg 7s6p5d 5s4p3d 11e-MWB\n");
@@ -939,7 +939,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Tb ECP Tsuchiya 14s10p9d8f 2s1p1d1f 19e-DK3-AIMP\n");
 	fprintf(file,"Tb ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Tb ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  Bk\n");
+	fprintf(file,"GabeditAtom  Bk\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Bk ANO-DK3 Tsuchiya 35s26p18d13f 7s5p4d2f UNK\n");
 	fprintf(file,"Bk ECP Dolg 12s11p10d8f 8s7p6d4f 37e-MWB\n");
@@ -949,7 +949,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Bk ECP Seijo 14s10p11d9f 2s1p1d1f 19e-CG-AIMP\n");
 	fprintf(file,"Bk ECP Stoll 14s13p10d8f6g 6s6p5d4f3g 37e-MWB\n");
 	fprintf(file,"Bk ECP Stoll 12s11p10d8f 8s7p6d4f 37e-MWB\n");
-	fprintf(file,"Atom  B\n");
+	fprintf(file,"GabeditAtom  B\n");
 	fprintf(file,"19\n");
 	fprintf(file,"B ano-l Widmark 14s9p4d3f 7s7p4d3f UNK\n");
 	fprintf(file,"B ano-s Pierloot 10s6p3d 7s6p3d UNK\n");
@@ -970,7 +970,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"B ECP Barandiaran 5s5p1d 1s1p1d 3e-CG-AIMP\n");
 	fprintf(file,"B ECP Huzinaga 5s5p1d 1s1p1d 3e-NR-AIMP\n");
 	fprintf(file,"B ECP Stoll 4s4p 2s2p 3e-MWB\n");
-	fprintf(file,"Atom  Al\n");
+	fprintf(file,"GabeditAtom  Al\n");
 	fprintf(file,"20\n");
 	fprintf(file,"Al ano-l Widmark 17s12p5d4f 7s7p5d4f UNK\n");
 	fprintf(file,"Al ano-s Pierloot 13s10p4d 7s7p4d UNK\n");
@@ -992,7 +992,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Al ECP Dolg 4s4p 2s2p 3e-MWB\n");
 	fprintf(file,"Al ECP Stoll 4s4p 2s2p 3e-MWB\n");
 	fprintf(file,"Al ECP Hay-Wadt 3s3p 2s2p 3e-LANL2DZ\n");
-	fprintf(file,"Atom  Ga\n");
+	fprintf(file,"GabeditAtom  Ga\n");
 	fprintf(file,"13\n");
 	fprintf(file,"Ga ano-s Pierloot 17s15p9d 9s9p5d UNK\n");
 	fprintf(file,"Ga ANO-DK3 Tsuchiya 20s15p9d 4s3p1d UNK\n");
@@ -1007,7 +1007,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ga ECP Barandiaran 9s8p4d 1s1p2d 3e-CG-AIMP\n");
 	fprintf(file,"Ga ECP Stoll 4s4p 2s2p 3e-MWB\n");
 	fprintf(file,"Ga ECP Hay-Wadt 3s3p 2s2p 3e-LANL2DZ\n");
-	fprintf(file,"Atom  In\n");
+	fprintf(file,"GabeditAtom  In\n");
 	fprintf(file,"8\n");
 	fprintf(file,"In ANO-DK3 Tsuchiya 23s19p12d 5s4p2d UNK\n");
 	fprintf(file,"In ano-rcc Roos 22s19p13d5f3g 10s9p8d5f3g UNK\n");
@@ -1017,7 +1017,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"In ECP Barandiaran 11s10p7d 1s1p2d 13e-NR-AIMP\n");
 	fprintf(file,"In ECP Stoll 4s4p 2s2p 3e-MWB\n");
 	fprintf(file,"In ECP Hay-Wadt 3s3p 2s2p 3e-LANL2DZ\n");
-	fprintf(file,"Atom  Tl\n");
+	fprintf(file,"GabeditAtom  Tl\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Tl Raf-r Wahlgren 22s17p14d9f 8s7p5d3f UNK\n");
 	fprintf(file,"Tl ANO-DK3 Tsuchiya 27s23p15d10f 6s5p3d1f UNK\n");
@@ -1028,7 +1028,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Tl ECP Barandiaran 13s12p8d5f 1s1p2d1f 13e-CG-AIMP\n");
 	fprintf(file,"Tl ECP Stoll 4s4p1d 2s2p1d 3e-MWB\n");
 	fprintf(file,"Tl ECP Hay-Wadt 3s3p3d 2s2p2d 13e-LANL2DZ\n");
-	fprintf(file,"Atom  Dy\n");
+	fprintf(file,"GabeditAtom  Dy\n");
 	fprintf(file,"7\n");
 	fprintf(file,"Dy ANO-DK3 Tsuchiya 27s23p15d10f 6s4p2d1f UNK\n");
 	fprintf(file,"Dy ECP Dolg 7s6p5d 5s4p3d 11e-MWB\n");
@@ -1037,7 +1037,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Dy ECP Tsuchiya 14s10p9d8f 2s1p1d1f 20e-DK3-AIMP\n");
 	fprintf(file,"Dy ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Dy ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  Cf\n");
+	fprintf(file,"GabeditAtom  Cf\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Cf ANO-DK3 Tsuchiya 35s26p18d13f 7s5p3d2f UNK\n");
 	fprintf(file,"Cf ECP Dolg 12s11p10d8f 8s7p6d4f 38e-MWB\n");
@@ -1047,7 +1047,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Cf ECP Seijo 14s10p11d9f 2s1p1d1f 20e-CG-AIMP\n");
 	fprintf(file,"Cf ECP Stoll 14s13p10d8f6g 6s6p5d4f3g 38e-MWB\n");
 	fprintf(file,"Cf ECP Stoll 12s11p10d8f 8s7p6d4f 38e-MWB\n");
-	fprintf(file,"Atom  C\n");
+	fprintf(file,"GabeditAtom  C\n");
 	fprintf(file,"22\n");
 	fprintf(file,"C Pol Sadlej 10s6p4d 5s3p2d UNK\n");
 	fprintf(file,"C ano-l Widmark 14s9p4d3f 7s7p4d3f UNK\n");
@@ -1071,7 +1071,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"C ECP Huzinaga 5s5p1d 1s1p1d 4e-NR-AIMP\n");
 	fprintf(file,"C ECP Stoll 4s4p 2s2p 4e-MWB\n");
 	fprintf(file,"C ECP Stoll 4s4p1d 2s2p1d 4e-MWB\n");
-	fprintf(file,"Atom  Si\n");
+	fprintf(file,"GabeditAtom  Si\n");
 	fprintf(file,"21\n");
 	fprintf(file,"Si Pol Sadlej 14s10p4d 7s5p2d UNK\n");
 	fprintf(file,"Si ano-l Widmark 17s12p5d4f 7s7p5d4f UNK\n");
@@ -1094,7 +1094,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Si ECP Dolg 4s4p 2s2p 4e-MWB\n");
 	fprintf(file,"Si ECP Stoll 4s4p 2s2p 4e-MWB\n");
 	fprintf(file,"Si ECP Hay-Wadt 3s3p 2s2p 4e-LANL2DZ\n");
-	fprintf(file,"Atom  Ge\n");
+	fprintf(file,"GabeditAtom  Ge\n");
 	fprintf(file,"13\n");
 	fprintf(file,"Ge Pol Sadlej 15s12p9d 9s7p4d UNK\n");
 	fprintf(file,"Ge ano-s Pierloot 17s15p9d 9s9p5d UNK\n");
@@ -1109,7 +1109,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ge ECP HW 3s3p 2s2p 4e-LANL2DZ\n");
 	fprintf(file,"Ge ECP Stoll 4s4p 2s2p 4e-MWB\n");
 	fprintf(file,"Ge ECP Hay-Wadt 3s3p 2s2p 4e-LANL2DZ\n");
-	fprintf(file,"Atom  Sn\n");
+	fprintf(file,"GabeditAtom  Sn\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Sn Pol Sadlej 19s15p12d4f 11s9p6d2f UNK\n");
 	fprintf(file,"Sn ANO-DK3 Tsuchiya 23s19p12d 5s4p2d UNK\n");
@@ -1120,7 +1120,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Sn ECP Barandiaran 11s10p7d 1s1p2d 14e-CG-AIMP\n");
 	fprintf(file,"Sn ECP Stoll 4s4p 2s2p 4e-MWB\n");
 	fprintf(file,"Sn ECP Hay-Wadt 3s3p 2s2p 4e-LANL2DZ\n");
-	fprintf(file,"Atom  Pb\n");
+	fprintf(file,"GabeditAtom  Pb\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Pb ANO-DK3 Tsuchiya 27s23p15d10f 6s5p3d1f UNK\n");
 	fprintf(file,"Pb ano-rcc Roos 25s22p16d12f4g 11s10p9d6f4g UNK\n");
@@ -1130,7 +1130,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Pb ECP Barandiaran 13s12p8d5f 1s1p2d1f 14e-NR-AIMP\n");
 	fprintf(file,"Pb ECP Stoll 4s4p1d 2s2p1d 4e-MWB\n");
 	fprintf(file,"Pb ECP Hay-Wadt 3s3p 2s2p 4e-LANL2DZ\n");
-	fprintf(file,"Atom  Ho\n");
+	fprintf(file,"GabeditAtom  Ho\n");
 	fprintf(file,"7\n");
 	fprintf(file,"Ho ANO-DK3 Tsuchiya 27s23p15d10f 6s4p2d1f UNK\n");
 	fprintf(file,"Ho ECP Dolg 7s6p5d 5s4p3d 11e-MWB\n");
@@ -1139,7 +1139,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ho ECP Tsuchiya 14s10p9d8f 2s1p1d1f 21e-DK3-AIMP\n");
 	fprintf(file,"Ho ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Ho ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  Es\n");
+	fprintf(file,"GabeditAtom  Es\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Es ANO-DK3 Tsuchiya 35s26p18d13f 7s5p3d2f UNK\n");
 	fprintf(file,"Es ECP Dolg 12s11p10d8f 8s7p6d4f 39e-MWB\n");
@@ -1149,7 +1149,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Es ECP Seijo 14s10p11d9f 2s1p1d1f 21e-CG-AIMP\n");
 	fprintf(file,"Es ECP Stoll 14s13p10d8f6g 6s6p5d4f3g 39e-MWB\n");
 	fprintf(file,"Es ECP Stoll 12s11p10d8f 8s7p6d4f 39e-MWB\n");
-	fprintf(file,"Atom  N\n");
+	fprintf(file,"GabeditAtom  N\n");
 	fprintf(file,"23\n");
 	fprintf(file,"N Pol Sadlej 10s6p4d 5s3p2d UNK\n");
 	fprintf(file,"N ano-l Widmark 14s9p4d3f 7s7p4d3f UNK\n");
@@ -1174,7 +1174,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"N ECP Barandiaran 5s5p1d 1s1p1d 5e-CG-AIMP\n");
 	fprintf(file,"N ECP Stoll 4s4p 2s2p 5e-MWB\n");
 	fprintf(file,"N ECP Stoll 4s4p1d 2s2p1d 5e-MWB\n");
-	fprintf(file,"Atom  P\n");
+	fprintf(file,"GabeditAtom  P\n");
 	fprintf(file,"21\n");
 	fprintf(file,"P Pol Sadlej 14s10p4d 7s5p2d UNK\n");
 	fprintf(file,"P ano-l Widmark 17s12p5d4f 7s7p5d4f UNK\n");
@@ -1197,7 +1197,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"P ECP HW 3s3p 2s2p 5e-LANL2DZ\n");
 	fprintf(file,"P ECP Stoll 4s4p 2s2p 5e-MWB\n");
 	fprintf(file,"P ECP Hay-Wadt 3s3p 2s2p 5e-LANL2DZ\n");
-	fprintf(file,"Atom  As\n");
+	fprintf(file,"GabeditAtom  As\n");
 	fprintf(file,"12\n");
 	fprintf(file,"As Pol Sadlej 15s12p9d 9s7p4d UNK\n");
 	fprintf(file,"As ano-s Pierloot 17s15p9d 9s9p5d UNK\n");
@@ -1211,7 +1211,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"As ECP Dolg 4s4p 2s2p 5e-MWB\n");
 	fprintf(file,"As ECP Stoll 4s4p 2s2p 5e-MWB\n");
 	fprintf(file,"As ECP Hay-Wadt 3s3p 2s2p 5e-LANL2DZ\n");
-	fprintf(file,"Atom  Sb\n");
+	fprintf(file,"GabeditAtom  Sb\n");
 	fprintf(file,"9\n");
 	fprintf(file,"Sb Pol Sadlej 19s15p12d4f 11s9p6d2f UNK\n");
 	fprintf(file,"Sb ANO-DK3 Tsuchiya 23s19p12d 5s4p2d UNK\n");
@@ -1222,7 +1222,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Sb ECP Barandiaran 11s10p7d 1s1p2d 15e-CG-AIMP\n");
 	fprintf(file,"Sb ECP Stoll 4s4p 2s2p 5e-MWB\n");
 	fprintf(file,"Sb ECP Hay-Wadt 3s3p 2s2p 5e-LANL2DZ\n");
-	fprintf(file,"Atom  Bi\n");
+	fprintf(file,"GabeditAtom  Bi\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Bi ANO-DK3 Tsuchiya 27s23p15d10f 6s5p3d1f UNK\n");
 	fprintf(file,"Bi ano-rcc Roos 25s22p16d12f4g 11s10p9d6f4g UNK\n");
@@ -1232,7 +1232,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Bi ECP Barandiaran 13s12p8d5f 1s1p2d1f 15e-NR-AIMP\n");
 	fprintf(file,"Bi ECP Stoll 4s4p1d 2s2p1d 5e-MWB\n");
 	fprintf(file,"Bi ECP Hay-Wadt 3s3p 2s2p 5e-LANL2DZ\n");
-	fprintf(file,"Atom  Er\n");
+	fprintf(file,"GabeditAtom  Er\n");
 	fprintf(file,"7\n");
 	fprintf(file,"Er ANO-DK3 Tsuchiya 27s23p15d10f 6s4p2d1f UNK\n");
 	fprintf(file,"Er ECP Dolg 7s6p5d 5s4p3d 11e-MWB\n");
@@ -1241,7 +1241,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Er ECP Tsuchiya 14s10p9d8f 2s1p1d1f 22e-DK3-AIMP\n");
 	fprintf(file,"Er ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Er ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  Fm\n");
+	fprintf(file,"GabeditAtom  Fm\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Fm ANO-DK3 Tsuchiya 35s26p18d13f 7s5p3d2f UNK\n");
 	fprintf(file,"Fm ECP Dolg 12s11p10d8f 8s7p6d4f 40e-MWB\n");
@@ -1251,7 +1251,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Fm ECP Seijo 14s10p11d9f 2s1p1d1f 22e-CG-AIMP\n");
 	fprintf(file,"Fm ECP Stoll 14s13p10d8f6g 6s6p5d4f3g 40e-MWB\n");
 	fprintf(file,"Fm ECP Stoll 12s11p10d8f 8s7p6d4f 40e-MWB\n");
-	fprintf(file,"Atom  O\n");
+	fprintf(file,"GabeditAtom  O\n");
 	fprintf(file,"36\n");
 	fprintf(file,"O Pol Sadlej 10s6p4d 5s3p2d UNK\n");
 	fprintf(file,"O ano-l Widmark 14s9p4d3f 7s7p4d3f UNK\n");
@@ -1289,7 +1289,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"O ECP Stoll 4s5p3d 2s3p2d 6e-MWB\n");
 	fprintf(file,"O ECP Stoll 4s5p1d 2s3p1d 6e-SOC\n");
 	fprintf(file,"O ECP Stoll 4s5p 2s3p 6e-SOC\n");
-	fprintf(file,"Atom  S\n");
+	fprintf(file,"GabeditAtom  S\n");
 	fprintf(file,"23\n");
 	fprintf(file,"S Pol Sadlej 14s10p4d 7s5p2d UNK\n");
 	fprintf(file,"S ano-l Widmark 17s12p5d4f 7s7p5d4f UNK\n");
@@ -1314,7 +1314,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"S ECP Stoll 4s5p 2s3p 6e\n");
 	fprintf(file,"S ECP Stoll 4s5p2d 2s3p2d 6e\n");
 	fprintf(file,"S ECP Hay-Wadt 3s3p 2s2p 6e-LANL2DZ\n");
-	fprintf(file,"Atom  Se\n");
+	fprintf(file,"GabeditAtom  Se\n");
 	fprintf(file,"12\n");
 	fprintf(file,"Se Pol Sadlej 15s12p9d 9s7p4d UNK\n");
 	fprintf(file,"Se ano-s Pierloot 17s15p9d 9s9p5d UNK\n");
@@ -1328,7 +1328,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Se ECP Dolg 4s5p 2s3p 6e-MWB\n");
 	fprintf(file,"Se ECP Stoll 4s5p 2s3p 6e-MWB\n");
 	fprintf(file,"Se ECP Hay-Wadt 3s3p 2s2p 6e-LANL2DZ\n");
-	fprintf(file,"Atom  Te\n");
+	fprintf(file,"GabeditAtom  Te\n");
 	fprintf(file,"10\n");
 	fprintf(file,"Te Pol Sadlej 19s15p12d4f 11s9p6d2f UNK\n");
 	fprintf(file,"Te ANO-DK3 Tsuchiya 23s19p12d 5s4p2d UNK\n");
@@ -1340,7 +1340,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Te ECP Stoll 4s5p 2s3p 6e-MWB\n");
 	fprintf(file,"Te ECP Stoll 4s5p1d 2s3p1d 6e-MWB\n");
 	fprintf(file,"Te ECP Hay-Wadt 3s3p 2s2p 6e-LANL2DZ\n");
-	fprintf(file,"Atom  Po\n");
+	fprintf(file,"GabeditAtom  Po\n");
 	fprintf(file,"7\n");
 	fprintf(file,"Po Raf-r Wahlgren 22s17p14d9f 8s7p5d3f UNK\n");
 	fprintf(file,"Po ANO-DK3 Tsuchiya 27s23p15d10f 6s5p3d1f UNK\n");
@@ -1349,7 +1349,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Po ECP Barandiaran 13s12p8d5f 1s1p2d1f 16e-NR-AIMP\n");
 	fprintf(file,"Po ECP Barandiaran 13s12p8d5f 1s1p2d1f 16e-CG-AIMP\n");
 	fprintf(file,"Po ECP Stoll 4s4p1d 2s2p1d 6e-MWB\n");
-	fprintf(file,"Atom  Tm\n");
+	fprintf(file,"GabeditAtom  Tm\n");
 	fprintf(file,"7\n");
 	fprintf(file,"Tm ANO-DK3 Tsuchiya 27s23p15d10f 6s4p2d1f UNK\n");
 	fprintf(file,"Tm ECP Dolg 7s6p5d 5s4p3d 11e-MWB\n");
@@ -1358,13 +1358,13 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Tm ECP Tsuchiya 14s10p9d8f 2s1p1d1f 23e-DK3-AIMP\n");
 	fprintf(file,"Tm ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Tm ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  Md\n");
+	fprintf(file,"GabeditAtom  Md\n");
 	fprintf(file,"4\n");
 	fprintf(file,"Md ANO-DK3 Tsuchiya 35s26p18d13f 7s5p3d2f UNK\n");
 	fprintf(file,"Md ECP Paulovic 14s10p11d9f 2s1p1d1f 23e-DK3-AIMP\n");
 	fprintf(file,"Md ECP Paulovic 14s10p12d9f 2s1p2d1f 33e-DK3-AIMP\n");
 	fprintf(file,"Md ECP Seijo 14s10p11d9f 2s1p1d1f 23e-CG-AIMP\n");
-	fprintf(file,"Atom  F\n");
+	fprintf(file,"GabeditAtom  F\n");
 	fprintf(file,"40\n");
 	fprintf(file,"F UNK Seijo 0s 0s 0e-AIMP-co-NaF\n");
 	fprintf(file,"F Pol Sadlej 10s6p4d 5s3p2d UNK\n");
@@ -1406,7 +1406,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"F ECP Stoll 4s5p 2s3p 7e-MWB\n");
 	fprintf(file,"F ECP Stoll 4s5p1d 2s3p1d 7e-MWB\n");
 	fprintf(file,"F ECP Stoll 4s5p1d 2s3p1d 7e-SOC\n");
-	fprintf(file,"Atom  Cl\n");
+	fprintf(file,"GabeditAtom  Cl\n");
 	fprintf(file,"24\n");
 	fprintf(file,"Cl Pol Sadlej 14s10p4d 7s5p2d UNK\n");
 	fprintf(file,"Cl ano-l Widmark 17s12p5d4f 7s7p5d4f UNK\n");
@@ -1432,7 +1432,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Cl ECP Huzinaga 7s7p1d 1s2p1d 7e-NR-AIMP\n");
 	fprintf(file,"Cl ECP Stoll 4s5p 2s3p 7e-MWB\n");
 	fprintf(file,"Cl ECP Hay-Wadt 3s3p 2s2p 7e-LANL2DZ\n");
-	fprintf(file,"Atom  Br\n");
+	fprintf(file,"GabeditAtom  Br\n");
 	fprintf(file,"13\n");
 	fprintf(file,"Br Pol Sadlej 15s12p9d 9s7p4d UNK\n");
 	fprintf(file,"Br ano-s Pierloot 17s15p9d 9s9p5d UNK\n");
@@ -1447,7 +1447,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Br ECP HW 3s3p 2s2p 7e-LANL2DZ\n");
 	fprintf(file,"Br ECP Stoll 6s6p1d 5s5p1d 7e-MWB\n");
 	fprintf(file,"Br ECP Hay-Wadt 3s3p 2s2p 7e-LANL2DZ\n");
-	fprintf(file,"Atom  I\n");
+	fprintf(file,"GabeditAtom  I\n");
 	fprintf(file,"9\n");
 	fprintf(file,"I Pol Sadlej 19s15p12d4f 11s9p6d2f UNK\n");
 	fprintf(file,"I ANO-DK3 Tsuchiya 23s19p12d 5s4p2d UNK\n");
@@ -1458,7 +1458,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"I ECP Barandiaran 11s10p7d 1s1p2d 17e-CG-AIMP\n");
 	fprintf(file,"I ECP Stoll 4s5p 2s3p 7e-MWB\n");
 	fprintf(file,"I ECP Hay-Wadt 3s3p 2s2p 7e-LANL2DZ\n");
-	fprintf(file,"Atom  At\n");
+	fprintf(file,"GabeditAtom  At\n");
 	fprintf(file,"6\n");
 	fprintf(file,"At ANO-DK3 Tsuchiya 27s23p15d10f 6s5p3d1f UNK\n");
 	fprintf(file,"At ano-rcc Roos 25s22p16d12f4g 11s10p9d6f4g UNK\n");
@@ -1466,7 +1466,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"At ECP Barandiaran 13s12p8d5f 1s1p2d1f 17e-CG-AIMP\n");
 	fprintf(file,"At ECP Barandiaran 13s12p8d5f 1s1p2d1f 17e-NR-AIMP\n");
 	fprintf(file,"At ECP Stoll 4s4p1d 2s2p1d 7e-MWB\n");
-	fprintf(file,"Atom  Yb\n");
+	fprintf(file,"GabeditAtom  Yb\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Yb ANO-DK3 Tsuchiya 27s23p15d10f 6s4p2d1f UNK\n");
 	fprintf(file,"Yb ano-rcc Roos 25s22p15d11f4g 11s10p8d7f4g UNK\n");
@@ -1476,13 +1476,13 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Yb ECP Tsuchiya 14s10p9d8f 2s1p1d1f 24e-DK3-AIMP\n");
 	fprintf(file,"Yb ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Yb ECP Stoll 7s6p5d 5s4p3d 10e-MWB\n");
-	fprintf(file,"Atom  No\n");
+	fprintf(file,"GabeditAtom  No\n");
 	fprintf(file,"4\n");
 	fprintf(file,"No ANO-DK3 Tsuchiya 35s26p18d13f 7s5p3d2f UNK\n");
 	fprintf(file,"No ECP Paulovic 14s10p11d9f 2s1p1d1f 24e-DK3-AIMP\n");
 	fprintf(file,"No ECP Paulovic 14s10p12d9f 2s1p2d1f 34e-DK3-AIMP\n");
 	fprintf(file,"No ECP Seijo 14s10p11d9f 2s1p1d1f 24e-CG-AIMP\n");
-	fprintf(file,"Atom  He\n");
+	fprintf(file,"GabeditAtom  He\n");
 	fprintf(file,"15\n");
 	fprintf(file,"He ano-l Widmark 9s4p3d 7s4p3d UNK\n");
 	fprintf(file,"He ano-s Pierloot 7s3p 4s3p UNK\n");
@@ -1499,7 +1499,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"He ano-rcc Widmark 9s4p3d2f 7s4p3d2f UNK\n");
 	fprintf(file,"He aug-cc-pVDZ Woon 5s2p 3s2p UNK\n");
 	fprintf(file,"He aug-cc-pVTZ Woon 7s3p2d 4s3p2d UNK\n");
-	fprintf(file,"Atom  Ne\n");
+	fprintf(file,"GabeditAtom  Ne\n");
 	fprintf(file,"19\n");
 	fprintf(file,"Ne ano-l Widmark 14s9p4d3f 7s7p4d3f UNK\n");
 	fprintf(file,"Ne ano-s Pierloot 10s6p3d 7s6p3d UNK\n");
@@ -1520,7 +1520,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ne ECP Barandiaran 5s5p1d 1s1p1d 8e-CG-AIMP\n");
 	fprintf(file,"Ne ECP Huzinaga 5s5p1d 1s1p1d 8e-NR-AIMP\n");
 	fprintf(file,"Ne ECP Stoll 7s7p3d1f 4s4p3d1f 8e-MWB\n");
-	fprintf(file,"Atom  Ar\n");
+	fprintf(file,"GabeditAtom  Ar\n");
 	fprintf(file,"20\n");
 	fprintf(file,"Ar ano-l Widmark 17s12p5d4f 7s7p5d4f UNK\n");
 	fprintf(file,"Ar ano-s Pierloot 13s10p4d 7s7p4d UNK\n");
@@ -1542,7 +1542,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Ar ECP Dolg 6s6p3d1f 4s4p3d1f 8e-MWB\n");
 	fprintf(file,"Ar ECP Stoll 6s6p3d1f 4s4p3d1f 8e-MWB\n");
 	fprintf(file,"Ar ECP Hay-Wadt 3s3p 2s2p 8e-LANL2DZ\n");
-	fprintf(file,"Atom  Kr\n");
+	fprintf(file,"GabeditAtom  Kr\n");
 	fprintf(file,"11\n");
 	fprintf(file,"Kr ano-s Pierloot 17s15p9d 9s9p5d UNK\n");
 	fprintf(file,"Kr ANO-DK3 Tsuchiya 20s15p9d 4s3p1d UNK\n");
@@ -1555,7 +1555,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Kr ECP Dolg 6s6p3d1f 4s4p3d1f 8e-MWB\n");
 	fprintf(file,"Kr ECP Stoll 6s6p3d1f 4s4p3d1f 8e-MWB\n");
 	fprintf(file,"Kr ECP Hay-Wadt 3s3p 2s2p 8e-LANL2DZ\n");
-	fprintf(file,"Atom  Xe\n");
+	fprintf(file,"GabeditAtom  Xe\n");
 	fprintf(file,"8\n");
 	fprintf(file,"Xe ANO-DK3 Tsuchiya 23s19p12d 5s4p2d UNK\n");
 	fprintf(file,"Xe ano-rcc Roos 22s19p13d5f3g 10s9p8d5f3g UNK\n");
@@ -1565,7 +1565,7 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Xe ECP Barandiaran 11s10p7d 1s1p2d 18e-NR-AIMP\n");
 	fprintf(file,"Xe ECP Stoll 6s6p3d1f 4s4p3d1f 8e-M\n");
 	fprintf(file,"Xe ECP Hay-Wadt 3s3p 2s2p 8e-LANL2DZ\n");
-	fprintf(file,"Atom  Rn\n");
+	fprintf(file,"GabeditAtom  Rn\n");
 	fprintf(file,"6\n");
 	fprintf(file,"Rn ANO-DK3 Tsuchiya 27s23p15d10f 6s5p3d1f UNK\n");
 	fprintf(file,"Rn ano-rcc Roos 25s22p16d12f4g 11s10p9d6f4g UNK\n");
@@ -1573,14 +1573,14 @@ gboolean create_molcas_basis_file()
 	fprintf(file,"Rn ECP Barandiaran 13s12p8d5f 1s1p2d1f 18e-CG-AIMP\n");
 	fprintf(file,"Rn ECP Barandiaran 13s12p8d5f 1s1p2d1f 18e-NR-AIMP\n");
 	fprintf(file,"Rn ECP Stoll 4s4p1d 2s2p1d 8e-MWB\n");
-	fprintf(file,"Atom  Lu\n");
+	fprintf(file,"GabeditAtom  Lu\n");
 	fprintf(file,"5\n");
 	fprintf(file,"Lu ANO-DK3 Tsuchiya 27s23p15d10f 6s4p3d1f UNK\n");
 	fprintf(file,"Lu ECP Dolg 7s6p5d 5s4p3d 11e-MWB\n");
 	fprintf(file,"Lu ECP Seijo 14s10p9d8f 2s1p1d1f 25e-CG-AIMP\n");
 	fprintf(file,"Lu ECP Tsuchiya 14s10p9d8f 2s1p1d1f 25e-DK3-AIMP\n");
 	fprintf(file,"Lu ECP Stoll 7s6p5d 5s4p3d 11e-MWB\n");
-	fprintf(file,"Atom  Lr\n");
+	fprintf(file,"GabeditAtom  Lr\n");
 	fprintf(file,"4\n");
 	fprintf(file,"Lr ANO-DK3 Tsuchiya 35s26p18d13f 7s5p4d2f UNK\n");
 	fprintf(file,"Lr ECP Paulovic 14s10p11d9f 2s1p1d1f 25e-DK3-AIMP\n");

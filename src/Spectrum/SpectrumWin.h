@@ -22,8 +22,8 @@ DEALINGS IN THE SOFTWARE.
 
 
 
-#include <gdk/gdk.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
+#include <gtk/gtk.h>
 #include "../Utils/GabeditXYPlot.h"
 
 typedef enum

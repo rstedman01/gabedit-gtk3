@@ -21,7 +21,7 @@ DEALINGS IN THE SOFTWARE.
 #ifdef DRAWGEOMGL
 #include "../../Config.h"
 #include <gdk/gdkkeysyms.h>
-#include <gtk/gtkgl.h>
+#include <gtk/gtk.h>
 #include <stdlib.h>
 #include <math.h>
 #include <ctype.h>
@@ -1451,9 +1451,9 @@ void messageAmberTypesDefine()
     		GtkWidget* m;
 		m = Message(_("The type of One (or several) of atoms is not a Amber type.\n"
 		        "You can set the types of atoms by : \n"
-		        "                  \"Set/Atom Type&Charge using PDB Template\" \n"
+		        "                  \"Set/GabeditAtom Type&Charge using PDB Template\" \n"
 		        "                  \"Or\" \n"
-		        "                  \"Set/Atom Types using connections types\" \n"
+		        "                  \"Set/GabeditAtom Types using connections types\" \n"
 			)
 			,_("Warning"),TRUE);
 		gtk_window_set_modal (GTK_WINDOW (m), TRUE);
@@ -1463,7 +1463,7 @@ void messageAmberTypesDefine()
     		GtkWidget* m;
 		m = Message(_("The types of the atoms are identical to the symbols of these atoms.\n"
 		        "You can set the types of atoms by \n"
-		        "\"Set/Atom Types using connections types\" \n"
+		        "\"Set/GabeditAtom Types using connections types\" \n"
 			)
 			,_("Warning"),TRUE);
 		gtk_window_set_modal (GTK_WINDOW (m), TRUE);
@@ -2149,17 +2149,17 @@ static guint get_number_of_electrons(guint type)
 */
    guint i;
    guint Ne=0;
-   SAtomsProp Atom;
+   SAtomsProp GabeditAtom;
    for(i=0;i<Natoms;i++)
    {
-       Atom = geometry[i].Prop;
+       GabeditAtom = geometry[i].Prop;
        switch (type)
        {
-      	case 1 : if( geometry[i].Layer==HIGH_LAYER ||  geometry[i].Layer==MEDIUM_LAYER) Ne += Atom.atomicNumber;
+      	case 1 : if( geometry[i].Layer==HIGH_LAYER ||  geometry[i].Layer==MEDIUM_LAYER) Ne += GabeditAtom.atomicNumber;
 		 break;
-       	case 2 : if( geometry[i].Layer==HIGH_LAYER) Ne += Atom.atomicNumber;
+       	case 2 : if( geometry[i].Layer==HIGH_LAYER) Ne += GabeditAtom.atomicNumber;
 		 break;
-       	default : Ne += Atom.atomicNumber;
+       	default : Ne += GabeditAtom.atomicNumber;
         }
    }
    return Ne;
@@ -3592,7 +3592,7 @@ void copySelectedAtoms()
 	Frag.Atoms = NULL;
 	if(NFatoms<1) return;
 	F.NAtoms = NFatoms;
-	F.Atoms = g_malloc(F.NAtoms*sizeof(Atom));
+	F.Atoms = g_malloc(F.NAtoms*sizeof(GabeditAtom));
 
 	for (k=0;k<(gint)NFatoms;k++)
 	{
@@ -7626,7 +7626,7 @@ void setPersonalFragment(Fragment F)
 {
 	gint i;
 	Frag.NAtoms = F.NAtoms;
-	Frag.Atoms = g_malloc(Frag.NAtoms*sizeof(Atom));
+	Frag.Atoms = g_malloc(Frag.NAtoms*sizeof(GabeditAtom));
 	for(i=0;i<F.NAtoms;i++)
 	{
 		Frag.Atoms[i].Residue = g_strdup(F.Atoms[i].Residue);
@@ -7964,8 +7964,8 @@ static GtkWidget* create_text_win(gchar* title)
 	gtk_widget_show (frame);
 	text = create_text(Win,frame,TRUE);
 	set_font (text,FontsStyleResult.fontname);
-	set_base_style(text,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-	set_text_style(text,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
+	set_base_color(text,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+	set_text_color(text,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
 	g_object_set_data(G_OBJECT (Win), "Text", text);
 	return Win;
 }
@@ -8320,7 +8320,7 @@ gboolean define_geometry_from_zmat()
 
   if (Natoms == 0)
     return( FALSE );
-  /* Atom #1 */
+  /* GabeditAtom #1 */
   geometry[0].X = 0.0;
   geometry[0].Y = 0.0;
   geometry[0].Z = 0.0;
@@ -8341,7 +8341,7 @@ gboolean define_geometry_from_zmat()
     return( TRUE );
   }
   
-  /* Atom #2 */
+  /* GabeditAtom #2 */
   if(!test(Geom[1].R))
     geometry[1].X = get_value_variableZmat(Geom[1].R);
   else
@@ -8374,7 +8374,7 @@ gboolean define_geometry_from_zmat()
     return( TRUE );
   }
   
-  /* Atom #3 */
+  /* GabeditAtom #3 */
   if(!test(Geom[2].R))
     dist = get_value_variableZmat(Geom[2].R);
   else

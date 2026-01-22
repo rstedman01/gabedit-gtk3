@@ -22,7 +22,7 @@ DEALINGS IN THE SOFTWARE.
 #include <stdlib.h>
 #include <stdio.h>
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include "../Common/Global.h"
 #include "../Utils/Constants.h"
 #include "../Utils/UtilsInterface.h"

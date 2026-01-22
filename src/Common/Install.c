@@ -326,68 +326,55 @@ static void user_install_cancel_callback(GtkWidget *widget,
 }
 /********************************************************************************/
 static gint user_install_corner_expose(GtkWidget      *widget,
-                                       GdkEventExpose *eevent,
+                                       cairo_t *cr,
                                        gpointer        data)
 {
   GtkAllocation alloc;
-  GdkWindow *win = NULL;
+  GtkStyleContext *ctx;
+  GdkRGBA color;
   gint corner = GPOINTER_TO_INT(data);
 
   if (!GTK_IS_WIDGET(widget)) return FALSE;
 
   gtk_widget_get_allocation(widget, &alloc);
+  ctx = gtk_widget_get_style_context(widget);
 
-  win = gtk_widget_get_window(widget);
-  if (!win) return FALSE;
+  gtk_style_context_save(ctx);
+  gtk_style_context_add_class(ctx, "title");
+  gtk_style_context_get_background_color(ctx, GTK_STATE_FLAG_NORMAL, &color);
+
+  gtk_style_context_restore(ctx);
+  gdk_cairo_set_source_rgba(cr, &color);
 
   switch (corner)
   {
     case GTK_CORNER_TOP_LEFT:
-      gdk_draw_arc(win,
-                   white_gc,
-                   TRUE,
-                   0, 0,
-                   alloc.width * 2,
-                   alloc.height * 2,
-                   90 * 64,
-                   180 * 64);
+            cairo_arc(cr, 16, 16, 16, G_PI, 1.5*G_PI);
+            cairo_line_to(cr, 0, 0);
+            cairo_line_to(cr, 0, 16);
       break;
 
     case GTK_CORNER_BOTTOM_LEFT:
-      gdk_draw_arc(win,
-                   white_gc,
-                   TRUE,
-                   0, -alloc.height,
-                   alloc.width * 2,
-                   alloc.height * 2,
-                   180 * 64,
-                   270 * 64);
+            cairo_arc(cr, 16, 0, 16, 0.5*G_PI, G_PI);
+            cairo_line_to(cr, 0, 0);
+            cairo_line_to(cr, 0, 16);
       break;
 
     case GTK_CORNER_TOP_RIGHT:
-      gdk_draw_arc(win,
-                   white_gc, TRUE,
-                   -alloc.width, 0,
-                   alloc.width * 2,
-                   alloc.height * 2,
-                   0 * 64,
-                   90 * 64);
+            cairo_arc(cr, 16, 16, 16, G_PI, 1.5*G_PI);
+            cairo_line_to(cr, 0, 0);
+            cairo_line_to(cr, 0, 16);
       break;
 
     case GTK_CORNER_BOTTOM_RIGHT:
-      gdk_draw_arc(win,
-                   white_gc, TRUE,
-                   -alloc.width, -alloc.height,
-                   alloc.width * 2,
-                   alloc.height * 2,
-                   270 * 64,
-                   360 * 64);
+            cairo_arc(cr, 16, 0, 16, 0.5*G_PI, G_PI);
+            cairo_line_to(cr, 0, 0);
+            cairo_line_to(cr, 0, 16);
       break;
-
     default:
       return FALSE;
   }
-
+  cairo_fill(cr);
   return TRUE;
 }
 /********************************************************************************/
@@ -518,7 +505,7 @@ void user_install_dialog_create(UserInstallCallback callback)
 
   dialog = user_install_dialog = gtk_dialog_new ();
   gtk_window_set_position(GTK_WINDOW(dialog),GTK_WIN_POS_CENTER);
-  gtk_window_set_title(&GTK_DIALOG(dialog)->window,_("Gabedit User Installation"));
+  gtk_window_set_title(GTK_WINDOW(dialog),_("Gabedit User Installation"));
 
   gtk_widget_realize (dialog);
   set_icone(GTK_WIDGET(dialog));
@@ -527,167 +514,138 @@ void user_install_dialog_create(UserInstallCallback callback)
   gtk_box_set_homogeneous(GTK_BOX(action_area), FALSE);
 
   /*  B/W Style for the page contents  */
-  page_style = gtk_style_copy(gtk_widget_get_default_style());
-  {
-    GdkRGBA rgba;
-    GdkColor black_color, white_color;
-    /* Build GdkColor values from RGBA (no colormap allocation) */
-    gdk_rgba_parse(&rgba, "black");
-    black_color.red   = (gushort)(rgba.red   * 65535.0);
-    black_color.green = (gushort)(rgba.green * 65535.0);
-    black_color.blue  = (gushort)(rgba.blue  * 65535.0);
-    gdk_rgba_parse(&rgba, "white");
-    white_color.red   = (gushort)(rgba.red   * 65535.0);
-    white_color.green = (gushort)(rgba.green * 65535.0);
-    white_color.blue  = (gushort)(rgba.blue  * 65535.0);
-    page_style->fg[GTK_STATE_NORMAL]   = black_color;
-    page_style->text[GTK_STATE_NORMAL] = black_color;
-    page_style->bg[GTK_STATE_NORMAL]   = white_color;
-  }
-  
-  title_style = gtk_style_copy(page_style);
-  {
-    GdkRGBA rgba;
-    if (gdk_rgba_parse(&rgba, "royalblue")) {
-        GdkColor title_color;
-        title_color.red   = (gushort)(rgba.red   * 65535.0);
-        title_color.green = (gushort)(rgba.green * 65535.0);
-        title_color.blue  = (gushort)(rgba.blue  * 65535.0);
-        title_style->bg[GTK_STATE_NORMAL] = title_color;
-    }
-  }
+  GtkCssProvider *css_provider = gtk_css_provider_new();
+  const gchar *css_data = 
+    "* { "
+    "  color: black; "
+    "  background-color: white; "
+    "}"
+    ". title-area { "
+    "  background-color: royalblue; "
+    "  font-size: 20pt; "
+    "  font-weight: bold; "
+    "}";
 
-  large_font_desc = pango_font_description_from_string("sans bold 20");
-  if (large_font_desc) title_style->font_desc = large_font_desc;
-  {
-      GdkWindow* dwin = gtk_widget_get_window(dialog);
-      if (dwin) {
-          if (white_gc) g_object_unref(white_gc);
-          white_gc = gdk_gc_new((GdkDrawable*)dwin);
-          gdk_gc_set_foreground(white_gc, &white_color);
-      } else {
-          /* not realized yet - we'll create the GC later when window is available */
-          white_gc = NULL;
-      }
-  }
-  TITLE_STYLE(dialog);
+  gtk_css_provider_load_from_data(css_provider, css_data, -1, NULL);
+  GtkStyleContext *context = gtk_widget_get_style_context(dialog);
+  gtk_style_context_add_provider(context, 
+                                  GTK_STYLE_PROVIDER(css_provider),
+                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
   footer_label = gtk_label_new(NULL);
-  PAGE_STYLE(footer_label);
+  /* Apply CSS class for styling */
+  gtk_style_context_add_class(gtk_widget_get_style_context(footer_label), "page-style");
   gtk_label_set_justify(GTK_LABEL(footer_label), GTK_JUSTIFY_RIGHT);
   gtk_box_pack_start(GTK_BOX(action_area), footer_label, FALSE, FALSE, 8);
   gtk_widget_show(footer_label);
 
-
-  vbox = gtk_vbox_new(FALSE, 0);
+  vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0); // Changed from gtk_vbox_new
   GtkWidget *content = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-  gtk_container_add(GTK_CONTAINER(dialog), vbox);
+  gtk_container_add(GTK_CONTAINER(content), vbox); // Fixed: add to content area
 
   ebox = gtk_event_box_new();
-  TITLE_STYLE(ebox);
+  gtk_style_context_add_class(gtk_widget_get_style_context(ebox), "title-area");
   gtk_widget_set_events(ebox, GDK_EXPOSURE_MASK);
   gtk_widget_set_size_request(ebox, WILBER_WIDTH + 16, -1);
   gtk_box_pack_start(GTK_BOX(vbox), ebox, FALSE, FALSE, 0);
   gtk_widget_show(ebox);
 
-  hbox = gtk_hbox_new(FALSE, 8);
+  hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 8); // Changed from gtk_hbox_new
   gtk_container_set_border_width(GTK_CONTAINER(hbox), 8);
   gtk_container_add(GTK_CONTAINER(ebox), hbox);
   gtk_widget_show(hbox);
 
-  title_pixmap = create_pixmap(dialog,gabedit_xpm);
+  title_pixmap = create_pixmap(dialog, gabedit_xpm);
   gtk_box_pack_start(GTK_BOX(hbox), title_pixmap, FALSE, FALSE, 8);
   gtk_widget_show(title_pixmap);
 
   title_label = gtk_label_new(NULL);
-  TITLE_STYLE(title_label);
+  gtk_style_context_add_class(gtk_widget_get_style_context(title_label), "title-area");
   gtk_label_set_justify(GTK_LABEL(title_label), GTK_JUSTIFY_LEFT);
   gtk_box_pack_start(GTK_BOX(hbox), title_label, FALSE, FALSE, 0);
   gtk_widget_show(title_label);
 
-  hbox = gtk_hbox_new(FALSE, 0);
+  hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
   gtk_widget_show(hbox);
 
   ebox = gtk_event_box_new();
-  TITLE_STYLE(ebox);
+  gtk_style_context_add_class(gtk_widget_get_style_context(ebox), "title-area");
   gtk_widget_set_size_request(ebox, 16, -1);
   gtk_box_pack_start(GTK_BOX(hbox), ebox, FALSE, FALSE, 0);
   gtk_widget_show(ebox);
 
   ebox = gtk_event_box_new();
-  PAGE_STYLE(ebox);
+  gtk_style_context_add_class(gtk_widget_get_style_context(ebox), "page-style");
   gtk_box_pack_start(GTK_BOX(hbox), ebox, TRUE, TRUE, 0);
   gtk_widget_show(ebox);
 
-  table = gtk_table_new(3, 3, FALSE);
-  gtk_table_set_col_spacing(GTK_TABLE(table), 1, 8);
+  /* GTK3: Use GtkGrid instead of GtkTable */
+  table = gtk_grid_new();
+  gtk_grid_set_column_spacing(GTK_GRID(table), 8);
   gtk_container_add(GTK_CONTAINER(ebox), table);
   gtk_widget_show(table);
 
+  /* Drawing area with draw signal (not expose-event) */
   darea = gtk_drawing_area_new();
-  TITLE_STYLE(darea);
+  gtk_style_context_add_class(gtk_widget_get_style_context(darea), "title-area");
   gtk_widget_set_size_request(GTK_WIDGET(darea), 16, 16);
-  g_signal_connect_after(G_OBJECT(darea), "expose_event",
-                           (GCallback)user_install_corner_expose,
-                           (gpointer)GTK_CORNER_TOP_LEFT);
-  gtk_table_attach(GTK_TABLE(table), darea, 0,1, 0,1,
-                   GTK_SHRINK, GTK_SHRINK, 0, 0);
+  g_signal_connect(G_OBJECT(darea), "draw",
+                   G_CALLBACK(user_install_corner_expose),
+                   GINT_TO_POINTER(GTK_CORNER_TOP_LEFT));
+  gtk_grid_attach(GTK_GRID(table), darea, 0, 0, 1, 1);
   gtk_widget_show(darea);
 
   darea = gtk_drawing_area_new();
-  TITLE_STYLE(darea);
+  gtk_style_context_add_class(gtk_widget_get_style_context(darea), "title-area");
   gtk_widget_set_size_request(GTK_WIDGET(darea), 16, 16);
-  g_signal_connect_after(G_OBJECT(darea), "expose_event",
-                           (GCallback)user_install_corner_expose,
-                           (gpointer)GTK_CORNER_BOTTOM_LEFT);
-  gtk_table_attach(GTK_TABLE(table), darea, 0,1, 2,3,
-                   GTK_SHRINK, GTK_SHRINK, 0, 0);
+  g_signal_connect(G_OBJECT(darea), "draw",
+                   G_CALLBACK(user_install_corner_expose),
+                   GINT_TO_POINTER(GTK_CORNER_BOTTOM_LEFT));
+  gtk_grid_attach(GTK_GRID(table), darea, 0, 2, 1, 1);
   gtk_widget_show(darea);
 
   notebook = gtk_notebook_new();
   gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
   gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
-  gtk_table_attach_defaults(GTK_TABLE(table), notebook, 1,2, 1,2);
+  gtk_grid_attach(GTK_GRID(table), notebook, 1, 1, 1, 1);
+  gtk_widget_set_hexpand(notebook, TRUE);
+  gtk_widget_set_vexpand(notebook, TRUE);
   gtk_widget_show(notebook);
 
   gtk_widget_show(vbox);
-
   /*  Page 1  */
-  temp = g_strdup_printf("Welcome to  The GABEDIT %s  User Installation",Version_S);
+  temp = g_strdup_printf("Welcome to  The GABEDIT %s  User Installation", Version_S);
   g_free(Version_S);
   page = user_install_notebook_append_page(GTK_NOTEBOOK(notebook),
-				temp,
+                                temp,
                                 _("Click \"Continue\" to enter the GABEDIT user installation."));
 
   add_label(GTK_BOX(page),
-            _(
-            "Gabedit is a Graphical User Interface to FireFly, Gamess-US, Gaussian, Molcas, Molpro, \nMopac, MPQC , NWChem, Orca, Psicode and Q-Chem\n"
+            _("Gabedit is a Graphical User Interface to FireFly, Gamess-US, Gaussian, Molcas, Molpro, \nMopac, MPQC , NWChem, Orca, Psicode and Q-Chem\n"
             "computational chemistry packages.\n"
-	    "It can display a variety of calculation results including support for most major molecular file formats.\n"
-	    "The advanced 'Molecule Builder' allows one to rapidly sketch in molecules and examine them in 3D\n"
-	    "Graphics can be exported to various formats, including animations\n"
-	    "\n"
-	    "Gabedit can creates input file for the computational chemistry packages(CCP) cited above.\n"
-	    "Gabedit can graphically display a variety of the CCP calculation results\n"
-	    "Gabedit can display UV-Vis, IR and Raman computed spectra.\n"
-	    "Gabedit can generate a povray file for geometry, surfaces, contours, planes colorcoded.\n"
-	    "Gabedit can save picture in BMP, JPEG, PNG, PPM, PDF and PS format.\n"
-	    "It can generate automatically a seriess of pictures for animation(vibration, geometry convergence, ....).\n"
-	    )
+            "It can display a variety of calculation results including support for most major molecular file formats.\n"
+            "The advanced 'Molecule Builder' allows one to rapidly sketch in molecules and examine them in 3D\n"
+            "Graphics can be exported to various formats, including animations\n"
+            "\n"
+            "Gabedit can creates input file for the computational chemistry packages(CCP) cited above.\n"
+            "Gabedit can graphically display a variety of the CCP calculation results\n"
+            "Gabedit can display UV-Vis, IR and Raman computed spectra.\n"
+            "Gabedit can generate a povray file for geometry, surfaces, contours, planes colorcoded.\n"
+            "Gabedit can save picture in BMP, JPEG, PNG, PPM, PDF and PS format.\n"
+            "It can generate automatically a seriess of pictures for animation(vibration, geometry convergence, . ...).\n"
+            )
             );
 
-  sep = gtk_hseparator_new();
+  sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL); // Changed from gtk_hseparator_new
   gtk_box_pack_start(GTK_BOX(page), sep, FALSE, FALSE, 2);
   gtk_widget_show(sep);
 
   add_label(GTK_BOX(page),
-		  _(
-		  "Copyright (c) 2002-2021 Abdul-Rahman Allouche.\n"
-		  "All rights reserved.\n"
-		  "\nGabedit is free.\n"
-		  )
-		  ); 
+            _("Copyright (c) 2002-2021 Abdul-Rahman Allouche.\n"
+            "All rights reserved.\n"
+            "\nGabedit is free.\n"
+            )); 
 
   /*  Page 2  */
   {
@@ -835,7 +793,7 @@ void user_install_dialog_create(UserInstallCallback callback)
 
   add_label(GTK_BOX(page),_("Setting for atoms properties."));
 
-  sep = gtk_hseparator_new();
+  sep = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start(GTK_BOX(page), sep, FALSE, FALSE, 2);
   gtk_widget_show(sep);
 

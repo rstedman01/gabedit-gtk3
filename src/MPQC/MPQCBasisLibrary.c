@@ -747,7 +747,7 @@ static void newAtomDlg()
 	atomNumber = data->atomNumber;
 	basisNumber = data->basisNumber;
 
-	sprintf(title,_("New Atom"));
+	sprintf(title,_("New GabeditAtom"));
 
 	WinDlg = gtk_dialog_new();
 	gtk_window_set_title(GTK_WINDOW(WinDlg),title);
@@ -766,7 +766,7 @@ static void newAtomDlg()
 	vboxframe = create_vbox(frame);
 	hbox=create_hbox_false(vboxframe);
 
-	Entry = create_label_entry(hbox,_(" Atom Symbol : "),-1,-1); 
+	Entry = create_label_entry(hbox,_(" GabeditAtom Symbol : "),-1,-1); 
 	gtk_entry_set_text(GTK_ENTRY(Entry),"H");
 	gtk_editable_set_editable((GtkEditable*) Entry,FALSE);
   	Button = gtk_button_new_with_label(_(" Set "));
@@ -1145,7 +1145,7 @@ static void addTreeView(GtkWidget *win, GtkWidget *vbox)
 	GtkTreeModel *model;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
-	gchar *listTitles[]={ _("Atom"), _("Basis Name")};
+	gchar *listTitles[]={ _("GabeditAtom"), _("Basis Name")};
 
 	scr = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC); 
@@ -1170,7 +1170,7 @@ static void addTreeView(GtkWidget *win, GtkWidget *vbox)
 	}
 
 	/*
-	set_base_style(treeView,30000,50000,60000);
+	set_base_color(treeView,30000,50000,60000);
 	*/
 	gtk_container_add(GTK_CONTAINER(scr), treeView);
 }
@@ -1190,7 +1190,7 @@ void saveMPQCBasis()
 	fprintf(file,"Natoms =  %d\n",mpqcBasis.numberOfAtoms);
 	for(i=0;i<mpqcBasis.numberOfAtoms;i++)
 	{
-		fprintf(file,"Atom  %s\n",mpqcBasis.atoms[i].symbol);
+		fprintf(file,"GabeditAtom  %s\n",mpqcBasis.atoms[i].symbol);
 		fprintf(file,"%d\n",mpqcBasis.atoms[i].numberOfBasis);
 		for(j=0;j<mpqcBasis.atoms[i].numberOfBasis;j++)
 		{

@@ -616,7 +616,7 @@ static gboolean read_atom_pdb_file(gchar* line,gchar* listFields[])
 	if(strlen(line)<54)
 		return FALSE;
 
-	/* 0 -> Atom Type */
+	/* 0 -> GabeditAtom Type */
 	k = 0;
 	for(i=0;i<MAXATOMTYPE;i++)
 		listFields[k][i] = line[13+i-1];
@@ -744,7 +744,7 @@ gboolean gl_read_pdb_file(gchar* FileName)
 		if(strcmp(listFields[0],"HETATM")!=0 && strcmp(listFields[0],"ATOM")!=0) continue;
 		if(!strcmp(t,"END")) break;
 		if(!read_atom_pdb_file(t,listFields)) continue;
-		/* 0 -> Atom Type  1-> Residue Name  2-> Residue Number 
+		/* 0 -> GabeditAtom Type  1-> Residue Name  2-> Residue Number 
 		 * 3-> x  4-> y  5-> z  6-> Symbol 7-> Charge */
 
 		GeomOrb=g_realloc(GeomOrb,(j+1)*sizeof(TypeGeomOrb));
@@ -859,10 +859,10 @@ static gboolean read_atom_hin_file(FILE* file,gchar* listFields[])
 	}
 	else
 	{
-		/* 0 -> Atom Type PDB Style*/
-		/* 1 -> Atom Symbol*/
-		/* 2 -> Atom Type Amber*/
-		/* 3 -> Atom Charge*/
+		/* 0 -> GabeditAtom Type PDB Style*/
+		/* 1 -> GabeditAtom Symbol*/
+		/* 2 -> GabeditAtom Type Amber*/
+		/* 3 -> GabeditAtom Charge*/
 		/* 4 -> x*/
 		/* 5 -> y*/
 		/* 6 -> z*/
@@ -939,10 +939,10 @@ gboolean gl_read_hin_file(gchar* FileName)
 			i++;
 			continue;
 		}
-		/* 0 -> Atom Type PDB Style*/
-		/* 1 -> Atom Symbol*/
-		/* 2 -> Atom Type Amber*/
-		/* 3 -> Atom Charge*/
+		/* 0 -> GabeditAtom Type PDB Style*/
+		/* 1 -> GabeditAtom Symbol*/
+		/* 2 -> GabeditAtom Type Amber*/
+		/* 3 -> GabeditAtom Charge*/
 		/* 4 -> x*/
 		/* 5 -> y*/
 		/* 6 -> z*/
@@ -3491,7 +3491,7 @@ gboolean gl_read_qchem_file_geomi(gchar *FileName,gint num)
 		{
 	  		if(!fgets(t,taille,fd))break;
 			pdest = NULL;
-	 		if (strstr( t,"Atom") && strstr( t,"X") && strstr( t,"Y") && strstr( t,"Z") ) 
+	 		if (strstr( t,"GabeditAtom") && strstr( t,"X") && strstr( t,"Y") && strstr( t,"Z") ) 
 			{
 	  			if(!fgets(t,taille,fd))break;
 				pdest = strstr( t,"----------------------------------");
@@ -3593,7 +3593,7 @@ void gl_get_charges_from_nwchem_output_file(FILE* fd,gint N)
 	{
     		pdest = NULL;
     		{ char* e = fgets(t,taille,fd);}
-    		pdest = strstr( t, "Atom       Charge   Shell Charges");
+    		pdest = strstr( t, "GabeditAtom       Charge   Shell Charges");
 
 		if(pdest)
 		{
@@ -3777,7 +3777,7 @@ void gl_get_charges_from_psicode_output_file(FILE* fd,gint N)
 	{
     		pdest = NULL;
     		{ char* e = fgets(t,taille,fd);}
-    		pdest = strstr( t, "Atom       Charge   Shell Charges");
+    		pdest = strstr( t, "GabeditAtom       Charge   Shell Charges");
 
 		if(pdest)
 		{
@@ -4066,7 +4066,7 @@ static void gl_get_charges_from_aimall_file(FILE* fd,gint N)
 	{
     		pdest = NULL;
     		if(!fgets(t,taille,fd)) break;
-    		pdest = strstr( t, "Atom A          q(A)");
+    		pdest = strstr( t, "GabeditAtom A          q(A)");
 		if(pdest)
 		{
     			if(!fgets(t,taille,fd)) break;
@@ -4113,7 +4113,7 @@ static gboolean gl_read_aimall_file(gchar *fileName)
 	while(!feof(fd))
 	{
     		{ char* e = fgets(t,taille,fd);}
-		if ( strstr(t,"Atom      Charge                X                  Y                  Z"))
+		if ( strstr(t,"GabeditAtom      Charge                X                  Y                  Z"))
 		{
     			{ char* e = fgets(t,taille,fd);}
 			/* OK = TRUE;*/

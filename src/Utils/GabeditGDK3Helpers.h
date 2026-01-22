@@ -3,7 +3,7 @@
 #define __GABEDIT_GDK3_HELPERS_H__
 
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <cairo.h>
 #include <pango/pangocairo.h>

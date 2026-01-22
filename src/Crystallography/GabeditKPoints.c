@@ -311,7 +311,7 @@ static gboolean setPoints(GList** pPoints, gchar* extendedPearsonSymbol, Crystal
 	addAPoint(pPoints, "F", 1.0/2, -1.0/2, 0.0);
 	}
 	else if(!strcmp(extendedPearsonSymbol,"mC1")){
-	gdouble beta=crystal->beta*M_PI/180.0;
+	gdouble beta=crystal->beta*G_PI/180.0;
 	gdouble a=crystal->a;
 	gdouble b=crystal->b;
 	gdouble c=crystal->c;
@@ -340,7 +340,7 @@ static gboolean setPoints(GList** pPoints, gchar* extendedPearsonSymbol, Crystal
 	addAPoint(pPoints, "E_4", xi, -xi, 1-eta);
 	}
 	else if(!strcmp(extendedPearsonSymbol,"mC2")){
-	gdouble beta=crystal->beta*M_PI/180.0;
+	gdouble beta=crystal->beta*G_PI/180.0;
 	gdouble a=crystal->a;
 	gdouble b=crystal->b;
 	gdouble c=crystal->c;
@@ -371,7 +371,7 @@ static gboolean setPoints(GList** pPoints, gchar* extendedPearsonSymbol, Crystal
 	addAPoint(pPoints, "G_6", 1-mu, mu, delta);
 	}
 	else if(!strcmp(extendedPearsonSymbol,"mC3")){
-	gdouble beta=crystal->beta*M_PI/180.0;
+	gdouble beta=crystal->beta*G_PI/180.0;
 	gdouble a=crystal->a;
 	gdouble b=crystal->b;
 	gdouble c=crystal->c;
@@ -406,7 +406,7 @@ static gboolean setPoints(GList** pPoints, gchar* extendedPearsonSymbol, Crystal
 	addAPoint(pPoints, "N_6", 1-mu, mu, delta);
 	}
 	else if(!strcmp(extendedPearsonSymbol,"mP1")){
-	gdouble beta=crystal->beta*M_PI/180.0;
+	gdouble beta=crystal->beta*G_PI/180.0;
 	gdouble a=crystal->a;
 	gdouble c=crystal->c;
 	gdouble cbeta = cos(beta);

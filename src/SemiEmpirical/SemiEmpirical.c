@@ -137,7 +137,7 @@ static gboolean getGradientMopacOut(gchar* fileNameOut, SemiEmpiricalModel *seMo
 		{
 			gchar td[100];
 			gint d;
-			if(!fgets(buffer,BSIZE,file))break; /*Atom       X  ....*/
+			if(!fgets(buffer,BSIZE,file))break; /*GabeditAtom       X  ....*/
 			if(!fgets(buffer,BSIZE,file))break; /* backspace */
 			for(i=0;i<seModel->molecule.nAtoms;i++)
 			{

@@ -62,7 +62,23 @@ static void draw_splash_contents_on_surface(GtkWidget *widget, cairo_surface_t *
 static gboolean splash_configure_cb(GtkWidget *widget, GdkEventConfigure *event, gpointer user_data);
 static gboolean splash_draw_cb(GtkWidget *widget, cairo_t *cr, gpointer user_data);
 static void splash_destroy_cb(GtkWidget *widget, gpointer user_data);
-static void create_surface_for_widget(GtkWidget *widget);
+
+static cairo_surface_t* create_surface_for_widget(GtkWidget* widget)
+{
+    if(!widget || !gtk_widget_get_window(widget)) return NULL;
+
+    int width = gtk_widget_get_allocated_width(widget);
+    int height = gtk_widget_get_allocated_height(widget);
+
+    if (width <= 0) width = 1;
+    if (height <= 0) height = 1;
+    
+    return gdk_window_create_similar_surface(
+        gtk_widget_get_window(widget),
+        CAIRO_CONTENT_COLOR_ALPHA,
+        width, height
+    );
+}
 
 /********************************************************************************/
 static void splash_create_surface(GtkWidget *widget)

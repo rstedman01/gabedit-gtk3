@@ -106,6 +106,7 @@ gchar** getListPDBTypes(gchar* residueName, gint* nlist);
 /********************************************************************************/
 static gboolean connected(guint i,guint j);
 static void DialogueAdd();
+static void DialogueAddV(void);
 static void DialogueEdit();
 static void DialogueDelete();
 void create_window_save_xyzmol2tinkerpdbhin();
@@ -144,21 +145,21 @@ static guint get_number_of_electrons(guint type)
 */
    guint i;
    guint Ne=0;
-   SAtomsProp Atom;
+   SAtomsProp GabeditAtom;
    for(i=0;i<NcentersXYZ;i++)
    {
-       Atom = prop_atom_get(GeomXYZ[i].Symb);
+       GabeditAtom = prop_atom_get(GeomXYZ[i].Symb);
        switch (type)
        {
       	case 1 : if(get_layer(GeomXYZ[i].Layer)==HIGH_LAYER ||  
-				 get_layer(GeomXYZ[i].Layer)==MEDIUM_LAYER) Ne += Atom.atomicNumber;
+				 get_layer(GeomXYZ[i].Layer)==MEDIUM_LAYER) Ne += GabeditAtom.atomicNumber;
 		 break;
-       	case 2 : if(get_layer(GeomXYZ[i].Layer)==HIGH_LAYER) Ne += Atom.atomicNumber;
+       	case 2 : if(get_layer(GeomXYZ[i].Layer)==HIGH_LAYER) Ne += GabeditAtom.atomicNumber;
 		 break;
-       	default : Ne += Atom.atomicNumber;
+       	default : Ne += GabeditAtom.atomicNumber;
         }
-	g_free(Atom.name);
-	g_free(Atom.symbol);
+	g_free(GabeditAtom.name);
+	g_free(GabeditAtom.symbol);
    }
    return Ne;
 } 
@@ -427,7 +428,6 @@ static GtkUIManager *newMenuXYZGeom(GtkWidget* win)
 	return manager;
 }
 /********************************************************************************/
-static void DialogueAddV();
 static void DialogueEditV();
 static void DialogueDeleteV();
 static void DialogueTransInConst();
@@ -588,7 +588,7 @@ static void event_dispatcher(GtkWidget *widget, GdkEventButton *event, gpointer 
 	gchar* menuName = NULL;
 
 	if (!event) return;
-	if (gtk_widget_get_window(event) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
+	if (event->window == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
 	    && !gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget),
 					       event->x, event->y, NULL, NULL, NULL, NULL)) {
 		gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW (widget)));
@@ -2886,7 +2886,7 @@ static void TransXYZVarConst()
 /********************************************************************************/
 static void set_entry_XYZ()
 {
-   SAtomsProp Atom[3];
+   SAtomsProp GabeditAtom[3];
    gdouble r;
    gdouble Coord[3];
    gdouble angle1=60.0*DEG_TO_RAD;
@@ -2906,9 +2906,9 @@ static void set_entry_XYZ()
       else
       {
         Atomdump =gtk_entry_get_text(GTK_ENTRY(Entry[E_SYMBOL]));
-   	Atom[0] = prop_atom_get(Atomdump);
-   	Atom[1] = prop_atom_get(GeomXYZ[NcentersXYZ-1].Symb);
-        r = Atom[0].covalentRadii+Atom[1].covalentRadii;
+   	GabeditAtom[0] = prop_atom_get(Atomdump);
+   	GabeditAtom[1] = prop_atom_get(GeomXYZ[NcentersXYZ-1].Symb);
+        r = GabeditAtom[0].covalentRadii+GabeditAtom[1].covalentRadii;
         r *=0.8;
         if(Units==1)
 		r*=BOHR_TO_ANG;
@@ -3243,7 +3243,7 @@ static void freelistvariablesXYZ(gchar **tlist)
 
 
 /********************************************************************************/
-static void DialogueAdd(GtkWidget *w,gpointer data)
+static void DialogueAdd()
 {
   GtkWidget *Dialogue;
   GtkWidget *Bouton;
@@ -3251,7 +3251,7 @@ static void DialogueAdd(GtkWidget *w,gpointer data)
   GtkWidget *frame, *vboxframe;
   gint nlist;
   gchar *tlabel[]={	" ",	
-	  		N_("Atom Symbol : "), 
+	  		N_("GabeditAtom Symbol : "), 
 	  		N_("MM Type : "),
 	  		N_("PDB Type : "),
 	  		N_("Residue Type : "),
@@ -3422,7 +3422,7 @@ static void DialogueEdit()
   gint nlist;
 
   gchar *tlabel[]={	" ",	
-	  		N_("Atom Symbol : "), 
+	  		N_("GabeditAtom Symbol : "), 
 	  		N_("MM Type : "),
 	  		N_("PDB Type : "),
 	  		N_("Residue Type : "),
@@ -3747,10 +3747,10 @@ static gboolean read_atom_hin_file(FILE* file,gchar* listFields[], gint nAtoms, 
 	}
 	else
 	{
-		/* 0 -> Atom Type PDB Style*/
-		/* 1 -> Atom Symbol*/
-		/* 2 -> Atom Type Amber*/
-		/* 3 -> Atom Charge*/
+		/* 0 -> GabeditAtom Type PDB Style*/
+		/* 1 -> GabeditAtom Symbol*/
+		/* 2 -> GabeditAtom Type Amber*/
+		/* 3 -> GabeditAtom Charge*/
 		/* 4 -> x*/
 		/* 5 -> y*/
 		/* 6 -> z*/
@@ -3822,10 +3822,10 @@ void read_hin_file_no_add_list(gchar *NomFichier)
 			continue;
 		}
 		ncAll += nc;
-		/* 0 -> Atom Type PDB Style*/
-		/* 1 -> Atom Symbol*/
-		/* 2 -> Atom Type Amber*/
-		/* 3 -> Atom Charge*/
+		/* 0 -> GabeditAtom Type PDB Style*/
+		/* 1 -> GabeditAtom Symbol*/
+		/* 2 -> GabeditAtom Type Amber*/
+		/* 3 -> GabeditAtom Charge*/
 		/* 4 -> x*/
 		/* 5 -> y*/
 		/* 6 -> z*/
@@ -4739,7 +4739,7 @@ static gboolean read_atom_pdb_file(gchar* line,gchar* listFields[])
 	if(strlen(line)<54)
 		return FALSE;
 
-	/* 0 -> Atom Type */
+	/* 0 -> GabeditAtom Type */
 	k = 0;
 	for(i=0;i<MAXATOMTYPE;i++)
 		listFields[k][i] = line[13+i-1];
@@ -4900,7 +4900,7 @@ void read_pdb_file_no_add_list(gchar *NomFichier)
 			break;
 		if(!read_atom_pdb_file(t,listFields))
 			continue;
-		/* 0 -> Atom Type  1-> Residue Name  2-> Residue Number 
+		/* 0 -> GabeditAtom Type  1-> Residue Name  2-> Residue Number 
 		 * 3-> x  4-> y  5-> z  6-> Symbol 7-> Charge */
 		GeomXYZ=g_realloc(GeomXYZ,(j+1)*sizeof(GeomXYZAtomDef));
   		GeomXYZ[j].typeConnections = NULL;
@@ -5064,7 +5064,7 @@ static void save_atom_pdb_file(FILE* file,
 		residueNumber = 9999;
 
 
-        fprintf(file,"%-6s",localName); /* Atom or HETATM */
+        fprintf(file,"%-6s",localName); /* GabeditAtom or HETATM */
         fprintf(file,"%-6d",atomNumber); 
         fprintf(file,"%-4s",localAtomType); 
         fprintf(file,"%-4s",localResidueName); 
@@ -5284,9 +5284,9 @@ gboolean get_npa_charges_from_turbomole_output_file(FILE* fd,gint N)
   			while(!feof(fd) )
 			{
     				if(!fgets(t,taille,fd)) break;
-				if(strstr(t,"Atom") && strstr(t,"Charge") && strstr(t,"Core")) break;
+				if(strstr(t,"GabeditAtom") && strstr(t,"Charge") && strstr(t,"Core")) break;
 			}
-			if(!(strstr(t,"Atom") && strstr(t,"Charge") && strstr(t,"Core"))) return FALSE;
+			if(!(strstr(t,"GabeditAtom") && strstr(t,"Charge") && strstr(t,"Core"))) return FALSE;
     			if(!fgets(t,taille,fd)) break;
 			for(i=0;i<N;i++)
 			{
@@ -6713,7 +6713,7 @@ void get_charges_from_aimall_file(FILE* fd,gint N)
 	{
     		pdest = NULL;
     		if(!fgets(t,taille,fd)) break;
-    		pdest = strstr( t, "Atom A          q(A)");
+    		pdest = strstr( t, "GabeditAtom A          q(A)");
 		if(pdest)
 		{
     			if(!fgets(t,taille,fd)) break;
@@ -6759,7 +6759,7 @@ void read_geom_from_aimall_file(gchar *NomFichier)
 	while(!feof(fd))
 	{
     		{ char* e = fgets(t,taille,fd);}
-		if ( strstr(t,"Atom      Charge                X                  Y                  Z"))
+		if ( strstr(t,"GabeditAtom      Charge                X                  Y                  Z"))
 		{
     			{ char* e = fgets(t,taille,fd);}
 			break; 
@@ -8851,9 +8851,9 @@ void read_geom_from_qchem_file(gchar *NomFichier, gint numgeometry)
 	 {
 		if(!fgets(t,taille,fd))break;
 		pdest = NULL;
-		if(( strstr( t,"Atom")  || strstr( t,"ATOM")) && strstr( t,"X") && strstr( t,"Y") && strstr( t,"Z")) 
+		if(( strstr( t,"GabeditAtom")  || strstr( t,"ATOM")) && strstr( t,"X") && strstr( t,"Y") && strstr( t,"Z")) 
 		{
-			if(strstr( t,"Atom")) if(!fgets(t,taille,fd))break; /* ---- ligne */
+			if(strstr( t,"GabeditAtom")) if(!fgets(t,taille,fd))break; /* ---- ligne */
 			pdest = t;
 		}
 		if ( pdest )
@@ -8955,7 +8955,7 @@ void get_charges_from_nwchem_output_file(FILE* fd,gint N)
 	{
     		pdest = NULL;
     		{ char* e = fgets(t,taille,fd);}
-    		pdest = strstr( t, "Atom       Charge   Shell Charges");
+    		pdest = strstr( t, "GabeditAtom       Charge   Shell Charges");
 
 		if(pdest)
 		{
@@ -9132,7 +9132,7 @@ void get_charges_from_psicode_output_file(FILE* fd,gint N)
 	{
     		pdest = NULL;
     		{ char* e = fgets(t,taille,fd);}
-    		pdest = strstr( t, "Atom       Charge   Shell Charges");
+    		pdest = strstr( t, "GabeditAtom       Charge   Shell Charges");
 
 		if(pdest)
 		{
@@ -14673,7 +14673,7 @@ void create_geomXYZ_list(GtkWidget *vbox, GabEditTypeFileGeom readfile)
 
   
   
-	set_base_style(list,55000,55000,55000);
+	set_base_color(list,55000,55000,55000);
 	gtk_widget_show (list);
 
 	if(WindowGeom) manager = newMenuXYZGeom(WindowGeom);
@@ -15075,7 +15075,7 @@ void create_variablesXYZ_list(GtkWidget *vbox,guint itype)
 	}
 	gtk_container_add(GTK_CONTAINER(scr),listv);
 
-	set_base_style(listv,58000,58000,58000);
+	set_base_color(listv,58000,58000,58000);
 	gtk_widget_show (listv);
 
 	if(WindowGeom) manager = newMenuXYZVariables(WindowGeom);

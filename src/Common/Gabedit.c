@@ -20,7 +20,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include "../../Config.h"
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <locale.h>
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
    gdk_threads_enter ();
    */
    
-
+  g_setenv("GTK_THEME", "Adwaita", TRUE);
   gtk_init(&argc, &argv);
   gtk_gl_init(&argc, &argv);
   setlocale(LC_NUMERIC,"C");

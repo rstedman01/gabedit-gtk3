@@ -25,7 +25,7 @@ DEALINGS IN THE SOFTWARE.
 #include "Global.h"
 #include "../Utils/Utils.h"
 #include "../Common/MenuToolBar.h"
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 
 /********************************************************************************/
 void create_frame_windows(GtkWidget *box)

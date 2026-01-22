@@ -352,7 +352,7 @@ static gboolean hostCheck (const char* hostname)
 	memset(&remote_addr, 0, sizeof(remote_addr));
 	remote_addr.sin_addr.s_addr=inet_addr(hostname);
 	remote_addr.sin_family = AF_INET;
-	if(remote_addr.sin_addr.s_addr==(u_long)INADDR_NONE)
+	if(remote_addr.sin_addr.s_addr==(unsigned long)INADDR_NONE)
 	{
 		/* 
 			we must have gotten a host name instead 
@@ -466,7 +466,7 @@ static gboolean hostCheck (const char* hostname)
 	memset((char *)&remote_addr, 0,sizeof (remote_addr));
 	remote_addr.sin_addr.s_addr = inet_addr(hostname);
 
-	if (remote_addr.sin_addr.s_addr != (u_long)INADDR_NONE)
+	if (remote_addr.sin_addr.s_addr != (unsigned long)INADDR_NONE)
 	{
 		remote_addr.sin_family = AF_INET;
 		HostName = g_strdup(hostname);

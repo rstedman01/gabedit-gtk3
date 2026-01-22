@@ -3548,7 +3548,7 @@ static gboolean read_molpro_geom(FILE*fd, gchar *FileName)
     			{ char* e = fgets(t,taille,fd);}
 			
 			/* printf("t=%s\n",t);*/
-	 		if ( strstr( t,"Nr  Atom") )
+	 		if ( strstr( t,"Nr  GabeditAtom") )
 	  		{
     				{ char* e = fgets(t,taille,fd);}
 				OK = TRUE;
@@ -4627,14 +4627,14 @@ static gboolean read_gaussian_file_frequencies(gchar *FileName)
 					sscanf(t,"%s %s %s %lf %lf %lf", sdum1,sdum2, sdum3, &RamanIntensity[0],&RamanIntensity[1],&RamanIntensity[2]);
 					break;
 				}
-				if(strstr(t,"Atom ") && strstr(t," AN")) break;
+				if(strstr(t,"GabeditAtom ") && strstr(t," AN")) break;
 			}
 
-			if(!(strstr(t,"Atom ") && strstr(t," AN")))
+			if(!(strstr(t,"GabeditAtom ") && strstr(t," AN")))
 			while(!feof(fd))
 			{
     				{ char* e = fgets(t,taille,fd);}
-				if(strstr(t,"Atom ") && strstr(t," AN")) break;
+				if(strstr(t,"GabeditAtom ") && strstr(t," AN")) break;
 			}
 			nfOld = vibration.numberOfFrequencies;
   			vibration.numberOfFrequencies += nf;
@@ -6474,7 +6474,7 @@ static GtkTreeView* addList(GtkWidget *vbox, GtkUIManager *manager)
 		gtk_tree_view_append_column (GTK_TREE_VIEW (treeView), column);
 	}
   
-	set_base_style(GTK_WIDGET(treeView), 55000,55000,55000);
+	set_base_color(GTK_WIDGET(treeView), 55000,55000,55000);
 	gtk_widget_show (GTK_WIDGET(treeView));
   	g_signal_connect(G_OBJECT (treeView), "button_press_event", G_CALLBACK(event_dispatcher), manager);      
 	return treeView;

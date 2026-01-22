@@ -23,7 +23,7 @@ DEALINGS IN THE SOFTWARE.
 
 #ifdef DRAWGEOMGL
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <glib.h>
 #include "../../gl2ps/gl2ps.h"

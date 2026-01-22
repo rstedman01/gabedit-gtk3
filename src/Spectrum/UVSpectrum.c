@@ -21,8 +21,8 @@ DEALINGS IN THE SOFTWARE.
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <gdk/gdk.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
+#include <gtk/gtk.h>
 #include <gtk/gtk.h>
 #include "../Common/Global.h"
 #include "../Utils/Constants.h"

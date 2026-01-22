@@ -839,7 +839,7 @@ static gboolean computeCremerPoplePuckeringCoordinates(gint nAtoms, gint numAtom
 	gdouble r1a[3];
 	gdouble r2a[3];
 	gdouble n[3];
-	gdouble twoPi6 = 2*M_PI/6.0;
+	gdouble twoPi6 = 2*G_PI/6.0;
 	gdouble fourPi6 = 2*twoPi6;
 	gdouble z[nAtoms];
 	gdouble sqrt2 = sqrt(2.0);
@@ -856,7 +856,7 @@ static gboolean computeCremerPoplePuckeringCoordinates(gint nAtoms, gint numAtom
 
 	gdouble q3 = 0;
 	gdouble bigQ = 0;
-	gdouble radTodeg = 180.0/M_PI;
+	gdouble radTodeg = 180.0/G_PI;
 	gdouble theta, phi;
 	gdouble nLength = 1.0;
 
@@ -891,7 +891,7 @@ static gboolean computeCremerPoplePuckeringCoordinates(gint nAtoms, gint numAtom
 		q1cosphi += z[i]*cos(twoPi6*i);
 		q1sinphi -= z[i]*sin(twoPi6*i);
 		*/
-		q3        += z[i]*cos(M_PI*i); 
+		q3        += z[i]*cos(G_PI*i); 
 		bigQ += z[i]*z[i];
 	}
 	q2cosphi *= sqrt2*invsqrt6;
@@ -980,8 +980,8 @@ static gint addListRMSRing6(ConformerTypesRing6 listConformers[], gint nConfos, 
 	{
 		qLength = vLength(q[i]);
 		if(qLength>1e-10) qLength = 1/qLength;
-		thetas[i] = M_PI/2-acos(vDot(q[i],n)*qLength*nLength);
-		thetas[i] = thetas[i]/M_PI*180.0;
+		thetas[i] = G_PI/2-acos(vDot(q[i],n)*qLength*nLength);
+		thetas[i] = thetas[i]/G_PI*180.0;
 		while(thetas[i]>=360) thetas[i] -= 360;
 		if(thetas[i]>180) thetas[i] = 180-thetas[i];
 	}
@@ -1462,19 +1462,19 @@ static double dihedral(gint a0, gint a1, gint a2, gint a3)
 	length = vLength(r[1]);
 	if(length>1e-10) length = 1/length;
 	
-	return 180.0/M_PI*atan2(vDot(n,r[1])*length,vDot(p[0],p[1]));
+	return 180.0/G_PI*atan2(vDot(n,r[1])*length,vDot(p[0],p[1]));
 }
 /************************************************************************/
 /* return RMS in degree */
 static gdouble getOneRMSRing5(ConformerTypesRing5 listConformers[], gint numConfos, gdouble thetas[], gdouble* pPhase, gdouble* pThetam)
 {
-	double sin36 = sin(36.0/180.0*M_PI);
-	double sin72 = sin(72.0/180.0*M_PI);
+	double sin36 = sin(36.0/180.0*G_PI);
+	double sin72 = sin(72.0/180.0*G_PI);
 	gdouble tanP = (thetas[2]+thetas[4]-(thetas[1]+thetas[3]))/(2*thetas[0]*(sin36+sin72));
-	gdouble phase = atan(tanP)*180.0/M_PI;
+	gdouble phase = atan(tanP)*180.0/G_PI;
 	if(thetas[0]<0) phase += 180;
 	else if(phase<0) phase += 360;
-	*pThetam = thetas[0]/cos(phase/180*M_PI);
+	*pThetam = thetas[0]/cos(phase/180*G_PI);
 	gdouble rms = fabs(phase-listConformers[numConfos].phase);
 	*pPhase = phase;
 	return rms;

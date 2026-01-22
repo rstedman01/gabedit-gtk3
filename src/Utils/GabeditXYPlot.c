@@ -22,7 +22,7 @@ DEALINGS IN THE SOFTWARE.
 #include <ctype.h>
 #include <math.h>
 #include <string.h>
-#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 #include <gdk/gdkkeysyms-compat.h>
 #include <gtk/gtk.h>
@@ -58,17 +58,17 @@ static void gabedit_xyplot_cairo_string(cairo_t* cr, GtkWidget* widget, GdkGC* g
 static void gabedit_xyplot_cairo_line(cairo_t* cr, GtkWidget* widget, GdkGC* gc, gdouble x1, gdouble y1, gdouble x2, gdouble y2);
 static void gabedit_xyplot_cairo_lines(cairo_t* cr, GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size);
 static void gabedit_xyplot_cairo_rectangle(cairo_t* cr, GtkWidget* widget, GdkGC* gc, gboolean fill, gdouble x1, gdouble y1, gdouble w, gdouble h);
-/* static void gabedit_xyplot_cairo_cercle(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gint xc,gint yc,gint rayon);*/
+static void gabedit_xyplot_cairo_cercle(cairo_t* cr, GtkWidget *widget, GdkGC* gc, gint xc,gint yc,gint rayon);
 
 static void xyplot_cairo_string(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint x, gint y, const gchar* str, gboolean centerX, gboolean centerY, gdouble angle);
 static void xyplot_cairo_line(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gdouble x1, gdouble y1, gdouble x2, gdouble y2);
 static void xyplot_cairo_lines(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, GdkPoint* points, gint size);
 static void xyplot_cairo_rectangle(GabeditXYPlot* xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gboolean fill, gdouble x1, gdouble y1, gdouble w, gdouble h);
-/* static void xyplot_cairo_cercle(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint xc,gint yc,gint rayon);*/
+static void xyplot_cairo_cercle(GabeditXYPlot *xyplot, cairo_t* cr, GtkWidget* widget, GdkGC* gc, gint xc,gint yc,gint rayon);
 
 static void gabedit_xyplot_class_init (GabeditXYPlotClass    *klass);
 static void gabedit_xyplot_init (GabeditXYPlot         *xyplot);
-static void gabedit_xyplot_destroy (GObject        *object);
+static void gabedit_xyplot_destroy (GtkWidget        *widget);
 static void gabedit_xyplot_realize (GtkWidget        *widget);
 static void gabedit_xyplot_get_preferred_width (GtkWidget *widget, gint *minimal_width, gint *natural_width);
 static void gabedit_xyplot_get_preferred_height (GtkWidget *widget, gint *minimal_height, gint *natural_height);
@@ -97,7 +97,7 @@ static void set_theme_publication(GtkWidget *widget);
 static void set_theme_green_black(GtkWidget *widget);
 static void set_theme_dialog(GtkWidget* widget);
 static void gabedit_xyplot_cairo_layout(cairo_t* cr, gdouble x, gdouble y, PangoLayout *layout, gboolean centerX, gboolean centerY, gdouble angle);
-
+// static GtkWidgetClass *gabedit_xyplot_parent_class = NULL;
 /****************************************************************************************/
 static gpointer parent_class = NULL;
 static void gabedit_xyplot_dispose(GObject *gobject);
@@ -114,7 +114,13 @@ static void xyplot_free_legends(GabeditXYPlot* xyplot);
 static void xyplot_build_points_data(GabeditXYPlot* xyplot, XYPlotData* data);
 static PangoLayout* get_pango_str(GabeditXYPlot* xyplot, const gchar* txt);
 static void xyplot_curve_noconv(GabeditXYPlot* xyplot, gint numberOfPoints, gdouble* X, gdouble* Y, GdkColor* color);
+/****************************************************************************************/
+static void gabedit_xyplot_style_updated(GtkWidget *widget)
+{
+	GTK_WIDGET_CLASS(parent_class)->style_updated(widget);
+	gtk_widget_queue_draw(widget);
 
+}
 /****************************************************************************************/
 static void uppercase(gchar* str)
 {
@@ -6781,12 +6787,12 @@ GType gabedit_xyplot_get_type()
 	return xyplot_type;
 }
 /****************************************************************************************/
-static void gabedit_xyplot_class_init(GabeditXYPlotClass* class)
+static void gabedit_xyplot_class_init(GabeditXYPlotClass* klass)
 {
-	GObjectClass* object_class = G_OBJECT_CLASS(class);
-	GtkWidgetClass* widget_class = GTK_WIDGET_CLASS(class);
+	GObjectClass* object_class = G_OBJECT_CLASS(klass);
+	GtkWidgetClass* widget_class = GTK_WIDGET_CLASS(klass);
 
-	parent_class = g_type_class_peek_parent(class);
+	parent_class = g_type_class_peek_parent(klass);
 
 	object_class->finalize = (GObjectFinalizeFunc)gabedit_xyplot_destroy;
 	widget_class->realize = gabedit_xyplot_realize;
@@ -11139,4 +11145,15 @@ void gabedit_xyplot_set_last_data_point_size(GabeditXYPlot* xyplot, gdouble poin
 void gabedit_xyplot_add_object_text(GabeditXYPlot* xyplot, gdouble x, gdouble y, gdouble angle, const gchar* str)
 {
 	add_object_text(GABEDIT_XYPLOT(xyplot), x, y, angle, str);
+}
+/****************************************************************************************/
+static void gabedit_xyplot_destroy(GtkWidget *widget)
+{
+	GabeditXYPlot *xyplot;
+
+	g_return_if_fail(widget != NULL);
+	g_return_if_fail(GABEDIT_IS_XYPLOT(widget));
+
+	xyplot = GABEDIT_XYPLOT(widget);
+	GTK_WIDGET_CLASS(parent_class)->destroy(widget);
 }

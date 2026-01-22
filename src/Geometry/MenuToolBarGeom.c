@@ -1295,9 +1295,9 @@ static GtkActionEntry gtkActionEntries[] =
 	{"SetMolecularMechanicsParameters", NULL, N_("_Molecular Mechanics Parameters"), NULL, "Set molecular mechanics parameters", G_CALLBACK (activate_action) },
 	{"SetPDBTemplate", NULL, N_("_PDB Template"), NULL, "Set PDB Template", G_CALLBACK (activate_action) },
 	{"SetChargesUsingPDBTemplate", NULL, N_("_Charges using PDB Template"), NULL, "Set charges using PDB Template", G_CALLBACK (activate_action) },
-	{"SetAtomTypesUsingPDBTemplate", NULL, N_("Atom _Types using PDB Template"), NULL, "Set atom types using PDB Template", G_CALLBACK (activate_action) },
-	{"SetAtomTypeAndChargeUsingPDBTemplate", NULL, N_("Atom Type&Charge using PDB Template"), NULL, "Set atom type and charge using PDB Template", G_CALLBACK (activate_action) },
-	{"SetAtomTypeCalcul", NULL, N_("Atom Types using connections types"), NULL, "Compute atom types using the types of connections", G_CALLBACK (activate_action) },
+	{"SetAtomTypesUsingPDBTemplate", NULL, N_("GabeditAtom _Types using PDB Template"), NULL, "Set atom types using PDB Template", G_CALLBACK (activate_action) },
+	{"SetAtomTypeAndChargeUsingPDBTemplate", NULL, N_("GabeditAtom Type&Charge using PDB Template"), NULL, "Set atom type and charge using PDB Template", G_CALLBACK (activate_action) },
+	{"SetAtomTypeCalcul", NULL, N_("GabeditAtom Types using connections types"), NULL, "Compute atom types using the types of connections", G_CALLBACK (activate_action) },
 	{"SetChargesToZero", NULL, N_("Charges to _zero"), NULL, "Set charges to zero", G_CALLBACK (activate_action) },
 	{"SetPovrayBackground", NULL, N_("_Povray background"), NULL, "Set povray background", G_CALLBACK (activate_action) },
 #ifdef DRAWGEOMGL

@@ -521,7 +521,7 @@ static void create_list_molcasgrid_orbitals()
   scr=gtk_scrolled_window_new(NULL,NULL);
   gtk_box_pack_start(GTK_BOX (vboxframe), scr,TRUE, TRUE, 2);
   gtk_container_add(GTK_CONTAINER(scr),gtklist);
-  set_base_style(gtklist,50000,50000,50000);
+  set_base_color(gtklist,50000,50000,50000);
 
   gtk_widget_show_all (vboxall);
   /* buttons box */

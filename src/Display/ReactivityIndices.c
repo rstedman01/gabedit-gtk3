@@ -161,7 +161,7 @@ static ChargeRI* readChargesGaussian(G_CONST_RETURN  gchar* fileName, gdouble* p
 		}
 		if(strstr(buffer,"Hirshfeld charges, spin densities, dipoles, and CM5 charges")) posHirshfeld = ftell(file);
 		if(strstr(buffer,"Mulliken charges:")) posMulliken = ftell(file);
-		if(strstr(buffer,"Atom") && strstr(buffer," Charge ") && strstr(buffer," Core ") && strstr(buffer," Rydberg ")) posNPA = ftell(file);
+		if(strstr(buffer,"GabeditAtom") && strstr(buffer," Charge ") && strstr(buffer," Core ") && strstr(buffer," Rydberg ")) posNPA = ftell(file);
 	}
 	if(nAtoms<=0 || !okEner)
 	{
@@ -261,7 +261,7 @@ static ChargeRI* readChargesGaussian(G_CONST_RETURN  gchar* fileName, gdouble* p
 /********************************************************************************/
 static ChargeRI* readCharges(G_CONST_RETURN  gchar* fileName, gdouble* pEnergy, gint* pnAtoms)
 {
-	gchar* fName = strdup(fileName);
+	gchar* fName = g_strdup(fileName);
 	ChargeRI* charges=  NULL;
 	GabEditTypeFile fileType = get_type_file(fName); 
 	if( fileType== GABEDIT_TYPEFILE_TXT) charges = readChargesTXT(fileName, pEnergy, pnAtoms);
@@ -981,7 +981,7 @@ static GtkWidget* new_alpha_list(GtkWidget *hboxall)
   	gtk_box_pack_start(GTK_BOX (vbox), scr,TRUE, TRUE, 1);
   	gtk_container_add(GTK_CONTAINER(scr),gtklist);
 
-	set_base_style(gtklist,55000,55000,55000);
+	set_base_color(gtklist,55000,55000,55000);
 
 
 	for(i=0;i<N;i++) g_free(sym[i]);
@@ -1034,7 +1034,7 @@ static GtkWidget* new_beta_list(GtkWidget *hboxall)
 	gtk_widget_set_size_request(scr,widall,(gint)(ScreenHeightD*WIDTHSCR));
   	gtk_box_pack_start(GTK_BOX (vbox), scr,TRUE, TRUE, 1);
   	gtk_container_add(GTK_CONTAINER(scr),gtklist);
-	set_base_style(gtklist,55000,55000,55000);
+	set_base_color(gtklist,55000,55000,55000);
   	gtk_widget_show (scr);
   	gtk_widget_show (gtklist);
 

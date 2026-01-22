@@ -471,7 +471,7 @@ gboolean zmat_to_xyz()
   GeomXYZtemp[i].typeConnections = NULL;
   }
 
-  /* Atom #1 */
+  /* GabeditAtom #1 */
   GeomXYZtemp[0].Nentry = NUMBER_LIST_XYZ;
   GeomXYZtemp[0].Symb = g_strdup(Geom[0].Symb);
   GeomXYZtemp[0].mmType = g_strdup(Geom[0].mmType);
@@ -493,7 +493,7 @@ gboolean zmat_to_xyz()
 	  reset_connections_XYZ();
 	  return TRUE;
   }
-  /* Atom #2 */
+  /* GabeditAtom #2 */
   GeomXYZtemp[1].Nentry = NUMBER_LIST_XYZ;
   GeomXYZtemp[1].Symb = g_strdup(Geom[1].Symb);
   GeomXYZtemp[1].mmType = g_strdup(Geom[1].mmType);
@@ -521,7 +521,7 @@ gboolean zmat_to_xyz()
 	  return TRUE;
   }
   
-  /* Atom #3 */
+  /* GabeditAtom #3 */
   GeomXYZtemp[2].Nentry = NUMBER_LIST_XYZ;
   GeomXYZtemp[2].Symb = g_strdup(Geom[2].Symb);
   GeomXYZtemp[2].mmType = g_strdup(Geom[2].mmType);
@@ -789,7 +789,7 @@ gboolean xyz_to_zmat()
   Geomtemp[i].Layer = NULL;
   }
 
-  /* Atom #1 */
+  /* GabeditAtom #1 */
   Geomtemp[0].Nentry = NUMBER_ENTRY_0;
   Geomtemp[0].Symb = g_strdup(gxyz[0].Symb);
   Geomtemp[0].mmType = g_strdup(gxyz[0].mmType);
@@ -811,7 +811,7 @@ gboolean xyz_to_zmat()
 	  if(gxyz[0].Variable) set_variable_one_atom_in_GeomZMatrix(0);
 	  return TRUE;
   }
-  /* Atom #2 */
+  /* GabeditAtom #2 */
   Geomtemp[1].Nentry =  NUMBER_ENTRY_R;
   Geomtemp[1].Symb = g_strdup(gxyz[1].Symb);
   Geomtemp[1].mmType = g_strdup(gxyz[1].mmType);
@@ -837,7 +837,7 @@ gboolean xyz_to_zmat()
 	  return TRUE;
   }
   
-  /* Atom #3 */
+  /* GabeditAtom #3 */
   Geomtemp[2].Nentry =  NUMBER_ENTRY_ANGLE;
   Geomtemp[2].Symb = g_strdup(gxyz[2].Symb);
   Geomtemp[2].mmType = g_strdup(gxyz[2].mmType);
@@ -1553,7 +1553,7 @@ gboolean xyz_to_zmat_using_connections()
 	}
 
 
-	/* Atom #1 */
+	/* GabeditAtom #1 */
 	I = atomNumbers[0];
 	Geomtemp[0].Nentry = NUMBER_ENTRY_0;
 	Geomtemp[0].Symb = g_strdup(gxyz[I].Symb);
@@ -1563,7 +1563,7 @@ gboolean xyz_to_zmat_using_connections()
 	Geomtemp[0].Charge = g_strdup(gxyz[I].Charge);
 	Geomtemp[0].Layer = g_strdup(gxyz[I].Layer);
   
-	/* Atom #2 */
+	/* GabeditAtom #2 */
 	I = atomNumbers[1];
 	Geomtemp[1].Nentry =  NUMBER_ENTRY_R;
 	Geomtemp[1].Symb = g_strdup(gxyz[I].Symb);
@@ -1575,7 +1575,7 @@ gboolean xyz_to_zmat_using_connections()
 	Geomtemp[1].R = g_strdup_printf("%f",get_distance_xyz(atomNumbers[0],I));
 	Geomtemp[1].NR = g_strdup_printf("%d",1);
 
-	/* Atom #3 */
+	/* GabeditAtom #3 */
 	I = atomNumbers[2];
 	Ip = get_nr(2, atomNumbers, atomNumbersZ, levels, lists);
 	IpZ = atomNumbersZ[Ip];

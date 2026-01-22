@@ -422,12 +422,12 @@ GtkWidget* create_text_result_command(GtkWidget* Text[],GtkWidget* Frame[],gchar
 
   Text[0] = create_text_widget(vboxall,_("Output"),&Frame[0]);
   set_font (Text[0],FontsStyleResult.fontname);
-  set_base_style(Text[0],FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-  set_text_style(Text[0],FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
+  set_base_color(Text[0],FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+  set_text_color(Text[0],FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
   Text[1] = create_text_widget(vboxall,_("Error"),&Frame[1]);
   set_font (Text[1],FontsStyleResult.fontname);
-  set_base_style(Text[1],FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-  set_text_style(Text[1],FontsStyleResult.TextColor.red ,0,0);
+  set_base_color(Text[1],FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
+  set_text_color(Text[1],FontsStyleResult.TextColor.red ,0,0);
   /* boutons box */
   hbox = gtk_hbox_new (FALSE, 4);
   gtk_box_pack_start (GTK_BOX(vboxwin), hbox, FALSE, FALSE, 5);

@@ -161,7 +161,7 @@ static void create_combo_spin(GtkWidget *hbox,gint Num,gchar *tlabel)
 void GAjoutePageGeom(GtkWidget *NoteBook)
 {
   GtkWidget *window1;
-  GtkWindow *Frame;
+  GtkWidget *Frame;
   GtkWidget *LabelOnglet;
   GtkWidget *LabelMenu;
   GtkWidget *vbox;
@@ -178,7 +178,7 @@ void GAjoutePageGeom(GtkWidget *NoteBook)
   for(i=0;i<6;i++)
 	EntryCS[i]=NULL;
 
-  Frame = gtk_widget_get_window(NoteBook);
+  Frame = gtk_frame_new(NULL);
   gtk_container_set_border_width(GTK_CONTAINER(Frame), 10);
 
   LabelOnglet = gtk_label_new(_("Molecular Specifications"));

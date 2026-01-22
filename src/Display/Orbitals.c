@@ -710,7 +710,7 @@ GtkWidget* create_gtk_list_coef_orbitals(gint* widall)
 	GtkWidget* gtklist = NULL;
 	gint *Width = NULL;
 	gint NlistTitle = 3;
-	gchar* titles[] = {"Atom","Type","Coeff."};
+	gchar* titles[] = {"GabeditAtom","Type","Coeff."};
 	GtkListStore *store;
 	GtkTreeModel *model;
 	GtkCellRenderer *renderer;
@@ -842,7 +842,7 @@ GtkWidget* create_alpha_beta_lists(GtkWidget *noteBook, gint Type)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
   	gtk_box_pack_start(GTK_BOX (hbox), scr,TRUE, TRUE, 2);
   	gtk_container_add(GTK_CONTAINER(scr),gtklist);
-	set_base_style(gtklist,55000,55000,55000);
+	set_base_color(gtklist,55000,55000,55000);
 
   	vbox = gtk_vbox_new (FALSE, 0);
   	gtk_widget_show (vbox);

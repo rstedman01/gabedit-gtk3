@@ -96,13 +96,13 @@ static void create_frame_dipole(GtkWidget *Dialogue,GtkWidget *vboxframe, gdoubl
 	for(i=0;i<6;i++)
 	{
 		Label = add_label_table(Table,textlabel[j][i],(gushort)j,(gushort)i); 
-		if(j==0) set_fg_style(Label,0,0,0);
-		if(j==1) set_fg_style(Label,10000,0,0);
-		if(j==2) set_fg_style(Label,0,10000,0);
-		if(j==3) set_fg_style(Label,0,0,0);
-		if(j==4) set_fg_style(Label,0,0,10000);
-		if(j==5) set_fg_style(Label,0,0,10000);
-		if(j==6) set_fg_style(Label,0,0,10000);
+		if(j==0) set_fg_color(Label,0,0,0);
+		if(j==1) set_fg_color(Label,10000,0,0);
+		if(j==2) set_fg_color(Label,0,10000,0);
+		if(j==3) set_fg_color(Label,0,0,0);
+		if(j==4) set_fg_color(Label,0,0,10000);
+		if(j==5) set_fg_color(Label,0,0,10000);
+		if(j==6) set_fg_color(Label,0,0,10000);
 		gtk_widget_hide(Label);
 		gtk_widget_show(Label);
 	}

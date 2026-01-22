@@ -555,7 +555,7 @@ void edit_geometry()
   init_child(Window,destroy_geometry,_(" Geometry Editor "));
   g_signal_connect(G_OBJECT(Window),"delete_event",(GCallback)destroy_children,NULL);
 
-  Frame = gtk_widget_get_window(geominter);
+  Frame = gtk_frame_new(NULL);
   gtk_container_set_border_width (GTK_CONTAINER (Frame), 10);
   gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(Window))), Frame);
   
