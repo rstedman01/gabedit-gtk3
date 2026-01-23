@@ -22,6 +22,8 @@ DEALINGS IN THE SOFTWARE.
 
 void set_text_color(GtkWidget *text,gushort red,gushort green,gushort blue);
 void set_base_color(GtkWidget *text,gushort red,gushort green,gushort blue);
+void set_fg_color(GtkWidget *wid, gushort red, gushort green, gushort blue);
+void set_bg_color(GtkWidget *wid, gushort red, gushort green, gushort blue);
 void set_font (GtkWidget *view, gchar *fontname);
 void find_text_win();
 void cree_text_notebook();

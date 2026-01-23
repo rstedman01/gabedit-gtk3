@@ -172,7 +172,10 @@ void gdk_draw_arc(GdkWindow* window, GdkGC* gc, gboolean filled, gint x, gint y,
     cairo_destroy(cr);
 }
 
-void gdk_draw_drawable(GdkWindow* window, GdkGC* gc, GdkPixbuf* src, gint src_x, gint src_y, gint dest_x, gint dest_y, gint width, gint height) {
+void gdk_draw_drawable(GdkWindow* window, GdkGC* gc, GdkPixbuf* src, 
+                       gint src_x, gint src_y, gint dest_x, 
+                       gint dest_y, gint width, gint height) 
+{
     if (!window || !src) return;
     cairo_t* cr = gdk_cairo_create(window);
     gdk_cairo_set_source_pixbuf(cr, src, dest_x - src_x, dest_y - src_y);
@@ -182,10 +185,29 @@ void gdk_draw_drawable(GdkWindow* window, GdkGC* gc, GdkPixbuf* src, gint src_x,
     (void)gc; 
 }
 
-void gdk_draw_layout(GdkWindow* window, GdkGC* gc, gint x, gint y, PangoLayout* layout) {
-    if (!window || !gc || !layout) return;
-    cairo_t* cr = gdk_cairo_create(window);
-    apply_gc_to_cr(gc, cr);
+void gdk_draw_layout(GdkDrawable *drawable, GdkGC* gc, gint x, gint y, PangoLayout* layout) 
+{
+    if (!layout) return;
+    GdkWindow *win = GDK_WINDOW(drawable);
+    if (!GDK_IS_WINDOW(win)) return;
+
+    const gchar *text = pango_layout_get_text(layout);
+    if (!text) return;
+
+    if (!g_utf8_validate(text, -1, NULL))
+    {
+        g_warning("Invalid UTF-8 string in gdk_draw_layout, skipping");
+        return;
+    }
+    cairo_t *cr = gdk_cairo_create(win);
+    if (!cr) return;
+
+    if (gc && gc->window)
+    {
+        double r, g, b, a;
+        gabedit_color_to_rgba(&gc->values.foreground, &r, &g, &b, &a);
+        cairo_set_source_rgba(cr, r, g, b, a);
+    }
     cairo_move_to(cr, x, y);
     pango_cairo_show_layout(cr, layout);
     cairo_destroy(cr);

@@ -293,24 +293,29 @@ static void add_label(GtkBox *box, gchar *text)
 /********************************************************************************/
 static void user_install_treeview_select_row(GtkTreeSelection *selection, gpointer data)
 {
-	GtkTreeIter iter;
-	GtkTreeModel *model;
-	gchar* pathString;
-	gint row = -1;
-	GtkNotebook *notebook;
-
-	notebook = (GtkNotebook*)data;
-
-	if (!gtk_tree_selection_get_selected (selection, &model, &iter)) return;
-	pathString =gtk_tree_model_get_string_from_iter(model, &iter);
-	if(strstr(pathString,":"))
-	{
-		gchar* t = strstr(pathString,":")+1;
-		row = 1 + atoi(t);
-	}
-	else row = 0;
-	if(row>=0) gtk_notebook_set_current_page(notebook, row);
-
+    GtkNotebook *notebook = GTK_NOTEBOOK(data);
+    GtkTreeIter iter;
+    GtkTreeModel *model;
+    
+    if (!gtk_tree_selection_get_selected(selection, &model, &iter))
+        return;
+    
+    if (!GTK_IS_TREE_MODEL(model)) {
+        g_warning("Invalid tree model in selection callback");
+        return;
+    }
+    
+    GtkTreePath *path = gtk_tree_model_get_path(model, &iter);
+    if (!path) return;
+    
+    gint *indices = gtk_tree_path_get_indices(path);
+    if (indices) {
+        gint depth = gtk_tree_path_get_depth(path);
+        gint page_num = (depth > 1) ? indices[1] + 1 : 0;
+        gtk_notebook_set_current_page(notebook, page_num);
+    }
+    
+    gtk_tree_path_free(path);
 }
 /********************************************************************************/
 static void user_install_cancel_callback(GtkWidget *widget,
@@ -504,6 +509,7 @@ void user_install_dialog_create(UserInstallCallback callback)
   gchar* temp = NULL;
 
   dialog = user_install_dialog = gtk_dialog_new ();
+  gtk_window_set_type_hint(GTK_WINDOW(dialog), GDK_WINDOW_TYPE_HINT_NORMAL);
   gtk_window_set_position(GTK_WINDOW(dialog),GTK_WIN_POS_CENTER);
   gtk_window_set_title(GTK_WINDOW(dialog),_("Gabedit User Installation"));
 

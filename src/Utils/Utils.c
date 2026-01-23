@@ -2792,89 +2792,51 @@ void set_tab_size (GtkWidget *view, gint tab_size)
 /*************************************************************************************/
 void set_text_color(GtkWidget *text,gushort red,gushort green,gushort blue)
 {
+	if (!GTK_IS_WIDGET(text)) return;
+
 	GtkCssProvider *prov;
 	gchar *css;
 	GtkStyleContext *ctx;
 
 	css = g_strdup_printf("* { color: rgb(%d, %d, %d); }",
-						  red/257, green/257, blue/257);
+						  red >> 8, green >> 8, blue >> 8);
 	prov = gtk_css_provider_new();
 	gtk_css_provider_load_from_data(prov, css, -1, NULL);
 
 	ctx = gtk_widget_get_style_context(text);
-	gtk_style_context_add_provider(ctx, GTK_STYLE_PROVIDER(prov), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-
+	gtk_style_context_add_provider(ctx, GTK_STYLE_PROVIDER(prov), 
+								   GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 	g_object_unref(prov);
-	g_free(css);
 }
 /********************************************************************************/
-void set_base_color(GtkWidget *widget, gushort red, gushort green, gushort blue)
+void set_base_color(GtkWidget *text, gushort red, gushort green, gushort blue)
 {
-    gchar *css;
-    GtkCssProvider *provider;
-    GtkStyleContext *context;
+    if (!GTK_IS_WIDGET(text)) return;
     
-    css = g_strdup_printf("* { background-color: rgb(%d,%d,%d); }", 
-                          red/257, green/257, blue/257);
+    GtkCssProvider *provider = gtk_css_provider_new();
+    gchar *css = g_strdup_printf(
+        "* { background-color: rgb(%d, %d, %d); }",
+        red >> 8, green >> 8, blue >> 8
+    );
     
-    provider = gtk_css_provider_new();
     gtk_css_provider_load_from_data(provider, css, -1, NULL);
-    
-    context = gtk_widget_get_style_context(widget);
-    gtk_style_context_add_provider(context,
-                                    GTK_STYLE_PROVIDER(provider),
-                                    GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    
-    g_object_unref(provider);
     g_free(css);
+    
+    GtkStyleContext *context = gtk_widget_get_style_context(text);
+    gtk_style_context_add_provider(context,
+        GTK_STYLE_PROVIDER(provider),
+        GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    g_object_unref(provider);
 }
 /********************************************************************************/
-void set_fg_color(GtkWidget *wid,gushort red,gushort green,gushort blue)
+void set_fg_color(GtkWidget *wid, gushort red, gushort green, gushort blue)
 {
-	GtkCssProvider *prov;
-	gchar *css;
-	GdkRGBA color;
-	
-	color.red = red / 65535.0;
-	color.green = green / 65535.0;
-	color. blue = blue / 65535.0;
-	color.alpha = 1.0;
-	
-	prov = gtk_css_provider_new();
-	css = g_strdup_printf("* { color: rgb(%d,%d,%d); }",
-	                      (int)(color.red * 255),
-	                      (int)(color.green * 255),
-	                      (int)(color.blue * 255));
-	gtk_css_provider_load_from_data(prov, css, -1, NULL);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(wid),
-	                                GTK_STYLE_PROVIDER(prov),
-	                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-	g_object_unref(prov);
-	g_free(css);
+    set_text_color(wid, red, green, blue);
 }
 /********************************************************************************/
-void set_bg_color(GtkWidget *wid,gushort red,gushort green,gushort blue)
+void set_bg_color(GtkWidget *wid, gushort red, gushort green, gushort blue)
 {
-	GtkCssProvider *prov;
-	gchar *css;
-	GdkRGBA color;
-	
-	color.red = red / 65535.0;
-	color.green = green / 65535.0;
-	color.blue = blue / 65535.0;
-	color.alpha = 1.0;
-	
-	prov = gtk_css_provider_new();
-	css = g_strdup_printf("* { background-color: rgb(%d,%d,%d); }",
-	                      (int)(color.red * 255),
-	                      (int)(color.green * 255),
-	                      (int)(color.blue * 255));
-	gtk_css_provider_load_from_data(prov, css, -1, NULL);
-	gtk_style_context_add_provider(gtk_widget_get_style_context(wid),
-	                                GTK_STYLE_PROVIDER(prov),
-	                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-	g_object_unref(prov);
-	g_free(css);
+    set_base_color(wid, red, green, blue);
 }
 /********************************************************************************/
 gint numb_of_string_by_row(gchar *str)
@@ -5934,4 +5896,20 @@ gchar *readFile(gchar *filename)
         fclose(fp);
     }
     return fcontent;
+}
+/***************************************************************************/
+gchar* gabedit_ensure_utf8(const gchar* str)
+{
+    if (!str) return g_strdup("");
+    if (g_utf8_validate(str, -1, NULL)) return g_strdup(str);
+    
+    gsize bytes_read, bytes_written;
+    GError *error = NULL;
+    gchar *utf8 = g_locale_to_utf8(str, -1, &bytes_read, &bytes_written, &error);
+    
+    if (utf8) return utf8;
+    
+    if (error) g_error_free(error);
+    
+    return g_utf8_make_valid(str, -1);
 }
