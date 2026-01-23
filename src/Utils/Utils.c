@@ -2790,7 +2790,7 @@ void set_tab_size (GtkWidget *view, gint tab_size)
 	gtk_text_view_set_tabs          ((GtkTextView *)view, tabs);
 }
 /*************************************************************************************/
-GtkStyle *set_text_color(GtkWidget *text,gushort red,gushort green,gushort blue)
+void set_text_color(GtkWidget *text,gushort red,gushort green,gushort blue)
 {
 	GtkCssProvider *prov;
 	gchar *css;
@@ -2808,7 +2808,7 @@ GtkStyle *set_text_color(GtkWidget *text,gushort red,gushort green,gushort blue)
 	g_free(css);
 }
 /********************************************************************************/
-GtkStyle *set_base_color(GtkWidget *widget, gushort red, gushort green, gushort blue)
+void set_base_color(GtkWidget *widget, gushort red, gushort green, gushort blue)
 {
     gchar *css;
     GtkCssProvider *provider;
@@ -2829,7 +2829,7 @@ GtkStyle *set_base_color(GtkWidget *widget, gushort red, gushort green, gushort 
     g_free(css);
 }
 /********************************************************************************/
-GtkStyle *set_fg_color(GtkWidget *wid,gushort red,gushort green,gushort blue)
+void set_fg_color(GtkWidget *wid,gushort red,gushort green,gushort blue)
 {
 	GtkCssProvider *prov;
 	gchar *css;
@@ -2851,11 +2851,9 @@ GtkStyle *set_fg_color(GtkWidget *wid,gushort red,gushort green,gushort blue)
 	                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 	g_object_unref(prov);
 	g_free(css);
-	
-	return NULL;
 }
 /********************************************************************************/
-GtkStyle *set_bg_color(GtkWidget *wid,gushort red,gushort green,gushort blue)
+void set_bg_color(GtkWidget *wid,gushort red,gushort green,gushort blue)
 {
 	GtkCssProvider *prov;
 	gchar *css;
@@ -2877,8 +2875,6 @@ GtkStyle *set_bg_color(GtkWidget *wid,gushort red,gushort green,gushort blue)
 	                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 	g_object_unref(prov);
 	g_free(css);
-	
-	return NULL;
 }
 /********************************************************************************/
 gint numb_of_string_by_row(gchar *str)
