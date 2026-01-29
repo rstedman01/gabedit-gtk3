@@ -1593,13 +1593,17 @@ void add_frame_data_result(GtkWidget *hboxall,gchar *tlabel)
   {
   	hboxbutton = gtk_hbox_new (FALSE, 0);
   	button = add_button_color(hboxbutton,
-	FontsStyleData.BaseColor.red,FontsStyleData.BaseColor.green,FontsStyleData.BaseColor.blue);
+	    FontsStyleData.BaseColor.red,
+      FontsStyleData.BaseColor.green,
+      FontsStyleData.BaseColor.blue);
   }
   else
   {
   	hboxbutton = gtk_hbox_new (FALSE, 0);
   	button = add_button_color(hboxbutton,
-	FontsStyleResult.BaseColor.red,FontsStyleResult.BaseColor.green,FontsStyleResult.BaseColor.blue);
+	    FontsStyleResult.BaseColor.red,
+      FontsStyleResult.BaseColor.green,
+      FontsStyleResult.BaseColor.blue);
   }
   add_widget_table(table,hboxbutton,1,2);
   type = g_strdup_printf("%s_Back",tlabel);
@@ -1612,13 +1616,17 @@ void add_frame_data_result(GtkWidget *hboxall,gchar *tlabel)
   {
   	hboxbutton = gtk_hbox_new (FALSE, 0);
   	button = add_button_color(hboxbutton,
-	FontsStyleData.TextColor.red,FontsStyleData.TextColor.green,FontsStyleData.TextColor.blue);
+	    FontsStyleData.TextColor.red,
+      FontsStyleData.TextColor.green,
+      FontsStyleData.TextColor.blue);
   }
   else
   {
   	hboxbutton = gtk_hbox_new (FALSE, 0);
-  	button = add_button_color(hboxbutton,
-	FontsStyleResult.TextColor.red,FontsStyleResult.TextColor.green,FontsStyleResult.TextColor.blue);
+  	  	button = add_button_color(hboxbutton,
+	    FontsStyleData.TextColor.red,
+      FontsStyleData.TextColor.green,
+      FontsStyleData.TextColor.blue);
   }
   add_widget_table(table,hboxbutton,2,2);
   type = g_strdup_printf("%s_Fore",tlabel);

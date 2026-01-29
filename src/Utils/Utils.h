@@ -227,6 +227,8 @@ gdouble* get_one_block_real_from_wfx_file(FILE* file, gchar* blockName,  gint* n
 gboolean get_one_int_from_wfx_file(FILE* file, gchar* blockName, gint* n);
 gdouble* get_one_orbital_from_wfx_file(FILE* file, gint* n, gint*numOrb);
 gchar *readFile(gchar *filename);
+gchar *gabedit_ensure_utf8(const gchar *str);
+void safe_pango_layout_set_text(PangoLayout *layout, const gchar *text);
 
 #endif /* __GABEDIT_UTILS_H__ */
 

@@ -6430,10 +6430,10 @@ static void addEntriesButtons(GtkWidget* box)
 /********************************************************************************/
 static GtkTreeView* addList(GtkWidget *vbox, GtkUIManager *manager)
 {
-        GtkTreeStore *store;
-	GtkTreeModel *model;
+    GtkTreeStore *store;
+	GtkTreeModel *model = NULL;
 	GtkCellRenderer *renderer;
-	GtkTreeView *treeView;
+	static GtkTreeView *treeView;
 	GtkTreeViewColumn *column;
 	GtkWidget *scr;
 	gint i;
@@ -6454,7 +6454,10 @@ static GtkTreeView* addList(GtkWidget *vbox, GtkUIManager *manager)
 	gtk_box_pack_start(GTK_BOX (vbox), scr,TRUE, TRUE, 2);
 
 	store = gtk_tree_store_new (4,G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
-        model = GTK_TREE_MODEL (store);
+	if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 
 	treeView = (GtkTreeView*)gtk_tree_view_new_with_model (model);
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (treeView), TRUE);

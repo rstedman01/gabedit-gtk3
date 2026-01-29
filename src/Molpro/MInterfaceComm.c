@@ -38,6 +38,7 @@ static  GtkWidget *FrameShow;
 static  GtkWidget *Wins;
 static int begin = 1;
 
+static GtkTreeView *treeView;
 /********************************************************************************************************/
 static void gene_ref(GtkWidget *b,gpointer data)
 {
@@ -1111,7 +1112,7 @@ static GtkWidget *CreateListeComm(GtkWidget* BoiteVP)
 {
         GtkTreeIter iter;
         GtkTreeStore *store;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
 	GtkWidget *combobox;
 	GtkCellRenderer *renderer;
 
@@ -1159,7 +1160,10 @@ static GtkWidget *CreateListeComm(GtkWidget* BoiteVP)
         gtk_tree_store_append (store, &iter, NULL);
         gtk_tree_store_set (store, &iter, 0, "uks", -1);
 
-        model = GTK_TREE_MODEL (store);
+	if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 	combobox = gtk_combo_box_new_with_model (model);
 	g_object_unref (model);
 	gtk_box_pack_start (GTK_BOX (hbox1), combobox, TRUE, TRUE, 1);

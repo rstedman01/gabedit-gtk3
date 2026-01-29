@@ -35,7 +35,7 @@ void create_table_prop_in_window(GtkWidget *WinTable,GtkWidget *frame);
 void create_table_prop(); 
 void save_atoms_prop();
 gboolean read_atoms_prop();
-GtkStyle *set_button_style( GtkStyle *button_style,GtkWidget *button,gchar *Symb);
+void set_button_style(GtkWidget *button,gchar *Symb);
 void create_table_prop_in_vbox(GtkWidget *WinTable,GtkWidget *Vbox);
 
 #endif /* __GABEDIT_ATOMSPROP_H__ */

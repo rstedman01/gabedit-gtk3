@@ -2764,25 +2764,27 @@ void set_font_style (GtkStyle* style,gchar *fontname)
 /*************************************************************************************/
 void set_font (GtkWidget *view, gchar *fontname)
 {
-        GtkStyle *style;
-  	PangoFontDescription *font_desc;
- 
-	//if(!GTK_IS_WIDGET(view)) return;
-        style = gtk_style_copy (gtk_widget_get_style (view));
-  	font_desc = pango_font_description_from_string (fontname);
+    if(!GTK_IS_WIDGET(view)) return;
+    
+    PangoFontDescription *font_desc = pango_font_description_from_string(fontname);
+    if (!font_desc) return;
 
-	if (font_desc)
-	{
-		/*
-		pango_font_description_free (style->font_desc);
-		*/
-		style->font_desc = font_desc;
-	}
- 
-        gtk_widget_set_style (GTK_WIDGET(view), style);
- 
-        g_object_unref (style);
-}         
+    gchar *css = g_strdup_printf("* { font-family: %s; font-size: %dpt; }",
+        pango_font_description_get_family(font_desc),
+        pango_font_description_get_size(font_desc) / PANGO_SCALE);
+    
+    GtkCssProvider *provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(provider, css, -1, NULL);
+    
+    GtkStyleContext *context = gtk_widget_get_style_context(view);
+    gtk_style_context_add_provider(context, 
+        GTK_STYLE_PROVIDER(provider),
+        GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    
+    g_object_unref(provider);
+    pango_font_description_free(font_desc);
+    g_free(css);
+}    
 /*************************************************************************************/
 void set_tab_size (GtkWidget *view, gint tab_size)
 {
@@ -2790,30 +2792,35 @@ void set_tab_size (GtkWidget *view, gint tab_size)
 	gtk_text_view_set_tabs          ((GtkTextView *)view, tabs);
 }
 /*************************************************************************************/
-void set_text_color(GtkWidget *text,gushort red,gushort green,gushort blue)
+void set_text_color(GtkWidget *text, gushort red, gushort green, gushort blue)
 {
-	if (!GTK_IS_WIDGET(text)) return;
-
-	GtkCssProvider *prov;
-	gchar *css;
-	GtkStyleContext *ctx;
-
-	css = g_strdup_printf("* { color: rgb(%d, %d, %d); }",
-						  red >> 8, green >> 8, blue >> 8);
-	prov = gtk_css_provider_new();
-	gtk_css_provider_load_from_data(prov, css, -1, NULL);
-
-	ctx = gtk_widget_get_style_context(text);
-	gtk_style_context_add_provider(ctx, GTK_STYLE_PROVIDER(prov), 
-								   GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-	g_object_unref(prov);
+    if (!GTK_IS_WIDGET(text)) return;
+    
+    GtkStyleContext *context = gtk_widget_get_style_context(text);
+    GtkCssProvider *provider = gtk_css_provider_new();
+    
+    gchar *css = g_strdup_printf(
+        "* { color: rgb(%d, %d, %d); }",
+        red >> 8, green >> 8, blue >> 8
+    );
+    
+    gtk_css_provider_load_from_data(provider, css, -1, NULL);
+    g_free(css);
+    
+    gtk_style_context_add_provider(context,
+        GTK_STYLE_PROVIDER(provider),
+        GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    
+    g_object_unref(provider);
 }
 /********************************************************************************/
 void set_base_color(GtkWidget *text, gushort red, gushort green, gushort blue)
 {
     if (!GTK_IS_WIDGET(text)) return;
     
+    GtkStyleContext *context = gtk_widget_get_style_context(text);
     GtkCssProvider *provider = gtk_css_provider_new();
+    
     gchar *css = g_strdup_printf(
         "* { background-color: rgb(%d, %d, %d); }",
         red >> 8, green >> 8, blue >> 8
@@ -2822,21 +2829,55 @@ void set_base_color(GtkWidget *text, gushort red, gushort green, gushort blue)
     gtk_css_provider_load_from_data(provider, css, -1, NULL);
     g_free(css);
     
-    GtkStyleContext *context = gtk_widget_get_style_context(text);
     gtk_style_context_add_provider(context,
         GTK_STYLE_PROVIDER(provider),
         GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    
     g_object_unref(provider);
 }
 /********************************************************************************/
 void set_fg_color(GtkWidget *wid, gushort red, gushort green, gushort blue)
 {
-    set_text_color(wid, red, green, blue);
+    if (!GTK_IS_WIDGET(wid)) return;
+    
+    GtkStyleContext *context = gtk_widget_get_style_context(wid);
+    GtkCssProvider *provider = gtk_css_provider_new();
+    
+    gchar *css = g_strdup_printf(
+        "* { color: rgb(%d, %d, %d); }",
+        red >> 8, green >> 8, blue >> 8
+    );
+    
+    gtk_css_provider_load_from_data(provider, css, -1, NULL);
+    g_free(css);
+    
+    gtk_style_context_add_provider(context,
+        GTK_STYLE_PROVIDER(provider),
+        GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    
+    g_object_unref(provider);
 }
 /********************************************************************************/
 void set_bg_color(GtkWidget *wid, gushort red, gushort green, gushort blue)
 {
-    set_base_color(wid, red, green, blue);
+    if (!GTK_IS_WIDGET(wid)) return;
+    
+    GtkStyleContext *context = gtk_widget_get_style_context(wid);
+    GtkCssProvider *provider = gtk_css_provider_new();
+    
+    gchar *css = g_strdup_printf(
+        "* { background-color: rgb(%d, %d, %d); }",
+        red >> 8, green >> 8, blue >> 8
+    );
+    
+    gtk_css_provider_load_from_data(provider, css, -1, NULL);
+    g_free(css);
+    
+    gtk_style_context_add_provider(context,
+        GTK_STYLE_PROVIDER(provider),
+        GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    
+    g_object_unref(provider);
 }
 /********************************************************************************/
 gint numb_of_string_by_row(gchar *str)
@@ -5900,16 +5941,32 @@ gchar *readFile(gchar *filename)
 /***************************************************************************/
 gchar* gabedit_ensure_utf8(const gchar* str)
 {
-    if (!str) return g_strdup("");
+	if (!str) return g_strdup("");
+
     if (g_utf8_validate(str, -1, NULL)) return g_strdup(str);
     
-    gsize bytes_read, bytes_written;
-    GError *error = NULL;
-    gchar *utf8 = g_locale_to_utf8(str, -1, &bytes_read, &bytes_written, &error);
-    
-    if (utf8) return utf8;
-    
-    if (error) g_error_free(error);
-    
-    return g_utf8_make_valid(str, -1);
+    gchar *utf8_str = g_locale_to_utf8(str, -1, NULL, NULL, NULL);
+	if (utf8_str) return utf8_str;
+
+	GString *sanitized = g_string_new("");
+	const gchar *p = str;
+	while (*p) {
+		gunichar c = g_utf8_get_char_validated(p,-1);
+		if (c == (gunichar)-1 || c == (gunichar)-2) {
+			p++;
+		} else {
+			g_string_append_unichar(sanitized, c);
+			p = g_utf8_next_char(p);
+		}
+	}
+	return g_string_free(sanitized, FALSE);
+}
+/***************************************************************************/
+void safe_pango_layout_set_text(PangoLayout *layout, const gchar *text)
+{
+	if (!layout || !text) return;
+
+	gchar *utf8_text = gabedit_ensure_utf8(text);
+	pango_layout_set_text(layout, utf8_text, -1);
+	g_free(utf8_text);
 }

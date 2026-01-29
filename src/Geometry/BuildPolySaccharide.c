@@ -858,7 +858,7 @@ static void add_buttons(GtkWidget *Dlg,GtkWidget* box)
 	  {
 		button = gtk_button_new_with_label(Symb[j][i]);
 		g_object_set_data(G_OBJECT (button), "Dlg",Dlg);
-		style=set_button_style(button_style,button,"H");
+		set_button_style(button,"H");
 		g_signal_connect(G_OBJECT(button), "clicked",
                             (GCallback)build_polysaccharide,(gpointer )Symb[j][i]);
       	  /*

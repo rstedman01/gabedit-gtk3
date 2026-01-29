@@ -146,7 +146,7 @@ static void select_atom()
 		{
 			button = gtk_button_new_with_label(Symb[j][i]);
 			/* style=set_button_style(button_style,button,Symb[j][i]);*/
-			set_button_style(button_style,button,Symb[j][i]);
+			set_button_style(button,Symb[j][i]);
 			g_object_set_data(G_OBJECT(button), "WinTable", WinTable);
 			g_signal_connect(G_OBJECT(button), "clicked", (GCallback)set_atom,(gpointer )Symb[j][i]);
 			gtk_table_attach(GTK_TABLE(Table),button,j,j+1,i,i+1,

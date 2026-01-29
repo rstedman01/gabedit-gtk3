@@ -52,6 +52,7 @@ static gint NumSelOrbtmp = -1;
 void create_iso_orbitals();
 static gboolean sphericalBasis = FALSE;
 static GtkWidget* winList = NULL;
+static GtkTreeView *treeView;
 /********************************************************************************/
 static void resetViewOrbCoef(GtkWidget* textWidget);
 /************************************************************************************************************/
@@ -637,7 +638,7 @@ GtkWidget* create_gtk_list_orbitals(gint N,gdouble* Energies,gdouble* Occ,gchar*
 	gchar* Titles[] = {"Nr","Energy","Occ.","Sym."};
 	gchar* List[4];
 	GtkListStore *store;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 	GtkTreeSelection *select;
@@ -652,7 +653,10 @@ GtkWidget* create_gtk_list_orbitals(gint N,gdouble* Energies,gdouble* Occ,gchar*
 	for (i=0;i<NlistTitle;i++) types[i] = G_TYPE_STRING;
   	store = gtk_list_store_newv (NlistTitle, types);
 	g_free(types);
-	model = GTK_TREE_MODEL (store);
+	if (store && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 
 
 	Width[0] = (gint)(Width[0]*10);
@@ -712,7 +716,7 @@ GtkWidget* create_gtk_list_coef_orbitals(gint* widall)
 	gint NlistTitle = 3;
 	gchar* titles[] = {"GabeditAtom","Type","Coeff."};
 	GtkListStore *store;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 	GType* types;
@@ -725,7 +729,10 @@ GtkWidget* create_gtk_list_coef_orbitals(gint* widall)
 	for (i=0;i<NlistTitle;i++) types[i] = G_TYPE_STRING;
   	store = gtk_list_store_newv (NlistTitle, types);
 	g_free(types);
-	model = GTK_TREE_MODEL (store);
+	if (store && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 
 
 	Width[0] = (gint)(Width[0]*5);

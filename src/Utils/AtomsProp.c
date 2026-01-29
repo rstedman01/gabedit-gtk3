@@ -62,6 +62,7 @@ static SAtomsProp AtomsProp[NATOMS];
 static GtkWidget *EntryProp[NUMBER_OF_ENTRYS];
 static GtkWidget *listIsotopes = NULL;
 GdkColor ColorTemp;
+static GtkTreeView *treeView = NULL;
 /********************************************************************************/
 void save_atoms_prop()
 {
@@ -998,7 +999,7 @@ static void set_atom_prop(GtkWidget *w,gpointer data)
 	 	AtomsProp[i].electronegativity = electronegativity;
 
 		set_color_atom(ColorTemp,Symb);
-		sdata->Style=set_button_style(sdata->Style,sdata->Button,Symb);
+		set_button_style(sdata->Button, Symb);
 
 
 
@@ -1116,8 +1117,8 @@ static void editedIsotope (GtkCellRendererText *cell, gchar  *path_string, gchar
 /************************************************************/
 static GtkWidget* create_isotope_list(GtkWidget *vbox, gint numAtom)
 {
-        GtkListStore *store;
-	GtkTreeModel *model;
+    GtkListStore *store;
+	GtkTreeModel *model = NULL;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 	GtkWidget *list = NULL;
@@ -1142,7 +1143,10 @@ static GtkWidget* create_isotope_list(GtkWidget *vbox, gint numAtom)
 		       	G_TYPE_STRING, G_TYPE_BOOLEAN,
 			G_TYPE_STRING, G_TYPE_BOOLEAN
 			);
-        model = GTK_TREE_MODEL (store);
+	if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 
 	list = gtk_tree_view_new_with_model (model);
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (list), TRUE);
@@ -1305,7 +1309,7 @@ static void dialog_set_atom_prop(GtkWidget *w,gpointer data)
   Add_Label_Table(Table,":",i,1);
 
   Bouton = gtk_button_new_with_label(_("Set Color"));
-  style=set_button_style(sdata->Style,Bouton,sdata->Symb);
+  set_button_style(Bouton,sdata->Symb);
   tdata=g_malloc(sizeof(SData));
   tdata->Window = Dialogue;
   tdata->Symb = g_strdup(sdata->Symb);
@@ -1347,7 +1351,7 @@ static void dialog_set_atom_prop(GtkWidget *w,gpointer data)
   g_free(temp);
 }
 /******************************************************************/
-GtkStyle *set_button_style( GtkStyle *button_style,GtkWidget *button,gchar *Symb)
+void set_button_style(GtkWidget *button,gchar *Symb)
 {
 	SAtomsProp Pro = prop_atom_get(Symb);
 	GtkCssProvider *provider;
@@ -1364,8 +1368,6 @@ GtkStyle *set_button_style( GtkStyle *button_style,GtkWidget *button,gchar *Symb
 	                                GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 	g_object_unref(provider);
 	g_free(css);
-	
-	return NULL;
 }
 /******************************************************************/
 gchar*** get_periodic_table()
@@ -1429,7 +1431,7 @@ void create_table_prop_in_window(GtkWidget *WinTable, GtkWidget *frame)
 		if(strcmp(Symb[j][i],"00"))
 		{
 			button = gtk_button_new_with_label(Symb[j][i]);
-			style=set_button_style(button_style,button,Symb[j][i]);
+			set_button_style(button,Symb[j][i]);
 
 			sdata[j][i]=g_malloc(sizeof(SData));
 			sdata[j][i]->Window = WinTable;

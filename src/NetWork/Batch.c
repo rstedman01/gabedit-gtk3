@@ -54,6 +54,8 @@ static gint NlistTitle = 0;
 static gchar** Titles = NULL;
 static gchar*** List = NULL;
 
+static GtkTreeView *treeView = NULL;
+
 /********************************************************************************/
 static void destroy_win_user_batch(GtkWidget* Win, gpointer data)
 {
@@ -408,7 +410,7 @@ static GtkWidget* create_gtk_list_batch()
 	GtkWidget* gtklist = NULL;
 	gint *Width = NULL;
 	GtkListStore *store;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 	GtkTreeSelection *select;
@@ -428,7 +430,10 @@ static GtkWidget* create_gtk_list_batch()
 	for (i=0;i<NlistTitle;i++) types[i] = G_TYPE_STRING;
   	store = gtk_list_store_newv (NlistTitle, types);
 	g_free(types);
-	model = GTK_TREE_MODEL (store);
+	if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 
 	gtklist = gtk_tree_view_new_with_model (model);
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (gtklist), TRUE);

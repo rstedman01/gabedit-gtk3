@@ -409,13 +409,14 @@ static GtkWidget* create_gtk_list_orbitals()
 {
 	gint i;
 	gint j;
+	static GtkTreeView *treeView;
 	GtkWidget* gtklist = NULL;
 	gint *Width = NULL;
 	gint NlistTitle = 4;
 	gchar* Titles[] = {"Nr","Energy","Occ.","Sym."};
 	gchar* List[4];
 	GtkListStore *store;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 	GtkTreeSelection *select;
@@ -427,8 +428,10 @@ static GtkWidget* create_gtk_list_orbitals()
 	types[NlistTitle] = G_TYPE_POINTER;
   	store = gtk_list_store_newv (NlistTitle+1, types);
 	g_free(types);
-	model = GTK_TREE_MODEL (store);
-
+	if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 	Width = g_malloc(NlistTitle*sizeof(gint));
 
 	for (j=0;j<NlistTitle;j++) Width[j] = strlen(Titles[j]);

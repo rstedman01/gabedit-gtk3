@@ -77,6 +77,7 @@ struct _DataMolproTree
 };
 static gchar selectedRow[100] = "-1";
 static void rafreshTreeView();
+GtkTreeView *tree_view;
 /********************************************************************************/
 typedef enum
 {
@@ -333,7 +334,7 @@ static void eventDispatcher(GtkWidget *widget, GdkEventButton *event, gpointer u
 
 	GtkTreePath *path;
 	GtkTreeIter iter;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
 
 	if (!event) return;
 	if (gtk_widget_get_window(widget) == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
@@ -344,7 +345,10 @@ static void eventDispatcher(GtkWidget *widget, GdkEventButton *event, gpointer u
 	{
 		if(path)
 		{
-			model = gtk_tree_view_get_model(GTK_TREE_VIEW(widget));
+			if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+			{
+				model = gtk_tree_view_get_model(tree_view);
+			}
 			gtk_tree_selection_select_path  (gtk_tree_view_get_selection (GTK_TREE_VIEW (widget)), path);
 			sprintf(selectedRow ,"%s",gtk_tree_path_to_string(path));
 			gtk_tree_model_get_iter (model, &iter, path);
@@ -382,7 +386,12 @@ static void freeDataMolproTree()
 	gint i = 0;
 	gchar* pathString = NULL;
 	GtkTreeIter iter;
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
+
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
 
 	pathString = g_strdup_printf("%d", i);
 	while (gtk_tree_model_get_iter_from_string (model, &iter, pathString) == TRUE)
@@ -404,7 +413,11 @@ static gboolean* getExpandInfo()
 
 	gchar* pathString = NULL;
 	GtkTreeIter iter;
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
 
 	nNodes = 0;
 	pathString = g_strdup_printf("%d", nNodes);
@@ -441,7 +454,11 @@ static void setExpandeds(gboolean* expandeds, gchar* selected_row)
 	gint i;
 	gchar* pathString = NULL;
 	GtkTreeIter iter;
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
 
 	if(!expandeds) return;
 
@@ -477,7 +494,11 @@ static void deleteOneBasis(GtkWidget *win, gpointer d)
 	gboolean* expandeds;
 
 	GtkTreeIter node;
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
    	DataMolproTree* data = NULL;
 
 	if(atoi(selectedRow)<0) return;
@@ -530,7 +551,11 @@ static void deleteBasisDlg(GtkWidget *win,gpointer d)
 	GtkWidget* w = NULL;
 
 	GtkTreeIter node;
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
    	DataMolproTree* data = NULL;
 
 	if(atoi(selectedRow)<0) return;
@@ -568,7 +593,11 @@ static void deleteOneAtom(GtkWidget *win, gpointer d)
 	gboolean* expandeds;
 
 	GtkTreeIter node;
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
    	DataMolproTree* data = NULL;
 
 	if(atoi(selectedRow)<0) return;
@@ -623,7 +652,11 @@ static void deleteAtomDlg(GtkWidget *win,gpointer d)
 	GtkWidget* w = NULL;
 
 	GtkTreeIter node;
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
    	DataMolproTree* data = NULL;
 
 	if(atoi(selectedRow)<0) return;
@@ -658,7 +691,7 @@ static void newAtom()
 	gint i;
 
 	GtkTreeIter node;
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
    	DataMolproTree* data = NULL;
 
 	if(!gtk_tree_model_get_iter_from_string (model, &node, selectedRow)) return;
@@ -753,7 +786,7 @@ static void selectAtom(GtkWidget *w,gpointer entry0)
 	  if(strcmp(Symb[j][i],"00"))
 	  {
 	  button = gtk_button_new_with_label(Symb[j][i]);
-          style=set_button_style(button_style,button,Symb[j][i]);
+          set_button_style(button,Symb[j][i]);
           g_signal_connect(G_OBJECT(button), "clicked",
                             (GCallback)setAtom,(gpointer )Symb[j][i]);
           g_signal_connect_swapped(G_OBJECT(button), "clicked",
@@ -782,7 +815,11 @@ static void newAtomDlg()
 	gchar title[BSIZE];
 
 	GtkTreeIter node;
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
    	DataMolproTree* data = NULL;
 
 	if(!gtk_tree_model_get_iter_from_string (model, &node, selectedRow)) return;
@@ -848,7 +885,11 @@ static void newBasis()
 	gint i;
 
 	GtkTreeIter node;
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
    	DataMolproTree* data = NULL;
 
 	if(!gtk_tree_model_get_iter_from_string (model, &node, selectedRow)) return;
@@ -915,7 +956,11 @@ static void newBasisDlg()
 	gchar title[BSIZE];
 
 	GtkTreeIter node;
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
    	DataMolproTree* data = NULL;
 
 	if(!gtk_tree_model_get_iter_from_string (model, &node, selectedRow)) return;
@@ -978,11 +1023,14 @@ static void toggledAvailable (GtkCellRendererToggle *cell, gchar *path_string, g
 	GtkTreePath *path = gtk_tree_path_new_from_string (path_string);
 	gboolean value = FALSE;
    	DataMolproTree* dataTree = NULL;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
 
 	if(column<2) return;
 
-	model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
 
 	gtk_tree_model_get_iter (model, &iter, path);
 	gtk_tree_model_get (model, &iter, column, &value, LIST_DATA, &dataTree, -1);
@@ -1011,11 +1059,14 @@ static void addFeuille(GtkTreeIter *parent, MolproOneBasis* molproOneBasis, gint
 	GtkTreeIter feuille;
 	DataMolproTree* dataTree;
 	gint i;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
         GtkTreeStore *store;
 
-	model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
-        store = GTK_TREE_STORE (model);
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
+    store = GTK_TREE_STORE (model);
 
 	dataTree = newDataMolproTree(atomNumber,basisNumber);
 
@@ -1033,11 +1084,14 @@ static GtkTreeIter addNode(gchar *text,gint atomNumber)
 {
 	GtkTreeIter node;
 	DataMolproTree* dataTree;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
         GtkTreeStore *store;
 
-	model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
-        store = GTK_TREE_STORE (model);
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
+    store = GTK_TREE_STORE (model);
 
 	gtk_tree_store_append(store, &node, NULL);
 	dataTree = newDataMolproTree(atomNumber,-1);
@@ -1073,7 +1127,11 @@ static void addBasisList()
 /********************************************************************************/
 static void clearTreeView()
 {
-	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(treeView));
+	GtkTreeModel *model = NULL;
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
         GtkTreeStore *store = GTK_TREE_STORE (model);
 	gtk_tree_store_clear(store);
 }
@@ -1090,7 +1148,7 @@ static void addTreeView(GtkWidget *win, GtkWidget *vbox)
 	GtkWidget *scr;
 	gint i;
         GtkTreeStore *store;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 	gchar *listTitles[]={ N_("GabeditAtom"), N_("Basis"), N_("Pseudo"),
@@ -1126,7 +1184,10 @@ static void addTreeView(GtkWidget *win, GtkWidget *vbox)
 			G_TYPE_BOOLEAN, /* it is not visible, used for render others columns visible  or not */
 			G_TYPE_POINTER); /* it is not visible, = data row */
 
-        model = GTK_TREE_MODEL (store);
+	if (tree_view && GTK_IS_TREE_VIEW(tree_view))
+	{
+		model = gtk_tree_view_get_model(tree_view);
+	}
 
 	treeView = gtk_tree_view_new_with_model (model);
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (treeView), TRUE);

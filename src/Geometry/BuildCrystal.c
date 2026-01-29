@@ -753,7 +753,7 @@ static void add_buttons(GtkWidget *Dlg,GtkWidget* box)
 	  	button = gtk_button_new_with_label(tmp);
   		g_object_set_data(G_OBJECT (button), "WinDlg",Dlg);
 
-          	/* style=set_button_style(button_style,button,"H");*/
+          	set_button_style(button,Symb[j][i]);
           	g_signal_connect(G_OBJECT(button), "clicked",(GCallback)build_crystal,(gpointer )Symb[i][j]);
 	  	gtk_table_attach(GTK_TABLE(Table),button,j,j+1,i,i+1,
 		  (GtkAttachOptions)(GTK_FILL | GTK_EXPAND) ,

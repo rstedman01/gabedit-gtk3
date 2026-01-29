@@ -49,6 +49,7 @@ static	gdouble    X[3]={0.0,0.0,0.0};
 static	gdouble    Y[3]={0.0,0.0,0.0};
 static	gdouble    Z[3]={0.0,0.0,0.0};
 static  gchar adfFileName[2048];
+static GtkTreeView *treeView;
 
 /**************************************************************/
 static void free_adf_orb()
@@ -238,7 +239,10 @@ static void read_orbital(GtkWidget *Win,gpointer user_data)
 	}
 
 	if(selectedRow<0) return;
-	model = gtk_tree_view_get_model(GTK_TREE_VIEW(gtklist));
+	if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 	sprintf(pathString,"%d",selectedRow);
 	if(!gtk_tree_model_get_iter_from_string (model, &node, pathString)) return;
 	gtk_tree_model_get (model, &node, 4, &data, -1);
@@ -309,7 +313,7 @@ static GtkWidget* create_gtk_list_orbitals()
 	gchar* Titles[] = {"Nr","Energy","Occ.","Sym."};
 	gchar* List[4];
 	GtkListStore *store;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 	GtkTreeSelection *select;
@@ -321,7 +325,10 @@ static GtkWidget* create_gtk_list_orbitals()
 	types[NlistTitle] = G_TYPE_POINTER;
   	store = gtk_list_store_newv (NlistTitle+1, types);
 	g_free(types);
-	model = GTK_TREE_MODEL (store);
+	if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 
 	Width = g_malloc(NlistTitle*sizeof(gint));
 

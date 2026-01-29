@@ -592,16 +592,18 @@ static void rafreshList()
 	gint k;
 	GtkTreeIter iter;
 	GtkTreeModel* model = NULL;
-	GtkTreeStore* store = NULL;
+	GtkTreeStore* store;
 	gchar* texts[1];
 	gchar* titles[] = { "Comments" };
 	GtkCellRenderer* renderer;
 	GtkTreeViewColumn* column;
 
-	model = gtk_tree_view_get_model(treeView);
 	store = GTK_TREE_STORE(model);
 	gtk_tree_store_clear(store);
-	model = GTK_TREE_MODEL(store);
+	if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 
 	do
 	{

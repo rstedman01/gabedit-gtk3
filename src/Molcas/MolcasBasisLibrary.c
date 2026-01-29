@@ -737,7 +737,7 @@ static void selectAtom(GtkWidget *w,gpointer entry0)
 	  if(strcmp(Symb[j][i],"00"))
 	  {
 	  button = gtk_button_new_with_label(Symb[j][i]);
-          style=set_button_style(button_style,button,Symb[j][i]);
+          set_button_style(button,Symb[j][i]);
           g_signal_connect(G_OBJECT(button), "clicked",
                             (GCallback)setAtom,(gpointer )Symb[j][i]);
           g_signal_connect_swapped(G_OBJECT(button), "clicked",

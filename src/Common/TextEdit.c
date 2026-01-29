@@ -359,14 +359,22 @@ void cree_text_notebook()
   AjoutePageNotebook(_("Data"),&text);
   gabedit_text_set_editable (GABEDIT_TEXT (text), TRUE);
   set_font (text,FontsStyleData.fontname);
-  set_base_color(text,FontsStyleData.BaseColor.red ,FontsStyleData.BaseColor.green ,FontsStyleData.BaseColor.blue);
-  set_text_color(text,FontsStyleData.TextColor.red ,FontsStyleData.TextColor.green ,FontsStyleData.TextColor.blue);
+  set_base_color(text,FontsStyleData.BaseColor.red,
+            FontsStyleData.BaseColor.green,
+            FontsStyleData.BaseColor.blue);
+  set_text_color(text,FontsStyleData.TextColor.red,
+            FontsStyleData.TextColor.green,
+            FontsStyleData.TextColor.blue);
 
   AjoutePageNotebook(_("Result"),&textresult);
   gabedit_text_set_editable (GABEDIT_TEXT (textresult), TRUE);
   set_font (textresult,FontsStyleResult.fontname);
-  set_base_color(textresult,FontsStyleResult.BaseColor.red ,FontsStyleResult.BaseColor.green ,FontsStyleResult.BaseColor.blue);
-  set_text_color(textresult,FontsStyleResult.TextColor.red ,FontsStyleResult.TextColor.green ,FontsStyleResult.TextColor.blue);
+  set_base_color(textresult,FontsStyleResult.BaseColor.red,
+            FontsStyleResult.BaseColor.green,
+            FontsStyleResult.BaseColor.blue);
+  set_text_color(textresult,FontsStyleResult.TextColor.red,
+            FontsStyleResult.TextColor.green,
+            FontsStyleResult.TextColor.blue);
 
   {
 	GtkTextBuffer *buffer;

@@ -38,6 +38,7 @@ static   int iinsert;
 
 
 GtkWidget *NoteBook;
+static GtkTreeView *treeView;
 static GtkWidget *Wins=NULL;
 GeneS *gen;
 gint iset;
@@ -525,11 +526,14 @@ static void GetInfoBasis()
         gint i;
         Cbasetot *basetot;
 
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
 	GtkTreeIter  iter;
 	gchar* pathString = NULL;
 
-	model = gtk_tree_view_get_model(GTK_TREE_VIEW(base->listOfAtoms));
+	if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 
         nchar=gabedit_text_get_length(GABEDIT_TEXT(text));
         if(iinsert) gabedit_text_set_point(GABEDIT_TEXT(text),nchar);

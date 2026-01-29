@@ -67,6 +67,8 @@ typedef struct _ProgressData {
     GtkWidget *pbox;
 } ProgressData;
 ProgressData *pdata;
+
+static GtkTreeView *treeView;
 /********************************************************************************/
 static Cbasetot* get_base_total_from_path()
 {
@@ -560,12 +562,15 @@ GtkWidget *CreateListeBase(char * NomFichier)
     	if (!strcmp(OrbSel,"ECP") ) 
 	{
 		GtkListStore *store;
-		GtkTreeModel *model;
+		GtkTreeModel *model = NULL;
 		GtkCellRenderer *renderer;
 		GtkTreeViewColumn *column;
 
 		store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_POINTER); /* the third column is not visible, used for data */
-        	model = GTK_TREE_MODEL (store);
+   		if (treeView && GTK_IS_TREE_VIEW(treeView))
+		{
+			model = gtk_tree_view_get_model(treeView);
+		}
 
 		CListeBase = gtk_tree_view_new_with_model (model);
 		gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (CListeBase), TRUE);
@@ -582,12 +587,15 @@ GtkWidget *CreateListeBase(char * NomFichier)
     	else
     	{
 		GtkListStore *store;
-		GtkTreeModel *model;
+		GtkTreeModel *model = NULL;
 		GtkCellRenderer *renderer;
 		GtkTreeViewColumn *column;
 
 		store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_POINTER); /* the third column is not visible, used for data */
-        	model = GTK_TREE_MODEL (store);
+        if (treeView && GTK_IS_TREE_VIEW(treeView))
+		{
+		model = gtk_tree_view_get_model(treeView);
+		}
 
 		CListeBase = gtk_tree_view_new_with_model (model);
 		gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (CListeBase), TRUE);
@@ -1064,7 +1072,7 @@ static void DialogueAdd(GtkWidget *w,gpointer data)
 	  if(strcmp(Symb[j][i],"00"))
 	  {
 	  button = gtk_button_new_with_label(Symb[j][i]);
-          style=set_button_style(button_style,button,Symb[j][i]);
+          set_button_style(button,Symb[j][i]);
           g_signal_connect(G_OBJECT(button), "clicked",(GCallback)SetAtom,(gpointer )Symb[j][i]);
 	  g_signal_connect_swapped(G_OBJECT(button), "clicked",(GCallback)delete_child,GTK_OBJECT(FenetreTable));
 
@@ -1129,7 +1137,7 @@ void AjoutePageBasis(GtkWidget *Win,GtkWidget *NoteBook,BaseS *base)
 	gint i;
 
 	GtkListStore *store;
-	GtkTreeModel *model;
+	GtkTreeModel *model = NULL;
 	GtkCellRenderer *renderer;
 	GtkTreeViewColumn *column;
 	GtkTreeSelection *select;
@@ -1174,7 +1182,10 @@ void AjoutePageBasis(GtkWidget *Win,GtkWidget *NoteBook,BaseS *base)
 	gtk_paned_add1(GTK_PANED(HPaned), Scr);
 	  
 	store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_POINTER); /* the second column is not visible, used for data */
-        model = GTK_TREE_MODEL (store);
+    if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 
 	listOfAtoms = gtk_tree_view_new_with_model (model);
 	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (listOfAtoms), TRUE);

@@ -254,7 +254,7 @@ static void addAnAtomDlg()
 	  if(strcmp(Symb[j][i],"00"))
 	  {
 	  button = gtk_button_new_with_label(Symb[j][i]);
-          style=set_button_style(button_style,button,Symb[j][i]);
+          set_button_style(button,Symb[j][i]);
           g_signal_connect(G_OBJECT(button), "clicked",
                             (GCallback)addAtom,(gpointer )Symb[j][i]);
 	  g_object_set_data(G_OBJECT(button),"WinTable",winTable);
@@ -367,10 +367,15 @@ static void rafreshTreeView(GtkTreeView *treeView)
 {
 	gint i;
 
-        GtkTreeIter iter;
-	GtkTreeModel *model = gtk_tree_view_get_model(treeView);
-        GtkTreeStore *store = GTK_TREE_STORE (model);
+    GtkTreeIter iter;
+	GtkTreeModel *model = NULL;
+    GtkTreeStore *store = GTK_TREE_STORE (model);
   
+	if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
+
 	gtk_tree_store_clear(store);
         model = GTK_TREE_MODEL (store);
 
@@ -432,15 +437,18 @@ static GtkTreeView* addListOfAtoms(GtkWidget *vbox, GtkUIManager *manager)
 	gint Factor=7;
 	gint len = 1;
 
-        GtkTreeStore *store;
-	GtkTreeModel *model;
+    GtkTreeStore *store;
+	GtkTreeModel *model = NULL;
 	GtkCellRenderer *renderer;
 	GtkTreeView *treeView;
 	GtkTreeViewColumn *column;
   
 
 	store = gtk_tree_store_new (1,G_TYPE_STRING);
-        model = GTK_TREE_MODEL (store);
+	if (treeView && GTK_IS_TREE_VIEW(treeView))
+	{
+		model = gtk_tree_view_get_model(treeView);
+	}
 
 	for(i=0;i<len;i++) widall+=widths[i];
 

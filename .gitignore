@@ -23,3 +23,6 @@ srclst.txt
 MigrationPatterns.md
 user_install_dialog_create.txt
 gabedit-bin-log.txt
+gabedit-gtk3
+test_colors.c
+testcolors
