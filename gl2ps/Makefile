@@ -1,4 +1,4 @@
-include ../CONFIG
+include ./CONFIG
 
 OBJECTS = gl2ps.o
 

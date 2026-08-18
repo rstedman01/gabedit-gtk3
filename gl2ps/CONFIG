@@ -1,0 +1,16 @@
+RMTMP = rm -f tmp/*
+MAKE = make
+MKDIR = mkdir -p
+WIN32LIB   = 
+X11LIB   = -lX11
+CC = gcc -fno-common
+enable_omp = 1
+ifeq ($(enable_omp),1)
+OMPLIB=-L/usr/lib -lgomp
+OMPCFLAGS=-DENABLE_OMP -fopenmp
+endif
+
+#DRAWGEOMGL= 
+DRAWGEOMGL=-DDRAWGEOMGL
+
+COMMONCFLAGS = -Wall -O2 -DENABLE_DEPRECATED $(OMPCFLAGS) $(DRAWGEOMGL) -Wformat-security -Wno-unused-variable
